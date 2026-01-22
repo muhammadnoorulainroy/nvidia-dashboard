@@ -8,12 +8,12 @@ import asyncio
 import logging
 from concurrent.futures import ThreadPoolExecutor
 from functools import wraps, partial
-from typing import Callable, TypeVar, Any
+from typing import Callable, TypeVar, Any, Optional
 
 logger = logging.getLogger(__name__)
 
 # Global thread pool for CPU-bound or blocking I/O operations
-_thread_pool: ThreadPoolExecutor = None
+_thread_pool: Optional[ThreadPoolExecutor] = None
 _MAX_WORKERS = 4  # Limit concurrent blocking operations
 
 

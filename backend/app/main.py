@@ -341,6 +341,7 @@ async def startup_event():
     
     # =========================================================================
     # Step 3: Initial Data Sync (NON-CRITICAL)
+    # Runs in thread pool to keep event loop responsive for Ctrl+C
     # =========================================================================
     if bq_result.success and settings.initial_sync_on_startup:
         logger.info("=" * 80)
@@ -367,13 +368,18 @@ async def startup_event():
             # Update table metrics after sync
             update_table_metrics(db_service)
         
-        sync_result = resilient_startup(
-            name="Initial Data Sync",
-            func=perform_initial_sync,
-            critical=False,
-            max_attempts=2,
-            wait_seconds=10,
-        )
+        def run_resilient_sync():
+            """Wrapper to run resilient_startup in thread pool."""
+            return resilient_startup(
+                name="Initial Data Sync",
+                func=perform_initial_sync,
+                critical=False,
+                max_attempts=2,
+                wait_seconds=10,
+            )
+        
+        # Run sync in thread pool to keep event loop responsive (allows Ctrl+C)
+        sync_result = await run_in_thread(run_resilient_sync)
         startup_results.append(sync_result)
         
         if not sync_result.success:
@@ -392,24 +398,36 @@ async def startup_event():
     logger.info("=" * 80)
     
     def start_scheduler():
-        def sync_job():
-            """Job function for scheduled data sync with error handling"""
+        async def sync_job():
+            """Async job function for scheduled data sync with error handling.
+            
+            Runs blocking sync operations in a thread pool to avoid blocking
+            the event loop (which would prevent Ctrl+C from working).
+            """
             logger.info("Running scheduled data sync...")
             try:
-                data_sync_service = get_data_sync_service()
+                def _run_sync():
+                    """Blocking sync operation to run in thread pool."""
+                    data_sync_service = get_data_sync_service()
+                    
+                    # Re-initialize BigQuery client if needed
+                    if data_sync_service.bq_client is None:
+                        logger.info("Re-initializing BigQuery client...")
+                        data_sync_service.initialize_bigquery_client()
+                    
+                    return data_sync_service.sync_all_tables(sync_type='scheduled')
                 
-                # Re-initialize BigQuery client if needed
-                if data_sync_service.bq_client is None:
-                    logger.info("Re-initializing BigQuery client...")
-                    data_sync_service.initialize_bigquery_client()
-                
-                results = data_sync_service.sync_all_tables(sync_type='scheduled')
+                # Run sync in thread pool to keep event loop responsive
+                results = await run_in_thread(_run_sync)
                 success_count = sum(1 for v in results.values() if v)
                 logger.info(f"Sync completed: {success_count}/{len(results)} tables synced")
                 
-                # Update metrics
-                db_service = get_db_service()
-                update_table_metrics(db_service)
+                # Update metrics (also in thread pool)
+                def _update_metrics():
+                    db_service = get_db_service()
+                    update_table_metrics(db_service)
+                
+                await run_in_thread(_update_metrics)
                 
             except Exception as e:
                 logger.error(f"Scheduled sync failed: {e}")
