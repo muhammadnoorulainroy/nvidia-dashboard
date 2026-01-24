@@ -18,6 +18,7 @@ from sqlalchemy.pool import StaticPool
 
 # Set test environment before importing app modules
 os.environ["DEBUG"] = "true"
+os.environ["TESTING"] = "true"  # Skip heavy initialization in tests
 os.environ["POSTGRES_PASSWORD"] = "test_password_123"
 os.environ["POSTGRES_DB"] = "nvidia_test"
 os.environ["GCP_PROJECT_ID"] = "test-project"
