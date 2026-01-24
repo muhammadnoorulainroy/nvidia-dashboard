@@ -17,7 +17,7 @@ class TestCircuitBreaker:
     
     def test_circuit_breaker_initial_state_closed(self):
         """Test circuit breaker starts in closed state."""
-        from app.core.resilience import CircuitBreaker
+        from app.core.resilience import CircuitBreaker, CircuitState
         
         cb = CircuitBreaker(
             name="test",
@@ -26,12 +26,13 @@ class TestCircuitBreaker:
             half_open_max_calls=1
         )
         
-        assert cb.state == "closed"
-        assert cb.failure_count == 0
+        # state returns CircuitState enum, compare with enum or check value
+        assert cb.state == CircuitState.CLOSED
+        assert cb._failure_count == 0
     
     def test_circuit_breaker_opens_after_failures(self):
         """Test circuit breaker opens after reaching failure threshold."""
-        from app.core.resilience import CircuitBreaker
+        from app.core.resilience import CircuitBreaker, CircuitState, CircuitBreakerError
         
         cb = CircuitBreaker(
             name="test",
@@ -40,15 +41,21 @@ class TestCircuitBreaker:
             half_open_max_calls=1
         )
         
-        # Record failures
-        for _ in range(3):
-            cb.record_failure()
+        # Use call() with a failing function to record failures
+        def failing_func():
+            raise ValueError("Test failure")
         
-        assert cb.state == "open"
+        for _ in range(3):
+            try:
+                cb.call(failing_func)
+            except ValueError:
+                pass  # Expected
+        
+        assert cb.state == CircuitState.OPEN
     
     def test_circuit_breaker_resets_on_success(self):
         """Test circuit breaker resets failure count on success."""
-        from app.core.resilience import CircuitBreaker
+        from app.core.resilience import CircuitBreaker, CircuitState
         
         cb = CircuitBreaker(
             name="test",
@@ -57,15 +64,25 @@ class TestCircuitBreaker:
             half_open_max_calls=1
         )
         
-        # Record some failures
-        cb.record_failure()
-        cb.record_failure()
+        # Record some failures using call()
+        def failing_func():
+            raise ValueError("Test failure")
+        
+        def success_func():
+            return "success"
+        
+        # Record 2 failures
+        for _ in range(2):
+            try:
+                cb.call(failing_func)
+            except ValueError:
+                pass
         
         # Record success
-        cb.record_success()
+        cb.call(success_func)
         
-        assert cb.failure_count == 0
-        assert cb.state == "closed"
+        assert cb._failure_count == 0
+        assert cb.state == CircuitState.CLOSED
     
     def test_circuit_breaker_get_stats(self):
         """Test circuit breaker statistics retrieval."""
@@ -82,7 +99,7 @@ class TestCircuitBreaker:
         
         assert "state" in stats
         assert "failure_count" in stats
-        assert "last_failure_time" in stats
+        assert "last_failure" in stats  # Key is 'last_failure' not 'last_failure_time'
 
 
 class TestStartupResult:
