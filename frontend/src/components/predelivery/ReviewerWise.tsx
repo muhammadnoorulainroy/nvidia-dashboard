@@ -55,7 +55,7 @@ interface ReviewerWiseProps {
 type TimeframeOption = 'daily' | 'd-1' | 'd-2' | 'd-3' | 'weekly' | 'custom' | 'overall'
 
 // Extended type to include trainers
-interface ReviewerRowData extends AggregatedReviewerStats {
+interface ReviewerRowData extends Omit<AggregatedReviewerStats, 'sum_number_of_turns' | 'avg_rework' | 'rework_percent' | 'avg_rating'> {
   review_date?: string | null
   trainers?: TrainerByReviewerDate[]
   sum_number_of_turns?: number

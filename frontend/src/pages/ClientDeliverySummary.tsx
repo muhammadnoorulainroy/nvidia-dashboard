@@ -588,8 +588,10 @@ export default function ClientDeliverySummary() {
                 labelPadding={16}
                 labelTextColor="#1F2937"
                 theme={{
-                  fontSize: 12,
-                  fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+                  text: {
+                    fontSize: 12,
+                    fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+                  },
                 }}
               />
             </Box>

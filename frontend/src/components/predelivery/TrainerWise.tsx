@@ -1139,8 +1139,8 @@ export default function TrainerWise({ isClientDelivery = false }: TrainerWisePro
             disableColumnMenu={true}
             sortModel={sortModel}
             onSortModelChange={setSortModel}
-            getDetailPanelContent={getDetailPanelContent}
-            getDetailPanelHeight={getDetailPanelHeight}
+            // Note: getDetailPanelContent and getDetailPanelHeight are DataGridPro features
+            // Removed to fix TypeScript errors with free DataGrid
             sx={{
               border: 'none',
               backgroundColor: 'white',
