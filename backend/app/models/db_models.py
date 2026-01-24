@@ -1,62 +1,117 @@
 """
-SQLAlchemy database models for nvidia dashboard
+SQLAlchemy database models for nvidia dashboard.
+
+This module defines all database models with:
+- Primary keys and indices for performance
+- Foreign key constraints for data integrity
+- Relationships for ORM navigation
+- Proper type definitions
+
+Note: Foreign keys use ondelete="SET NULL" or "CASCADE" depending on the relationship.
 """
-from sqlalchemy import Column, Integer, String, Float, DateTime, Text, Date, BigInteger
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, Integer, String, Float, DateTime, Text, Date, BigInteger, ForeignKey, Index
+from sqlalchemy.orm import relationship, declarative_base
 
 Base = declarative_base()
 
 
 class Task(Base):
-    """Task table - synced from BigQuery conversation table"""
+    """Task table - synced from BigQuery conversation table."""
     __tablename__ = 'task'
     
     id = Column(BigInteger, primary_key=True)
-    created_at = Column(DateTime)
-    updated_at = Column(DateTime)
+    created_at = Column(DateTime, index=True)
+    updated_at = Column(DateTime, index=True)
     statement = Column(Text)
-    status = Column(String(50))
-    project_id = Column(Integer)
-    batch_id = Column(Integer)
-    current_user_id = Column(Integer)
+    status = Column(String(50), index=True)
+    project_id = Column(Integer, index=True)
+    batch_id = Column(Integer, index=True)
+    current_user_id = Column(
+        Integer, 
+        ForeignKey('contributor.id', ondelete='SET NULL'),
+        nullable=True,
+        index=True
+    )
     colab_link = Column(Text)
-    is_delivered = Column(String(10), default='False')
+    is_delivered = Column(String(10), default='False', index=True)
     rework_count = Column(Integer, default=0)
-    domain = Column(String(255))
-    week_number = Column(Integer)
+    domain = Column(String(255), index=True)
+    week_number = Column(Integer, index=True)
     number_of_turns = Column(Integer, default=0)
-    last_completed_date = Column(Date)
+    last_completed_date = Column(Date, index=True)
+    
+    # Relationships
+    current_user = relationship("Contributor", back_populates="tasks", foreign_keys=[current_user_id])
+    reviews = relationship("ReviewDetail", back_populates="task", foreign_keys="[ReviewDetail.conversation_id]")
 
 
 class ReviewDetail(Base):
-    """Review detail table - synced from BigQuery CTE results"""
+    """Review detail table - synced from BigQuery CTE results."""
     __tablename__ = 'review_detail'
     
     id = Column(Integer, primary_key=True, autoincrement=True)
-    quality_dimension_id = Column(Integer)
-    domain = Column(String(255))
+    quality_dimension_id = Column(Integer, index=True)
+    domain = Column(String(255), index=True)
     human_role_id = Column(Integer)
-    review_id = Column(Integer)
-    reviewer_id = Column(Integer)
-    conversation_id = Column(BigInteger)
-    is_delivered = Column(String(10), default='False')
+    review_id = Column(Integer, index=True)
+    reviewer_id = Column(
+        Integer, 
+        ForeignKey('contributor.id', ondelete='SET NULL'),
+        nullable=True,
+        index=True
+    )
+    conversation_id = Column(
+        BigInteger, 
+        ForeignKey('task.id', ondelete='CASCADE'),
+        nullable=True,
+        index=True
+    )
+    is_delivered = Column(String(10), default='False', index=True)
     name = Column(String(255))
     score_text = Column(String(50))
     score = Column(Float)
     task_score = Column(Float)
-    updated_at = Column(Date)
+    updated_at = Column(Date, index=True)
+    
+    # Relationships
+    reviewer = relationship("Contributor", back_populates="reviews", foreign_keys=[reviewer_id])
+    task = relationship("Task", back_populates="reviews", foreign_keys=[conversation_id])
 
 
 class Contributor(Base):
-    """Contributor table - synced from BigQuery"""
+    """Contributor table - synced from BigQuery."""
     __tablename__ = 'contributor'
     
     id = Column(Integer, primary_key=True)
-    name = Column(String(255))
-    turing_email = Column(String(255))
-    type = Column(String(50))
-    status = Column(String(50))
-    team_lead_id = Column(Integer)  # POD Lead ID
+    name = Column(String(255), index=True)
+    turing_email = Column(String(255), unique=True, index=True)
+    type = Column(String(50), index=True)  # 'trainer', 'reviewer', 'pod_lead'
+    status = Column(String(50), index=True)  # 'active', 'inactive'
+    team_lead_id = Column(
+        Integer,
+        ForeignKey('contributor.id', ondelete='SET NULL'),
+        nullable=True,
+        index=True
+    )  # Self-referential POD Lead ID
+    
+    # Relationships
+    tasks = relationship("Task", back_populates="current_user", foreign_keys="[Task.current_user_id]")
+    reviews = relationship("ReviewDetail", back_populates="reviewer", foreign_keys="[ReviewDetail.reviewer_id]")
+    
+    # Self-referential relationship for team lead hierarchy
+    # team_lead: Many contributors can have one team lead (many-to-one)
+    # team_members: One team lead can have many team members (one-to-many)
+    team_lead = relationship(
+        "Contributor",
+        remote_side=[id],
+        foreign_keys=[team_lead_id],
+        back_populates="team_members"
+    )
+    team_members = relationship(
+        "Contributor",
+        foreign_keys=[team_lead_id],
+        back_populates="team_lead"
+    )
 
 
 class DataSyncLog(Base):
@@ -107,14 +162,24 @@ class WorkItem(Base):
 
 
 class TaskAHT(Base):
-    """Task AHT (Average Handle Time) - duration from pending→labeling to labeling→completed"""
+    """Task AHT (Average Handle Time) - duration from pending->labeling to labeling->completed."""
     __tablename__ = 'task_aht'
     
     id = Column(Integer, primary_key=True, autoincrement=True)
-    task_id = Column(BigInteger, index=True)
-    contributor_id = Column(Integer, index=True)
+    task_id = Column(
+        BigInteger, 
+        ForeignKey('task.id', ondelete='CASCADE'),
+        nullable=True,
+        index=True
+    )
+    contributor_id = Column(
+        Integer, 
+        ForeignKey('contributor.id', ondelete='CASCADE'),
+        nullable=True,
+        index=True
+    )
     contributor_name = Column(String(255))
-    batch_id = Column(Integer)
+    batch_id = Column(Integer, index=True)
     start_time = Column(DateTime)
     end_time = Column(DateTime)
     duration_seconds = Column(Integer)
@@ -122,11 +187,16 @@ class TaskAHT(Base):
 
 
 class ContributorTaskStats(Base):
-    """Contributor task submission stats - new tasks vs rework"""
+    """Contributor task submission stats - new tasks vs rework."""
     __tablename__ = 'contributor_task_stats'
     
     id = Column(Integer, primary_key=True, autoincrement=True)
-    contributor_id = Column(Integer, index=True, unique=True)
+    contributor_id = Column(
+        Integer, 
+        ForeignKey('contributor.id', ondelete='CASCADE'),
+        unique=True,
+        index=True
+    )
     new_tasks_submitted = Column(Integer, default=0)
     rework_submitted = Column(Integer, default=0)
     total_unique_tasks = Column(Integer, default=0)
@@ -136,11 +206,15 @@ class ContributorTaskStats(Base):
 
 
 class ContributorDailyStats(Base):
-    """Daily contributor task submission stats - trainer x date level"""
+    """Daily contributor task submission stats - trainer x date level."""
     __tablename__ = 'contributor_daily_stats'
     
     id = Column(Integer, primary_key=True, autoincrement=True)
-    contributor_id = Column(Integer, index=True)
+    contributor_id = Column(
+        Integer, 
+        ForeignKey('contributor.id', ondelete='CASCADE'),
+        index=True
+    )
     submission_date = Column(Date, index=True)
     new_tasks_submitted = Column(Integer, default=0)
     rework_submitted = Column(Integer, default=0)
@@ -150,14 +224,23 @@ class ContributorDailyStats(Base):
     sum_number_of_turns = Column(Integer, default=0)  # Sum of number_of_turns for avg_rework calculation
     sum_score = Column(Float, default=0)  # Sum of scores for avg_rating calculation
     sum_count_reviews = Column(Integer, default=0)  # Sum of count_reviews for avg_rating calculation
+    
+    # Composite index for common queries
+    __table_args__ = (
+        Index('ix_contributor_daily_stats_contributor_date', 'contributor_id', 'submission_date'),
+    )
 
 
 class ReviewerDailyStats(Base):
-    """Daily reviewer stats - reviewer x date level (tasks reviewed)"""
+    """Daily reviewer stats - reviewer x date level (tasks reviewed)."""
     __tablename__ = 'reviewer_daily_stats'
     
     id = Column(Integer, primary_key=True, autoincrement=True)
-    reviewer_id = Column(Integer, index=True)
+    reviewer_id = Column(
+        Integer, 
+        ForeignKey('contributor.id', ondelete='CASCADE'),
+        index=True
+    )
     review_date = Column(Date, index=True)
     unique_tasks_reviewed = Column(Integer, default=0)  # Distinct tasks reviewed
     new_tasks_reviewed = Column(Integer, default=0)  # Tasks that were first-time completions
@@ -167,15 +250,28 @@ class ReviewerDailyStats(Base):
     sum_number_of_turns = Column(Integer, default=0)  # Sum of number_of_turns for avg_rework calculation
     sum_score = Column(Float, default=0)  # Sum of scores for avg_rating calculation
     sum_count_reviews = Column(Integer, default=0)  # Sum of count_reviews for avg_rating calculation
+    
+    # Composite index for common queries
+    __table_args__ = (
+        Index('ix_reviewer_daily_stats_reviewer_date', 'reviewer_id', 'review_date'),
+    )
 
 
 class ReviewerTrainerDailyStats(Base):
-    """Reviewer x Trainer x Date level stats - breakdown of what each reviewer reviewed per trainer per date"""
+    """Reviewer x Trainer x Date level stats - breakdown of what each reviewer reviewed per trainer per date."""
     __tablename__ = 'reviewer_trainer_daily_stats'
     
     id = Column(Integer, primary_key=True, autoincrement=True)
-    reviewer_id = Column(Integer, index=True)
-    trainer_id = Column(Integer, index=True)
+    reviewer_id = Column(
+        Integer, 
+        ForeignKey('contributor.id', ondelete='CASCADE'),
+        index=True
+    )
+    trainer_id = Column(
+        Integer, 
+        ForeignKey('contributor.id', ondelete='CASCADE'),
+        index=True
+    )
     review_date = Column(Date, index=True)
     tasks_reviewed = Column(Integer, default=0)  # Unique tasks reviewed for this trainer
     new_tasks_reviewed = Column(Integer, default=0)  # New tasks reviewed
@@ -183,6 +279,11 @@ class ReviewerTrainerDailyStats(Base):
     total_reviews = Column(Integer, default=0)  # Total review actions
     ready_for_delivery = Column(Integer, default=0)  # Tasks ready for delivery
     sum_number_of_turns = Column(Integer, default=0)  # For avg_rework
+    
+    # Composite index for common queries
+    __table_args__ = (
+        Index('ix_reviewer_trainer_daily_stats_all', 'reviewer_id', 'trainer_id', 'review_date'),
+    )
 
 
 class TaskHistoryRaw(Base):
@@ -304,15 +405,24 @@ class JibblePerson(Base):
 
 
 class JibbleTimeEntry(Base):
-    """Jibble time entry data - daily hours per person"""
+    """Jibble time entry data - daily hours per person."""
     __tablename__ = 'jibble_time_entry'
     
     id = Column(Integer, primary_key=True, autoincrement=True)
-    person_id = Column(String(100), index=True)  # Jibble person ID
+    person_id = Column(
+        String(100), 
+        ForeignKey('jibble_person.jibble_id', ondelete='CASCADE'),
+        index=True
+    )  # Jibble person ID
     entry_date = Column(Date, index=True)
     total_hours = Column(Float, default=0)
     last_synced = Column(DateTime)
     created_at = Column(DateTime, server_default='now()')
+    
+    # Composite index for common queries
+    __table_args__ = (
+        Index('ix_jibble_time_entry_person_date', 'person_id', 'entry_date'),
+    )
 
 
 class JibbleEmailMapping(Base):

@@ -1,4 +1,4 @@
-.PHONY: install run dev clean venv
+.PHONY: install run dev clean venv migrate migrate-create migrate-history migrate-stamp migrate-down migrate-reset
 
 venv:
 	python3 -m venv venv
@@ -14,3 +14,35 @@ dev:
 
 clean:
 	rm -rf venv __pycache__ .pytest_cache
+
+# =============================================================================
+# Database Migrations (Alembic)
+# =============================================================================
+
+# Apply all pending migrations
+migrate:
+	./venv/bin/alembic upgrade head
+
+# Create a new migration (usage: make migrate-create msg="add new column")
+migrate-create:
+	./venv/bin/alembic revision --autogenerate -m "$(msg)"
+
+# Show migration history
+migrate-history:
+	./venv/bin/alembic history --verbose
+
+# Show current migration version
+migrate-current:
+	./venv/bin/alembic current
+
+# Mark existing database as up-to-date (for existing DBs)
+migrate-stamp:
+	./venv/bin/alembic stamp head
+
+# Rollback one migration
+migrate-down:
+	./venv/bin/alembic downgrade -1
+
+# Rollback all migrations
+migrate-reset:
+	./venv/bin/alembic downgrade base
