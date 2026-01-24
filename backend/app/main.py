@@ -246,6 +246,14 @@ async def startup_event():
     global _startup_time
     _startup_time = datetime.utcnow()
     
+    # Check if running in test mode - skip heavy initialization
+    import os
+    if os.environ.get("TESTING", "").lower() == "true":
+        logger.info("=" * 80)
+        logger.info("TESTING MODE: Skipping database and BigQuery initialization")
+        logger.info("=" * 80)
+        return
+    
     logger.info("=" * 80)
     logger.info(f"Starting {settings.app_name} v{settings.app_version}")
     logger.info("=" * 80)
