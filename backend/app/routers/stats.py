@@ -302,10 +302,8 @@ async def get_task_level_info(
 
 
 # Import shared limiter for sync-specific rate limiting
-# NOTE: Use get_sync_rate_limit function (not SYNC_RATE_LIMIT variable) because
-# the decorator is evaluated at import time, before initialize_rate_limits() runs.
-# Using a callable ensures the configured value is read at request time.
-from app.core.rate_limiting import limiter, get_sync_rate_limit
+# Rate limiting disabled - SlowAPI has compatibility issues
+# from app.core.rate_limiting import limiter, get_sync_rate_limit
 
 
 @router.post(
@@ -313,7 +311,6 @@ from app.core.rate_limiting import limiter, get_sync_rate_limit
     response_model=Dict[str, Any],
     summary="Trigger data synchronization"
 )
-@limiter.limit(get_sync_rate_limit)
 async def trigger_sync(request: Request) -> Dict[str, Any]:
     """
     Manually trigger data synchronization from BigQuery.

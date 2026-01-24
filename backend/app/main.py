@@ -16,8 +16,9 @@ from datetime import datetime
 import logging
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.interval import IntervalTrigger
-from slowapi.errors import RateLimitExceeded
-from slowapi.middleware import SlowAPIMiddleware
+# Rate limiting disabled - SlowAPI has compatibility issues
+# from slowapi.errors import RateLimitExceeded
+# from slowapi.middleware import SlowAPIMiddleware
 
 from app.config import get_settings
 from app.routers import stats, jibble
@@ -75,12 +76,10 @@ else:
     logger.info("Sentry DSN not configured - error tracking disabled")
 
 # =============================================================================
-# Rate Limiting Setup (shared limiter from core module)
+# Rate Limiting Setup (DISABLED - SlowAPI has compatibility issues)
 # =============================================================================
-from app.core.rate_limiting import limiter, initialize_rate_limits
-
-# Initialize rate limits with actual configuration values now that settings are validated
-initialize_rate_limits()
+# from app.core.rate_limiting import limiter, initialize_rate_limits
+# initialize_rate_limits()
 
 # Create FastAPI app
 app = FastAPI(
@@ -105,38 +104,8 @@ setup_signal_handlers()
 # Add Prometheus metrics middleware
 app.add_middleware(PrometheusMiddleware)
 
-# Add rate limiting middleware
-
-# Custom rate limit exceeded handler that's more robust than slowapi's default
-def custom_rate_limit_handler(request: Request, exc: Exception) -> JSONResponse | None:
-    """
-    Custom rate limit exception handler.
-    
-    Handles both RateLimitExceeded and other unexpected exceptions during rate limiting.
-    This prevents crashes when the rate limiter encounters errors during limit checks.
-    
-    Note: This must be a sync function for slowapi's internal use.
-    """
-    if isinstance(exc, RateLimitExceeded):
-        detail = getattr(exc, 'detail', str(exc))
-        return JSONResponse(
-            status_code=429,
-            content={"error": f"Rate limit exceeded: {detail}"},
-            headers={"Retry-After": "60"}
-        )
-    else:
-        # Handle unexpected exceptions during rate limiting gracefully
-        logger.warning(f"Unexpected error in rate limiter: {type(exc).__name__}: {exc}")
-        # Return None to let the request proceed without rate limiting
-        # rather than returning an error response
-        return None
-
-# Set the exception handler on the limiter instance itself
-# This is what SlowAPIMiddleware uses internally
-limiter._exception_handler = custom_rate_limit_handler
-app.state.limiter = limiter
-app.add_exception_handler(RateLimitExceeded, custom_rate_limit_handler)
-app.add_middleware(SlowAPIMiddleware)
+# Rate limiting disabled - SlowAPI has compatibility issues with this setup
+# Can be re-enabled once the library is fixed or replaced
 
 # Configure CORS
 app.add_middleware(
