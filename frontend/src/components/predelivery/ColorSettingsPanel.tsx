@@ -209,6 +209,16 @@ export default function ColorSettingsPanel({
     setAnchorEl(null)
   }
 
+  const handleSliderChange = (
+    metric: string,
+    field: 'min' | 'max',
+    value: number
+  ) => {
+    const newSettings = { ...settings }
+    newSettings[metric] = { ...newSettings[metric], [field]: value }
+    onSettingsChange(newSettings)
+  }
+
   const handleToggle = (metric: string, enabled: boolean) => {
     const newSettings = { ...settings }
     newSettings[metric] = { ...newSettings[metric], enabled }

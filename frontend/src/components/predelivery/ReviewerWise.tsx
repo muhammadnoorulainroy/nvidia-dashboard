@@ -11,7 +11,12 @@ import {
   Select,
   FormControl,
   InputLabel,
+  Slider,
+  Popover,
+  Divider,
   Button,
+  ListItemIcon,
+  ListItemText,
   Table,
   TableBody,
   TableCell,
@@ -19,19 +24,25 @@ import {
   TableRow,
   TableContainer,
   TablePagination,
+  Collapse,
   Tooltip,
 } from '@mui/material'
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
+import SortIcon from '@mui/icons-material/Sort'
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 import FilterListIcon from '@mui/icons-material/FilterList'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import DownloadIcon from '@mui/icons-material/Download'
 import { exportReviewerWithTrainersToExcel } from '../../utils/exportToExcel'
 import { getReviewerDailyStats, getTrainersByReviewerDate, TrainerByReviewerDate } from '../../services/api'
-import type { ReviewerDailyStats } from '../../types'
+import type { ReviewerDailyStats, AggregatedReviewerStats } from '../../types'
 import LoadingSpinner from '../LoadingSpinner'
 import ErrorDisplay from '../ErrorDisplay'
 import ColorSettingsPanel, { 
   ColorSettings, 
+  defaultColorSettings, 
   getColorForValue, 
   getBackgroundColorForValue,
   useColorSettings 
@@ -44,21 +55,13 @@ interface ReviewerWiseProps {
 type TimeframeOption = 'daily' | 'd-1' | 'd-2' | 'd-3' | 'weekly' | 'custom' | 'overall'
 
 // Extended type to include trainers
-interface ReviewerRowData {
-  reviewer_id: number | null
-  reviewer_name: string | null
-  reviewer_email: string | null
-  unique_tasks_reviewed: number
-  new_tasks_reviewed: number
-  rework_reviewed: number
-  total_reviews: number
-  tasks_ready_for_delivery: number
-  sum_number_of_turns: number
+interface ReviewerRowData extends AggregatedReviewerStats {
   review_date?: string | null
   trainers?: TrainerByReviewerDate[]
-  avg_rework: number | null
-  rework_percent: number | null
-  avg_rating: number | null
+  sum_number_of_turns?: number
+  avg_rework?: number | null
+  rework_percent?: number | null
+  avg_rating?: number | null
 }
 
 // Trainer row component

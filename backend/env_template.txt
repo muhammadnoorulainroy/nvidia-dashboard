@@ -1,0 +1,81 @@
+# ====================================
+# NVIDIA DASHBOARD - ENVIRONMENT CONFIGURATION
+# ====================================
+# Copy this file to .env and update values as needed
+
+# ====================================
+# APPLICATION SETTINGS
+# ====================================
+APP_NAME=Nvidia Dashboard API
+APP_VERSION=1.0.0
+DEBUG=True
+HOST=0.0.0.0
+PORT=8001
+
+# ====================================
+# BIGQUERY SETTINGS
+# ====================================
+GCP_PROJECT_ID=turing-gpt
+BIGQUERY_DATASET=prod_labeling_tool_n
+CONVERSATION_TABLE=conversation
+REVIEW_TABLE=review
+PROJECT_ID_FILTER=36
+
+# ====================================
+# GOOGLE CLOUD CREDENTIALS
+# ====================================
+# Option 1: Service Account JSON file (recommended for production)
+# GOOGLE_APPLICATION_CREDENTIALS=/path/to/turing-gpt-service-account.json
+
+# Option 2: Application Default Credentials (for development)
+# Run: gcloud auth application-default login
+# No env variable needed
+
+# ====================================
+# API SETTINGS
+# ====================================
+API_PREFIX=/api
+CORS_ORIGINS=["http://localhost:3001", "http://localhost:8001", "http://127.0.0.1:8001", "http://127.0.0.1:3001"]
+DEFAULT_PAGE_SIZE=100
+MAX_PAGE_SIZE=1000
+
+# ====================================
+# POSTGRESQL SETTINGS
+# ====================================
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_DB=nvidia
+
+# ====================================
+# DATA SYNC SETTINGS
+# ====================================
+SYNC_INTERVAL_HOURS=1
+INITIAL_SYNC_ON_STARTUP=True
+
+# ====================================
+# S3 SETTINGS (Optional)
+# ====================================
+S3_BUCKET=agi-ds-turing
+S3_PREFIX=Nova Deep Research - Turing Scale-Up/outputData/
+S3_AWS_PROFILE=amazon
+
+# ====================================
+# AWS CREDENTIALS (Optional - for S3)
+# ====================================
+AWS_REGION=us-east-1
+# AWS_ACCESS_KEY_ID=your-access-key
+# AWS_SECRET_ACCESS_KEY=your-secret-key
+
+# ====================================
+# PROJECT SETTINGS
+# ====================================
+PROJECT_START_DATE=2025-09-26
+
+# ====================================
+# JIBBLE API SETTINGS (Optional)
+# ====================================
+# JIBBLE_API_KEY=your-jibble-api-key
+# JIBBLE_API_SECRET=your-jibble-api-secret
+# JIBBLE_PROJECT_NAME="Nvidia - SysBench"

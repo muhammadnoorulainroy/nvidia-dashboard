@@ -1,9 +1,7 @@
 """
 SQLAlchemy database models for nvidia dashboard
-
-Includes optimized indexes for common query patterns.
 """
-from sqlalchemy import Column, Integer, String, Float, DateTime, Text, Date, BigInteger, Index, UniqueConstraint
+from sqlalchemy import Column, Integer, String, Float, DateTime, Text, Date, BigInteger
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
@@ -12,25 +10,19 @@ Base = declarative_base()
 class Task(Base):
     """Task table - synced from BigQuery conversation table"""
     __tablename__ = 'task'
-    __table_args__ = (
-        Index('ix_task_status_domain', 'status', 'domain'),
-        Index('ix_task_current_user_status', 'current_user_id', 'status'),
-        Index('ix_task_project_batch', 'project_id', 'batch_id'),
-        Index('ix_task_last_completed_date', 'last_completed_date'),
-    )
     
     id = Column(BigInteger, primary_key=True)
-    created_at = Column(DateTime, index=True)
-    updated_at = Column(DateTime, index=True)
+    created_at = Column(DateTime)
+    updated_at = Column(DateTime)
     statement = Column(Text)
-    status = Column(String(50), index=True)
-    project_id = Column(Integer, index=True)
+    status = Column(String(50))
+    project_id = Column(Integer)
     batch_id = Column(Integer)
-    current_user_id = Column(Integer, index=True)
+    current_user_id = Column(Integer)
     colab_link = Column(Text)
-    is_delivered = Column(String(10), default='False', index=True)
+    is_delivered = Column(String(10), default='False')
     rework_count = Column(Integer, default=0)
-    domain = Column(String(255), index=True)
+    domain = Column(String(255))
     week_number = Column(Integer)
     number_of_turns = Column(Integer, default=0)
     last_completed_date = Column(Date)
@@ -39,20 +31,15 @@ class Task(Base):
 class ReviewDetail(Base):
     """Review detail table - synced from BigQuery CTE results"""
     __tablename__ = 'review_detail'
-    __table_args__ = (
-        Index('ix_review_detail_reviewer_domain', 'reviewer_id', 'domain'),
-        Index('ix_review_detail_conversation_reviewer', 'conversation_id', 'reviewer_id'),
-        Index('ix_review_detail_updated_at', 'updated_at'),
-    )
     
     id = Column(Integer, primary_key=True, autoincrement=True)
     quality_dimension_id = Column(Integer)
-    domain = Column(String(255), index=True)
-    human_role_id = Column(Integer, index=True)
-    review_id = Column(Integer, index=True)
-    reviewer_id = Column(Integer, index=True)
-    conversation_id = Column(BigInteger, index=True)
-    is_delivered = Column(String(10), default='False', index=True)
+    domain = Column(String(255))
+    human_role_id = Column(Integer)
+    review_id = Column(Integer)
+    reviewer_id = Column(Integer)
+    conversation_id = Column(BigInteger)
+    is_delivered = Column(String(10), default='False')
     name = Column(String(255))
     score_text = Column(String(50))
     score = Column(Float)
@@ -63,17 +50,13 @@ class ReviewDetail(Base):
 class Contributor(Base):
     """Contributor table - synced from BigQuery"""
     __tablename__ = 'contributor'
-    __table_args__ = (
-        Index('ix_contributor_team_lead_type', 'team_lead_id', 'type'),
-        Index('ix_contributor_email', 'turing_email'),
-    )
     
     id = Column(Integer, primary_key=True)
-    name = Column(String(255), index=True)
+    name = Column(String(255))
     turing_email = Column(String(255))
-    type = Column(String(50), index=True)
-    status = Column(String(50), index=True)
-    team_lead_id = Column(Integer, index=True)  # POD Lead ID
+    type = Column(String(50))
+    status = Column(String(50))
+    team_lead_id = Column(Integer)  # POD Lead ID
 
 
 class DataSyncLog(Base):
@@ -104,6 +87,23 @@ class TaskReviewedInfo(Base):
     updated_at = Column(Date)
     name = Column(String(255))
     annotation_date = Column(DateTime)  # Full timestamp for accurate completion time
+
+
+class WorkItem(Base):
+    """Work item table for tracking delivered items"""
+    __tablename__ = 'work_item'
+    
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    work_item_id = Column(String(255))
+    task_id = Column(String(255))
+    colab_link = Column(Text)
+    json_filename = Column(String(255))
+    delivery_date = Column(DateTime)
+    annotator_id = Column(Integer)
+    turing_status = Column(String(50))
+    client_status = Column(String(50))
+    task_level_feedback = Column(Text)
+    error_categories = Column(Text)
 
 
 class TaskAHT(Base):
@@ -138,12 +138,6 @@ class ContributorTaskStats(Base):
 class ContributorDailyStats(Base):
     """Daily contributor task submission stats - trainer x date level"""
     __tablename__ = 'contributor_daily_stats'
-    __table_args__ = (
-        # Composite index for common query pattern: filter by contributor, order by date
-        Index('ix_contributor_daily_composite', 'contributor_id', 'submission_date'),
-        # Unique constraint to prevent duplicate entries
-        UniqueConstraint('contributor_id', 'submission_date', name='uq_contributor_daily_stats'),
-    )
     
     id = Column(Integer, primary_key=True, autoincrement=True)
     contributor_id = Column(Integer, index=True)
@@ -161,10 +155,6 @@ class ContributorDailyStats(Base):
 class ReviewerDailyStats(Base):
     """Daily reviewer stats - reviewer x date level (tasks reviewed)"""
     __tablename__ = 'reviewer_daily_stats'
-    __table_args__ = (
-        Index('ix_reviewer_daily_composite', 'reviewer_id', 'review_date'),
-        UniqueConstraint('reviewer_id', 'review_date', name='uq_reviewer_daily_stats'),
-    )
     
     id = Column(Integer, primary_key=True, autoincrement=True)
     reviewer_id = Column(Integer, index=True)
@@ -182,11 +172,6 @@ class ReviewerDailyStats(Base):
 class ReviewerTrainerDailyStats(Base):
     """Reviewer x Trainer x Date level stats - breakdown of what each reviewer reviewed per trainer per date"""
     __tablename__ = 'reviewer_trainer_daily_stats'
-    __table_args__ = (
-        Index('ix_reviewer_trainer_daily_composite', 'reviewer_id', 'trainer_id', 'review_date'),
-        Index('ix_reviewer_trainer_date', 'reviewer_id', 'review_date'),
-        UniqueConstraint('reviewer_id', 'trainer_id', 'review_date', name='uq_reviewer_trainer_daily_stats'),
-    )
     
     id = Column(Integer, primary_key=True, autoincrement=True)
     reviewer_id = Column(Integer, index=True)
@@ -321,10 +306,6 @@ class JibblePerson(Base):
 class JibbleTimeEntry(Base):
     """Jibble time entry data - daily hours per person"""
     __tablename__ = 'jibble_time_entry'
-    __table_args__ = (
-        Index('ix_jibble_time_person_date', 'person_id', 'entry_date'),
-        UniqueConstraint('person_id', 'entry_date', name='uq_jibble_time_entry'),
-    )
     
     id = Column(Integer, primary_key=True, autoincrement=True)
     person_id = Column(String(100), index=True)  # Jibble person ID
@@ -343,3 +324,16 @@ class JibbleEmailMapping(Base):
     jibble_email = Column(String(255), index=True)
     last_synced = Column(DateTime)
     created_at = Column(DateTime, server_default='now()')
+
+
+class JibbleHours(Base):
+    """Jibble hours synced from BigQuery turing-230020.test.Jibblelogs"""
+    __tablename__ = 'jibble_hours'
+    
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    member_code = Column(String(50), index=True)  # Maps to jibble_id in pod_lead_mapping
+    entry_date = Column(Date, index=True)
+    project = Column(String(255), index=True)
+    full_name = Column(String(255))
+    logged_hours = Column(Float, default=0)
+    last_synced = Column(DateTime, server_default='now()')

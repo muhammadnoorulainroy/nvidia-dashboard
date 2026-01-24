@@ -1,7 +1,7 @@
 """
 API endpoints for nvidia dashboard statistics
 """
-from fastapi import APIRouter, HTTPException, Query, Request
+from fastapi import APIRouter, HTTPException, Query
 from typing import List, Optional, Dict, Any
 import logging
 
@@ -17,20 +17,9 @@ from app.schemas.response_schemas import (
 from app.services.query_service import get_query_service
 from app.services.data_sync_service import get_data_sync_service
 from app.services.db_service import get_db_service
-from app.core.config import get_settings
-from app.core.exceptions import (
-    DatabaseException,
-    SyncException,
-    ValidationException,
-    BigQueryException,
-)
-from app.core.cache import invalidate_stats_cache
 
 logger = logging.getLogger(__name__)
 router = APIRouter(tags=["Statistics"])
-
-# Get settings for rate limit configuration
-_settings = get_settings()
 
 
 @router.get(
@@ -49,15 +38,8 @@ async def get_stats_by_domain(
         filters = {'domain': domain, 'reviewer': reviewer, 'trainer': trainer}
         result = service.get_domain_aggregation(filters)
         return [DomainAggregation(**item) for item in result]
-    except DatabaseException:
-        raise
     except Exception as e:
-        logger.error(f"Error getting domain stats: {e}", exc_info=True)
-        raise DatabaseException(
-            message="Failed to retrieve domain statistics",
-            detail=str(e),
-            context={"endpoint": "by-domain", "filters": filters}
-        )
+        raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
 
 
 @router.get(
@@ -250,39 +232,15 @@ async def get_task_level_info(
     response_model=Dict[str, Any],
     summary="Trigger data synchronization"
 )
-async def trigger_sync(request: Request) -> Dict[str, Any]:
-    """
-    Manually trigger data synchronization from BigQuery.
-    
-    Rate limited to prevent abuse (sync is resource-intensive).
-    """
-    import asyncio
-    from concurrent.futures import ThreadPoolExecutor
-    
-    # Apply stricter rate limit for sync endpoint
-    if hasattr(request.app.state, 'limiter'):
-        await request.app.state.limiter.check(
-            f"{_settings.rate_limit_sync_requests}/{_settings.rate_limit_sync_window}",
-            request
-        )
-    
-    logger.info("Manual sync triggered")
-    
-    def run_sync():
-        """Run sync in thread pool to avoid blocking event loop."""
+async def trigger_sync() -> Dict[str, Any]:
+    """Manually trigger data synchronization from BigQuery"""
+    try:
+        logger.info("Manual sync triggered")
+        
         data_sync_service = get_data_sync_service()
         data_sync_service.initialize_bigquery_client()
-        return data_sync_service.sync_all_tables(sync_type='manual')
-    
-    try:
-        # Run sync in thread pool
-        loop = asyncio.get_event_loop()
-        with ThreadPoolExecutor() as executor:
-            results = await loop.run_in_executor(executor, run_sync)
         
-        # Invalidate cache after successful sync
-        invalidate_stats_cache()
-        logger.info("Cache invalidated after sync")
+        results = data_sync_service.sync_all_tables(sync_type='manual')
         
         db_service = get_db_service()
         row_counts = {}
@@ -294,15 +252,11 @@ async def trigger_sync(request: Request) -> Dict[str, Any]:
             "tables_synced": results,
             "row_counts": row_counts,
             "success_count": sum(1 for v in results.values() if v),
-            "total_tables": len(results),
-            "cache_invalidated": True
+            "total_tables": len(results)
         }
     except Exception as e:
-        logger.error(f"Error during sync: {e}", exc_info=True)
-        raise SyncException(
-            message="Data synchronization failed",
-            detail=str(e),
-        )
+        logger.error(f"Error during sync: {e}")
+        raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
 
 
 @router.get(
@@ -318,10 +272,10 @@ async def check_health() -> Dict[str, Any]:
         table_status = db_service.check_tables_exist()
         
         row_counts = {}
-        for table in ['task', 'review_detail', 'contributor']:
+        for table in ['task', 'review_detail', 'contributor', 'work_item']:
             row_counts[table] = db_service.get_table_row_count(table)
         
-        from app.core.config import get_settings
+        from app.config import get_settings
         settings = get_settings()
         
         return {
@@ -441,7 +395,8 @@ async def get_rating_comparison(
 async def get_pod_lead_stats(
     start_date: Optional[str] = Query(None, description="Start date (YYYY-MM-DD)"),
     end_date: Optional[str] = Query(None, description="End date (YYYY-MM-DD)"),
-    timeframe: str = Query("overall", description="Timeframe: daily, weekly, overall")
+    timeframe: str = Query("overall", description="Timeframe: daily, weekly, overall"),
+    project_id: Optional[int] = Query(None, description="Filter by project ID (36, 37, 38, 39). None = all projects")
 ) -> List[Dict[str, Any]]:
     """Get POD Lead stats with trainers aggregated under each POD Lead"""
     try:
@@ -449,9 +404,31 @@ async def get_pod_lead_stats(
         result = service.get_pod_lead_stats_with_trainers(
             start_date=start_date,
             end_date=end_date,
-            timeframe=timeframe
+            timeframe=timeframe,
+            project_id=project_id
         )
         return result
     except Exception as e:
         logger.error(f"Error getting POD lead stats: {e}")
+        raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
+
+
+@router.get(
+    "/project-stats",
+    summary="Get Project stats with POD Leads under each project"
+)
+async def get_project_stats(
+    start_date: Optional[str] = Query(None, description="Start date (YYYY-MM-DD)"),
+    end_date: Optional[str] = Query(None, description="End date (YYYY-MM-DD)")
+) -> List[Dict[str, Any]]:
+    """Get Project stats with POD Leads aggregated under each project"""
+    try:
+        service = get_query_service()
+        result = service.get_project_stats_with_pod_leads(
+            start_date=start_date,
+            end_date=end_date
+        )
+        return result
+    except Exception as e:
+        logger.error(f"Error getting project stats: {e}")
         raise HTTPException(status_code=500, detail=f"Error: {str(e)}")

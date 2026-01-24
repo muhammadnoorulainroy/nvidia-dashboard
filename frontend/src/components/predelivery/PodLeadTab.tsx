@@ -13,6 +13,7 @@ import {
   CircularProgress,
   Alert,
   IconButton,
+  Collapse,
   Chip,
   Button,
   FormControl,
@@ -214,6 +215,20 @@ function TrainerRow({
           {mergedExpAht !== null && mergedExpAht !== undefined ? mergedExpAht.toFixed(2) : '-'}
         </Typography>
       </TableCell>
+      <TableCell align="center">
+        <Typography variant="body2" sx={{ fontWeight: 600, color: '#1F2937' }}>
+          {trainer.jibble_hours !== null && trainer.jibble_hours !== undefined ? trainer.jibble_hours.toFixed(1) : '-'}
+        </Typography>
+      </TableCell>
+      <TableCell align="center">
+        {/* Empty cell for Total Trainer Hours column - only shown at POD level */}
+        <Typography variant="body2" sx={{ color: '#9CA3AF' }}>-</Typography>
+      </TableCell>
+      <TableCell align="center">
+        <Typography variant="body2" sx={{ fontWeight: 600, color: '#1F2937' }}>
+          {trainer.aht_submission !== null && trainer.aht_submission !== undefined ? trainer.aht_submission.toFixed(2) : '-'}
+        </Typography>
+      </TableCell>
     </TableRow>
   )
 }
@@ -355,6 +370,21 @@ function PodLeadRow({
             {mergedExpAht !== null && mergedExpAht !== undefined ? mergedExpAht.toFixed(2) : '-'}
           </Typography>
         </TableCell>
+        <TableCell align="center">
+          <Typography variant="body2" sx={{ fontWeight: 700, color: '#1F2937' }}>
+            {podLead.jibble_hours !== null && podLead.jibble_hours !== undefined ? podLead.jibble_hours.toFixed(1) : '-'}
+          </Typography>
+        </TableCell>
+        <TableCell align="center">
+          <Typography variant="body2" sx={{ fontWeight: 700, color: '#1F2937' }}>
+            {podLead.total_trainer_hours !== null && podLead.total_trainer_hours !== undefined ? podLead.total_trainer_hours.toFixed(1) : '-'}
+          </Typography>
+        </TableCell>
+        <TableCell align="center">
+          <Typography variant="body2" sx={{ fontWeight: 700, color: '#1F2937' }}>
+            {podLead.aht_submission !== null && podLead.aht_submission !== undefined ? podLead.aht_submission.toFixed(2) : '-'}
+          </Typography>
+        </TableCell>
       </TableRow>
       
       {/* Trainers under this POD Lead */}
@@ -375,6 +405,15 @@ interface NumericFilter {
 // Sort direction type
 type SortDirection = 'asc' | 'desc' | null
 
+// Project options for dropdown
+const projectOptions = [
+  { id: undefined, name: 'All Projects' },
+  { id: 36, name: 'Nvidia - SysBench' },
+  { id: 37, name: 'Nvidia - CFBench Multilingual' },
+  { id: 38, name: 'Nvidia - InverseIFEval' },
+  { id: 39, name: 'Nvidia - Multichallenge' },
+]
+
 export function PodLeadTab() {
   const [data, setData] = useState<PodLeadStats[]>([])
   const [loading, setLoading] = useState(true)
@@ -383,6 +422,7 @@ export function PodLeadTab() {
   const [timeframe, setTimeframe] = useState<Timeframe>('overall')
   const [customStartDate, setCustomStartDate] = useState('')
   const [customEndDate, setCustomEndDate] = useState('')
+  const [selectedProject, setSelectedProject] = useState<number | undefined>(undefined)
   
   const [colorSettings, setColorSettings] = useColorSettings('podLeadColorSettings')
   const [colorApplyLevel, setColorApplyLevel] = useState<ColorApplyLevel>('both')
@@ -405,14 +445,14 @@ export function PodLeadTab() {
 
   useEffect(() => {
     fetchData()
-  }, [timeframe, customStartDate, customEndDate])
+  }, [timeframe, customStartDate, customEndDate, selectedProject])
 
   const fetchData = async () => {
     setLoading(true)
     setError(null)
     try {
       const { startDate, endDate } = getDateRange(timeframe, customStartDate, customEndDate)
-      const result = await getPodLeadStats(startDate, endDate, timeframe)
+      const result = await getPodLeadStats(startDate, endDate, timeframe, selectedProject)
       setData(result)
     } catch (err) {
       setError('Failed to fetch POD Lead stats')
@@ -505,7 +545,7 @@ export function PodLeadTab() {
   }
 
   // Render column header with dropdown
-  const renderHeaderWithFilter = (label: string, columnKey: string, _isNumeric: boolean = false) => (
+  const renderHeaderWithFilter = (label: string, columnKey: string, isNumeric: boolean = false) => (
     <Box
       sx={{
         display: 'flex',
@@ -587,6 +627,21 @@ export function PodLeadTab() {
       <Paper sx={{ p: 2, mb: 2 }}>
         {/* Filters */}
         <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', flexWrap: 'wrap', mb: 2 }}>
+          <FormControl size="small" sx={{ minWidth: 180 }}>
+            <InputLabel>Project</InputLabel>
+            <Select
+              value={selectedProject ?? ''}
+              label="Project"
+              onChange={(e) => setSelectedProject(e.target.value === '' ? undefined : Number(e.target.value))}
+            >
+              {projectOptions.map((proj) => (
+                <MenuItem key={proj.id ?? 'all'} value={proj.id ?? ''}>
+                  {proj.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
           <FormControl size="small" sx={{ minWidth: 120 }}>
             <InputLabel>Timeframe</InputLabel>
             <Select
@@ -783,6 +838,15 @@ export function PodLeadTab() {
                 </TableCell>
                 <TableCell align="center" sx={{ fontWeight: 600, bgcolor: '#4f46e5', color: 'white', minWidth: 120 }}>
                   {renderHeaderWithFilter('Merged Exp. AHT', 'merged_exp_aht', true)}
+                </TableCell>
+                <TableCell align="center" sx={{ fontWeight: 600, bgcolor: '#4f46e5', color: 'white', minWidth: 100 }}>
+                  {renderHeaderWithFilter('POD Lead Hrs', 'jibble_hours', true)}
+                </TableCell>
+                <TableCell align="center" sx={{ fontWeight: 600, bgcolor: '#4f46e5', color: 'white', minWidth: 110 }}>
+                  {renderHeaderWithFilter('Total Trainer Hrs', 'total_trainer_hours', true)}
+                </TableCell>
+                <TableCell align="center" sx={{ fontWeight: 600, bgcolor: '#4f46e5', color: 'white', minWidth: 100 }}>
+                  {renderHeaderWithFilter('AHT/Submission', 'aht_submission', true)}
                 </TableCell>
               </TableRow>
             </TableHead>

@@ -1,4 +1,4 @@
-import { useState, useEffect, Suspense, lazy } from 'react'
+import { useState, useEffect } from 'react'
 import {
   Box,
   Tabs,
@@ -18,25 +18,16 @@ import {
   Public as DomainIcon,
   SupervisorAccount as PodLeadIcon,
   Timeline as TimelineIcon,
+  Folder as FolderIcon,
 } from '@mui/icons-material'
+import DomainWise from '../components/predelivery/DomainWise'
+import TrainerWise from '../components/predelivery/TrainerWise'
+import PodLeadTab from '../components/predelivery/PodLeadTab'
+import ProjectsTab from '../components/predelivery/ProjectsTab'
+import TaskWise from '../components/predelivery/TaskWise'
+import RatingTrends from '../components/predelivery/RatingTrends'
 import { getOverallStats, getDomainStats } from '../services/api'
 import type { OverallAggregation, DomainAggregation } from '../types'
-
-// Lazy load tab components for better performance
-const DomainWise = lazy(() => import('../components/taskmetrics/DomainWise'))
-const TrainerWise = lazy(() => import('../components/taskmetrics/TrainerWise'))
-const PodLeadTab = lazy(() => import('../components/taskmetrics/PodLeadTab'))
-const TaskWise = lazy(() => import('../components/taskmetrics/TaskWise'))
-const RatingTrends = lazy(() => import('../components/taskmetrics/RatingTrends'))
-
-// Loading component for lazy-loaded tabs
-function TabLoader() {
-  return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', py: 6 }}>
-      <CircularProgress size={32} thickness={4} />
-    </Box>
-  )
-}
 
 interface TabPanelProps {
   children?: React.ReactNode
@@ -51,8 +42,8 @@ function TabPanel(props: TabPanelProps) {
     <div
       role="tabpanel"
       hidden={value !== index}
-      id={`taskmetrics-tabpanel-${index}`}
-      aria-labelledby={`taskmetrics-tab-${index}`}
+      id={`predelivery-tabpanel-${index}`}
+      aria-labelledby={`predelivery-tab-${index}`}
       {...other}
     >
       {value === index && <Box sx={{ pt: 2 }}>{children}</Box>}
@@ -134,10 +125,10 @@ function SummaryCard({ title, value, icon, color }: SummaryCardProps) {
   )
 }
 
-export default function TaskMetrics() {
+export default function PreDelivery() {
   const [activeTab, setActiveTab] = useState(0)
   const [overallData, setOverallData] = useState<OverallAggregation | null>(null)
-  const [_domainData, setDomainData] = useState<DomainAggregation[]>([])
+  const [domainData, setDomainData] = useState<DomainAggregation[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -151,7 +142,7 @@ export default function TaskMetrics() {
         setOverallData(overall)
         setDomainData(domains)
       } catch (error) {
-        console.error('Failed to fetch task metrics data:', error)
+        console.error('Failed to fetch pre-delivery summary data:', error)
       } finally {
         setLoading(false)
       }
@@ -159,7 +150,7 @@ export default function TaskMetrics() {
     fetchData()
   }, [])
 
-  const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
+  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue)
   }
 
@@ -240,7 +231,7 @@ export default function TaskMetrics() {
         <Tabs
           value={activeTab}
           onChange={handleTabChange}
-          aria-label="task metrics tabs"
+          aria-label="pre-delivery tabs"
           sx={{
             minHeight: 48,
             '& .MuiTab-root': {
@@ -266,60 +257,68 @@ export default function TaskMetrics() {
           }}
         >
           <Tab
+            icon={<FolderIcon />}
+            iconPosition="start"
+            label="Projects"
+            id="predelivery-tab-0"
+            aria-controls="predelivery-tabpanel-0"
+          />
+          <Tab
             icon={<BusinessIcon />}
             iconPosition="start"
             label="Domain wise"
-            id="taskmetrics-tab-0"
-            aria-controls="taskmetrics-tabpanel-0"
+            id="predelivery-tab-1"
+            aria-controls="predelivery-tabpanel-1"
           />
           <Tab
             icon={<SchoolIcon />}
             iconPosition="start"
             label="Trainer wise"
-            id="taskmetrics-tab-1"
-            aria-controls="taskmetrics-tabpanel-1"
+            id="predelivery-tab-2"
+            aria-controls="predelivery-tabpanel-2"
           />
           <Tab
             icon={<PodLeadIcon />}
             iconPosition="start"
             label="POD Lead"
-            id="taskmetrics-tab-2"
-            aria-controls="taskmetrics-tabpanel-2"
+            id="predelivery-tab-3"
+            aria-controls="predelivery-tabpanel-3"
           />
           <Tab
             icon={<CalibratorIcon />}
             iconPosition="start"
             label="Task wise"
-            id="taskmetrics-tab-3"
-            aria-controls="taskmetrics-tabpanel-3"
+            id="predelivery-tab-4"
+            aria-controls="predelivery-tabpanel-4"
           />
           <Tab
             icon={<TimelineIcon />}
             iconPosition="start"
             label="Rating Trends"
-            id="taskmetrics-tab-4"
-            aria-controls="taskmetrics-tabpanel-4"
+            id="predelivery-tab-5"
+            aria-controls="predelivery-tabpanel-5"
           />
         </Tabs>
       </Box>
 
-      <Suspense fallback={<TabLoader />}>
-        <TabPanel value={activeTab} index={0}>
-          <DomainWise />
-        </TabPanel>
-        <TabPanel value={activeTab} index={1}>
-          <TrainerWise />
-        </TabPanel>
-        <TabPanel value={activeTab} index={2}>
-          <PodLeadTab />
-        </TabPanel>
-        <TabPanel value={activeTab} index={3}>
-          <TaskWise />
-        </TabPanel>
-        <TabPanel value={activeTab} index={4}>
-          <RatingTrends />
-        </TabPanel>
-      </Suspense>
+      <TabPanel value={activeTab} index={0}>
+        <ProjectsTab />
+      </TabPanel>
+      <TabPanel value={activeTab} index={1}>
+        <DomainWise />
+      </TabPanel>
+      <TabPanel value={activeTab} index={2}>
+        <TrainerWise />
+      </TabPanel>
+      <TabPanel value={activeTab} index={3}>
+        <PodLeadTab />
+      </TabPanel>
+      <TabPanel value={activeTab} index={4}>
+        <TaskWise />
+      </TabPanel>
+      <TabPanel value={activeTab} index={5}>
+        <RatingTrends />
+      </TabPanel>
     </Box>
   )
 }

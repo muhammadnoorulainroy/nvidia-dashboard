@@ -1,41 +1,18 @@
 """
 Data synchronization service to sync CTE results from BigQuery to PostgreSQL
 For nvidia: prod_labeling_tool_n, project_id 39
-
-Features:
-- BigQuery to PostgreSQL data sync
-- Retry logic for transient failures
-- Circuit breaker for BigQuery operations
-- Metrics tracking for sync operations
 """
 import logging
 from datetime import datetime
 from typing import Dict, Optional
 from sqlalchemy import delete, text
 from google.cloud import bigquery
-from google.api_core import exceptions as gcp_exceptions
 
-from app.core.config import get_settings
+from app.config import get_settings
 from app.services.db_service import get_db_service
 from app.models.db_models import ReviewDetail, Task, Contributor, DataSyncLog, TaskReviewedInfo, TaskAHT, ContributorTaskStats, ContributorDailyStats, ReviewerDailyStats, TaskRaw, TaskHistoryRaw, PodLeadMapping, ReviewerTrainerDailyStats
-from app.core.resilience import (
-    get_circuit_breaker,
-    CircuitBreakerError,
-    retry_with_backoff,
-)
-from app.core.metrics import track_sync_operation
 
 logger = logging.getLogger(__name__)
-
-# BigQuery exceptions that should trigger retry
-BQ_RETRY_EXCEPTIONS = (
-    gcp_exceptions.ServiceUnavailable,
-    gcp_exceptions.InternalServerError,
-    gcp_exceptions.GatewayTimeout,
-    gcp_exceptions.DeadlineExceeded,
-    ConnectionError,
-    TimeoutError,
-)
 
 
 def calculate_week_number(task_date: datetime, project_start_date: str) -> Optional[int]:
@@ -68,44 +45,31 @@ class DataSyncService:
         self.db_service = get_db_service()
         self.bq_client = None
     
-    @retry_with_backoff(
-        max_attempts=3,
-        min_wait=2,
-        max_wait=10,
-        exceptions=BQ_RETRY_EXCEPTIONS,
-        circuit_breaker_name="bigquery"
-    )
     def initialize_bigquery_client(self):
-        """
-        Initialize BigQuery client with retry logic.
-        
-        Uses circuit breaker to fail fast if BigQuery is unavailable.
-        """
-        import os
-        from google.oauth2 import service_account
-        
-        credentials_path = self.settings.google_application_credentials
-        
-        if credentials_path and os.path.exists(credentials_path):
-            credentials = service_account.Credentials.from_service_account_file(
-                credentials_path
-            )
-            self.bq_client = bigquery.Client(
-                credentials=credentials,
-                project=self.settings.gcp_project_id
-            )
-        else:
-            self.bq_client = bigquery.Client(
-                project=self.settings.gcp_project_id
-            )
-        
-        # Verify connectivity with a simple query
+        """Initialize BigQuery client"""
         try:
-            list(self.bq_client.query("SELECT 1").result())
-            logger.info("BigQuery client initialized and verified")
+            import os
+            from google.oauth2 import service_account
+            
+            credentials_path = self.settings.google_application_credentials
+            
+            if credentials_path and os.path.exists(credentials_path):
+                credentials = service_account.Credentials.from_service_account_file(
+                    credentials_path
+                )
+                self.bq_client = bigquery.Client(
+                    credentials=credentials,
+                    project=self.settings.gcp_project_id
+                )
+            else:
+                self.bq_client = bigquery.Client(
+                    project=self.settings.gcp_project_id
+                )
+            
+            logger.info("BigQuery client initialized successfully")
         except Exception as e:
-            logger.warning(f"BigQuery verification query failed (non-fatal): {e}")
-            # Don't fail initialization, client may still work for other queries
+            logger.error(f"Error initializing BigQuery client: {e}")
+            raise
     
     def log_sync_start(self, table_name: str, sync_type: str = 'scheduled') -> int:
         """Log the start of a sync operation"""
@@ -1651,13 +1615,24 @@ class DataSyncService:
             # Read Excel file
             df = pd.read_excel(excel_path)
             
-            # Filter for Nvidia - SysBench project (project_id 36)
-            df = df[df['Jibble Project'] == 'Nvidia - SysBench']
+            # Include all Nvidia projects (36, 37, 38, 39)
+            nvidia_projects = [
+                'Nvidia - SysBench',           # 36
+                'Nvidia - CFBench Multilingual', # 37
+                'Nvidia - InverseIFEval',      # 38
+                'Nvidia - Multichallenge',     # 39
+                'Nvidia - Multichallenge Advanced',  # May also be 39
+            ]
+            df = df[df['Jibble Project'].isin(nvidia_projects)]
             
             # Only include records with POD Lead assigned
             df = df[df['Pod Lead.1'].notna()]
             
-            logger.info(f"Found {len(df)} trainer-pod lead mappings for Nvidia - SysBench")
+            # Remove duplicate trainers (keep first occurrence)
+            df['trainer_email_lower'] = df['Turing Email'].str.lower().str.strip()
+            df = df.drop_duplicates(subset=['trainer_email_lower'], keep='first')
+            
+            logger.info(f"Found {len(df)} unique trainer-pod lead mappings for all Nvidia projects")
             
             with self.db_service.get_session() as session:
                 # Clear existing mappings
@@ -1692,6 +1667,77 @@ class DataSyncService:
             logger.error(f"✗ Error syncing pod_lead_mapping: {e}")
             return False
     
+    def sync_jibble_hours(self, sync_type: str = 'initial') -> bool:
+        """Sync Jibble hours from BigQuery turing-230020.test.Jibblelogs"""
+        from app.models.db_models import JibbleHours
+        from sqlalchemy import delete
+        
+        log_id = self.log_sync_start('jibble_hours', sync_type)
+        
+        try:
+            # Query BigQuery for Jibble hours
+            query = """
+            SELECT 
+                MEMBER_CODE as member_code, 
+                Jibble_DATE as entry_date,
+                Jibble_PROJECT as project, 
+                FULL_NAME as full_name,
+                SUM(TRACKED_HRS) as logged_hours
+            FROM `turing-230020.test.Jibblelogs`
+            WHERE Jibble_PROJECT IN (
+                "Nvidia - ICPC", 
+                "Nvidia - CFBench Multilingual", 
+                "Nvidia - InverseIFEval", 
+                "Nvidia - Multichallenge", 
+                "Nvidia - Multichallenge Advanced", 
+                "Nvidia - SysBench", 
+                "NVIDIA_STEM Math_Eval"
+            )
+            GROUP BY 1, 2, 3, 4
+            ORDER BY entry_date DESC
+            """
+            
+            logger.info("Fetching Jibble hours from BigQuery...")
+            results = self.bq_client.query(query).result()
+            
+            data = []
+            for row in results:
+                data.append({
+                    'member_code': str(row.member_code) if row.member_code else None,
+                    'entry_date': row.entry_date,
+                    'project': row.project,
+                    'full_name': row.full_name,
+                    'logged_hours': float(row.logged_hours) if row.logged_hours else 0.0
+                })
+            
+            logger.info(f"Fetched {len(data)} Jibble hours records from BigQuery")
+            
+            with self.db_service.get_session() as session:
+                # Clear existing data
+                session.execute(delete(JibbleHours))
+                
+                # Insert new data
+                for record in data:
+                    if record['member_code']:
+                        jh = JibbleHours(
+                            member_code=record['member_code'],
+                            entry_date=record['entry_date'],
+                            project=record['project'],
+                            full_name=record['full_name'],
+                            logged_hours=record['logged_hours']
+                        )
+                        session.add(jh)
+                
+                session.commit()
+            
+            self.log_sync_complete(log_id, len(data), True)
+            logger.info(f"✓ Successfully synced {len(data)} jibble_hours records")
+            return True
+        except Exception as e:
+            self.log_sync_complete(log_id, 0, False, str(e))
+            logger.error(f"✗ Error syncing jibble_hours: {e}")
+            return False
+    
     def sync_all_tables(self, sync_type: str = 'scheduled') -> Dict[str, bool]:
         """Sync all required data from BigQuery to PostgreSQL"""
         logger.info(f"Starting data sync ({sync_type})...")
@@ -1712,6 +1758,7 @@ class DataSyncService:
             ('task_raw', self.sync_task_raw),
             ('task_history_raw', self.sync_task_history_raw),
             ('pod_lead_mapping', self.sync_pod_lead_mapping),
+            ('jibble_hours', self.sync_jibble_hours),
         ]
         
         for table_name, sync_func in sync_order:

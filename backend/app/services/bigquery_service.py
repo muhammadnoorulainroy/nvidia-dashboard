@@ -6,7 +6,7 @@ from google.oauth2 import service_account
 from typing import List, Dict, Any, Optional
 import os
 from collections import defaultdict
-from app.core.config import get_settings
+from app.config import get_settings
 
 
 class BigQueryService:

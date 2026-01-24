@@ -1,149 +1,18 @@
 """
 PostgreSQL database connection and management service for nvidia
-
-Features:
-- Connection pooling
-- Retry logic with circuit breaker
-- SQL injection prevention
 """
 import logging
-import re
 from sqlalchemy import create_engine, text, inspect
 from sqlalchemy.orm import sessionmaker, Session
-from sqlalchemy.exc import OperationalError, InterfaceError
 from contextlib import contextmanager
-from typing import Generator, Set, FrozenSet
+from typing import Generator
 import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
-from app.core.config import get_settings
-from app.models.db_models import Base, Task, ReviewDetail, Contributor, DataSyncLog, TaskReviewedInfo, TaskAHT, ContributorTaskStats, ContributorDailyStats, ReviewerTrainerDailyStats, PodLeadMapping, JibblePerson, JibbleTimeEntry, JibbleEmailMapping
-from app.core.resilience import (
-    retry_with_backoff,
-    get_circuit_breaker,
-    CircuitBreakerError,
-)
-from app.core.metrics import track_db_operation, DB_CONNECTION_POOL_SIZE, DB_CONNECTION_POOL_AVAILABLE
+from app.config import get_settings
+from app.models.db_models import Base, Task, ReviewDetail, Contributor, DataSyncLog, WorkItem, TaskReviewedInfo, TaskAHT, ContributorTaskStats, ContributorDailyStats, ReviewerTrainerDailyStats, PodLeadMapping, JibblePerson, JibbleTimeEntry, JibbleEmailMapping, JibbleHours
 
 logger = logging.getLogger(__name__)
-
-# Database-related exceptions that should trigger retry
-DB_RETRY_EXCEPTIONS = (
-    OperationalError,
-    InterfaceError,
-    psycopg2.OperationalError,
-    psycopg2.InterfaceError,
-    ConnectionError,
-    TimeoutError,
-)
-
-# =============================================================================
-# SQL INJECTION PREVENTION
-# =============================================================================
-# Whitelist of valid table names - ONLY these tables can be queried
-# This prevents SQL injection by ensuring only known-safe identifiers are used
-VALID_TABLE_NAMES: FrozenSet[str] = frozenset({
-    'task',
-    'review_detail',
-    'contributor',
-    'data_sync_log',
-    'task_reviewed_info',
-    'task_aht',
-    'contributor_task_stats',
-    'contributor_daily_stats',
-    'reviewer_daily_stats',
-    'reviewer_trainer_daily_stats',
-    'task_history_raw',
-    'task_raw',
-    'pod_lead_mapping',
-    'jibble_person',
-    'jibble_time_entry',
-    'jibble_email_mapping',
-})
-
-# Pattern for valid SQL identifiers (alphanumeric and underscores only)
-VALID_IDENTIFIER_PATTERN = re.compile(r'^[a-zA-Z_][a-zA-Z0-9_]*$')
-
-
-def validate_identifier(identifier: str, identifier_type: str = "identifier") -> str:
-    """
-    Validate and sanitize a SQL identifier (table name, database name, etc.)
-    to prevent SQL injection.
-    
-    Args:
-        identifier: The identifier to validate
-        identifier_type: Description for error messages (e.g., "table name", "database name")
-        
-    Returns:
-        The validated identifier (lowercase, stripped)
-        
-    Raises:
-        ValueError: If the identifier contains invalid characters
-    """
-    if not identifier:
-        raise ValueError(f"{identifier_type.capitalize()} cannot be empty")
-    
-    # Normalize
-    normalized = identifier.lower().strip()
-    
-    # Check length (PostgreSQL max identifier length is 63)
-    if len(normalized) > 63:
-        raise ValueError(
-            f"{identifier_type.capitalize()} too long: max 63 characters, got {len(normalized)}"
-        )
-    
-    # Ensure it matches valid identifier pattern
-    if not VALID_IDENTIFIER_PATTERN.match(normalized):
-        raise ValueError(
-            f"{identifier_type.capitalize()} contains invalid characters: '{identifier}'. "
-            "Only alphanumeric characters and underscores are allowed, "
-            "and it must start with a letter or underscore."
-        )
-    
-    return normalized
-
-
-def validate_table_name(table_name: str) -> str:
-    """
-    Validate and sanitize a table name to prevent SQL injection.
-    Uses whitelist approach - only known tables are allowed.
-    
-    Args:
-        table_name: The table name to validate
-        
-    Returns:
-        The validated table name (lowercase)
-        
-    Raises:
-        ValueError: If the table name is invalid or not in the whitelist
-    """
-    # First, validate as a generic identifier
-    normalized = validate_identifier(table_name, "table name")
-    
-    # Then check against whitelist
-    if normalized not in VALID_TABLE_NAMES:
-        raise ValueError(
-            f"Invalid table name: '{table_name}'. "
-            f"Table must be one of: {sorted(VALID_TABLE_NAMES)}"
-        )
-    
-    return normalized
-
-
-def validate_database_name(db_name: str) -> str:
-    """
-    Validate and sanitize a database name to prevent SQL injection.
-    
-    Args:
-        db_name: The database name to validate
-        
-    Returns:
-        The validated database name (lowercase)
-        
-    Raises:
-        ValueError: If the database name contains invalid characters
-    """
-    return validate_identifier(db_name, "database name")
 
 
 class DatabaseService:
@@ -204,9 +73,7 @@ class DatabaseService:
     def create_database(self) -> bool:
         """Create the database if it doesn't exist"""
         try:
-            # SECURITY: Validate database name to prevent SQL injection
-            validated_db_name = validate_database_name(self.settings.postgres_db)
-            logger.info(f"Creating database: {validated_db_name}")
+            logger.info(f"Creating database: {self.settings.postgres_db}")
             
             conn = psycopg2.connect(
                 host=self.settings.postgres_host,
@@ -218,15 +85,14 @@ class DatabaseService:
             conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
             cursor = conn.cursor()
             
-            # Use validated name in query
             cursor.execute(
-                f'CREATE DATABASE "{validated_db_name}"'
+                f'CREATE DATABASE "{self.settings.postgres_db}"'
             )
             
             cursor.close()
             conn.close()
             
-            logger.info(f"Database {validated_db_name} created successfully")
+            logger.info(f"Database {self.settings.postgres_db} created successfully")
             return True
         except Exception as e:
             logger.error(f"Error creating database: {e}")
@@ -273,6 +139,7 @@ class DatabaseService:
                 'review_detail',
                 'contributor',
                 'data_sync_log',
+                'work_item',
                 'task_reviewed_info'
             ]
             
@@ -351,68 +218,20 @@ class DatabaseService:
             return False
     
     def get_table_row_count(self, table_name: str) -> int:
-        """
-        Get the number of rows in a table.
-        
-        Args:
-            table_name: Name of the table (must be in VALID_TABLE_NAMES whitelist)
-            
-        Returns:
-            Row count, or 0 if table doesn't exist or on error
-            
-        Raises:
-            ValueError: If table_name is not in the whitelist (SQL injection prevention)
-        """
+        """Get the number of rows in a table"""
         if not self._initialized or not self.engine:
             return 0
         
-        # SECURITY: Validate table name against whitelist to prevent SQL injection
-        validated_table = validate_table_name(table_name)
-        
-        # Use circuit breaker for database operations
-        cb = get_circuit_breaker("postgresql")
-        
-        def _execute_count():
-            with track_db_operation('count', validated_table):
-                with self.engine.connect() as conn:
-                    result = conn.execute(
-                        text(f'SELECT COUNT(*) FROM "{validated_table}"')
-                    )
-                    return result.scalar() or 0
-        
         try:
-            return cb.call(_execute_count)
-        except CircuitBreakerError:
-            logger.warning(f"Circuit breaker open for PostgreSQL, returning 0 for {validated_table} count")
-            return 0
+            with self.engine.connect() as conn:
+                result = conn.execute(
+                    text(f'SELECT COUNT(*) FROM "{table_name}"')
+                )
+                count = result.scalar()
+                return count or 0
         except Exception as e:
-            logger.error(f"Error getting row count for {validated_table}: {e}")
+            logger.error(f"Error getting row count for {table_name}: {e}")
             return 0
-    
-    def get_pool_status(self) -> dict:
-        """Get connection pool status for monitoring."""
-        if not self.engine or not self.engine.pool:
-            return {"status": "not_initialized"}
-        
-        pool = self.engine.pool
-        
-        try:
-            status = {
-                "pool_size": pool.size(),
-                "checked_in": pool.checkedin(),
-                "checked_out": pool.checkedout(),
-                "overflow": pool.overflow(),
-                "invalid": pool.invalidatedcount() if hasattr(pool, 'invalidatedcount') else 0,
-            }
-            
-            # Update Prometheus metrics
-            DB_CONNECTION_POOL_SIZE.set(pool.size())
-            DB_CONNECTION_POOL_AVAILABLE.set(pool.checkedin())
-            
-            return status
-        except Exception as e:
-            logger.warning(f"Could not get pool status: {e}")
-            return {"status": "error", "error": str(e)}
     
     def close(self):
         """Close database connections"""

@@ -1,9 +1,5 @@
 """
 PostgreSQL query service for nvidia dashboard statistics
-
-Features:
-- Query result caching for frequently accessed data
-- Optimized aggregation queries
 """
 import logging
 from typing import List, Dict, Any, Optional, Set
@@ -11,10 +7,9 @@ from collections import defaultdict
 from sqlalchemy import func, or_
 from google.cloud import bigquery
 
-from app.core.config import get_settings
+from app.config import get_settings
 from app.services.db_service import get_db_service
-from app.models.db_models import ReviewDetail, Contributor, Task, TaskReviewedInfo, TaskAHT, ContributorTaskStats, ContributorDailyStats, ReviewerDailyStats, TaskRaw, TaskHistoryRaw, PodLeadMapping, ReviewerTrainerDailyStats
-from app.core.cache import cached, get_query_cache, invalidate_stats_cache
+from app.models.db_models import ReviewDetail, Contributor, Task, WorkItem, TaskReviewedInfo, TaskAHT, ContributorTaskStats, ContributorDailyStats, ReviewerDailyStats, TaskRaw, TaskHistoryRaw, PodLeadMapping, ReviewerTrainerDailyStats, JibbleHours
 
 logger = logging.getLogger(__name__)
 
@@ -298,26 +293,8 @@ class QueryService:
             logger.error(f"Error calculating average completion time: {e}")
             return None
     
-    def _make_cache_key(self, prefix: str, filters: Optional[Dict[str, Any]] = None) -> str:
-        """Create a cache key from prefix and filters."""
-        parts = [prefix]
-        if filters:
-            for k, v in sorted(filters.items()):
-                if v is not None:
-                    parts.append(f"{k}={v}")
-        return ":".join(parts)
-    
     def get_domain_aggregation(self, filters: Optional[Dict[str, Any]] = None) -> List[Dict[str, Any]]:
-        """Get domain-wise aggregation statistics (cached for 5 minutes)"""
-        cache = get_query_cache()
-        cache_key = self._make_cache_key("domain_agg", filters)
-        
-        # Try cache first
-        cached_result = cache.get(cache_key)
-        if cached_result is not None:
-            logger.debug(f"Cache hit for domain_aggregation")
-            return cached_result
-        
+        """Get domain-wise aggregation statistics"""
         try:
             with self.db_service.get_session() as session:
                 query = session.query(ReviewDetail, Task.rework_count).outerjoin(
@@ -346,9 +323,6 @@ class QueryService:
                     item['domain'] = domain_value if domain_value else 'Unknown'
                 
                 aggregated.sort(key=lambda x: x.get('domain', '') or '')
-                
-                # Cache the result (no TTL - invalidated on sync)
-                cache.set(cache_key, aggregated)
                 
                 return aggregated
         except Exception as e:
@@ -1691,13 +1665,17 @@ class QueryService:
             logger.error(f"Error getting rating comparison: {e}")
             raise
 
-    def get_pod_lead_stats_with_trainers(self, start_date: str = None, end_date: str = None, timeframe: str = 'overall') -> List[Dict[str, Any]]:
+    def get_pod_lead_stats_with_trainers(self, start_date: str = None, end_date: str = None, timeframe: str = 'overall', project_id: int = None) -> List[Dict[str, Any]]:
         """
         Get POD Lead stats with trainers under each POD Lead.
         Uses TaskHistoryRaw and TaskRaw directly (same as Trainer Wise tab) for consistency.
+        If project_id is provided, filters to that specific project. Otherwise uses all projects.
         """
         try:
             from sqlalchemy import case, distinct
+            
+            # Use provided project_id or default to all projects
+            filter_project_ids = [project_id] if project_id else self.settings.all_project_ids
             
             with self.db_service.get_session() as session:
                 # Get POD Lead mappings
@@ -1723,7 +1701,7 @@ class QueryService:
                         }
                         pod_trainers[pod_email].append(trainer_email)
                 
-                logger.info(f"Found {len(trainer_to_pod)} trainer-pod mappings, {len(pod_trainers)} unique POD Leads")
+                logger.info(f"Found {len(trainer_to_pod)} trainer-pod mappings, {len(pod_trainers)} unique POD Leads, filtering by project_id: {filter_project_ids}")
                 
                 # ---------------------------------------------------------
                 # STEP 1: Get metrics from task_history_raw joined with task_raw
@@ -1748,7 +1726,7 @@ class QueryService:
                 ).filter(
                     TaskHistoryRaw.new_status == 'completed',
                     TaskHistoryRaw.old_status != 'completed-approval',
-                    TaskHistoryRaw.project_id == self.settings.project_id_filter
+                    TaskHistoryRaw.project_id.in_(filter_project_ids)
                 )
                 
                 # Apply date filters on task_history_raw.date
@@ -1784,7 +1762,7 @@ class QueryService:
                 ).filter(
                     TaskRaw.derived_status.in_(['Completed', 'Reviewed', 'Rework', 'Validated']),
                     TaskRaw.last_completed_date.isnot(None),
-                    TaskRaw.project_id == self.settings.project_id_filter
+                    TaskRaw.project_id.in_(filter_project_ids)
                 )
                 
                 if start_date:
@@ -1818,7 +1796,7 @@ class QueryService:
                         TaskRaw.review_action_type.is_(None)
                     ),
                     TaskRaw.followup_required == 0,
-                    TaskRaw.project_id == self.settings.project_id_filter
+                    TaskRaw.project_id.in_(filter_project_ids)
                 )
                 
                 if start_date:
@@ -1846,7 +1824,7 @@ class QueryService:
                 ).filter(
                     TaskRaw.count_reviews > 0,
                     TaskRaw.sum_followup_required == 0,
-                    TaskRaw.project_id == self.settings.project_id_filter
+                    TaskRaw.project_id.in_(filter_project_ids)
                 )
                 
                 if start_date:
@@ -1873,7 +1851,7 @@ class QueryService:
                 ).filter(
                     TaskRaw.derived_status == 'Reviewed',
                     TaskRaw.followup_required == 0,
-                    TaskRaw.project_id == self.settings.project_id_filter
+                    TaskRaw.project_id.in_(filter_project_ids)
                 )
                 
                 if start_date:
@@ -1893,7 +1871,73 @@ class QueryService:
                 logger.info(f"Found total_reviews for {len(trainer_total_reviews)} trainers")
                 
                 # ---------------------------------------------------------
-                # STEP 6: Build POD Lead results with trainers
+                # STEP 6: Get Jibble hours for trainers AND POD Leads
+                # Trainers: Map via member_code (jibble_id) from pod_lead_mapping
+                # POD Leads: Match by name from contributor table to jibble_hours.full_name
+                # ---------------------------------------------------------
+                # Build jibble_id to email mapping from pod_lead_mapping
+                jibble_to_trainer = {}
+                for mapping in pod_mappings:
+                    if mapping.jibble_id and mapping.trainer_email:
+                        jibble_to_trainer[str(mapping.jibble_id)] = mapping.trainer_email.lower().strip()
+                
+                # Query Jibble hours for trainers (by member_code)
+                jibble_query = session.query(
+                    JibbleHours.member_code,
+                    func.sum(JibbleHours.logged_hours).label('total_hours')
+                )
+                
+                if start_date:
+                    jibble_query = jibble_query.filter(JibbleHours.entry_date >= start_date)
+                if end_date:
+                    jibble_query = jibble_query.filter(JibbleHours.entry_date <= end_date)
+                
+                jibble_query = jibble_query.group_by(JibbleHours.member_code)
+                jibble_results = jibble_query.all()
+                
+                # Map jibble hours to trainer email
+                trainer_jibble_hours = {}
+                for jr in jibble_results:
+                    if jr.member_code:
+                        trainer_email = jibble_to_trainer.get(str(jr.member_code))
+                        if trainer_email:
+                            trainer_jibble_hours[trainer_email] = float(jr.total_hours or 0)
+                
+                # Query Jibble hours for POD Leads (by matching contributor name to full_name)
+                # Build name -> hours mapping from jibble_hours
+                jibble_by_name_query = session.query(
+                    func.lower(JibbleHours.full_name).label('full_name'),
+                    func.sum(JibbleHours.logged_hours).label('total_hours')
+                )
+                
+                if start_date:
+                    jibble_by_name_query = jibble_by_name_query.filter(JibbleHours.entry_date >= start_date)
+                if end_date:
+                    jibble_by_name_query = jibble_by_name_query.filter(JibbleHours.entry_date <= end_date)
+                
+                jibble_by_name_query = jibble_by_name_query.group_by(func.lower(JibbleHours.full_name))
+                jibble_name_results = jibble_by_name_query.all()
+                
+                jibble_hours_by_name = {}
+                for jr in jibble_name_results:
+                    if jr.full_name:
+                        jibble_hours_by_name[jr.full_name.lower()] = float(jr.total_hours or 0)
+                
+                # Get POD Lead names from contributor table and map to jibble hours
+                pod_lead_jibble_hours = {}
+                for pod_email in pod_trainers.keys():
+                    pod_contributor = session.query(Contributor).filter(
+                        func.lower(Contributor.turing_email) == pod_email.lower()
+                    ).first()
+                    if pod_contributor and pod_contributor.name:
+                        pod_name_lower = pod_contributor.name.lower()
+                        if pod_name_lower in jibble_hours_by_name:
+                            pod_lead_jibble_hours[pod_email] = jibble_hours_by_name[pod_name_lower]
+                
+                logger.info(f"Found Jibble hours for {len(trainer_jibble_hours)} trainers, {len(pod_lead_jibble_hours)} POD Leads")
+                
+                # ---------------------------------------------------------
+                # STEP 7: Build POD Lead results with trainers
                 # ---------------------------------------------------------
                 pod_results = []
                 
@@ -1935,6 +1979,7 @@ class QueryService:
                         sum_turns = trainer_turns.get(trainer_email, 0)
                         ready = trainer_ready.get(trainer_email, 0)
                         avg_rating = trainer_ratings.get(trainer_email)
+                        jibble_hours = trainer_jibble_hours.get(trainer_email, 0)
                         
                         # Get total_reviews from task_raw (SUM of count_reviews WHERE derived_status='Reviewed')
                         total_reviews = trainer_total_reviews.get(trainer_email, 0)
@@ -1946,6 +1991,8 @@ class QueryService:
                         avg_rework = round(((submissions / unique_tasks) - 1) * 100, 1) if unique_tasks > 0 else None
                         rework_pct = round((rework / submissions) * 100, 1) if submissions > 0 else None
                         merged_aht = round((new_tasks * 10 + rework * 4) / submissions, 2) if submissions > 0 else None
+                        # AHT of Submission = jibble_hours / (new_tasks + rework)
+                        aht_submission = round(jibble_hours / submissions, 2) if submissions > 0 else None
                         
                         trainers_data.append({
                             'trainer_name': trainer_name,
@@ -1959,6 +2006,8 @@ class QueryService:
                             'rework_percent': rework_pct,
                             'avg_rating': avg_rating,
                             'merged_exp_aht': merged_aht,
+                            'jibble_hours': round(jibble_hours, 2),
+                            'aht_submission': aht_submission,
                             'status': trainer_info.get('status', 'Unknown'),
                         })
                         
@@ -1969,6 +2018,7 @@ class QueryService:
                         pod_totals['ready_for_delivery'] += ready
                         pod_totals['sum_turns'] += sum_turns
                         pod_totals['total_reviews_sum'] = pod_totals.get('total_reviews_sum', 0) + total_reviews
+                        pod_totals['trainer_jibble_hours'] = pod_totals.get('trainer_jibble_hours', 0) + jibble_hours
                         
                         # For avg_rating aggregation, we need sum_score and sum_reviews
                         # Find them from rating_results
@@ -1978,6 +2028,13 @@ class QueryService:
                                 pod_totals['total_reviews'] += int(r.total_reviews or 0)
                                 break
                     
+                    # Filter out trainers with no data in this project
+                    trainers_with_data = [t for t in trainers_data if t['unique_tasks'] > 0 or t['new_tasks'] > 0 or t['rework'] > 0 or t['total_reviews'] > 0]
+                    
+                    # Skip POD Leads with no trainers having data
+                    if pod_totals['unique_tasks'] == 0 and pod_totals['new_tasks'] == 0 and pod_totals['rework'] == 0:
+                        continue
+                    
                     # Calculate POD-level metrics
                     # Avg Rework = (total_completions / unique_tasks - 1) * 100
                     pod_total_submissions = pod_totals['new_tasks'] + pod_totals['rework']
@@ -1986,10 +2043,16 @@ class QueryService:
                     pod_avg_rating = round(pod_totals['total_score'] / pod_totals['total_reviews'], 2) if pod_totals['total_reviews'] > 0 else None
                     pod_merged_aht = round((pod_totals['new_tasks'] * 10 + pod_totals['rework'] * 4) / pod_total_submissions, 2) if pod_total_submissions > 0 else None
                     
+                    # Get POD Lead's own Jibble hours (not sum of trainers)
+                    pod_own_jibble_hours = pod_lead_jibble_hours.get(pod_email, 0)
+                    total_trainer_hours = pod_totals.get('trainer_jibble_hours', 0)
+                    # AHT of Submission for POD = total_trainer_hours / (new_tasks + rework)
+                    pod_aht_submission = round(total_trainer_hours / pod_total_submissions, 2) if pod_total_submissions > 0 else None
+                    
                     pod_results.append({
                         'pod_lead_name': pod_name,
                         'pod_lead_email': pod_email,
-                        'trainer_count': len(trainers_data),
+                        'trainer_count': len(trainers_with_data),
                         'unique_tasks': pod_totals['unique_tasks'],
                         'new_tasks': pod_totals['new_tasks'],
                         'rework': pod_totals['rework'],
@@ -1999,7 +2062,10 @@ class QueryService:
                         'rework_percent': pod_rework_pct,
                         'avg_rating': pod_avg_rating,
                         'merged_exp_aht': pod_merged_aht,
-                        'trainers': sorted(trainers_data, key=lambda x: -(x['total_reviews'] or 0)),
+                        'jibble_hours': round(pod_own_jibble_hours, 2),
+                        'total_trainer_hours': round(total_trainer_hours, 2),
+                        'aht_submission': pod_aht_submission,
+                        'trainers': sorted(trainers_with_data, key=lambda x: -(x['total_reviews'] or 0)),
                     })
                 
                 # Sort by total_reviews descending
@@ -2009,6 +2075,243 @@ class QueryService:
                 
         except Exception as e:
             logger.error(f"Error getting pod lead stats: {e}")
+            raise
+
+    def get_project_stats_with_pod_leads(
+        self,
+        start_date: Optional[str] = None,
+        end_date: Optional[str] = None
+    ) -> List[Dict[str, Any]]:
+        """
+        Get statistics aggregated by Project -> POD Lead hierarchy.
+        Each project contains POD Leads with their aggregated metrics.
+        """
+        try:
+            from sqlalchemy import case, distinct
+            
+            project_results = []
+            
+            # Get project names from config
+            project_names = self.settings.project_names
+            all_project_ids = self.settings.all_project_ids
+            
+            with self.db_service.get_session() as session:
+                # Get POD Lead mappings
+                pod_mappings = session.query(PodLeadMapping).all()
+                
+                # Build trainer -> pod lead mapping
+                trainer_to_pod = {}
+                for mapping in pod_mappings:
+                    if mapping.trainer_email and mapping.pod_lead_email:
+                        trainer_email = mapping.trainer_email.lower().strip()
+                        trainer_to_pod[trainer_email] = {
+                            'pod_lead_email': mapping.pod_lead_email.lower().strip(),
+                            'pod_lead_name': mapping.pod_lead_email.split('@')[0] if mapping.pod_lead_email else 'Unknown',
+                            'trainer_name': mapping.trainer_name or trainer_email.split('@')[0],
+                            'status': mapping.current_status
+                        }
+                
+                # For each project
+                for project_id in all_project_ids:
+                    project_name = project_names.get(project_id, f"Project {project_id}")
+                    
+                    # Get metrics from task_history_raw for this project
+                    history_query = session.query(
+                        TaskRaw.trainer,
+                        func.count(distinct(TaskHistoryRaw.task_id)).label('unique_tasks'),
+                        func.sum(case(
+                            (TaskHistoryRaw.completed_status_count == 1, 1),
+                            else_=0
+                        )).label('new_tasks'),
+                        func.sum(case(
+                            (TaskHistoryRaw.completed_status_count > 1, 1),
+                            else_=0
+                        )).label('rework')
+                    ).join(
+                        TaskRaw, TaskHistoryRaw.task_id == TaskRaw.task_id
+                    ).filter(
+                        TaskHistoryRaw.new_status == 'completed',
+                        TaskHistoryRaw.old_status != 'completed-approval',
+                        TaskHistoryRaw.project_id == project_id
+                    )
+                    
+                    if start_date:
+                        history_query = history_query.filter(TaskHistoryRaw.date >= start_date)
+                    if end_date:
+                        history_query = history_query.filter(TaskHistoryRaw.date <= end_date)
+                    
+                    history_query = history_query.group_by(TaskRaw.trainer)
+                    history_results = history_query.all()
+                    
+                    # Build trainer -> history stats
+                    trainer_history = {}
+                    for hs in history_results:
+                        if hs.trainer:
+                            email = hs.trainer.lower().strip()
+                            trainer_history[email] = {
+                                'unique_tasks': hs.unique_tasks or 0,
+                                'new_tasks': hs.new_tasks or 0,
+                                'rework': hs.rework or 0
+                            }
+                    
+                    # Get total_reviews from task_raw for this project
+                    reviews_query = session.query(
+                        TaskRaw.trainer,
+                        func.sum(TaskRaw.count_reviews).label('total_reviews')
+                    ).filter(
+                        TaskRaw.derived_status == 'Reviewed',
+                        TaskRaw.followup_required == 0,
+                        TaskRaw.project_id == project_id
+                    )
+                    
+                    if start_date:
+                        reviews_query = reviews_query.filter(TaskRaw.last_completed_date >= start_date)
+                    if end_date:
+                        reviews_query = reviews_query.filter(TaskRaw.last_completed_date <= end_date)
+                    
+                    reviews_query = reviews_query.group_by(TaskRaw.trainer)
+                    reviews_results = reviews_query.all()
+                    
+                    trainer_reviews = {}
+                    for rr in reviews_results:
+                        if rr.trainer:
+                            email = rr.trainer.lower().strip()
+                            trainer_reviews[email] = rr.total_reviews or 0
+                    
+                    # Get Jibble hours for all trainers
+                    jibble_query = session.query(
+                        JibbleHours.full_name,
+                        func.sum(JibbleHours.logged_hours).label('total_hours')
+                    )
+                    if start_date:
+                        jibble_query = jibble_query.filter(JibbleHours.entry_date >= start_date)
+                    if end_date:
+                        jibble_query = jibble_query.filter(JibbleHours.entry_date <= end_date)
+                    jibble_query = jibble_query.group_by(JibbleHours.full_name)
+                    jibble_results = jibble_query.all()
+                    
+                    # Build name -> hours map
+                    name_to_jibble = {}
+                    for jr in jibble_results:
+                        if jr.full_name:
+                            name_to_jibble[jr.full_name.lower().strip()] = float(jr.total_hours or 0)
+                    
+                    # Get contributor name by email for Jibble matching
+                    contributors = session.query(Contributor).all()
+                    email_to_name = {}
+                    for c in contributors:
+                        if c.turing_email and c.name:
+                            email_to_name[c.turing_email.lower().strip()] = c.name
+                    
+                    # Aggregate by POD Lead
+                    pod_aggregates = defaultdict(lambda: {
+                        'unique_tasks': 0,
+                        'new_tasks': 0,
+                        'rework': 0,
+                        'total_reviews': 0,
+                        'trainer_count': 0,
+                        'trainer_jibble_hours': 0.0
+                    })
+                    
+                    for trainer_email, hist in trainer_history.items():
+                        pod_info = trainer_to_pod.get(trainer_email)
+                        if pod_info:
+                            pod_email = pod_info['pod_lead_email']
+                            pod_aggregates[pod_email]['unique_tasks'] += hist['unique_tasks']
+                            pod_aggregates[pod_email]['new_tasks'] += hist['new_tasks']
+                            pod_aggregates[pod_email]['rework'] += hist['rework']
+                            pod_aggregates[pod_email]['total_reviews'] += trainer_reviews.get(trainer_email, 0)
+                            pod_aggregates[pod_email]['trainer_count'] += 1
+                            
+                            # Get trainer's Jibble hours by name
+                            trainer_name = email_to_name.get(trainer_email, '')
+                            if trainer_name:
+                                trainer_jibble = name_to_jibble.get(trainer_name.lower().strip(), 0)
+                                pod_aggregates[pod_email]['trainer_jibble_hours'] += trainer_jibble
+                    
+                    # Build POD Lead list for this project
+                    pod_leads_list = []
+                    project_totals = {
+                        'unique_tasks': 0,
+                        'new_tasks': 0,
+                        'rework': 0,
+                        'total_reviews': 0,
+                        'trainer_count': 0,
+                        'trainer_jibble_hours': 0.0,
+                        'pod_jibble_hours': 0.0
+                    }
+                    
+                    for pod_email, agg in pod_aggregates.items():
+                        submissions = agg['new_tasks'] + agg['rework']
+                        avg_rework = round(((submissions / agg['unique_tasks']) - 1) * 100, 1) if agg['unique_tasks'] > 0 else None
+                        rework_pct = round((agg['rework'] / submissions) * 100, 1) if submissions > 0 else None
+                        merged_aht = round((agg['new_tasks'] * 10 + agg['rework'] * 4) / submissions, 2) if submissions > 0 else None
+                        
+                        # Get POD Lead's own Jibble hours
+                        pod_name = email_to_name.get(pod_email, '')
+                        pod_own_jibble = name_to_jibble.get(pod_name.lower().strip(), 0) if pod_name else 0
+                        trainer_jibble = agg['trainer_jibble_hours']
+                        
+                        pod_leads_list.append({
+                            'pod_lead_name': pod_email.split('@')[0],
+                            'pod_lead_email': pod_email,
+                            'trainer_count': agg['trainer_count'],
+                            'unique_tasks': agg['unique_tasks'],
+                            'new_tasks': agg['new_tasks'],
+                            'rework': agg['rework'],
+                            'total_reviews': agg['total_reviews'],
+                            'avg_rework': avg_rework,
+                            'rework_percent': rework_pct,
+                            'merged_exp_aht': merged_aht,
+                            'pod_jibble_hours': round(pod_own_jibble, 2),
+                            'trainer_jibble_hours': round(trainer_jibble, 2),
+                        })
+                        
+                        # Accumulate project totals
+                        project_totals['unique_tasks'] += agg['unique_tasks']
+                        project_totals['new_tasks'] += agg['new_tasks']
+                        project_totals['rework'] += agg['rework']
+                        project_totals['total_reviews'] += agg['total_reviews']
+                        project_totals['trainer_count'] += agg['trainer_count']
+                        project_totals['trainer_jibble_hours'] += trainer_jibble
+                        project_totals['pod_jibble_hours'] += pod_own_jibble
+                    
+                    # Sort POD leads by total_reviews
+                    pod_leads_list.sort(key=lambda x: -(x['total_reviews'] or 0))
+                    
+                    # Calculate project-level metrics
+                    proj_submissions = project_totals['new_tasks'] + project_totals['rework']
+                    proj_avg_rework = round(((proj_submissions / project_totals['unique_tasks']) - 1) * 100, 1) if project_totals['unique_tasks'] > 0 else None
+                    proj_rework_pct = round((project_totals['rework'] / proj_submissions) * 100, 1) if proj_submissions > 0 else None
+                    proj_merged_aht = round((project_totals['new_tasks'] * 10 + project_totals['rework'] * 4) / proj_submissions, 2) if proj_submissions > 0 else None
+                    
+                    # Calculate logged hours (trainers + POD leads)
+                    total_logged_hours = project_totals['trainer_jibble_hours'] + project_totals['pod_jibble_hours']
+                    
+                    project_results.append({
+                        'project_id': project_id,
+                        'project_name': project_name,
+                        'pod_lead_count': len(pod_leads_list),
+                        'trainer_count': project_totals['trainer_count'],
+                        'unique_tasks': project_totals['unique_tasks'],
+                        'new_tasks': project_totals['new_tasks'],
+                        'rework': project_totals['rework'],
+                        'total_reviews': project_totals['total_reviews'],
+                        'avg_rework': proj_avg_rework,
+                        'rework_percent': proj_rework_pct,
+                        'merged_exp_aht': proj_merged_aht,
+                        'logged_hours': round(total_logged_hours, 2),
+                        'total_pod_hours': round(project_totals['pod_jibble_hours'], 2),
+                        'pod_leads': pod_leads_list,
+                    })
+                
+                # Sort projects by total_reviews
+                project_results.sort(key=lambda x: -(x['total_reviews'] or 0))
+                
+                return project_results
+                
+        except Exception as e:
+            logger.error(f"Error getting project stats: {e}")
             raise
 
 

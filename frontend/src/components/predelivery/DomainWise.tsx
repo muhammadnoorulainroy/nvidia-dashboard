@@ -34,7 +34,7 @@ import {
   Tooltip,
   Cell,
 } from 'recharts'
-import { getDomainStats } from '../../services/api'
+import { getDomainStats, getClientDeliveryDomainStats } from '../../services/api'
 import type { DomainAggregation } from '../../types'
 import LoadingSpinner from '../LoadingSpinner'
 import ErrorDisplay from '../ErrorDisplay'
@@ -75,8 +75,9 @@ export default function DomainWise({ isClientDelivery = false }: DomainWiseProps
       setLoading(true)
       setError(null)
       
-      // Note: Client delivery mode uses the same endpoint with filtering
-      const result = await getDomainStats({})
+      const result = isClientDelivery 
+        ? await getClientDeliveryDomainStats({})
+        : await getDomainStats({})
       setData(result)
       setFilteredData(result)
     } catch (err: any) {

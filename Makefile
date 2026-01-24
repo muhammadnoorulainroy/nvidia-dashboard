@@ -1,13 +1,4 @@
 # Nvidia Dashboard Makefile
-# ========================
-# NOTE: This Makefile is for Unix/Mac only (uses bash, pkill, lsof)
-#
-# For Windows (PowerShell), use these commands instead:
-#   Backend:  cd backend; .\venv\Scripts\python -m uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload
-#   Frontend: cd frontend; npm run dev -- --port 3001
-#   Install:  cd backend; python -m venv venv; .\venv\Scripts\pip install -r requirements.txt
-#   Sync:     Invoke-RestMethod -Method POST -Uri "http://localhost:8001/api/sync"
-#
 # Ports Configuration
 BACKEND_PORT := 8001
 FRONTEND_PORT := 3001

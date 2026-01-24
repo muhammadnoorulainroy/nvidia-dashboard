@@ -1,11 +1,6 @@
 """
 Jibble API Service - Handles authentication and API calls to Jibble
 Integrated into the nvidia dashboard app
-
-Features:
-- OAuth2 authentication with token caching
-- Retry logic for transient failures
-- Circuit breaker for API protection
 """
 import re
 import logging
@@ -14,20 +9,11 @@ from datetime import datetime, timedelta
 from typing import Optional, Dict, List, Any
 from sqlalchemy.orm import Session
 from sqlalchemy import func, cast, Date
-from requests.exceptions import RequestException, Timeout, ConnectionError as RequestsConnectionError
 
-from app.core.config import get_settings
+from app.config import get_settings
 from app.models.db_models import JibblePerson, JibbleTimeEntry, JibbleEmailMapping, PodLeadMapping
-from app.core.resilience import get_circuit_breaker, CircuitBreakerError
 
 logger = logging.getLogger(__name__)
-
-# Jibble API exceptions that should trigger retry
-JIBBLE_RETRY_EXCEPTIONS = (
-    RequestException,
-    Timeout,
-    RequestsConnectionError,
-)
 
 
 class JibbleService:
@@ -89,23 +75,17 @@ class JibbleService:
     
     def _make_request(self, endpoint: str, method: str = "GET", params: Dict = None, 
                       base_url: str = None) -> Dict:
-        """
-        Make authenticated request to Jibble API with circuit breaker protection.
+        """Make authenticated request to Jibble API"""
+        token = self._get_access_token()
+        url = f"{base_url or self.base_url}/{endpoint}"
         
-        Uses circuit breaker to fail fast if Jibble API is unavailable.
-        """
-        cb = get_circuit_breaker("jibble")
+        headers = {
+            "Authorization": f"Bearer {token}",
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+        }
         
-        def _execute_request():
-            token = self._get_access_token()
-            url = f"{base_url or self.base_url}/{endpoint}"
-            
-            headers = {
-                "Authorization": f"Bearer {token}",
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-            }
-            
+        try:
             response = requests.request(method, url, headers=headers, params=params, timeout=60)
             
             if response.status_code == 404:
@@ -114,12 +94,7 @@ class JibbleService:
             
             response.raise_for_status()
             return response.json()
-        
-        try:
-            return cb.call(_execute_request)
-        except CircuitBreakerError:
-            logger.warning(f"Circuit breaker open for Jibble, returning empty result for {endpoint}")
-            return {"value": []}
+            
         except requests.exceptions.RequestException as e:
             logger.error(f"Jibble API error for {endpoint}: {e}")
             raise

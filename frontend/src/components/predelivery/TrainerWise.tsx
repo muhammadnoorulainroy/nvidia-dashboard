@@ -3,6 +3,11 @@ import {
   Box,
   Typography,
   Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
   Autocomplete,
   TextField,
   Chip,
@@ -27,8 +32,8 @@ import DownloadIcon from '@mui/icons-material/Download'
 import Tooltip from '@mui/material/Tooltip'
 import { exportToExcel, formatPercent, formatDecimal, formatDate } from '../../utils/exportToExcel'
 import { DataGrid, GridColDef, GridRowsProp, GridSortModel } from '@mui/x-data-grid'
-import { getTrainerDailyStats, getTrainerOverallStats } from '../../services/api'
-import type { TrainerDailyStats } from '../../types'
+import { getTrainerStats, getTaskLevelInfo, getClientDeliveryTrainerStats, getTrainerDailyStats, getTrainerOverallStats } from '../../services/api'
+import type { TrainerLevelAggregation, TaskLevelInfo, TrainerDailyStats } from '../../types'
 import LoadingSpinner from '../LoadingSpinner'
 import ErrorDisplay from '../ErrorDisplay'
 
@@ -70,7 +75,7 @@ export default function TrainerWise({ isClientDelivery = false }: TrainerWisePro
   const [data, setData] = useState<TrainerDailyStats[]>([])
   const [overallData, setOverallData] = useState<TrainerDailyStats[]>([])
   const [filteredData, setFilteredData] = useState<AggregatedTrainerStats[]>([])
-  // Note: taskLevelData removed as detail panel feature requires DataGrid Pro
+  const [taskLevelData, setTaskLevelData] = useState<TaskLevelInfo[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [selectedTrainers, setSelectedTrainers] = useState<string[]>([])
@@ -93,13 +98,15 @@ export default function TrainerWise({ isClientDelivery = false }: TrainerWisePro
       setError(null)
       
       const filters: any = {}      
-      const [dailyResult, overallResult] = await Promise.all([
+      const [dailyResult, overallResult, taskResult] = await Promise.all([
         getTrainerDailyStats(filters),
         getTrainerOverallStats(filters),
+        getTaskLevelInfo({}),
       ])
       setData(dailyResult)
       setOverallData(overallResult)
       setFilteredData(dailyResult)
+      setTaskLevelData(taskResult)
     } catch (err: any) {
       setError(err.message || 'Failed to fetch trainer statistics')
     } finally{
@@ -110,6 +117,75 @@ export default function TrainerWise({ isClientDelivery = false }: TrainerWisePro
   useEffect(() => {
     fetchData()
   }, [isClientDelivery])
+
+  // Helper function to aggregate daily data to trainer level
+  const aggregateByTrainer = (dailyData: TrainerDailyStats[]): AggregatedTrainerStats[] => {
+    const trainerMap = new Map<number, AggregatedTrainerStats>()
+    
+    dailyData.forEach(d => {
+      const trainerId = d.trainer_id
+      if (trainerId === null) return
+      
+      if (!trainerMap.has(trainerId)) {
+        trainerMap.set(trainerId, {
+          trainer_id: trainerId,
+          trainer_name: d.trainer_name,
+          trainer_email: d.trainer_email,
+          submission_date: null, // null indicates aggregated data
+          unique_tasks: 0,
+          new_tasks_submitted: 0,
+          rework_submitted: 0,
+          total_submissions: 0,
+          tasks_ready_for_delivery: 0,
+          sum_number_of_turns: 0,
+          avg_rework: null,
+          rework_percent: null,
+          avg_rating: null,
+        })
+      }
+      
+      const existing = trainerMap.get(trainerId)!
+      existing.unique_tasks += d.unique_tasks || 0
+      existing.new_tasks_submitted += d.new_tasks_submitted || 0
+      existing.rework_submitted += d.rework_submitted || 0
+      existing.total_submissions += d.total_submissions || 0
+      existing.tasks_ready_for_delivery += d.tasks_ready_for_delivery || 0
+      existing.sum_number_of_turns += d.sum_number_of_turns || 0
+      
+      // Track weighted rating (rating * unique_tasks for this day)
+      if (d.avg_rating !== null && d.avg_rating !== undefined && d.unique_tasks > 0) {
+        const existingWeight = (existing as any)._rating_weight || 0
+        const existingSum = (existing as any)._rating_sum || 0
+        ;(existing as any)._rating_weight = existingWeight + d.unique_tasks
+        ;(existing as any)._rating_sum = existingSum + (d.avg_rating * d.unique_tasks)
+      }
+    })
+    
+    // Calculate avg_rework, rework_percent, and avg_rating after aggregation
+    trainerMap.forEach((trainer) => {
+      // Avg Rework = ((sum_number_of_turns / new_tasks) - 1) * 100 (as percentage)
+      // Using new_tasks as denominator to match spreadsheet
+      if (trainer.new_tasks_submitted > 0) {
+        trainer.avg_rework = Math.round(((trainer.sum_number_of_turns / trainer.new_tasks_submitted) - 1) * 100)
+      }
+      // Rework % = rework / (rework + new_tasks) * 100
+      const total = trainer.rework_submitted + trainer.new_tasks_submitted
+      if (total > 0) {
+        trainer.rework_percent = Math.round((trainer.rework_submitted / total) * 100)
+      }
+      // Avg Rating = weighted average
+      const ratingWeight = (trainer as any)._rating_weight || 0
+      const ratingSum = (trainer as any)._rating_sum || 0
+      if (ratingWeight > 0) {
+        trainer.avg_rating = Math.round((ratingSum / ratingWeight) * 100) / 100
+      }
+      // Clean up temp fields
+      delete (trainer as any)._rating_weight
+      delete (trainer as any)._rating_sum
+    })
+    
+    return Array.from(trainerMap.values())
+  }
 
   // Helper function to filter data by timeframe
   const getFilteredByTimeframe = (allData: TrainerDailyStats[], tf: TimeframeOption): AggregatedTrainerStats[] => {
@@ -345,7 +421,7 @@ export default function TrainerWise({ isClientDelivery = false }: TrainerWisePro
   }
 
   // Custom header renderer with dropdown arrow
-  const renderHeaderWithDropdown = (headerName: string, _isNumeric: boolean = false, fieldKey: string = '') => (_params: any) => {
+  const renderHeaderWithDropdown = (headerName: string, isNumeric: boolean = false, fieldKey: string = '') => (params: any) => {
     return (
       <Box
         sx={{
@@ -687,6 +763,78 @@ export default function TrainerWise({ isClientDelivery = false }: TrainerWisePro
     return row
   })
 
+  // Detail panel content (expandable rows)
+  const getDetailPanelContent = ({ row }: any) => {
+    const trainer = filteredData[row.id]
+    
+    // Get reviewer data for this trainer
+    const reviewerData = taskLevelData
+      .filter((task) => task.annotator_id === trainer.trainer_id)
+      .reduce((acc, task) => {
+        const reviewerId = task.reviewer_id
+        if (!reviewerId) return acc
+
+        if (!acc[reviewerId]) {
+          acc[reviewerId] = {
+            reviewer_id: reviewerId,
+            reviewer_name: task.reviewer_name,
+            tasks: 0,
+          }
+        }
+
+        acc[reviewerId].tasks += 1
+
+        return acc
+      }, {} as Record<number, any>)
+
+    const reviewers = Object.values(reviewerData)
+
+    return (
+      <Box sx={{ margin: 2, backgroundColor: '#F7F7F7', p: 2, borderRadius: 1 }}>
+        <Typography variant="h6" gutterBottom component="div" sx={{ fontWeight: 600, mb: 2 }}>
+          Reviewer Details
+        </Typography>
+        {reviewers.length === 0 ? (
+          <Typography variant="body2" color="text.secondary">
+            No reviewer data available for this trainer.
+          </Typography>
+        ) : (
+          <Box sx={{ overflowX: 'auto' }}>
+            <Table size="small" sx={{ minWidth: 400 }}>
+              <TableHead>
+                <TableRow sx={{ backgroundColor: '#EAEDED' }}>
+                  <TableCell sx={{ fontWeight: 600 }}>Reviewer</TableCell>
+                  <TableCell align="right" sx={{ fontWeight: 600 }}>
+                    Tasks Reviewed
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {reviewers.map((reviewer: any) => (
+                  <TableRow key={reviewer.reviewer_id}>
+                    <TableCell>
+                      <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                        {reviewer.reviewer_name || 'Unknown'}
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary">
+                        ID: {reviewer.reviewer_id}
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="right" sx={{ fontWeight: 600 }}>
+                      {reviewer.tasks}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </Box>
+        )}
+      </Box>
+    )
+  }
+
+  const getDetailPanelHeight = () => 'auto' as const
+
   return (
     <Box>
       <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -740,7 +888,7 @@ export default function TrainerWise({ isClientDelivery = false }: TrainerWisePro
             multiple
             options={trainerOptions}
             value={selectedTrainers}
-            onChange={(_event, newValue) => setSelectedTrainers(newValue)}
+            onChange={(event, newValue) => setSelectedTrainers(newValue)}
             filterOptions={(options, { inputValue }) => {
               // Custom filter to search in entire option string (includes email)
               const searchTerm = inputValue.toLowerCase()
@@ -991,6 +1139,8 @@ export default function TrainerWise({ isClientDelivery = false }: TrainerWisePro
             disableColumnMenu={true}
             sortModel={sortModel}
             onSortModelChange={setSortModel}
+            getDetailPanelContent={getDetailPanelContent}
+            getDetailPanelHeight={getDetailPanelHeight}
             sx={{
               border: 'none',
               backgroundColor: 'white',

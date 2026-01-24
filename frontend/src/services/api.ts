@@ -5,6 +5,7 @@ import type {
   ReviewerAggregation,
   ReviewerWithTrainers,
   TrainerLevelAggregation,
+  PodLeadAggregation,
   TaskLevelInfo,
   FilterParams,
 } from '../types'
@@ -20,27 +21,14 @@ const apiClient = axios.create({
   },
 })
 
-/**
- * Session-based in-memory cache for API responses.
- * 
- * Strategy: Cache is primarily cleared when:
- * 1. User triggers a manual sync (via clearCache)
- * 2. Page is reloaded (session-based)
- * 3. Safety TTL expires (1 hour - matches backend sync interval)
- * 
- * This matches the backend's event-driven cache strategy where
- * data only changes when sync occurs.
- */
+// Simple in-memory cache
 interface CacheEntry<T> {
   data: T
   timestamp: number
 }
 
 const cache = new Map<string, CacheEntry<any>>()
-
-// Safety TTL - matches backend sync interval (1 hour)
-// Cache is primarily cleared on sync, this is just a fallback
-const CACHE_SAFETY_TTL = 60 * 60 * 1000 // 1 hour
+const CACHE_DURATION = 5 * 60 * 1000 // 5 minutes
 
 // Helper function to build query params
 const buildQueryParams = (filters?: FilterParams): string => {
@@ -66,9 +54,8 @@ const getFromCache = <T>(key: string): T | null => {
   const entry = cache.get(key)
   if (!entry) return null
   
-  // Safety TTL check (data should be refreshed if sync hasn't happened)
   const now = Date.now()
-  if (now - entry.timestamp > CACHE_SAFETY_TTL) {
+  if (now - entry.timestamp > CACHE_DURATION) {
     cache.delete(key)
     return null
   }
@@ -84,23 +71,9 @@ const setCache = <T>(key: string, data: T): void => {
   })
 }
 
-/**
- * Clear all cached data.
- * Should be called after triggering a sync to ensure fresh data.
- */
+// Function to clear cache (can be called manually)
 export const clearCache = (): void => {
   cache.clear()
-  console.log('[Cache] All entries cleared')
-}
-
-/**
- * Get cache statistics for debugging.
- */
-export const getCacheStats = (): { size: number; keys: string[] } => {
-  return {
-    size: cache.size,
-    keys: Array.from(cache.keys()),
-  }
 }
 
 export const getOverallStats = async (filters?: FilterParams): Promise<OverallAggregation> => {
@@ -291,8 +264,98 @@ export const getFilterOptions = async (): Promise<{
 }
 
 // ============================================================================
-// Rating Trends API
+// CLIENT DELIVERY API FUNCTIONS (Delivered Tasks Only)
 // ============================================================================
+
+export const getClientDeliveryOverallStats = async (filters?: FilterParams): Promise<OverallAggregation> => {
+  const cacheKey = getCacheKey('/client-delivery/overall', filters)
+  const cached = getFromCache<OverallAggregation>(cacheKey)
+  if (cached) return cached
+  
+  const queryParams = buildQueryParams(filters)
+  const response = await apiClient.get<OverallAggregation>(`/client-delivery/overall${queryParams}`)
+  setCache(cacheKey, response.data)
+  return response.data
+}
+
+export const getClientDeliveryDomainStats = async (filters?: FilterParams): Promise<DomainAggregation[]> => {
+  const cacheKey = getCacheKey('/client-delivery/by-domain', filters)
+  const cached = getFromCache<DomainAggregation[]>(cacheKey)
+  if (cached) return cached
+  
+  const queryParams = buildQueryParams(filters)
+  const response = await apiClient.get<DomainAggregation[]>(`/client-delivery/by-domain${queryParams}`)
+  setCache(cacheKey, response.data)
+  return response.data
+}
+
+export const getClientDeliveryReviewerStats = async (filters?: FilterParams): Promise<ReviewerAggregation[]> => {
+  const cacheKey = getCacheKey('/client-delivery/by-reviewer', filters)
+  const cached = getFromCache<ReviewerAggregation[]>(cacheKey)
+  if (cached) return cached
+  
+  const queryParams = buildQueryParams(filters)
+  const response = await apiClient.get<ReviewerAggregation[]>(`/client-delivery/by-reviewer${queryParams}`)
+  setCache(cacheKey, response.data)
+  return response.data
+}
+
+export const getClientDeliveryTrainerStats = async (filters?: FilterParams): Promise<TrainerLevelAggregation[]> => {
+  const cacheKey = getCacheKey('/client-delivery/by-trainer', filters)
+  const cached = getFromCache<TrainerLevelAggregation[]>(cacheKey)
+  if (cached) return cached
+  
+  const queryParams = buildQueryParams(filters)
+  const response = await apiClient.get<TrainerLevelAggregation[]>(`/client-delivery/by-trainer${queryParams}`)
+  setCache(cacheKey, response.data)
+  return response.data
+}
+
+export interface DeliveryTrackerItem {
+  delivery_date: string
+  total_tasks: number
+  file_names: string[]
+  file_count: number
+}
+
+export const getDeliveryTracker = async (): Promise<DeliveryTrackerItem[]> => {
+  const cacheKey = '/client-delivery/tracker'
+  const cached = getFromCache<DeliveryTrackerItem[]>(cacheKey)
+  if (cached) return cached
+  
+  const response = await apiClient.get<DeliveryTrackerItem[]>('/client-delivery/tracker')
+  setCache(cacheKey, response.data)
+  return response.data
+}
+
+// Sync data from S3
+export interface SyncResult {
+  bigquery_sync: {
+    status: string
+    tables_synced?: Record<string, boolean>
+    error?: string
+  } | null
+  s3_ingestion: {
+    status: string
+    files_processed?: number
+    work_items_ingested?: number
+    duration_seconds?: number
+    errors?: string[]
+    error?: string
+  } | null
+  overall_status: string
+}
+
+export const triggerS3Sync = async (): Promise<SyncResult> => {
+  const response = await apiClient.post<SyncResult>('/sync?sync_bigquery=false&sync_s3=true')
+  // Clear cache after successful sync
+  if (response.data.overall_status === 'completed') {
+    clearCache()
+  }
+  return response.data
+}
+
+// Rating Trends API
 export interface RatingTrendPoint {
   period: string
   avg_rating: number | null
@@ -406,6 +469,8 @@ export interface TrainerUnderPod {
   rework_percent: number | null
   avg_rating: number | null
   merged_exp_aht: number | null
+  jibble_hours: number
+  aht_submission: number | null
   status: string
 }
 
@@ -422,18 +487,71 @@ export interface PodLeadStats {
   rework_percent: number | null
   avg_rating: number | null
   merged_exp_aht: number | null
+  jibble_hours: number
+  total_trainer_hours: number
+  aht_submission: number | null
   trainers: TrainerUnderPod[]
 }
 
 export const getPodLeadStats = async (
   startDate?: string,
   endDate?: string,
-  timeframe: string = 'overall'
+  timeframe: string = 'overall',
+  projectId?: number
 ): Promise<PodLeadStats[]> => {
   const params = new URLSearchParams({ timeframe })
   if (startDate) params.append('start_date', startDate)
   if (endDate) params.append('end_date', endDate)
+  if (projectId) params.append('project_id', projectId.toString())
   
   const response = await apiClient.get<PodLeadStats[]>(`/pod-lead-stats?${params.toString()}`)
+  return response.data
+}
+
+// POD Lead under Project (simplified version for project view)
+export interface PodLeadUnderProject {
+  pod_lead_name: string
+  pod_lead_email: string
+  trainer_count: number
+  unique_tasks: number
+  new_tasks: number
+  rework: number
+  total_reviews: number
+  avg_rework: number | null
+  rework_percent: number | null
+  merged_exp_aht: number | null
+  pod_jibble_hours: number
+  trainer_jibble_hours: number
+}
+
+// Project Stats with POD Leads
+export interface ProjectStats {
+  project_id: number
+  project_name: string
+  pod_lead_count: number
+  trainer_count: number
+  unique_tasks: number
+  new_tasks: number
+  rework: number
+  total_reviews: number
+  avg_rework: number | null
+  rework_percent: number | null
+  merged_exp_aht: number | null
+  logged_hours: number
+  total_pod_hours: number
+  pod_leads: PodLeadUnderProject[]
+}
+
+export const getProjectStats = async (
+  startDate?: string,
+  endDate?: string
+): Promise<ProjectStats[]> => {
+  const params = new URLSearchParams()
+  if (startDate) params.append('start_date', startDate)
+  if (endDate) params.append('end_date', endDate)
+  
+  const queryString = params.toString()
+  const url = queryString ? `/project-stats?${queryString}` : '/project-stats'
+  const response = await apiClient.get<ProjectStats[]>(url)
   return response.data
 }

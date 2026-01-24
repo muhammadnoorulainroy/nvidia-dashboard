@@ -34,7 +34,7 @@ interface MenuItem {
 }
 
 const menuItems: MenuItem[] = [
-  { text: 'Task Metrics', icon: <BusinessIcon />, path: '/task-metrics' },
+  { text: 'Pre-Delivery', icon: <BusinessIcon />, path: '/pre-delivery' },
 ]
 
 interface LayoutProps {

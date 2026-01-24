@@ -19,12 +19,13 @@ import {
 import FilterListIcon from '@mui/icons-material/FilterList'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
-import { getPodLeadStats, PodLeadStats, TrainerUnderPod } from '../../services/api'
+import { getPodLeadStats } from '../../services/api'
+import type { PodLeadAggregation, ReviewerUnderPodLead } from '../../types'
 import LoadingSpinner from '../LoadingSpinner'
 import ErrorDisplay from '../ErrorDisplay'
 
-// Trainer row under POD Lead
-function TrainerRow({ trainer }: { trainer: TrainerUnderPod }) {
+// Reviewer row under POD Lead
+function ReviewerRow({ reviewer }: { reviewer: ReviewerUnderPodLead }) {
   return (
     <TableRow sx={{ backgroundColor: '#F0F4FF', '&:hover': { backgroundColor: '#E8EEFF' } }}>
       <TableCell>
@@ -32,37 +33,37 @@ function TrainerRow({ trainer }: { trainer: TrainerUnderPod }) {
           <Box sx={{ width: 28, ml: 2 }} />
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             <Typography variant="body2" sx={{ fontWeight: 500, color: '#374151' }}>
-              ↳ {trainer.trainer_name || 'Unknown'}
+              ↳ {reviewer.reviewer_name || 'Unknown'}
             </Typography>
             <Typography variant="caption" color="text.secondary">
-              {trainer.trainer_email || 'N/A'}
+              Reviewer ID: {reviewer.reviewer_id || 'N/A'}
             </Typography>
           </Box>
         </Box>
       </TableCell>
       <TableCell align="center">
-        <Typography variant="body2" sx={{ fontWeight: 600, color: '#374151' }}>
-          {trainer.unique_tasks}
+        <Typography variant="body2" sx={{ color: '#6B7280', fontSize: '0.8rem' }}>
+          {reviewer.reviewer_email || 'N/A'}
         </Typography>
       </TableCell>
       <TableCell align="center">
         <Typography variant="body2" sx={{ fontWeight: 600, color: '#374151' }}>
-          {trainer.new_tasks}
+          {reviewer.average_task_score?.toFixed(2) || 'N/A'}
         </Typography>
       </TableCell>
       <TableCell align="center">
         <Typography variant="body2" sx={{ fontWeight: 600, color: '#374151' }}>
-          {trainer.rework}
+          {reviewer.task_count}
         </Typography>
       </TableCell>
       <TableCell align="center">
         <Typography variant="body2" sx={{ fontWeight: 600, color: '#374151' }}>
-          {trainer.ready_for_delivery}
+          {reviewer.total_rework_count || 0}
         </Typography>
       </TableCell>
       <TableCell align="center">
         <Typography variant="body2" sx={{ fontWeight: 600, color: '#374151' }}>
-          {trainer.avg_rating?.toFixed(2) || 'N/A'}
+          {reviewer.average_rework_count?.toFixed(2) || '0.00'}
         </Typography>
       </TableCell>
     </TableRow>
@@ -73,69 +74,69 @@ function TrainerRow({ trainer }: { trainer: TrainerUnderPod }) {
 function PodLeadRow({ 
   podLead
 }: { 
-  podLead: PodLeadStats
+  podLead: PodLeadAggregation
 }) {
   const [open, setOpen] = useState(false)
-  const hasTrainers = podLead.trainers && podLead.trainers.length > 0
+  const hasReviewers = podLead.reviewers && podLead.reviewers.length > 0
 
   return (
     <>
       <TableRow 
         sx={{ 
           '&:hover': { backgroundColor: '#F9FAFB' },
-          cursor: hasTrainers ? 'pointer' : 'default',
+          cursor: hasReviewers ? 'pointer' : 'default',
           backgroundColor: '#FFFBEB',
         }}
-        onClick={() => hasTrainers && setOpen(!open)}
+        onClick={() => hasReviewers && setOpen(!open)}
       >
         <TableCell>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            {hasTrainers && (
+            {hasReviewers && (
               <IconButton size="small" onClick={(e) => { e.stopPropagation(); setOpen(!open); }}>
                 {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
               </IconButton>
             )}
-            {!hasTrainers && <Box sx={{ width: 28 }} />}
+            {!hasReviewers && <Box sx={{ width: 28 }} />}
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
               <Typography variant="body2" sx={{ fontWeight: 600, color: '#92400E' }}>
                 👤 {podLead.pod_lead_name || 'Unknown'}
               </Typography>
               <Typography variant="caption" color="text.secondary">
-                {podLead.pod_lead_email || 'N/A'} • {podLead.trainer_count} trainers
+                ID: {podLead.pod_lead_id || 'N/A'} • {podLead.reviewer_count} reviewers
               </Typography>
             </Box>
           </Box>
         </TableCell>
         <TableCell align="center">
-          <Typography variant="body2" sx={{ fontWeight: 600, color: '#1F2937' }}>
-            {podLead.unique_tasks}
+          <Typography variant="body2" sx={{ color: '#1F2937', fontSize: '0.875rem' }}>
+            {podLead.pod_lead_email || 'N/A'}
           </Typography>
         </TableCell>
         <TableCell align="center">
           <Typography variant="body2" sx={{ fontWeight: 600, color: '#1F2937' }}>
-            {podLead.new_tasks}
+            {podLead.average_task_score?.toFixed(2) || 'N/A'}
           </Typography>
         </TableCell>
         <TableCell align="center">
           <Typography variant="body2" sx={{ fontWeight: 600, color: '#1F2937' }}>
-            {podLead.rework}
+            {podLead.task_count}
           </Typography>
         </TableCell>
         <TableCell align="center">
           <Typography variant="body2" sx={{ fontWeight: 600, color: '#1F2937' }}>
-            {podLead.ready_for_delivery}
+            {podLead.total_rework_count || 0}
           </Typography>
         </TableCell>
         <TableCell align="center">
           <Typography variant="body2" sx={{ fontWeight: 600, color: '#1F2937' }}>
-            {podLead.avg_rating?.toFixed(2) || 'N/A'}
+            {podLead.average_rework_count?.toFixed(2) || '0.00'}
           </Typography>
         </TableCell>
       </TableRow>
-      {hasTrainers && open && podLead.trainers.map((trainer, idx) => (
-        <TrainerRow 
-          key={trainer.trainer_email || idx} 
-          trainer={trainer} 
+      {hasReviewers && open && podLead.reviewers.map((reviewer, idx) => (
+        <ReviewerRow 
+          key={reviewer.reviewer_id || idx} 
+          reviewer={reviewer} 
         />
       ))}
     </>
@@ -143,8 +144,8 @@ function PodLeadRow({
 }
 
 export default function PodLeadWise() {
-  const [data, setData] = useState<PodLeadStats[]>([])
-  const [filteredData, setFilteredData] = useState<PodLeadStats[]>([])
+  const [data, setData] = useState<PodLeadAggregation[]>([])
+  const [filteredData, setFilteredData] = useState<PodLeadAggregation[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [selectedPodLeads, setSelectedPodLeads] = useState<string[]>([])
@@ -157,12 +158,11 @@ export default function PodLeadWise() {
     try {
       setLoading(true)
       setError(null)
-      const result = await getPodLeadStats()
+      const result = await getPodLeadStats({})
       setData(result)
       setFilteredData(result)
-    } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to fetch POD Lead statistics'
-      setError(errorMessage)
+    } catch (err: any) {
+      setError(err.message || 'Failed to fetch POD Lead statistics')
     } finally {
       setLoading(false)
     }
@@ -178,7 +178,7 @@ export default function PodLeadWise() {
 
     if (selectedPodLeads.length > 0) {
       filtered = filtered.filter(podLead => {
-        const name = podLead.pod_lead_name || 'Unknown'
+        const name = podLead.pod_lead_name || `ID: ${podLead.pod_lead_id}`
         const email = podLead.pod_lead_email ? ` (${podLead.pod_lead_email})` : ''
         const fullOption = `${name}${email}`
         return selectedPodLeads.includes(fullOption)
@@ -197,26 +197,21 @@ export default function PodLeadWise() {
   }
 
   const sortedData = [...filteredData].sort((a, b) => {
-    const aValue = a[orderBy as keyof PodLeadStats]
-    const bValue = b[orderBy as keyof PodLeadStats]
+    let aValue: any = a[orderBy as keyof PodLeadAggregation]
+    let bValue: any = b[orderBy as keyof PodLeadAggregation]
 
-    // Handle null/undefined
-    if (aValue === null || aValue === undefined) return order === 'asc' ? 1 : -1
-    if (bValue === null || bValue === undefined) return order === 'asc' ? -1 : 1
+    if (aValue === null || aValue === undefined) aValue = order === 'asc' ? Infinity : -Infinity
+    if (bValue === null || bValue === undefined) bValue = order === 'asc' ? Infinity : -Infinity
 
     if (typeof aValue === 'string' && typeof bValue === 'string') {
       return order === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue)
     }
 
-    if (typeof aValue === 'number' && typeof bValue === 'number') {
-      return order === 'asc' ? aValue - bValue : bValue - aValue
-    }
-
-    return 0
+    return order === 'asc' ? aValue - bValue : bValue - aValue
   })
 
   const podLeadOptions = data.map(pl => {
-    const name = pl.pod_lead_name || 'Unknown'
+    const name = pl.pod_lead_name || `ID: ${pl.pod_lead_id}`
     const email = pl.pod_lead_email ? ` (${pl.pod_lead_email})` : ''
     return `${name}${email}`
   })
@@ -288,7 +283,7 @@ export default function PodLeadWise() {
         {/* Info banner */}
         <Box sx={{ px: 2, py: 1, backgroundColor: '#FEF3C7', borderBottom: '1px solid #FCD34D' }}>
           <Typography variant="caption" sx={{ color: '#92400E' }}>
-            👤 POD Leads with their trainers • Click on a POD Lead to expand and see trainers
+            👤 POD Leads with their reviewers • Click on a POD Lead to expand and see reviewers
           </Typography>
         </Box>
 
@@ -306,57 +301,51 @@ export default function PodLeadWise() {
                     POD Lead
                   </TableSortLabel>
                 </TableCell>
+                <TableCell sx={{ fontWeight: 700, backgroundColor: '#F9FAFB', minWidth: 180 }} align="center">
+                  Email
+                </TableCell>
                 <TableCell sx={{ fontWeight: 700, backgroundColor: '#F9FAFB' }} align="center">
                   <TableSortLabel
-                    active={orderBy === 'unique_tasks'}
-                    direction={orderBy === 'unique_tasks' ? order : 'asc'}
-                    onClick={() => handleSort('unique_tasks')}
+                    active={orderBy === 'average_task_score'}
+                    direction={orderBy === 'average_task_score' ? order : 'asc'}
+                    onClick={() => handleSort('average_task_score')}
                   >
-                    Unique Tasks
+                    Task Score
                   </TableSortLabel>
                 </TableCell>
                 <TableCell sx={{ fontWeight: 700, backgroundColor: '#F9FAFB' }} align="center">
                   <TableSortLabel
-                    active={orderBy === 'new_tasks'}
-                    direction={orderBy === 'new_tasks' ? order : 'asc'}
-                    onClick={() => handleSort('new_tasks')}
+                    active={orderBy === 'task_count'}
+                    direction={orderBy === 'task_count' ? order : 'asc'}
+                    onClick={() => handleSort('task_count')}
                   >
-                    New Tasks
+                    Total Tasks
                   </TableSortLabel>
                 </TableCell>
                 <TableCell sx={{ fontWeight: 700, backgroundColor: '#F9FAFB' }} align="center">
                   <TableSortLabel
-                    active={orderBy === 'rework'}
-                    direction={orderBy === 'rework' ? order : 'asc'}
-                    onClick={() => handleSort('rework')}
+                    active={orderBy === 'total_rework_count'}
+                    direction={orderBy === 'total_rework_count' ? order : 'asc'}
+                    onClick={() => handleSort('total_rework_count')}
                   >
-                    Rework
+                    Total Reworks
                   </TableSortLabel>
                 </TableCell>
                 <TableCell sx={{ fontWeight: 700, backgroundColor: '#F9FAFB' }} align="center">
                   <TableSortLabel
-                    active={orderBy === 'ready_for_delivery'}
-                    direction={orderBy === 'ready_for_delivery' ? order : 'asc'}
-                    onClick={() => handleSort('ready_for_delivery')}
+                    active={orderBy === 'average_rework_count'}
+                    direction={orderBy === 'average_rework_count' ? order : 'asc'}
+                    onClick={() => handleSort('average_rework_count')}
                   >
-                    Ready for Delivery
-                  </TableSortLabel>
-                </TableCell>
-                <TableCell sx={{ fontWeight: 700, backgroundColor: '#F9FAFB' }} align="center">
-                  <TableSortLabel
-                    active={orderBy === 'avg_rating'}
-                    direction={orderBy === 'avg_rating' ? order : 'asc'}
-                    onClick={() => handleSort('avg_rating')}
-                  >
-                    Avg Rating
+                    Avg Rework
                   </TableSortLabel>
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {paginatedData.map((podLead, index) => (
+              {paginatedData.map((podLead) => (
                 <PodLeadRow
-                  key={podLead.pod_lead_email || index}
+                  key={podLead.pod_lead_id}
                   podLead={podLead}
                 />
               ))}

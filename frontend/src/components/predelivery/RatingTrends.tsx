@@ -33,6 +33,8 @@ import {
   Compare as CompareIcon,
 } from '@mui/icons-material'
 import {
+  LineChart,
+  Line,
   XAxis,
   YAxis,
   CartesianGrid,
