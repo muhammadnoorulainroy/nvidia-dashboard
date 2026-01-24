@@ -350,7 +350,12 @@ class DataSyncService:
             return False
     
     def sync_contributor(self, sync_type: str = 'scheduled') -> bool:
-        """Sync contributor names from BigQuery"""
+        """Sync contributor names from BigQuery.
+        
+        Uses a two-pass approach to handle self-referential team_lead_id FK:
+        1. Insert all contributors with team_lead_id = NULL
+        2. Update team_lead_id for all contributors
+        """
         log_id = self.log_sync_start('contributor', sync_type)
         try:
             logger.info("Fetching contributor data from BigQuery...")
@@ -378,9 +383,26 @@ class DataSyncService:
                 session.execute(delete(Contributor))
                 session.commit()
                 
-                objects = [Contributor(**record) for record in data]
-                session.bulk_save_objects(objects)
+                # Two-pass approach for self-referential FK
+                # Pass 1: Insert all contributors without team_lead_id
+                team_lead_mapping = {}  # id -> team_lead_id
+                for record in data:
+                    if record.get('team_lead_id'):
+                        team_lead_mapping[record['id']] = record['team_lead_id']
+                    record_copy = record.copy()
+                    record_copy['team_lead_id'] = None  # Clear for initial insert
+                    session.add(Contributor(**record_copy))
                 session.commit()
+                
+                # Pass 2: Update team_lead_id for all contributors
+                if team_lead_mapping:
+                    logger.info(f"Updating team_lead_id for {len(team_lead_mapping)} contributors...")
+                    for contributor_id, team_lead_id in team_lead_mapping.items():
+                        session.execute(
+                            text("UPDATE contributor SET team_lead_id = :team_lead_id WHERE id = :id"),
+                            {"team_lead_id": team_lead_id, "id": contributor_id}
+                        )
+                    session.commit()
             
             self.log_sync_complete(log_id, len(data), True)
             logger.info(f"✓ Successfully synced {len(data)} contributor records")
@@ -580,6 +602,18 @@ class DataSyncService:
             logger.info(f"Fetched {len(data)} task_aht records from BigQuery")
             
             with self.db_service.get_session() as session:
+                # Get existing task IDs to filter AHT data (avoid FK violations)
+                result = session.execute(text("SELECT id FROM task"))
+                existing_task_ids = {row[0] for row in result.fetchall()}
+                logger.info(f"Found {len(existing_task_ids)} existing tasks in database")
+                
+                # Filter data to only include tasks that exist locally
+                original_count = len(data)
+                data = [r for r in data if r['task_id'] in existing_task_ids]
+                filtered_count = original_count - len(data)
+                if filtered_count > 0:
+                    logger.info(f"Filtered out {filtered_count} AHT records for non-existent tasks")
+                
                 logger.info("Clearing existing task_aht data...")
                 session.execute(delete(TaskAHT))
                 session.commit()
@@ -1592,7 +1626,10 @@ class DataSyncService:
             return False
     
     def sync_pod_lead_mapping(self, sync_type: str = 'initial') -> bool:
-        """Sync POD Lead mapping from static Excel file"""
+        """Sync POD Lead mapping from static Excel file.
+        
+        Uses raw SQL inserts to avoid SQLAlchemy type caching issues.
+        """
         import os
         import pandas as pd
         
@@ -1635,32 +1672,48 @@ class DataSyncService:
             logger.info(f"Found {len(df)} unique trainer-pod lead mappings for all Nvidia projects")
             
             with self.db_service.get_session() as session:
-                # Clear existing mappings
-                session.execute(delete(PodLeadMapping))
+                # Clear existing mappings using raw SQL
+                session.execute(text("DELETE FROM pod_lead_mapping"))
                 
-                # Insert new mappings
+                # Prepare data for raw SQL insert
+                records_inserted = 0
                 for _, row in df.iterrows():
+                    trainer_email = row.get('Turing Email', '')
+                    trainer_email = trainer_email.lower().strip() if pd.notna(trainer_email) else None
+                    pod_lead_email = row.get('Pod Lead.1', '')
+                    pod_lead_email = pod_lead_email.lower().strip() if pd.notna(pod_lead_email) else None
+                    
+                    if not trainer_email or not pod_lead_email:
+                        continue
+                    
                     # Get Jibble ID (convert to string to handle both int and string)
                     jibble_id = row.get('Jibble ID')
                     jibble_id_str = str(int(jibble_id)) if pd.notna(jibble_id) else None
                     
-                    mapping = PodLeadMapping(
-                        trainer_email=row.get('Turing Email', '').lower().strip() if pd.notna(row.get('Turing Email')) else None,
-                        trainer_name=row.get('Jibble Name', ''),
-                        pod_lead_email=row.get('Pod Lead.1', '').lower().strip() if pd.notna(row.get('Pod Lead.1')) else None,
-                        role=row.get('Role', ''),
-                        current_status=row.get('Current Status', ''),
-                        jibble_project=row.get('Jibble Project', ''),
-                        jibble_id=jibble_id_str,
-                        jibble_name=row.get('Jibble Name', '') if pd.notna(row.get('Jibble Name')) else None
-                    )
-                    if mapping.trainer_email and mapping.pod_lead_email:
-                        session.add(mapping)
+                    # Use raw SQL insert to bypass SQLAlchemy type caching
+                    session.execute(text("""
+                        INSERT INTO pod_lead_mapping 
+                        (trainer_email, trainer_name, pod_lead_email, role, current_status, 
+                         jibble_project, jibble_id, jibble_name)
+                        VALUES 
+                        (:trainer_email, :trainer_name, :pod_lead_email, :role, :current_status,
+                         :jibble_project, :jibble_id, :jibble_name)
+                    """), {
+                        "trainer_email": trainer_email,
+                        "trainer_name": row.get('Jibble Name', '') if pd.notna(row.get('Jibble Name')) else '',
+                        "pod_lead_email": pod_lead_email,
+                        "role": row.get('Role', '') if pd.notna(row.get('Role')) else '',
+                        "current_status": row.get('Current Status', '') if pd.notna(row.get('Current Status')) else '',
+                        "jibble_project": row.get('Jibble Project', '') if pd.notna(row.get('Jibble Project')) else '',
+                        "jibble_id": jibble_id_str,
+                        "jibble_name": row.get('Jibble Name', '') if pd.notna(row.get('Jibble Name')) else None
+                    })
+                    records_inserted += 1
                 
                 session.commit()
             
-            self.log_sync_complete(log_id, len(df), True)
-            logger.info(f"✓ Successfully synced {len(df)} pod_lead_mapping records")
+            self.log_sync_complete(log_id, records_inserted, True)
+            logger.info(f"✓ Successfully synced {records_inserted} pod_lead_mapping records")
             return True
         except Exception as e:
             self.log_sync_complete(log_id, 0, False, str(e))

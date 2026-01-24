@@ -14,7 +14,7 @@ YELLOW := \033[1;33m
 RED := \033[0;31m
 NC := \033[0m # No Color
 
-.PHONY: all start stop restart clean backend frontend install sync help
+.PHONY: all start stop restart clean backend frontend install sync help migrate migrate-create migrate-history migrate-current migrate-stamp migrate-down
 
 # Default target
 all: start
@@ -123,6 +123,42 @@ sync:
 	@echo "$(GREEN)✓ Sync completed$(NC)"
 
 # ============================================
+# DATABASE MIGRATIONS (Alembic)
+# ============================================
+
+## Apply all pending migrations
+migrate:
+	@echo "$(YELLOW)Running database migrations...$(NC)"
+	@cd $(BACKEND_DIR) && $(VENV)/alembic upgrade head
+	@echo "$(GREEN)✓ Migrations applied$(NC)"
+
+## Create a new migration (usage: make migrate-create msg="description")
+migrate-create:
+	@echo "$(YELLOW)Creating new migration...$(NC)"
+	@cd $(BACKEND_DIR) && $(VENV)/alembic revision --autogenerate -m "$(msg)"
+	@echo "$(GREEN)✓ Migration created$(NC)"
+
+## Show migration history
+migrate-history:
+	@cd $(BACKEND_DIR) && $(VENV)/alembic history --verbose
+
+## Show current migration version
+migrate-current:
+	@cd $(BACKEND_DIR) && $(VENV)/alembic current
+
+## Mark existing database as up-to-date (for existing DBs before Alembic)
+migrate-stamp:
+	@echo "$(YELLOW)Stamping database as up-to-date...$(NC)"
+	@cd $(BACKEND_DIR) && $(VENV)/alembic stamp head
+	@echo "$(GREEN)✓ Database stamped$(NC)"
+
+## Rollback one migration
+migrate-down:
+	@echo "$(YELLOW)Rolling back one migration...$(NC)"
+	@cd $(BACKEND_DIR) && $(VENV)/alembic downgrade -1
+	@echo "$(GREEN)✓ Rollback complete$(NC)"
+
+# ============================================
 # CACHE & CLEANUP
 # ============================================
 
@@ -192,6 +228,14 @@ help:
 	@echo ""
 	@echo "$(YELLOW)Data:$(NC)"
 	@echo "  make sync       - Trigger data sync from BigQuery"
+	@echo ""
+	@echo "$(YELLOW)Database Migrations:$(NC)"
+	@echo "  make migrate         - Apply all pending migrations"
+	@echo "  make migrate-create msg=\"description\" - Create new migration"
+	@echo "  make migrate-history - Show migration history"
+	@echo "  make migrate-current - Show current version"
+	@echo "  make migrate-stamp   - Mark existing DB as up-to-date"
+	@echo "  make migrate-down    - Rollback one migration"
 	@echo ""
 	@echo "$(YELLOW)Utilities:$(NC)"
 	@echo "  make status     - Check service status"

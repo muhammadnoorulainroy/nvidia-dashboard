@@ -140,7 +140,9 @@ class DatabaseService:
                 'contributor',
                 'data_sync_log',
                 'work_item',
-                'task_reviewed_info'
+                'task_reviewed_info',
+                'pod_lead_mapping',
+                'jibble_hours'
             ]
             
             table_status = {}
@@ -152,20 +154,146 @@ class DatabaseService:
             logger.error(f"Error checking tables: {e}")
             return {}
     
-    def create_tables(self) -> bool:
-        """Create all tables defined in the models"""
+    def create_tables(self, use_alembic: bool = True) -> bool:
+        """
+        Create all tables defined in the models.
+        
+        Args:
+            use_alembic: If True, use Alembic migrations (recommended).
+                        If False, use SQLAlchemy create_all (legacy).
+        """
         if not self._initialized or not self.engine:
             logger.error("Database engine not initialized")
             return False
         
         try:
-            logger.info("Creating database tables...")
-            Base.metadata.create_all(bind=self.engine)
-            logger.info("All tables created successfully")
-            return True
+            if use_alembic:
+                return self._run_alembic_migrations()
+            else:
+                # Legacy fallback - direct table creation
+                self._fix_schema_mismatches()
+                logger.info("Creating database tables (legacy mode)...")
+                Base.metadata.create_all(bind=self.engine)
+                logger.info("All tables created successfully")
+                return True
         except Exception as e:
             logger.error(f"Error creating tables: {e}")
             return False
+    
+    def _run_alembic_migrations(self) -> bool:
+        """
+        Run Alembic migrations to upgrade database to latest version.
+        
+        This is the recommended way to manage schema changes.
+        For existing databases, first run: alembic stamp head
+        """
+        try:
+            from alembic.config import Config
+            from alembic import command
+            import os
+            
+            # ALWAYS fix schema mismatches first (for existing databases with wrong types)
+            # This is critical for pod_lead_mapping.current_status which may be DOUBLE PRECISION
+            self._fix_schema_mismatches()
+            
+            # Find alembic.ini relative to backend directory
+            backend_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+            alembic_ini = os.path.join(backend_dir, 'alembic.ini')
+            
+            if not os.path.exists(alembic_ini):
+                logger.warning(f"alembic.ini not found at {alembic_ini}, falling back to legacy mode")
+                Base.metadata.create_all(bind=self.engine)
+                return True
+            
+            logger.info("Running Alembic migrations...")
+            alembic_cfg = Config(alembic_ini)
+            
+            # Run upgrade to head (latest migration)
+            command.upgrade(alembic_cfg, "head")
+            logger.info("Alembic migrations completed successfully")
+            return True
+            
+        except Exception as e:
+            logger.warning(f"Alembic migration failed: {e}. Falling back to legacy mode.")
+            # Fallback to legacy create_all
+            Base.metadata.create_all(bind=self.engine)
+            return True
+    
+    def _fix_schema_mismatches(self):
+        """
+        Fix known schema mismatches by altering column types.
+        Uses direct PostgreSQL information_schema query to bypass SQLAlchemy caching.
+        
+        Note: For production, consider using Alembic migrations instead.
+        """
+        from sqlalchemy import text
+        
+        logger.info("Checking for schema mismatches (using direct PostgreSQL query)...")
+        
+        try:
+            with self.engine.connect() as conn:
+                # Check if pod_lead_mapping table exists using direct SQL
+                result = conn.execute(text(
+                    "SELECT table_name FROM information_schema.tables "
+                    "WHERE table_schema = 'public' AND table_name = 'pod_lead_mapping'"
+                ))
+                table_exists = result.fetchone() is not None
+                
+                if not table_exists:
+                    logger.info("pod_lead_mapping table not found - will be created")
+                    return
+                
+                # Get the ACTUAL column type from PostgreSQL information_schema
+                # This bypasses any SQLAlchemy caching issues
+                result = conn.execute(text(
+                    "SELECT column_name, data_type, udt_name "
+                    "FROM information_schema.columns "
+                    "WHERE table_schema = 'public' AND table_name = 'pod_lead_mapping' "
+                    "AND column_name = 'current_status'"
+                ))
+                row = result.fetchone()
+                
+                if row is None:
+                    logger.info("current_status column not found in pod_lead_mapping")
+                    return
+                
+                column_name, data_type, udt_name = row
+                logger.info(f"PostgreSQL reports current_status: data_type={data_type}, udt_name={udt_name}")
+                
+                # Check if it's a string type (varchar, text, char, etc.)
+                string_types = ['character varying', 'varchar', 'text', 'character', 'char']
+                is_string = data_type.lower() in string_types or udt_name.lower() in ['varchar', 'text', 'bpchar']
+                
+                if not is_string:
+                    logger.warning(f"SCHEMA MISMATCH DETECTED: current_status is {data_type}/{udt_name}, should be VARCHAR")
+                    logger.warning("Dropping pod_lead_mapping table to recreate with correct schema...")
+                    
+                    # Drop the table - it will be recreated with correct schema
+                    conn.execute(text("DROP TABLE IF EXISTS pod_lead_mapping CASCADE"))
+                    conn.commit()
+                    logger.info("Dropped pod_lead_mapping table")
+                    
+                    # Immediately recreate the table with correct schema
+                    PodLeadMapping.__table__.create(self.engine, checkfirst=True)
+                    logger.info("Recreated pod_lead_mapping table with correct VARCHAR schema")
+                else:
+                    logger.info("pod_lead_mapping.current_status schema is correct")
+                    
+        except Exception as e:
+            logger.warning(f"Schema fix error: {e}")
+            try:
+                # If anything fails, try dropping and recreating the table to ensure clean state
+                logger.warning("Attempting to drop and recreate pod_lead_mapping table due to error")
+                with self.engine.connect() as conn:
+                    conn.execute(text("DROP TABLE IF EXISTS pod_lead_mapping CASCADE"))
+                    conn.commit()
+                logger.info("Dropped pod_lead_mapping table")
+                
+                # Recreate with correct schema
+                PodLeadMapping.__table__.create(self.engine, checkfirst=True)
+                logger.info("Recreated pod_lead_mapping table with correct VARCHAR schema")
+            except Exception as drop_error:
+                logger.error(f"Failed to drop/recreate table: {drop_error}")
     
     @contextmanager
     def get_session(self) -> Generator[Session, None, None]:
@@ -202,12 +330,17 @@ class DatabaseService:
                 logger.error("Failed to initialize database engine")
                 return False
             
+            # ALWAYS fix schema mismatches for existing databases
+            # This is critical for pod_lead_mapping.current_status which may have wrong type
+            self._fix_schema_mismatches()
+            
             table_status = self.check_tables_exist()
             logger.info(f"Table status: {table_status}")
             
             if not all(table_status.values()):
                 logger.info("Some tables are missing, creating...")
-                if not self.create_tables():
+                # Use legacy mode (SQLAlchemy create_all) to avoid Alembic migration chain issues
+                if not self.create_tables(use_alembic=False):
                     logger.error("Failed to create tables")
                     return False
             
@@ -232,6 +365,34 @@ class DatabaseService:
         except Exception as e:
             logger.error(f"Error getting row count for {table_name}: {e}")
             return 0
+    
+    def get_pool_status(self) -> dict:
+        """Get connection pool status for health checks"""
+        if not self._initialized or not self.engine:
+            return {
+                "status": "not_initialized",
+                "pool_size": 0,
+                "checked_in": 0,
+                "checked_out": 0,
+                "overflow": 0
+            }
+        
+        try:
+            pool = self.engine.pool
+            return {
+                "status": "healthy",
+                "pool_size": pool.size(),
+                "checked_in": pool.checkedin(),
+                "checked_out": pool.checkedout(),
+                "overflow": pool.overflow(),
+                "invalid": pool.invalidatedcount() if hasattr(pool, 'invalidatedcount') else 0
+            }
+        except Exception as e:
+            logger.warning(f"Error getting pool status: {e}")
+            return {
+                "status": "error",
+                "error": str(e)
+            }
     
     def close(self):
         """Close database connections"""
