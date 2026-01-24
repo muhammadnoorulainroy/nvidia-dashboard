@@ -24,7 +24,28 @@ Usage in routers:
 """
 from functools import lru_cache
 from slowapi import Limiter
-from slowapi.util import get_remote_address
+from starlette.requests import Request
+
+
+def safe_get_remote_address(request: Request) -> str:
+    """
+    Safely get the remote address from the request.
+    
+    This handles the case where request.client is None (e.g., in tests or
+    when behind certain proxies), which would cause the default 
+    get_remote_address to raise an AttributeError.
+    """
+    # Check X-Forwarded-For header first (for proxied requests)
+    forwarded = request.headers.get("X-Forwarded-For")
+    if forwarded:
+        return forwarded.split(",")[0].strip()
+    
+    # Fall back to direct client address
+    if request.client and request.client.host:
+        return request.client.host
+    
+    # Default fallback - use a constant to still allow rate limiting
+    return "127.0.0.1"
 
 
 # Default rate limit values (used if settings not yet available)
@@ -64,7 +85,7 @@ def _is_enabled():
 # This MUST be the same instance registered with app.state.limiter in main.py
 # Uses lazy evaluation for settings to avoid import-time configuration errors
 limiter = Limiter(
-    key_func=get_remote_address,
+    key_func=safe_get_remote_address,
     default_limits=_get_default_limits(),
     enabled=_is_enabled(),
     headers_enabled=True,
