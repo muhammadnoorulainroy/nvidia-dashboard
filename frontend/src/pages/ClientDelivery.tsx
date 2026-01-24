@@ -25,7 +25,6 @@ import ReviewerWise from '../components/predelivery/ReviewerWise'
 import DeliveryTracker from '../components/clientdelivery/DeliveryTracker'
 import TaskWise from '../components/clientdelivery/TaskWise'
 import FeedbackUpload from '../components/clientdelivery/FeedbackUpload'
-import S3SyncButton from '../components/clientdelivery/S3SyncButton'
 import { getClientDeliveryOverallStats, getClientDeliveryDomainStats } from '../services/api'
 import type { OverallAggregation, DomainAggregation } from '../types'
 
@@ -181,7 +180,6 @@ export default function ClientDelivery() {
         >
           Comprehensive overview of delivery metrics and performance indicators
         </Typography>
-        <S3SyncButton />
       </Box>
 
       {/* Summary Cards */}
