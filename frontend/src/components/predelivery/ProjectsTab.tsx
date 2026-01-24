@@ -110,7 +110,7 @@ function PodLeadRow({
     if (!applyColors || value === null || value === undefined) return 'transparent'
     const config = colorSettings[metric]
     if (!config) return 'transparent'
-    return getBackgroundColorForValue(value, config.min, config.max, config.colorScale)
+    return getBackgroundColorForValue(value, config)
   }
 
   return (
@@ -198,7 +198,7 @@ function ProjectRow({
     if (!applyColors || value === null || value === undefined) return 'transparent'
     const config = colorSettings[metric]
     if (!config) return 'transparent'
-    return getBackgroundColorForValue(value, config.min, config.max, config.colorScale)
+    return getBackgroundColorForValue(value, config)
   }
 
   return (
