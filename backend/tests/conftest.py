@@ -25,6 +25,7 @@ os.environ["BIGQUERY_DATASET"] = "test_dataset"
 os.environ["PROJECT_ID_FILTER"] = "36"
 os.environ["CORS_ORIGINS"] = "http://localhost:3001"
 os.environ["PROJECT_START_DATE"] = "2024-01-01"
+os.environ["RATE_LIMIT_ENABLED"] = "false"  # Disable rate limiting in tests
 
 from app.models.db_models import Base
 from app.services.db_service import DatabaseService
