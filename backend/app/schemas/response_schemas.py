@@ -1,9 +1,56 @@
 """
-Response schemas for nvidia dashboard API
-"""
-from pydantic import BaseModel
-from typing import List, Optional, Dict, Any
+Response schemas for nvidia dashboard API.
 
+Includes:
+- Aggregation schemas for different data views
+- Pagination support for list endpoints
+- Health check and error response schemas
+"""
+from pydantic import BaseModel, Field
+from typing import List, Optional, Dict, Any, Generic, TypeVar
+
+T = TypeVar('T')
+
+
+# =============================================================================
+# Pagination Schema
+# =============================================================================
+
+class PaginationMeta(BaseModel):
+    """Pagination metadata."""
+    page: int = Field(..., description="Current page number (1-indexed)")
+    page_size: int = Field(..., description="Number of items per page")
+    total_items: int = Field(..., description="Total number of items")
+    total_pages: int = Field(..., description="Total number of pages")
+    has_next: bool = Field(..., description="Whether there is a next page")
+    has_previous: bool = Field(..., description="Whether there is a previous page")
+
+
+class PaginatedResponse(BaseModel):
+    """Generic paginated response wrapper."""
+    data: List[Any] = Field(..., description="List of items")
+    pagination: PaginationMeta = Field(..., description="Pagination metadata")
+    
+    @classmethod
+    def create(cls, items: List[Any], page: int, page_size: int, total_items: int):
+        """Create a paginated response."""
+        total_pages = (total_items + page_size - 1) // page_size if page_size > 0 else 0
+        return cls(
+            data=items,
+            pagination=PaginationMeta(
+                page=page,
+                page_size=page_size,
+                total_items=total_items,
+                total_pages=total_pages,
+                has_next=page < total_pages,
+                has_previous=page > 1
+            )
+        )
+
+
+# =============================================================================
+# Quality Dimension Schema
+# =============================================================================
 
 class QualityDimensionStats(BaseModel):
     """Statistics for a single quality dimension"""
