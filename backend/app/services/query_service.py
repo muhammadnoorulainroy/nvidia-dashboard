@@ -1675,7 +1675,7 @@ class QueryService:
             from sqlalchemy import case, distinct
             
             # Use provided project_id or default to all projects
-            filter_project_ids = [project_id] if project_id else self.settings.all_project_ids
+            filter_project_ids = [project_id] if project_id else self.settings.all_project_ids_list
             
             with self.db_service.get_session() as session:
                 # Get POD Lead mappings
@@ -2093,7 +2093,7 @@ class QueryService:
             
             # Get project names from config
             project_names = self.settings.project_names
-            all_project_ids = self.settings.all_project_ids
+            all_project_ids = self.settings.all_project_ids_list
             
             with self.db_service.get_session() as session:
                 # Get POD Lead mappings
