@@ -29,6 +29,9 @@ python-json-logger==2.0.7
 # Excel Processing
 openpyxl==3.1.2
 
+# Data Processing
+pandas==2.2.0
+
 # Utilities
 python-multipart==0.0.6
 python-dotenv==1.0.0
