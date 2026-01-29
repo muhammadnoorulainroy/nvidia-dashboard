@@ -62,39 +62,38 @@ function SummaryCard({ title, value, icon, color }: SummaryCardProps) {
   return (
     <Card
       sx={{
-        p: 2,
+        p: 2.5,
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
         backgroundColor: '#FFFFFF',
-        border: `1px solid #E5E7EB`,
-        borderLeft: `4px solid ${color}`,
+        border: '1px solid #E2E8F0',
         borderRadius: 2,
+        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.04)',
         transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
         position: 'relative',
         overflow: 'hidden',
         '&:hover': {
-          transform: 'translateY(-2px)',
-          boxShadow: `0 2px 8px rgba(0, 0, 0, 0.08)`,
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
+          borderColor: '#CBD5E1',
         },
       }}
     >
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1.5 }}>
+      <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', mb: 2 }}>
         <Typography 
           variant="body2" 
-          color="text.secondary" 
           sx={{ 
-            fontWeight: 600, 
-            fontSize: '0.75rem', 
-            textTransform: 'uppercase', 
-            letterSpacing: '0.5px' 
+            fontWeight: 500, 
+            fontSize: '0.8125rem', 
+            color: '#64748B',
+            letterSpacing: '0.01em',
           }}
         >
           {title}
         </Typography>
         <Box
           sx={{
-            backgroundColor: `${color}10`,
+            backgroundColor: `${color}12`,
             borderRadius: 1.5,
             p: 0.75,
             display: 'flex',
@@ -102,7 +101,7 @@ function SummaryCard({ title, value, icon, color }: SummaryCardProps) {
             justifyContent: 'center',
             color: color,
             '& svg': {
-              fontSize: '1.1rem',
+              fontSize: '1.25rem',
             },
           }}
         >
@@ -113,9 +112,9 @@ function SummaryCard({ title, value, icon, color }: SummaryCardProps) {
         variant="h4" 
         sx={{ 
           fontWeight: 700, 
-          color: '#1F2937',
-          fontSize: '1.75rem',
-          letterSpacing: '-0.02em',
+          color: '#0F172A',
+          fontSize: '2rem',
+          letterSpacing: '-0.025em',
           lineHeight: 1,
         }}
       >
@@ -161,7 +160,7 @@ export default function PreDelivery() {
         <Typography 
           variant="body2" 
           sx={{ 
-            color: '#6B7280',
+            color: '#64748B',
             fontSize: '0.875rem',
             lineHeight: 1.6,
           }}
@@ -182,7 +181,7 @@ export default function PreDelivery() {
               title="Total Tasks"
               value={overallData.task_count.toLocaleString()}
               icon={<AssignmentIcon />}
-              color="#6B7280"
+              color="#475569"
             />
           </Grid>
           <Grid item xs={12} sm={6} md={2.4}>
@@ -190,7 +189,7 @@ export default function PreDelivery() {
               title="Total Trainers"
               value={overallData.trainer_count.toLocaleString()}
               icon={<SchoolIcon />}
-              color="#3B82F6"
+              color="#2563EB"
             />
           </Grid>
           <Grid item xs={12} sm={6} md={2.4}>
@@ -198,7 +197,7 @@ export default function PreDelivery() {
               title="Total Reviewers"
               value={overallData.reviewer_count.toLocaleString()}
               icon={<ReviewIcon />}
-              color="#8B5CF6"
+              color="#7C3AED"
             />
           </Grid>
           <Grid item xs={12} sm={6} md={2.4}>
@@ -206,7 +205,7 @@ export default function PreDelivery() {
               title="Total Domains"
               value={overallData.domain_count.toLocaleString()}
               icon={<DomainIcon />}
-              color="#f39c12"
+              color="#EA580C"
             />
           </Grid>
           <Grid item xs={12} sm={6} md={2.4}>
@@ -214,7 +213,7 @@ export default function PreDelivery() {
               title="Quality Dimensions"
               value={overallData.quality_dimensions.length.toLocaleString()}
               icon={<CategoryIcon />}
-              color="#2ecc71"
+              color="#059669"
             />
           </Grid>
         </Grid>
@@ -222,37 +221,50 @@ export default function PreDelivery() {
 
       <Box 
         sx={{ 
-          borderBottom: '1px solid #E5E7EB',
-          backgroundColor: 'white',
-          borderRadius: '8px 8px 0 0',
-          px: 0,
+          backgroundColor: '#FFFFFF',
+          borderRadius: 2,
+          border: '1px solid #E2E8F0',
+          mb: 0,
+          boxShadow: '0 1px 2px rgba(0, 0, 0, 0.03)',
         }}
       >
         <Tabs
           value={activeTab}
           onChange={handleTabChange}
           aria-label="pre-delivery tabs"
+          variant="scrollable"
+          scrollButtons="auto"
           sx={{
-            minHeight: 48,
+            minHeight: 52,
+            px: 1,
             '& .MuiTab-root': {
               textTransform: 'none',
-              fontSize: '0.9375rem',
+              fontSize: '0.875rem',
               fontWeight: 500,
-              minHeight: 48,
-              px: 3,
-              color: '#6B7280',
-              transition: 'color 0.2s ease',
+              minHeight: 52,
+              px: 2.5,
+              py: 1.5,
+              color: '#64748B',
+              transition: 'all 0.15s ease',
+              borderRadius: 1.5,
+              mx: 0.5,
+              my: 0.75,
               '&.Mui-selected': {
-                color: '#f39c12',
+                color: '#0F172A',
                 fontWeight: 600,
+                backgroundColor: '#F1F5F9',
               },
               '&:hover': {
-                color: '#374151',
+                backgroundColor: '#F8FAFC',
+                color: '#334155',
+              },
+              '& .MuiSvgIcon-root': {
+                fontSize: '1.125rem',
+                marginRight: 1,
               },
             },
             '& .MuiTabs-indicator': {
-              backgroundColor: '#f39c12',
-              height: 2,
+              display: 'none',
             },
           }}
         >

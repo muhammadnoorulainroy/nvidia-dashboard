@@ -3,10 +3,16 @@ import {
   Box,
   Typography,
   Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  TableContainer,
+  TablePagination,
   Autocomplete,
   TextField,
   Chip,
-  IconButton,
   Button,
   Slider,
   Popover,
@@ -23,7 +29,9 @@ import SortIcon from '@mui/icons-material/Sort'
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 import FilterListIcon from '@mui/icons-material/FilterList'
-import { DataGrid, GridColDef, GridSortModel } from '@mui/x-data-grid'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import MuiTooltip from '@mui/material/Tooltip'
+import { getTooltipForHeader } from '../../utils/columnTooltips'
 import {
   BarChart,
   Bar,
@@ -64,11 +72,10 @@ export default function DomainWise({ isClientDelivery = false }: DomainWiseProps
   const [textFilters, setTextFilters] = useState<Record<string, TextFilter>>({})
   const [filterAnchorEl, setFilterAnchorEl] = useState<HTMLElement | null>(null)
   const [activeFilterColumn, setActiveFilterColumn] = useState<string>('')
-  const [sortModel, setSortModel] = useState<GridSortModel>([])
-  const [paginationModel, setPaginationModel] = useState({
-    pageSize: 20,
-    page: 0,
-  })
+  const [sortColumn, setSortColumn] = useState<string>('')
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc')
+  const [page, setPage] = useState(0)
+  const [rowsPerPage, setRowsPerPage] = useState(100)
 
   const fetchData = async () => {
     try {
@@ -211,7 +218,7 @@ export default function DomainWise({ isClientDelivery = false }: DomainWiseProps
     })
 
     setFilteredData(filtered)
-    setPaginationModel({ ...paginationModel, page: 0 })
+    setPage(0)
   }, [selectedDomains, textFilters, numericFilters, data])
 
   // Get unique domain names for autocomplete
@@ -241,169 +248,113 @@ export default function DomainWise({ isClientDelivery = false }: DomainWiseProps
   }
 
   const handleSort = (field: string, direction: 'asc' | 'desc') => {
-    setSortModel([{ field, sort: direction }])
+    setSortColumn(field)
+    setSortDirection(direction)
     setFilterAnchorEl(null)
     setActiveFilterColumn('')
   }
 
-  // Custom header renderer with dropdown arrow
-  const renderHeaderWithDropdown = (headerName: string, _isNumeric: boolean = false, fieldKey: string = '') => (_params: any) => {
-    return (
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'flex-start',
-          width: '100%',
-          gap: 0.5,
-          py: 1,
+  // Render column header with dropdown and tooltip (matching PodLeadTab style)
+  const renderHeaderWithFilter = (label: string, columnKey: string) => (
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 0.5,
+        cursor: 'pointer',
+        overflow: 'visible',
+        '&:hover': { opacity: 0.8 }
+      }}
+      onClick={(e) => {
+        setFilterAnchorEl(e.currentTarget as HTMLElement)
+        setActiveFilterColumn(columnKey)
+      }}
+    >
+      <ArrowDropDownIcon sx={{ fontSize: 18, color: '#64748B', flexShrink: 0 }} />
+      <span style={{ whiteSpace: 'nowrap' }}>{label}</span>
+      {sortColumn === columnKey && (
+        sortDirection === 'asc' ? 
+          <ArrowUpwardIcon sx={{ fontSize: 14, flexShrink: 0 }} /> : 
+          <ArrowDownwardIcon sx={{ fontSize: 14, flexShrink: 0 }} />
+      )}
+      <MuiTooltip 
+        title={getTooltipForHeader(label)}
+        arrow
+        placement="top"
+        enterDelay={200}
+        slotProps={{
+          tooltip: {
+            sx: {
+              bgcolor: '#1E293B',
+              color: '#F8FAFC',
+              fontSize: '0.75rem',
+              maxWidth: 300,
+              p: '8px 12px',
+              borderRadius: 1,
+              zIndex: 9999,
+            },
+          },
+          popper: {
+            sx: {
+              zIndex: 9999,
+            },
+          },
         }}
       >
-        <IconButton
-          size="small"
-          onClick={(e) => {
-            e.stopPropagation()
-            if (fieldKey) {
-              setFilterAnchorEl(e.currentTarget)
-              setActiveFilterColumn(fieldKey)
-            } else {
-              const button = e.currentTarget.closest('.MuiDataGrid-columnHeader')?.querySelector('.MuiDataGrid-menuIcon button') as HTMLButtonElement
-              if (button) button.click()
-            }
-          }}
-          sx={{
-            padding: 0,
-            minWidth: 'auto',
-            color: '#6B7280',
-            '&:hover': {
-              color: '#374151',
-              backgroundColor: 'transparent',
-            },
-          }}
-        >
-          <ArrowDropDownIcon fontSize="small" />
-        </IconButton>
-        <Typography
-          variant="caption"
-          sx={{
-            fontWeight: 700,
-            textTransform: 'uppercase',
-            fontSize: '0.75rem',
-            whiteSpace: 'nowrap',
-            overflow: 'visible',
-          }}
-        >
-          {headerName}
-        </Typography>
-      </Box>
-    )
-  };
+        <InfoOutlinedIcon 
+          sx={{ 
+            fontSize: 14, 
+            color: '#94A3B8', 
+            cursor: 'help', 
+            ml: 0.25, 
+            flexShrink: 0,
+            '&:hover': { color: '#64748B' } 
+          }} 
+          onClick={(e) => e.stopPropagation()}
+        />
+      </MuiTooltip>
+    </Box>
+  )
 
-  // Calculate column width based on content - exact fit
-  const calculateColumnWidth = (headerName: string, data: any[], fieldName: string) => {
-    // Calculate header width (including dropdown arrow icon)
-    const headerWidth = headerName.length * 9 + 50
+  // Sort the filtered data
+  const sortedData = [...filteredData].sort((a, b) => {
+    if (!sortColumn) return 0
     
-    // Calculate max content width
-    let maxContentWidth = headerWidth
-    if (data.length > 0) {
-      const contentLengths = data.map(row => {
-        const value = row[fieldName]
-        return String(value || '').length * 8.5 + 16
-      })
-      maxContentWidth = Math.max(headerWidth, ...contentLengths)
+    let aVal: any
+    let bVal: any
+    
+    if (sortColumn === 'domain') {
+      aVal = a.domain || ''
+      bVal = b.domain || ''
+    } else if (sortColumn === 'task_score') {
+      aVal = a.average_task_score ?? -Infinity
+      bVal = b.average_task_score ?? -Infinity
+    } else if (sortColumn === 'task_count') {
+      aVal = a.task_count ?? 0
+      bVal = b.task_count ?? 0
+    } else if (sortColumn === 'total_rework_count') {
+      aVal = a.total_rework_count ?? 0
+      bVal = b.total_rework_count ?? 0
+    } else if (sortColumn === 'average_rework_count') {
+      aVal = a.average_rework_count ?? 0
+      bVal = b.average_rework_count ?? 0
+    } else {
+      return 0
     }
     
-    // Return exact width needed (no artificial max cap)
-    return Math.max(maxContentWidth, 100)
-  }
-
-  // Build columns
-  const columns: GridColDef[] = [
-    {
-      field: 'domain',
-      headerName: 'Domain',
-      width: calculateColumnWidth('Domain', filteredData, 'domain'),
-      align: 'center' as const,
-      headerAlign: 'left' as const,
-      renderHeader: renderHeaderWithDropdown('Domain', false, 'domain'),
-      renderCell: (params) => (
-        <Typography variant="body2" sx={{ fontWeight: 600, color: '#1F2937', textAlign: 'center', width: '100%' }}>
-          {params.value || 'Unknown'}
-        </Typography>
-      ),
-    },
-    {
-      field: 'task_score',
-      headerName: 'Task Score',
-      width: calculateColumnWidth('Task Score', filteredData, 'task_score'),
-      type: 'number',
-      align: 'center' as const,
-      headerAlign: 'left' as const,
-      renderHeader: renderHeaderWithDropdown('Task Score', true, 'task_score'),
-      renderCell: (params) => (
-        <Typography variant="body2" sx={{ fontWeight: 600, color: '#1F2937', textAlign: 'center', width: '100%' }}>
-          {params.value !== null && params.value !== undefined ? params.value : 'N/A'}
-        </Typography>
-      ),
-    },
-    {
-      field: 'task_count',
-      headerName: 'Total Tasks',
-      width: calculateColumnWidth('Total Tasks', filteredData, 'task_count'),
-      type: 'number',
-      align: 'center' as const,
-      headerAlign: 'left' as const,
-      renderHeader: renderHeaderWithDropdown('Total Tasks', true, 'task_count'),
-      renderCell: (params) => (
-        <Typography variant="body2" sx={{ fontWeight: 600, color: '#1F2937', textAlign: 'center', width: '100%' }}>
-          {params.value}
-        </Typography>
-      ),
-    },
-    {
-      field: 'total_rework_count',
-      headerName: 'Total Reworks',
-      width: calculateColumnWidth('Total Reworks', filteredData, 'total_rework_count'),
-      type: 'number',
-      align: 'center' as const,
-      headerAlign: 'left' as const,
-      renderHeader: renderHeaderWithDropdown('Total Reworks', true, 'total_rework_count'),
-      renderCell: (params) => (
-        <Typography variant="body2" sx={{ fontWeight: 600, color: '#1F2937', textAlign: 'center', width: '100%' }}>
-          {params.value || 0}
-        </Typography>
-      ),
-    },
-    {
-      field: 'average_rework_count',
-      headerName: 'Avg Rework',
-      width: calculateColumnWidth('Avg Rework', filteredData, 'average_rework_count'),
-      type: 'number',
-      align: 'center' as const,
-      headerAlign: 'left' as const,
-      renderHeader: renderHeaderWithDropdown('Avg Rework', true, 'average_rework_count'),
-      renderCell: (params) => (
-        <Typography variant="body2" sx={{ fontWeight: 600, color: '#1F2937', textAlign: 'center', width: '100%' }}>
-          {params.value !== null && params.value !== undefined ? params.value.toFixed(2) : '0.00'}
-        </Typography>
-      ),
-    },
-  ]
-
-  // Build rows
-  const rows = filteredData.map((domain, index) => {
-    const row: any = {
-      id: index,
-      domain: domain.domain,
-      task_score: domain.average_task_score?.toFixed(2) || 'N/A',
-      task_count: domain.task_count,
-      total_rework_count: domain.total_rework_count || 0,
-      average_rework_count: domain.average_rework_count || 0,
+    // String comparison
+    if (typeof aVal === 'string' && typeof bVal === 'string') {
+      return sortDirection === 'asc' 
+        ? aVal.localeCompare(bVal)
+        : bVal.localeCompare(aVal)
     }
     
-    return row
+    // Numeric comparison
+    return sortDirection === 'asc' ? aVal - bVal : bVal - aVal
   })
+
+  // Paginate the sorted data
+  const paginatedData = sortedData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 
   // Prepare data for task distribution charts
   const prepareTaskDistributionData = () => {
@@ -619,19 +570,21 @@ export default function DomainWise({ isClientDelivery = false }: DomainWiseProps
                 icon={<FilterListIcon />}
                 label="Clear All"
                 size="small"
-                onDelete={() => {
+                  onDelete={() => {
                   const resetFilters = initializeNumericFilters(data)
                   setSelectedDomains([])
                   setTextFilters({})
                   setNumericFilters(resetFilters)
-                  setSortModel([])
+                  setSortColumn('')
+                  setSortDirection('asc')
                 }}
                 onClick={() => {
                   const resetFilters = initializeNumericFilters(data)
                   setSelectedDomains([])
                   setTextFilters({})
                   setNumericFilters(resetFilters)
-                  setSortModel([])
+                  setSortColumn('')
+                  setSortDirection('asc')
                 }}
                 sx={{
                   backgroundColor: '#DC2626',
@@ -656,79 +609,96 @@ export default function DomainWise({ isClientDelivery = false }: DomainWiseProps
           </Box>
         </Box>
 
-        <Box sx={{ height: 600, width: '100%' }}>
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            paginationModel={paginationModel}
-            onPaginationModelChange={setPaginationModel}
-            pageSizeOptions={[10, 20, 50, 100]}
-            disableRowSelectionOnClick
-            disableColumnMenu={true}
-            sortModel={sortModel}
-            onSortModelChange={setSortModel}
-            sx={{
-              border: 'none',
-              backgroundColor: 'white',
-              '& .MuiDataGrid-cell': {
-                borderBottom: '1px solid #E5E7EB',
-                color: '#111827',
-                fontSize: '0.875rem',
-                paddingX: 1.5,
-              },
-              '& .MuiDataGrid-columnHeaders': {
-                backgroundColor: '#F9FAFB',
-                borderBottom: '1px solid #E5E7EB',
-                minHeight: '48px !important',
-                maxHeight: '48px !important',
-              },
-              '& .MuiDataGrid-columnHeader': {
-                cursor: 'pointer',
-                paddingX: 1.5,
-                '&:hover': {
-                  backgroundColor: '#F3F4F6',
-                },
-                '&:focus': {
-                  outline: 'none',
-                },
-              },
-              '& .MuiDataGrid-columnHeaderTitle': {
-                fontWeight: 600,
-                fontSize: '0.75rem',
-                color: '#6B7280',
-                textTransform: 'uppercase',
-                letterSpacing: '0.05em',
-              },
-              '& .MuiDataGrid-columnSeparator': {
-                display: 'none',
-              },
-              '& .MuiDataGrid-menuIcon': {
-                visibility: 'hidden',
-                width: 0,
-                opacity: 0,
-              },
-              '& .MuiDataGrid-iconButtonContainer': {
-                visibility: 'hidden',
-                width: 0,
-              },
-              '& .MuiDataGrid-row': {
-                '&:hover': {
-                  backgroundColor: '#F9FAFB',
-                },
-                '&:last-child .MuiDataGrid-cell': {
-                  borderBottom: 'none',
-                },
-              },
-              '& .MuiDataGrid-footerContainer': {
-                borderTop: '1px solid #E5E7EB',
-                backgroundColor: '#F9FAFB',
-              },
-              '& .MuiDataGrid-sortIcon': {
-                display: 'none',
-              },
-            }}
-          />
-        </Box>
+        <TableContainer sx={{ maxHeight: 600, overflowX: 'auto' }}>
+          <Table stickyHeader size="small" sx={{ minWidth: 800 }}>
+            <TableHead>
+              <TableRow>
+                <TableCell sx={{ 
+                  fontWeight: 600, 
+                  bgcolor: '#F8FAFC', 
+                  color: '#334155', 
+                  minWidth: 150, 
+                  borderBottom: '2px solid #E2E8F0', 
+                  fontSize: '0.8125rem', 
+                  textTransform: 'uppercase', 
+                  letterSpacing: '0.025em',
+                  position: 'sticky',
+                  left: 0,
+                  zIndex: 3,
+                  borderRight: '2px solid #E2E8F0',
+                }}>
+                  {renderHeaderWithFilter('Domain', 'domain')}
+                </TableCell>
+                <TableCell align="center" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 100, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em', whiteSpace: 'nowrap' }}>
+                  {renderHeaderWithFilter('Task Score', 'task_score')}
+                </TableCell>
+                <TableCell align="center" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 100, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em', whiteSpace: 'nowrap' }}>
+                  {renderHeaderWithFilter('Total Tasks', 'task_count')}
+                </TableCell>
+                <TableCell align="center" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 110, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em', whiteSpace: 'nowrap' }}>
+                  {renderHeaderWithFilter('Total Reworks', 'total_rework_count')}
+                </TableCell>
+                <TableCell align="center" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 100, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em', whiteSpace: 'nowrap' }}>
+                  {renderHeaderWithFilter('Avg Rework', 'average_rework_count')}
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {paginatedData.map((domain, idx) => (
+                <TableRow key={idx} sx={{ '&:hover': { bgcolor: '#F8FAFC' } }}>
+                  <TableCell sx={{ 
+                    position: 'sticky', 
+                    left: 0, 
+                    bgcolor: 'white', 
+                    borderRight: '2px solid #E2E8F0',
+                    zIndex: 1,
+                  }}>
+                    <Typography variant="body2" sx={{ fontWeight: 600, color: '#1F2937' }}>
+                      {domain.domain || 'Unknown'}
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="center">
+                    <Typography variant="body2" sx={{ fontWeight: 600, color: '#1F2937' }}>
+                      {domain.average_task_score !== null && domain.average_task_score !== undefined 
+                        ? domain.average_task_score.toFixed(2) 
+                        : 'N/A'}
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="center">
+                    <Typography variant="body2" sx={{ fontWeight: 600, color: '#1F2937' }}>
+                      {domain.task_count}
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="center">
+                    <Typography variant="body2" sx={{ fontWeight: 600, color: '#1F2937' }}>
+                      {domain.total_rework_count || 0}
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="center">
+                    <Typography variant="body2" sx={{ fontWeight: 600, color: '#1F2937' }}>
+                      {domain.average_rework_count !== null && domain.average_rework_count !== undefined 
+                        ? domain.average_rework_count.toFixed(2) 
+                        : '0.00'}
+                    </Typography>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[10, 25, 50, 100]}
+          component="div"
+          count={sortedData.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={(_, newPage) => setPage(newPage)}
+          onRowsPerPageChange={(e) => {
+            setRowsPerPage(parseInt(e.target.value, 10))
+            setPage(0)
+          }}
+          sx={{ borderTop: '1px solid #E2E8F0' }}
+        />
       </Paper>
 
 
@@ -1061,7 +1031,8 @@ export default function DomainWise({ isClientDelivery = false }: DomainWiseProps
                     })
                   }
                   // Reset sort
-                  setSortModel([])
+                  setSortColumn('')
+                  setSortDirection('asc')
                 }}
                 sx={{
                   color: '#6B7280',

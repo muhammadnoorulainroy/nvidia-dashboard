@@ -19,6 +19,9 @@ import {
 import FilterListIcon from '@mui/icons-material/FilterList'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import Tooltip from '@mui/material/Tooltip'
+import { getTooltipForHeader } from '../../utils/columnTooltips'
 import { getPodLeadStats } from '../../services/api'
 import type { PodLeadAggregation, ReviewerUnderPodLead } from '../../types'
 import LoadingSpinner from '../LoadingSpinner'
@@ -28,7 +31,13 @@ import ErrorDisplay from '../ErrorDisplay'
 function ReviewerRow({ reviewer }: { reviewer: ReviewerUnderPodLead }) {
   return (
     <TableRow sx={{ backgroundColor: '#F0F4FF', '&:hover': { backgroundColor: '#E8EEFF' } }}>
-      <TableCell>
+      <TableCell sx={{ 
+        position: 'sticky',
+        left: 0,
+        zIndex: 1,
+        bgcolor: '#F0F4FF',
+        borderRight: '2px solid #E2E8F0',
+      }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <Box sx={{ width: 28, ml: 2 }} />
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -41,27 +50,27 @@ function ReviewerRow({ reviewer }: { reviewer: ReviewerUnderPodLead }) {
           </Box>
         </Box>
       </TableCell>
-      <TableCell align="center">
+      <TableCell align="left">
         <Typography variant="body2" sx={{ color: '#6B7280', fontSize: '0.8rem' }}>
           {reviewer.reviewer_email || 'N/A'}
         </Typography>
       </TableCell>
-      <TableCell align="center">
+      <TableCell align="left">
         <Typography variant="body2" sx={{ fontWeight: 600, color: '#374151' }}>
           {reviewer.average_task_score?.toFixed(2) || 'N/A'}
         </Typography>
       </TableCell>
-      <TableCell align="center">
+      <TableCell align="left">
         <Typography variant="body2" sx={{ fontWeight: 600, color: '#374151' }}>
           {reviewer.task_count}
         </Typography>
       </TableCell>
-      <TableCell align="center">
+      <TableCell align="left">
         <Typography variant="body2" sx={{ fontWeight: 600, color: '#374151' }}>
           {reviewer.total_rework_count || 0}
         </Typography>
       </TableCell>
-      <TableCell align="center">
+      <TableCell align="left">
         <Typography variant="body2" sx={{ fontWeight: 600, color: '#374151' }}>
           {reviewer.average_rework_count?.toFixed(2) || '0.00'}
         </Typography>
@@ -89,7 +98,13 @@ function PodLeadRow({
         }}
         onClick={() => hasReviewers && setOpen(!open)}
       >
-        <TableCell>
+        <TableCell sx={{ 
+          position: 'sticky',
+          left: 0,
+          zIndex: 1,
+          bgcolor: '#FFFBEB',
+          borderRight: '2px solid #E2E8F0',
+        }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             {hasReviewers && (
               <IconButton size="small" onClick={(e) => { e.stopPropagation(); setOpen(!open); }}>
@@ -107,27 +122,27 @@ function PodLeadRow({
             </Box>
           </Box>
         </TableCell>
-        <TableCell align="center">
+        <TableCell align="left">
           <Typography variant="body2" sx={{ color: '#1F2937', fontSize: '0.875rem' }}>
             {podLead.pod_lead_email || 'N/A'}
           </Typography>
         </TableCell>
-        <TableCell align="center">
+        <TableCell align="left">
           <Typography variant="body2" sx={{ fontWeight: 600, color: '#1F2937' }}>
             {podLead.average_task_score?.toFixed(2) || 'N/A'}
           </Typography>
         </TableCell>
-        <TableCell align="center">
+        <TableCell align="left">
           <Typography variant="body2" sx={{ fontWeight: 600, color: '#1F2937' }}>
             {podLead.task_count}
           </Typography>
         </TableCell>
-        <TableCell align="center">
+        <TableCell align="left">
           <Typography variant="body2" sx={{ fontWeight: 600, color: '#1F2937' }}>
             {podLead.total_rework_count || 0}
           </Typography>
         </TableCell>
-        <TableCell align="center">
+        <TableCell align="left">
           <Typography variant="body2" sx={{ fontWeight: 600, color: '#1F2937' }}>
             {podLead.average_rework_count?.toFixed(2) || '0.00'}
           </Typography>
@@ -290,57 +305,95 @@ export default function PodLeadWise() {
         </Box>
 
         {/* Table */}
-        <TableContainer sx={{ maxHeight: 600 }}>
-          <Table stickyHeader size="small">
+        <TableContainer sx={{ maxHeight: 600, overflowX: 'auto' }}>
+          <Table stickyHeader size="small" sx={{ minWidth: 1000 }}>
             <TableHead>
               <TableRow>
-                <TableCell sx={{ fontWeight: 700, backgroundColor: '#F9FAFB', minWidth: 200 }}>
-                  <TableSortLabel
-                    active={orderBy === 'pod_lead_name'}
-                    direction={orderBy === 'pod_lead_name' ? order : 'asc'}
-                    onClick={() => handleSort('pod_lead_name')}
-                  >
-                    POD Lead
-                  </TableSortLabel>
+                <TableCell sx={{ 
+                  fontWeight: 700, 
+                  backgroundColor: '#F9FAFB', 
+                  minWidth: 200,
+                  position: 'sticky',
+                  left: 0,
+                  zIndex: 3,
+                  borderRight: '2px solid #E2E8F0',
+                }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                    <TableSortLabel
+                      active={orderBy === 'pod_lead_name'}
+                      direction={orderBy === 'pod_lead_name' ? order : 'asc'}
+                      onClick={() => handleSort('pod_lead_name')}
+                    >
+                      POD Lead
+                    </TableSortLabel>
+                    <Tooltip title={getTooltipForHeader('POD Lead / Trainer')} arrow placement="top" enterDelay={200} slotProps={{ tooltip: { sx: { bgcolor: '#1E293B', color: '#F8FAFC', fontSize: '0.75rem', maxWidth: 300, p: '8px 12px', borderRadius: 1 } } }}>
+                      <InfoOutlinedIcon sx={{ fontSize: 14, color: '#94A3B8', cursor: 'help', flexShrink: 0, visibility: 'visible !important', opacity: '1 !important', '&:hover': { color: '#64748B' } }} />
+                    </Tooltip>
+                  </Box>
                 </TableCell>
-                <TableCell sx={{ fontWeight: 700, backgroundColor: '#F9FAFB', minWidth: 180 }} align="center">
-                  Email
+                <TableCell sx={{ fontWeight: 700, backgroundColor: '#F9FAFB', minWidth: 180 }} align="left">
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                    Email
+                    <Tooltip title={getTooltipForHeader('Reviewer Email')} arrow placement="top" enterDelay={200} slotProps={{ tooltip: { sx: { bgcolor: '#1E293B', color: '#F8FAFC', fontSize: '0.75rem', maxWidth: 300, p: '8px 12px', borderRadius: 1 } } }}>
+                      <InfoOutlinedIcon sx={{ fontSize: 14, color: '#94A3B8', cursor: 'help', flexShrink: 0, visibility: 'visible !important', opacity: '1 !important', '&:hover': { color: '#64748B' } }} />
+                    </Tooltip>
+                  </Box>
                 </TableCell>
-                <TableCell sx={{ fontWeight: 700, backgroundColor: '#F9FAFB' }} align="center">
-                  <TableSortLabel
-                    active={orderBy === 'average_task_score'}
-                    direction={orderBy === 'average_task_score' ? order : 'asc'}
-                    onClick={() => handleSort('average_task_score')}
-                  >
-                    Task Score
-                  </TableSortLabel>
+                <TableCell sx={{ fontWeight: 700, backgroundColor: '#F9FAFB' }} align="left">
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                    <TableSortLabel
+                      active={orderBy === 'average_task_score'}
+                      direction={orderBy === 'average_task_score' ? order : 'asc'}
+                      onClick={() => handleSort('average_task_score')}
+                    >
+                      Task Score
+                    </TableSortLabel>
+                    <Tooltip title={getTooltipForHeader('Task Score')} arrow placement="top" enterDelay={200} slotProps={{ tooltip: { sx: { bgcolor: '#1E293B', color: '#F8FAFC', fontSize: '0.75rem', maxWidth: 300, p: '8px 12px', borderRadius: 1 } } }}>
+                      <InfoOutlinedIcon sx={{ fontSize: 14, color: '#94A3B8', cursor: 'help', flexShrink: 0, visibility: 'visible !important', opacity: '1 !important', '&:hover': { color: '#64748B' } }} />
+                    </Tooltip>
+                  </Box>
                 </TableCell>
-                <TableCell sx={{ fontWeight: 700, backgroundColor: '#F9FAFB' }} align="center">
-                  <TableSortLabel
-                    active={orderBy === 'task_count'}
-                    direction={orderBy === 'task_count' ? order : 'asc'}
-                    onClick={() => handleSort('task_count')}
-                  >
-                    Total Tasks
-                  </TableSortLabel>
+                <TableCell sx={{ fontWeight: 700, backgroundColor: '#F9FAFB' }} align="left">
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                    <TableSortLabel
+                      active={orderBy === 'task_count'}
+                      direction={orderBy === 'task_count' ? order : 'asc'}
+                      onClick={() => handleSort('task_count')}
+                    >
+                      Total Tasks
+                    </TableSortLabel>
+                    <Tooltip title={getTooltipForHeader('Unique Tasks')} arrow placement="top" enterDelay={200} slotProps={{ tooltip: { sx: { bgcolor: '#1E293B', color: '#F8FAFC', fontSize: '0.75rem', maxWidth: 300, p: '8px 12px', borderRadius: 1 } } }}>
+                      <InfoOutlinedIcon sx={{ fontSize: 14, color: '#94A3B8', cursor: 'help', flexShrink: 0, visibility: 'visible !important', opacity: '1 !important', '&:hover': { color: '#64748B' } }} />
+                    </Tooltip>
+                  </Box>
                 </TableCell>
-                <TableCell sx={{ fontWeight: 700, backgroundColor: '#F9FAFB' }} align="center">
-                  <TableSortLabel
-                    active={orderBy === 'total_rework_count'}
-                    direction={orderBy === 'total_rework_count' ? order : 'asc'}
-                    onClick={() => handleSort('total_rework_count')}
-                  >
-                    Total Reworks
-                  </TableSortLabel>
+                <TableCell sx={{ fontWeight: 700, backgroundColor: '#F9FAFB' }} align="left">
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                    <TableSortLabel
+                      active={orderBy === 'total_rework_count'}
+                      direction={orderBy === 'total_rework_count' ? order : 'asc'}
+                      onClick={() => handleSort('total_rework_count')}
+                    >
+                      Total Reworks
+                    </TableSortLabel>
+                    <Tooltip title={getTooltipForHeader('Rework')} arrow placement="top" enterDelay={200} slotProps={{ tooltip: { sx: { bgcolor: '#1E293B', color: '#F8FAFC', fontSize: '0.75rem', maxWidth: 300, p: '8px 12px', borderRadius: 1 } } }}>
+                      <InfoOutlinedIcon sx={{ fontSize: 14, color: '#94A3B8', cursor: 'help', flexShrink: 0, visibility: 'visible !important', opacity: '1 !important', '&:hover': { color: '#64748B' } }} />
+                    </Tooltip>
+                  </Box>
                 </TableCell>
-                <TableCell sx={{ fontWeight: 700, backgroundColor: '#F9FAFB' }} align="center">
-                  <TableSortLabel
-                    active={orderBy === 'average_rework_count'}
-                    direction={orderBy === 'average_rework_count' ? order : 'asc'}
-                    onClick={() => handleSort('average_rework_count')}
-                  >
-                    Avg Rework
-                  </TableSortLabel>
+                <TableCell sx={{ fontWeight: 700, backgroundColor: '#F9FAFB' }} align="left">
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                    <TableSortLabel
+                      active={orderBy === 'average_rework_count'}
+                      direction={orderBy === 'average_rework_count' ? order : 'asc'}
+                      onClick={() => handleSort('average_rework_count')}
+                    >
+                      Avg Rework
+                    </TableSortLabel>
+                    <Tooltip title={getTooltipForHeader('Avg Rework')} arrow placement="top" enterDelay={200} slotProps={{ tooltip: { sx: { bgcolor: '#1E293B', color: '#F8FAFC', fontSize: '0.75rem', maxWidth: 300, p: '8px 12px', borderRadius: 1 } } }}>
+                      <InfoOutlinedIcon sx={{ fontSize: 14, color: '#94A3B8', cursor: 'help', flexShrink: 0, visibility: 'visible !important', opacity: '1 !important', '&:hover': { color: '#64748B' } }} />
+                    </Tooltip>
+                  </Box>
                 </TableCell>
               </TableRow>
             </TableHead>
