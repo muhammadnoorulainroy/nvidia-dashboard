@@ -464,7 +464,11 @@ export interface TrainerUnderPod {
   new_tasks: number
   rework: number
   total_reviews: number
-  ready_for_delivery: number
+  ready_for_delivery?: number  // Deprecated
+  approved_tasks: number       // New tasks that got approved (first completion approved)
+  approved_rework: number      // Rework tasks that got approved (fixed someone else's rejected task)
+  delivered_tasks: number      // Tasks in delivered batches
+  in_delivery_queue: number    // Tasks in ongoing delivery batches
   avg_rework: number | null
   rework_percent: number | null
   avg_rating: number | null
@@ -482,7 +486,11 @@ export interface PodLeadStats {
   new_tasks: number
   rework: number
   total_reviews: number
-  ready_for_delivery: number
+  ready_for_delivery?: number  // Deprecated
+  approved_tasks: number       // New tasks that got approved
+  approved_rework: number      // Rework tasks that got approved
+  delivered_tasks: number      // Tasks in delivered batches
+  in_delivery_queue: number    // Tasks in ongoing delivery batches
   avg_rework: number | null
   rework_percent: number | null
   avg_rating: number | null
@@ -553,5 +561,302 @@ export const getProjectStats = async (
   const queryString = params.toString()
   const url = queryString ? `/project-stats?${queryString}` : '/project-stats'
   const response = await apiClient.get<ProjectStats[]>(url)
+  return response.data
+}
+
+
+// ============================================================================
+// AHT CONFIGURATION API FUNCTIONS
+// ============================================================================
+
+export interface AHTConfiguration {
+  id: number
+  project_id: number
+  project_name: string
+  new_task_aht: number
+  rework_aht: number
+  created_at: string | null
+  updated_at: string | null
+  updated_by: string | null
+}
+
+export interface AHTConfigUpdate {
+  new_task_aht: number
+  rework_aht: number
+  updated_by?: string
+}
+
+export const getAHTConfigurations = async (): Promise<AHTConfiguration[]> => {
+  const response = await apiClient.get<AHTConfiguration[]>('/config/aht')
+  return response.data
+}
+
+export const getAHTConfiguration = async (projectId: number): Promise<AHTConfiguration> => {
+  const response = await apiClient.get<AHTConfiguration>(`/config/aht/${projectId}`)
+  return response.data
+}
+
+export const updateAHTConfiguration = async (
+  projectId: number, 
+  update: AHTConfigUpdate
+): Promise<AHTConfiguration> => {
+  const response = await apiClient.put<AHTConfiguration>(`/config/aht/${projectId}`, update)
+  return response.data
+}
+
+
+// ============================================================================
+// THROUGHPUT TARGETS API FUNCTIONS
+// ============================================================================
+
+export interface ThroughputTarget {
+  id: number
+  config_key: string
+  entity_type: string | null
+  entity_id: number | null
+  entity_email: string | null
+  target: number
+  unit: string
+  effective_from: string
+  effective_to: string | null
+  updated_at: string | null
+  updated_by: string | null
+}
+
+export interface ThroughputTargetsResponse {
+  project_id: number
+  targets: ThroughputTarget[]
+}
+
+export interface SetTargetRequest {
+  target: number
+  entity_type?: string
+  entity_id?: number
+  entity_email?: string
+  updated_by?: string
+  config_key?: string  // 'new_tasks_target' or 'rework_target'
+}
+
+export const getThroughputTargets = async (projectId: number): Promise<ThroughputTargetsResponse> => {
+  const response = await apiClient.get<ThroughputTargetsResponse>(`/config/targets/${projectId}`)
+  return response.data
+}
+
+export const getDefaultThroughputTarget = async (
+  projectId: number, 
+  entityType: string = 'trainer'
+): Promise<{ project_id: number; entity_type: string; target: number | null; unit: string }> => {
+  const response = await apiClient.get(`/config/targets/${projectId}/default`, {
+    params: { entity_type: entityType }
+  })
+  return response.data
+}
+
+export const setThroughputTarget = async (
+  projectId: number,
+  request: SetTargetRequest
+): Promise<{ success: boolean; message: string; config: any }> => {
+  const response = await apiClient.put(`/config/targets/${projectId}`, request)
+  return response.data
+}
+
+export const bulkSetThroughputTargets = async (
+  projectId: number,
+  targets: Array<{ entity_id?: number; entity_email?: string; target: number }>,
+  entityType: string = 'trainer',
+  updatedBy?: string
+): Promise<{ success: boolean; message: string; count: number }> => {
+  const response = await apiClient.post(
+    `/config/targets/${projectId}/bulk`,
+    targets,
+    { params: { entity_type: entityType, updated_by: updatedBy } }
+  )
+  return response.data
+}
+
+
+// ============================================================================
+// PERFORMANCE WEIGHTS API FUNCTIONS
+// ============================================================================
+
+export interface PerformanceWeights {
+  project_id: number
+  throughput: number
+  avg_rating: number
+  rating_change: number
+  rework_rate: number
+  delivered: number
+  updated_at: string | null
+  updated_by: string | null
+}
+
+export const getPerformanceWeights = async (projectId: number): Promise<PerformanceWeights> => {
+  const response = await apiClient.get<PerformanceWeights>(`/config/weights/${projectId}`)
+  return response.data
+}
+
+export const setPerformanceWeights = async (
+  projectId: number,
+  weights: {
+    throughput: number
+    avg_rating: number
+    rating_change: number
+    rework_rate: number
+    delivered: number
+    updated_by?: string
+  }
+): Promise<PerformanceWeights> => {
+  const response = await apiClient.put<PerformanceWeights>(`/config/weights/${projectId}`, weights)
+  return response.data
+}
+
+
+// ============================================================================
+// CLASSIFICATION THRESHOLDS API FUNCTIONS
+// ============================================================================
+
+export interface ClassificationThresholds {
+  project_id: number
+  A: { min_score: number; label: string }
+  B: { min_score: number; label: string }
+  C: { min_score: number; label: string }
+  updated_at: string | null
+  updated_by: string | null
+}
+
+export const getClassificationThresholds = async (projectId: number): Promise<ClassificationThresholds> => {
+  const response = await apiClient.get<ClassificationThresholds>(`/config/thresholds/${projectId}`)
+  return response.data
+}
+
+export const setClassificationThresholds = async (
+  projectId: number,
+  thresholds: {
+    a_min_score: number
+    b_min_score: number
+    updated_by?: string
+  }
+): Promise<ClassificationThresholds> => {
+  const response = await apiClient.put<ClassificationThresholds>(`/config/thresholds/${projectId}`, thresholds)
+  return response.data
+}
+
+
+// ============================================================================
+// EFFORT THRESHOLDS API FUNCTIONS  
+// ============================================================================
+
+export interface EffortThresholds {
+  project_id: number
+  over_threshold: number
+  under_threshold: number
+  updated_at: string | null
+  updated_by: string | null
+}
+
+export const getEffortThresholds = async (projectId: number): Promise<EffortThresholds> => {
+  const response = await apiClient.get<EffortThresholds>(`/config/effort-thresholds/${projectId}`)
+  return response.data
+}
+
+export const setEffortThresholds = async (
+  projectId: number,
+  thresholds: {
+    over_threshold: number
+    under_threshold: number
+    updated_by?: string
+  }
+): Promise<EffortThresholds> => {
+  const response = await apiClient.put<EffortThresholds>(`/config/effort-thresholds/${projectId}`, thresholds)
+  return response.data
+}
+
+
+// ============================================================================
+// TARGET VS ACTUAL COMPARISON API FUNCTIONS
+// ============================================================================
+
+export interface TargetComparison {
+  entity_type: string
+  entity_id: number | null
+  entity_email: string | null
+  entity_name: string | null
+  target_daily: number
+  target_period: number
+  target_source: string
+  actual: number
+  gap: number
+  achievement_percent: number
+}
+
+export interface TrainerTargetComparisonResponse {
+  project_id: number
+  rollup: string
+  period_start: string | null
+  period_end: string | null
+  working_days: number
+  comparisons: TargetComparison[]
+}
+
+export interface ProjectTargetSummary {
+  project_id: number
+  period_start: string | null
+  period_end: string | null
+  rollup: string
+  trainers: {
+    count: number
+    total_target: number
+    total_actual: number
+    overall_achievement: number
+    meeting_target: number
+    below_target: number
+    top_performers: Array<{ email: string; name: string | null; achievement: number }>
+    needs_attention: Array<{ email: string; name: string | null; achievement: number }>
+  }
+}
+
+export const getTrainerTargetComparison = async (
+  projectId: number,
+  options?: {
+    trainerEmail?: string
+    startDate?: string
+    endDate?: string
+    rollup?: 'daily' | 'weekly' | 'monthly'
+  }
+): Promise<TrainerTargetComparisonResponse> => {
+  const params = new URLSearchParams()
+  if (options?.trainerEmail) params.append('trainer_email', options.trainerEmail)
+  if (options?.startDate) params.append('start_date', options.startDate)
+  if (options?.endDate) params.append('end_date', options.endDate)
+  if (options?.rollup) params.append('rollup', options.rollup)
+  
+  const queryString = params.toString()
+  const url = queryString 
+    ? `/target-comparison/trainers/${projectId}?${queryString}` 
+    : `/target-comparison/trainers/${projectId}`
+  
+  const response = await apiClient.get<TrainerTargetComparisonResponse>(url)
+  return response.data
+}
+
+export const getProjectTargetSummary = async (
+  projectId: number,
+  options?: {
+    startDate?: string
+    endDate?: string
+    rollup?: 'daily' | 'weekly' | 'monthly'
+  }
+): Promise<ProjectTargetSummary> => {
+  const params = new URLSearchParams()
+  if (options?.startDate) params.append('start_date', options.startDate)
+  if (options?.endDate) params.append('end_date', options.endDate)
+  if (options?.rollup) params.append('rollup', options.rollup)
+  
+  const queryString = params.toString()
+  const url = queryString 
+    ? `/target-comparison/summary/${projectId}?${queryString}` 
+    : `/target-comparison/summary/${projectId}`
+  
+  const response = await apiClient.get<ProjectTargetSummary>(url)
   return response.data
 }

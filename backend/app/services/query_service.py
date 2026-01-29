@@ -4,12 +4,12 @@ PostgreSQL query service for nvidia dashboard statistics
 import logging
 from typing import List, Dict, Any, Optional, Set
 from collections import defaultdict
-from sqlalchemy import func, or_
+from sqlalchemy import func, or_, and_
 from google.cloud import bigquery
 
 from app.config import get_settings
 from app.services.db_service import get_db_service
-from app.models.db_models import ReviewDetail, Contributor, Task, WorkItem, TaskReviewedInfo, TaskAHT, ContributorTaskStats, ContributorDailyStats, ReviewerDailyStats, TaskRaw, TaskHistoryRaw, PodLeadMapping, ReviewerTrainerDailyStats, JibbleHours
+from app.models.db_models import ReviewDetail, Contributor, Task, WorkItem, TaskReviewedInfo, TaskAHT, ContributorTaskStats, ContributorDailyStats, ReviewerDailyStats, TaskRaw, TaskHistoryRaw, PodLeadMapping, ReviewerTrainerDailyStats, JibbleHours, TrainerReviewStats
 
 logger = logging.getLogger(__name__)
 
@@ -971,6 +971,10 @@ class QueryService:
         try:
             contributor_map = self._get_contributor_map()
             
+            # Get project_id from filters, fall back to default
+            project_id = filters.get('project_id') if filters else None
+            effective_project_id = project_id if project_id is not None else self.settings.project_id_filter
+            
             with self.db_service.get_session() as session:
                 query = session.query(ContributorDailyStats).order_by(
                     ContributorDailyStats.contributor_id,
@@ -981,16 +985,21 @@ class QueryService:
                 
                 # Get sum_turns per trainer per date from task_raw
                 # Filter by derived_status (column AP) IN ('Completed', 'Reviewed', 'Rework', 'Validated')
-                task_raw_daily = session.query(
+                task_raw_query = session.query(
                     TaskRaw.trainer,
                     TaskRaw.last_completed_date,
                     func.count(TaskRaw.task_id).label('unique_tasks_raw'),
                     func.sum(TaskRaw.number_of_turns).label('sum_turns')
                 ).filter(
                     TaskRaw.derived_status.in_(['Completed', 'Reviewed', 'Rework', 'Validated']),
-                    TaskRaw.last_completed_date.isnot(None),
-                    TaskRaw.project_id == self.settings.project_id_filter
-                ).group_by(TaskRaw.trainer, TaskRaw.last_completed_date).all()
+                    TaskRaw.last_completed_date.isnot(None)
+                )
+                
+                # Apply project filter
+                if effective_project_id is not None:
+                    task_raw_query = task_raw_query.filter(TaskRaw.project_id == effective_project_id)
+                
+                task_raw_daily = task_raw_query.group_by(TaskRaw.trainer, TaskRaw.last_completed_date).all()
                 
                 # Build trainer+date to task_raw stats map
                 task_raw_map = {}
@@ -1004,17 +1013,22 @@ class QueryService:
                 
                 # Get avg_rating per trainer per date from task_raw
                 # Formula: SUM(sum_score) / SUM(count_reviews) WHERE count_reviews > 0 AND sum_followup_required = 0
-                rating_daily = session.query(
+                rating_query = session.query(
                     TaskRaw.trainer,
                     TaskRaw.last_completed_date,
                     func.sum(TaskRaw.sum_score).label('total_score'),
                     func.sum(TaskRaw.count_reviews).label('total_reviews')
                 ).filter(
                     TaskRaw.count_reviews > 0,
-                    TaskRaw.sum_followup_required == 0,
-                    TaskRaw.last_completed_date.isnot(None),
-                    TaskRaw.project_id == self.settings.project_id_filter
-                ).group_by(TaskRaw.trainer, TaskRaw.last_completed_date).all()
+                    # Removed sum_followup_required filter to include tasks sent to rework
+                    TaskRaw.last_completed_date.isnot(None)
+                )
+                
+                # Apply project filter
+                if effective_project_id is not None:
+                    rating_query = rating_query.filter(TaskRaw.project_id == effective_project_id)
+                
+                rating_daily = rating_query.group_by(TaskRaw.trainer, TaskRaw.last_completed_date).all()
                 
                 # Build trainer+date to rating map
                 rating_map = {}
@@ -1048,7 +1062,7 @@ class QueryService:
                     avg_rework = None
                     total_completions = new_tasks + rework
                     if unique_tasks > 0:
-                        avg_rework = round(((total_completions / unique_tasks) - 1) * 100, 0)
+                        avg_rework = round((total_completions / unique_tasks) - 1, 2)
                     
                     # Rework % = rework / (rework + new_tasks) * 100
                     rework_percent = None
@@ -1084,20 +1098,27 @@ class QueryService:
         Get overall trainer stats using:
         - TaskHistoryRaw for unique_tasks, new_tasks_submitted, rework_submitted (matching spreadsheet exactly)
         - TaskRaw for sum_number_of_turns (for avg_rework calculation)
+        - TaskRaw + TaskHistoryRaw for approved, approved_rework, delivered, in_queue
+        - TrainerReviewStats for total_reviews and avg_rating
         """
         try:
+            from collections import defaultdict
+            
             contributor_map = self._get_contributor_map()
+            
+            # Get project_id from filters, fall back to default
+            project_id = filters.get('project_id') if filters else None
+            effective_project_id = project_id if project_id is not None else self.settings.project_id_filter
+            
+            # Build project filter list
+            filter_project_ids = [effective_project_id] if effective_project_id is not None else None
             
             with self.db_service.get_session() as session:
                 from sqlalchemy import case, distinct
                 
-                # Get metrics from task_history_raw joined with task_raw (matching spreadsheet formulas exactly)
-                # Use task_raw.trainer (Column F) for attribution instead of task_history_raw.author
-                # Unique Tasks = COUNT DISTINCT task_id WHERE new_status='completed' AND old_status <> 'completed-approval'
-                # New Tasks = COUNT WHERE new_status='completed' AND old_status <> 'completed-approval' AND completed_status_count = 1
-                # Rework = COUNT WHERE new_status='completed' AND old_status <> 'completed-approval' AND completed_status_count > 1
-                history_stats = session.query(
-                    TaskRaw.trainer,
+                # Get metrics from task_history_raw using actual author for proper attribution
+                history_query = session.query(
+                    TaskHistoryRaw.author,
                     func.count(distinct(TaskHistoryRaw.task_id)).label('unique_tasks'),
                     func.sum(case(
                         (TaskHistoryRaw.completed_status_count == 1, 1),
@@ -1107,71 +1128,302 @@ class QueryService:
                         (TaskHistoryRaw.completed_status_count > 1, 1),
                         else_=0
                     )).label('rework')
-                ).join(
-                    TaskRaw, TaskHistoryRaw.task_id == TaskRaw.task_id
                 ).filter(
                     TaskHistoryRaw.new_status == 'completed',
                     TaskHistoryRaw.old_status != 'completed-approval',
-                    TaskHistoryRaw.project_id == self.settings.project_id_filter
-                ).group_by(TaskRaw.trainer).all()
+                    TaskHistoryRaw.author.isnot(None)
+                )
+                
+                # Apply project filter
+                if filter_project_ids:
+                    history_query = history_query.filter(TaskHistoryRaw.project_id.in_(filter_project_ids))
+                
+                history_stats = history_query.group_by(TaskHistoryRaw.author).all()
                 
                 # Build email to history stats map
                 history_map = {}
                 for hs in history_stats:
-                    if hs.trainer:
-                        history_map[hs.trainer] = {
+                    if hs.author:
+                        email_key = hs.author.lower().strip()
+                        history_map[email_key] = {
                             'unique_tasks': hs.unique_tasks or 0,
                             'new_tasks': hs.new_tasks or 0,
                             'rework': hs.rework or 0
                         }
                 
                 # Get sum_number_of_turns from task_raw for avg_rework calculation
-                # Filter by derived_status (column AP) IN ('Completed', 'Reviewed', 'Rework', 'Validated')
-                task_raw_stats = session.query(
+                task_raw_query = session.query(
                     TaskRaw.trainer,
                     func.sum(TaskRaw.number_of_turns).label('sum_turns')
                 ).filter(
                     TaskRaw.derived_status.in_(['Completed', 'Reviewed', 'Rework', 'Validated']),
-                    TaskRaw.last_completed_date.isnot(None),
-                    TaskRaw.project_id == self.settings.project_id_filter
-                ).group_by(TaskRaw.trainer).all()
+                    TaskRaw.last_completed_date.isnot(None)
+                )
+                
+                if filter_project_ids:
+                    task_raw_query = task_raw_query.filter(TaskRaw.project_id.in_(filter_project_ids))
+                
+                task_raw_stats = task_raw_query.group_by(TaskRaw.trainer).all()
                 
                 # Build trainer email to task_raw stats map
                 task_raw_map = {}
                 for tr in task_raw_stats:
                     if tr.trainer:
-                        task_raw_map[tr.trainer] = {
+                        email_key = tr.trainer.lower().strip()
+                        task_raw_map[email_key] = {
                             'sum_turns': tr.sum_turns or 0
                         }
                 
-                # Get avg_rating per trainer from task_raw (overall)
-                # Formula: SUM(sum_score) / SUM(count_reviews) WHERE count_reviews > 0 AND sum_followup_required = 0
-                rating_stats = session.query(
-                    TaskRaw.trainer,
-                    func.sum(TaskRaw.sum_score).label('total_score'),
-                    func.sum(TaskRaw.count_reviews).label('total_reviews')
+                # ---------------------------------------------------------
+                # Get Approved Tasks with proper attribution
+                # ---------------------------------------------------------
+                approved_tasks_query = session.query(
+                    TaskRaw.task_id
                 ).filter(
+                    func.lower(TaskRaw.task_status) == 'completed',
                     TaskRaw.count_reviews > 0,
-                    TaskRaw.sum_followup_required == 0,
-                    TaskRaw.project_id == self.settings.project_id_filter
-                ).group_by(TaskRaw.trainer).all()
+                    or_(
+                        TaskRaw.review_action_type != 'rework',
+                        TaskRaw.review_action_type.is_(None)
+                    )
+                )
                 
-                # Build trainer email to rating map
-                rating_map = {}
-                for r in rating_stats:
-                    if r.trainer:
-                        total_score = r.total_score or 0
-                        total_reviews = r.total_reviews or 0
+                if filter_project_ids:
+                    approved_tasks_query = approved_tasks_query.filter(TaskRaw.project_id.in_(filter_project_ids))
+                
+                approved_task_ids = [r.task_id for r in approved_tasks_query.all()]
+                
+                # Attribute approved tasks
+                trainer_approved = {}
+                trainer_approved_rework = {}
+                
+                if approved_task_ids:
+                    completion_events = session.query(
+                        TaskHistoryRaw.task_id,
+                        TaskHistoryRaw.author,
+                        TaskHistoryRaw.completed_status_count,
+                        TaskHistoryRaw.time_stamp
+                    ).filter(
+                        TaskHistoryRaw.task_id.in_(approved_task_ids),
+                        TaskHistoryRaw.new_status == 'completed',
+                        TaskHistoryRaw.old_status != 'completed-approval',
+                        TaskHistoryRaw.author.isnot(None)
+                    ).all()
+                    
+                    task_completions = defaultdict(list)
+                    for event in completion_events:
+                        task_completions[event.task_id].append({
+                            'author': event.author.lower().strip() if event.author else None,
+                            'completed_status_count': event.completed_status_count,
+                            'time_stamp': event.time_stamp
+                        })
+                    
+                    for task_id, completions in task_completions.items():
+                        if not completions:
+                            continue
+                        completions_sorted = sorted(completions, key=lambda x: x['time_stamp'] or '')
+                        first_author = completions_sorted[0]['author']
+                        last_completer = completions_sorted[-1]['author']
+                        
+                        if not last_completer:
+                            continue
+                        
+                        if first_author == last_completer:
+                            trainer_approved[last_completer] = trainer_approved.get(last_completer, 0) + 1
+                        else:
+                            trainer_approved_rework[last_completer] = trainer_approved_rework.get(last_completer, 0) + 1
+                
+                # ---------------------------------------------------------
+                # Get Delivered and In Queue tasks
+                # ---------------------------------------------------------
+                delivered_tasks_query = session.query(
+                    TaskRaw.task_id
+                ).filter(
+                    func.lower(TaskRaw.delivery_status) == 'delivered'
+                )
+                if filter_project_ids:
+                    delivered_tasks_query = delivered_tasks_query.filter(TaskRaw.project_id.in_(filter_project_ids))
+                delivered_task_ids = [r.task_id for r in delivered_tasks_query.all()]
+                
+                in_queue_tasks_query = session.query(
+                    TaskRaw.task_id
+                ).filter(
+                    TaskRaw.delivery_batch_name.isnot(None),
+                    TaskRaw.delivery_batch_name != '',
+                    or_(
+                        func.lower(TaskRaw.delivery_status) != 'delivered',
+                        TaskRaw.delivery_status.is_(None)
+                    )
+                )
+                if filter_project_ids:
+                    in_queue_tasks_query = in_queue_tasks_query.filter(TaskRaw.project_id.in_(filter_project_ids))
+                in_queue_task_ids = [r.task_id for r in in_queue_tasks_query.all()]
+                
+                trainer_delivered = {}
+                trainer_in_queue = {}
+                
+                all_delivery_task_ids = list(set(delivered_task_ids + in_queue_task_ids))
+                
+                if all_delivery_task_ids:
+                    delivery_completion_events = session.query(
+                        TaskHistoryRaw.task_id,
+                        TaskHistoryRaw.author,
+                        TaskHistoryRaw.time_stamp
+                    ).filter(
+                        TaskHistoryRaw.task_id.in_(all_delivery_task_ids),
+                        TaskHistoryRaw.new_status == 'completed',
+                        TaskHistoryRaw.old_status != 'completed-approval',
+                        TaskHistoryRaw.author.isnot(None)
+                    ).all()
+                    
+                    delivery_task_completions = defaultdict(list)
+                    for event in delivery_completion_events:
+                        delivery_task_completions[event.task_id].append({
+                            'author': event.author.lower().strip() if event.author else None,
+                            'time_stamp': event.time_stamp
+                        })
+                    
+                    delivered_set = set(delivered_task_ids)
+                    in_queue_set = set(in_queue_task_ids)
+                    
+                    for task_id, completions in delivery_task_completions.items():
+                        if not completions:
+                            continue
+                        completions_sorted = sorted(completions, key=lambda x: x['time_stamp'] or '')
+                        last_completer = completions_sorted[-1]['author']
+                        
+                        if not last_completer:
+                            continue
+                        
+                        if task_id in delivered_set:
+                            trainer_delivered[last_completer] = trainer_delivered.get(last_completer, 0) + 1
+                        if task_id in in_queue_set:
+                            trainer_in_queue[last_completer] = trainer_in_queue.get(last_completer, 0) + 1
+                
+                # ---------------------------------------------------------
+                # Get Total Reviews and Avg Rating from trainer_review_stats
+                # ---------------------------------------------------------
+                review_query = session.query(
+                    TrainerReviewStats.trainer_email,
+                    func.count(TrainerReviewStats.review_id).label('total_reviews'),
+                    func.sum(TrainerReviewStats.score).label('total_score')
+                ).filter(
+                    TrainerReviewStats.score.isnot(None)
+                )
+                
+                if filter_project_ids:
+                    review_query = review_query.filter(TrainerReviewStats.project_id.in_(filter_project_ids))
+                
+                review_stats = review_query.group_by(TrainerReviewStats.trainer_email).all()
+                
+                trainer_reviews_map = {}
+                for rs in review_stats:
+                    if rs.trainer_email:
+                        email_key = rs.trainer_email.lower().strip()
+                        total_reviews = rs.total_reviews or 0
+                        total_score = rs.total_score or 0
                         avg_rating = round(total_score / total_reviews, 2) if total_reviews > 0 else None
-                        rating_map[r.trainer] = avg_rating
+                        trainer_reviews_map[email_key] = {
+                            'total_reviews': total_reviews,
+                            'avg_rating': avg_rating
+                        }
                 
                 # Build email to contributor_id map
                 email_to_id = {}
                 for cid, info in contributor_map.items():
                     if info.get('email'):
-                        email_to_id[info['email']] = cid
+                        email_to_id[info['email'].lower().strip()] = cid
+                
+                # ---------------------------------------------------------
+                # Get Jibble Hours for trainers (filtered by date range if provided)
+                # ---------------------------------------------------------
+                trainer_jibble_map = {}
+                try:
+                    # Build mapping from jibble member_code to trainer email via pod_lead_mapping
+                    jibble_to_trainer = {}
+                    pod_mappings = session.query(PodLeadMapping).all()
+                    for pm in pod_mappings:
+                        if pm.jibble_id and pm.trainer_email:
+                            jibble_to_trainer[str(pm.jibble_id)] = pm.trainer_email.lower().strip()
+                    
+                    logger.info(f"Built jibble_to_trainer mapping with {len(jibble_to_trainer)} entries")
+                    
+                    # Query Jibble hours with optional date and project filtering
+                    # Also get full_name for fallback matching
+                    jibble_query = session.query(
+                        JibbleHours.member_code,
+                        JibbleHours.full_name,
+                        func.sum(JibbleHours.logged_hours).label('total_hours')
+                    )
+                    
+                    # Apply date range filter if provided
+                    start_date = filters.get('start_date') if filters else None
+                    end_date = filters.get('end_date') if filters else None
+                    
+                    if start_date:
+                        jibble_query = jibble_query.filter(JibbleHours.entry_date >= start_date)
+                    if end_date:
+                        jibble_query = jibble_query.filter(JibbleHours.entry_date <= end_date)
+                    
+                    # Apply project filter if provided - map project_id to project name
+                    project_id = filters.get('project_id') if filters else None
+                    project_name_map = {
+                        36: 'SysBench',
+                        37: 'CFBench',
+                        38: 'InverseIFEval',
+                        39: 'Multichallenge',
+                    }
+                    if project_id and project_id in project_name_map:
+                        project_pattern = f"%{project_name_map[project_id]}%"
+                        jibble_query = jibble_query.filter(JibbleHours.project.ilike(project_pattern))
+                        logger.info(f"Filtering Jibble hours by project: {project_pattern}")
+                    
+                    jibble_query = jibble_query.group_by(JibbleHours.member_code, JibbleHours.full_name)
+                    jibble_results = jibble_query.all()
+                    
+                    logger.info(f"Found {len(jibble_results)} unique Jibble member_codes")
+                    
+                    # Map to trainer emails AND build name-based lookup for ALL records
+                    jibble_by_name = {}  # For fallback matching by name - populated for ALL records
+                    unmatched_count = 0
+                    for jr in jibble_results:
+                        # Always add to name-based lookup for fallback matching
+                        if jr.full_name:
+                            name_key = jr.full_name.lower().strip()
+                            # Accumulate hours for same name (might have multiple member_codes)
+                            jibble_by_name[name_key] = jibble_by_name.get(name_key, 0) + float(jr.total_hours or 0)
+                        
+                        # Also try email-based mapping
+                        if jr.member_code:
+                            trainer_email = jibble_to_trainer.get(str(jr.member_code))
+                            if trainer_email:
+                                trainer_jibble_map[trainer_email] = float(jr.total_hours or 0)
+                            else:
+                                unmatched_count += 1
+                    
+                    date_range_msg = f" for {start_date} to {end_date}" if start_date or end_date else " (all time)"
+                    logger.info(f"Matched {len(trainer_jibble_map)} trainers to Jibble hours via email{date_range_msg}")
+                    logger.info(f"Unmatched Jibble records: {unmatched_count} (no email mapping)")
+                    logger.info(f"Built jibble_by_name with {len(jibble_by_name)} unique names for fallback matching")
+                    
+                    # Store jibble_by_name for potential use in result building
+                    self._jibble_by_name = jibble_by_name
+                except Exception as jibble_err:
+                    logger.warning(f"Failed to fetch Jibble hours: {jibble_err}")
                 
                 result = []
+                
+                # Check for email overlap and try name-based matching for unmatched
+                jibble_by_name = getattr(self, '_jibble_by_name', {})
+                overlap = set(history_map.keys()) & set(trainer_jibble_map.keys())
+                logger.info(f"Email overlap between history and jibble: {len(overlap)} trainers out of {len(history_map)} in history")
+                
+                # Debug: Show sample emails from both maps
+                sample_history = list(history_map.keys())[:3]
+                sample_jibble = list(trainer_jibble_map.keys())[:3]
+                logger.info(f"Sample history emails: {sample_history}")
+                logger.info(f"Sample jibble emails: {sample_jibble}")
+                
                 # Iterate over all trainers with history data
                 for email, hist_stats in history_map.items():
                     contributor_id = email_to_id.get(email)
@@ -1191,20 +1443,44 @@ class QueryService:
                     tr_stats = task_raw_map.get(email, {})
                     sum_turns = tr_stats.get('sum_turns', 0)
                     
-                    # Avg Rework = ((total_completions / unique_tasks) - 1) * 100
-                    # Where total_completions = new_tasks + rework
+                    # Avg Rework = (total_completions / unique_tasks) - 1
+                    # This is a decimal number (e.g., 4.12 means average 4.12 reworks per task)
                     avg_rework = None
                     total_completions = new_tasks + rework
                     if unique_tasks > 0:
-                        avg_rework = round(((total_completions / unique_tasks) - 1) * 100, 0)
+                        avg_rework = round((total_completions / unique_tasks) - 1, 2)
                     
                     # Rework % = rework / (new_tasks + rework) * 100
                     rework_percent = None
                     if (rework + new_tasks) > 0:
                         rework_percent = round((rework / (rework + new_tasks)) * 100, 0)
                     
-                    # Get avg_rating for this trainer
-                    avg_rating = rating_map.get(email)
+                    # Get review stats
+                    review_info = trainer_reviews_map.get(email, {})
+                    total_reviews = review_info.get('total_reviews', 0)
+                    avg_rating = review_info.get('avg_rating')
+                    
+                    # Get approved/delivery stats
+                    approved = trainer_approved.get(email, 0)
+                    approved_rework = trainer_approved_rework.get(email, 0)
+                    delivered = trainer_delivered.get(email, 0)
+                    in_queue = trainer_in_queue.get(email, 0)
+                    
+                    # Get Jibble hours for this trainer
+                    jibble_hours = trainer_jibble_map.get(email, None)
+                    
+                    # Debug: Log first few matches/misses
+                    if len(result) < 3:
+                        logger.info(f"Trainer lookup: email='{email}', jibble_hours={jibble_hours}, in_jibble_map={email in trainer_jibble_map}")
+                    
+                    # Fallback: try matching by name if email didn't match
+                    if jibble_hours is None and name and jibble_by_name:
+                        name_key = name.lower().strip()
+                        # Remove status suffixes like "(in-trial)" for matching
+                        name_clean = name_key.split('(')[0].strip()
+                        jibble_hours = jibble_by_name.get(name_key) or jibble_by_name.get(name_clean)
+                        if jibble_hours and len(result) < 10:
+                            logger.info(f"Trainer '{email}' matched by name '{name_clean}' with {jibble_hours} hours")
                     
                     result.append({
                         'trainer_id': contributor_id,
@@ -1214,13 +1490,27 @@ class QueryService:
                         'new_tasks_submitted': new_tasks,
                         'rework_submitted': rework,
                         'total_submissions': new_tasks + rework,
-                        'unique_tasks': unique_tasks,  # From task_history_raw
-                        'tasks_ready_for_delivery': 0,  # Not applicable for overall
+                        'unique_tasks': unique_tasks,
+                        'tasks_ready_for_delivery': 0,
                         'sum_number_of_turns': sum_turns,
                         'avg_rework': avg_rework,
                         'rework_percent': rework_percent,
                         'avg_rating': avg_rating,
+                        'total_reviews': total_reviews,
+                        'approved': approved,
+                        'approved_rework': approved_rework,
+                        'delivered': delivered,
+                        'in_queue': in_queue,
+                        'jibble_hours': round(jibble_hours, 2) if jibble_hours else None,
                     })
+                
+                # Debug: Count how many trainers have jibble_hours
+                with_jibble = sum(1 for r in result if r.get('jibble_hours') is not None)
+                logger.info(f"Returning {len(result)} trainers, {with_jibble} have jibble_hours")
+                
+                # Debug: Show first 3 trainers with their jibble_hours
+                for r in result[:3]:
+                    logger.info(f"Sample result: {r.get('trainer_name')} - jibble_hours={r.get('jibble_hours')}")
                 
                 return result
         except Exception as e:
@@ -1250,7 +1540,7 @@ class QueryService:
                     func.sum(TaskRaw.count_reviews).label('total_reviews')
                 ).filter(
                     TaskRaw.count_reviews > 0,
-                    TaskRaw.sum_followup_required == 0,
+                    # Removed sum_followup_required filter to include tasks sent to rework
                     TaskRaw.r_submitted_date.isnot(None),
                     TaskRaw.project_id == self.settings.project_id_filter
                 ).group_by(TaskRaw.reviewer, TaskRaw.r_submitted_date).all()
@@ -1277,12 +1567,12 @@ class QueryService:
                     rework = stat.rework_reviewed or 0
                     sum_turns = getattr(stat, 'sum_number_of_turns', 0) or 0
                     
-                    # Calculate avg_rework = ((total_completions / unique_tasks) - 1) * 100
+                    # Calculate avg_rework = (total_completions / unique_tasks) - 1
                     # Where total_completions = new_tasks + rework
                     avg_rework = None
                     total_completions = new_tasks + rework
                     if unique_tasks > 0:
-                        avg_rework = round(((total_completions / unique_tasks) - 1) * 100, 1)
+                        avg_rework = round((total_completions / unique_tasks) - 1, 2)
                     
                     # Calculate rework_percent = rework / (rework + new_tasks) * 100
                     rework_percent = None
@@ -1339,7 +1629,7 @@ class QueryService:
                     func.sum(TaskRaw.count_reviews).label('total_reviews')
                 ).filter(
                     TaskRaw.count_reviews > 0,
-                    TaskRaw.sum_followup_required == 0,
+                    # Removed sum_followup_required filter to include tasks sent to rework
                     TaskRaw.project_id == self.settings.project_id_filter
                 ).group_by(TaskRaw.trainer).all()
                 
@@ -1364,12 +1654,12 @@ class QueryService:
                     rework_reviewed = row.rework_reviewed or 0
                     sum_turns = row.sum_number_of_turns or 0
                     
-                    # Calculate avg_rework = ((total_completions / tasks_reviewed) - 1) * 100
+                    # Calculate avg_rework = (total_completions / tasks_reviewed) - 1
                     # Where total_completions = new_tasks + rework
                     avg_rework = None
                     total_completions = new_tasks_reviewed + rework_reviewed
                     if tasks_reviewed > 0:
-                        avg_rework = round(((total_completions / tasks_reviewed) - 1) * 100, 1)
+                        avg_rework = round((total_completions / tasks_reviewed) - 1, 2)
                     
                     # Calculate rework_percent = rework_reviewed / (new_tasks_reviewed + rework_reviewed) * 100
                     rework_percent = None
@@ -1433,7 +1723,7 @@ class QueryService:
                     func.count(func.distinct(TaskRaw.task_id)).label('tasks_count')
                 ).filter(
                     TaskRaw.count_reviews > 0,
-                    TaskRaw.sum_followup_required == 0,
+                    # Removed sum_followup_required filter to include tasks sent to rework
                     TaskRaw.last_completed_date.isnot(None)
                 )
                 
@@ -1542,7 +1832,7 @@ class QueryService:
                         func.count(func.distinct(TaskRaw.task_id)).label('tasks_count')
                     ).filter(
                         TaskRaw.count_reviews > 0,
-                        TaskRaw.sum_followup_required == 0,
+                        # Removed sum_followup_required filter to include tasks sent to rework
                         TaskRaw.last_completed_date >= start_date,
                         TaskRaw.last_completed_date <= end_date
                     )
@@ -1673,6 +1963,7 @@ class QueryService:
         """
         try:
             from sqlalchemy import case, distinct
+            from collections import defaultdict
             
             # Use provided project_id or default to all projects
             filter_project_ids = [project_id] if project_id else self.settings.all_project_ids_list
@@ -1704,14 +1995,15 @@ class QueryService:
                 logger.info(f"Found {len(trainer_to_pod)} trainer-pod mappings, {len(pod_trainers)} unique POD Leads, filtering by project_id: {filter_project_ids}")
                 
                 # ---------------------------------------------------------
-                # STEP 1: Get metrics from task_history_raw joined with task_raw
-                # Use task_raw.trainer (Column F) for attribution (not task_history_raw.author)
+                # STEP 1: Get metrics from task_history_raw using actual author
+                # FIX: Use task_history_raw.author (who actually made the transition) for proper attribution
+                # This ensures credit goes to the trainer who actually did the work, even if task was reassigned
                 # Unique Tasks = COUNT DISTINCT task_id WHERE new_status='completed' AND old_status <> 'completed-approval'
                 # New Tasks = COUNT WHERE completed_status_count = 1
                 # Rework = COUNT WHERE completed_status_count > 1
                 # ---------------------------------------------------------
                 history_query = session.query(
-                    TaskRaw.trainer,
+                    TaskHistoryRaw.author,
                     func.count(distinct(TaskHistoryRaw.task_id)).label('unique_tasks'),
                     func.sum(case(
                         (TaskHistoryRaw.completed_status_count == 1, 1),
@@ -1721,12 +2013,11 @@ class QueryService:
                         (TaskHistoryRaw.completed_status_count > 1, 1),
                         else_=0
                     )).label('rework')
-                ).join(
-                    TaskRaw, TaskHistoryRaw.task_id == TaskRaw.task_id
                 ).filter(
                     TaskHistoryRaw.new_status == 'completed',
                     TaskHistoryRaw.old_status != 'completed-approval',
-                    TaskHistoryRaw.project_id.in_(filter_project_ids)
+                    TaskHistoryRaw.project_id.in_(filter_project_ids),
+                    TaskHistoryRaw.author.isnot(None)
                 )
                 
                 # Apply date filters on task_history_raw.date
@@ -1735,14 +2026,14 @@ class QueryService:
                 if end_date:
                     history_query = history_query.filter(TaskHistoryRaw.date <= end_date)
                 
-                history_query = history_query.group_by(TaskRaw.trainer)
+                history_query = history_query.group_by(TaskHistoryRaw.author)
                 history_results = history_query.all()
                 
                 # Build trainer email to history stats map
                 trainer_history = {}
                 for hs in history_results:
-                    if hs.trainer:
-                        email = hs.trainer.lower().strip()
+                    if hs.author:
+                        email = hs.author.lower().strip()
                         trainer_history[email] = {
                             'unique_tasks': hs.unique_tasks or 0,
                             'new_tasks': hs.new_tasks or 0,
@@ -1780,14 +2071,25 @@ class QueryService:
                         trainer_turns[email] = tr.sum_turns or 0
                 
                 # ---------------------------------------------------------
-                # STEP 3: Get ready_for_delivery from task_raw
-                # derived_status = 'Reviewed' when:
-                #   task_status = 'completed' AND count_reviews > 0 AND review_action_type != 'rework'
-                # Ready for Delivery = COUNT WHERE derived_status = 'Reviewed' AND followup_required = 0
+                # STEP 3: Get Approved Tasks with proper attribution
+                # 
+                # Approved Task = task_status='completed', count_reviews > 0, review_action_type != 'rework'
+                # 
+                # Attribution RULE:
+                # - Find the FIRST author (who originally completed the task)
+                # - Find the LAST completer (who completed it when it got approved)
+                # - If FIRST author == LAST completer → Approved (original owner got it approved)
+                # - If FIRST author != LAST completer → Approved Rework (someone else fixed it)
+                #
+                # This ensures:
+                # - Trainer A completes → approved → A gets "Approved"
+                # - Trainer A completes → rejected → A reworks → approved → A gets "Approved" (A is first author)
+                # - Trainer A completes → rejected → B reworks → approved → B gets "Approved Rework" (B is not first author)
                 # ---------------------------------------------------------
-                ready_query = session.query(
-                    TaskRaw.trainer,
-                    func.count(TaskRaw.task_id).label('ready_count')
+                
+                # First, get list of approved task IDs
+                approved_tasks_subquery = session.query(
+                    TaskRaw.task_id
                 ).filter(
                     func.lower(TaskRaw.task_status) == 'completed',
                     TaskRaw.count_reviews > 0,
@@ -1795,80 +2097,210 @@ class QueryService:
                         TaskRaw.review_action_type != 'rework',
                         TaskRaw.review_action_type.is_(None)
                     ),
-                    TaskRaw.followup_required == 0,
                     TaskRaw.project_id.in_(filter_project_ids)
                 )
                 
                 if start_date:
-                    ready_query = ready_query.filter(TaskRaw.last_completed_date >= start_date)
+                    approved_tasks_subquery = approved_tasks_subquery.filter(TaskRaw.last_completed_date >= start_date)
                 if end_date:
-                    ready_query = ready_query.filter(TaskRaw.last_completed_date <= end_date)
+                    approved_tasks_subquery = approved_tasks_subquery.filter(TaskRaw.last_completed_date <= end_date)
                 
-                ready_query = ready_query.group_by(TaskRaw.trainer)
-                ready_results = ready_query.all()
+                approved_task_ids = [r.task_id for r in approved_tasks_subquery.all()]
                 
-                trainer_ready = {}
-                for rr in ready_results:
-                    if rr.trainer:
-                        email = rr.trainer.lower().strip()
-                        trainer_ready[email] = rr.ready_count or 0
+                logger.info(f"Found {len(approved_task_ids)} approved tasks")
+                
+                # Now find completion events and attribute based on first author rule
+                trainer_approved = {}  # Approved tasks (first author got approval)
+                trainer_approved_rework = {}  # Approved rework (someone else got approval)
+                
+                if approved_task_ids:
+                    # Get all completion events for approved tasks
+                    completion_events = session.query(
+                        TaskHistoryRaw.task_id,
+                        TaskHistoryRaw.author,
+                        TaskHistoryRaw.completed_status_count,
+                        TaskHistoryRaw.time_stamp
+                    ).filter(
+                        TaskHistoryRaw.task_id.in_(approved_task_ids),
+                        TaskHistoryRaw.new_status == 'completed',
+                        TaskHistoryRaw.old_status != 'completed-approval',
+                        TaskHistoryRaw.author.isnot(None)
+                    ).all()
+                    
+                    # Group by task_id
+                    task_completions = defaultdict(list)
+                    for event in completion_events:
+                        task_completions[event.task_id].append({
+                            'author': event.author.lower().strip() if event.author else None,
+                            'completed_status_count': event.completed_status_count,
+                            'time_stamp': event.time_stamp
+                        })
+                    
+                    # For each task, find FIRST author and LAST completer
+                    for task_id, completions in task_completions.items():
+                        if not completions:
+                            continue
+                        
+                        # Sort by timestamp ascending to find first, descending to find last
+                        completions_sorted = sorted(completions, key=lambda x: x['time_stamp'] or '')
+                        
+                        # First author = person who made the FIRST completion (completed_status_count = 1)
+                        first_completion = completions_sorted[0]
+                        first_author = first_completion['author']
+                        
+                        # Last completer = person who made the LAST completion (got it approved)
+                        last_completion = completions_sorted[-1]
+                        last_completer = last_completion['author']
+                        
+                        if not last_completer:
+                            continue
+                        
+                        # Apply the RULE:
+                        # If first author == last completer → Approved
+                        # If first author != last completer → Approved Rework
+                        if first_author == last_completer:
+                            # Original author got their task approved
+                            trainer_approved[last_completer] = trainer_approved.get(last_completer, 0) + 1
+                        else:
+                            # Someone else fixed the task and got it approved
+                            trainer_approved_rework[last_completer] = trainer_approved_rework.get(last_completer, 0) + 1
+                
+                logger.info(f"Attributed approved tasks to {len(trainer_approved)} trainers (original author), {len(trainer_approved_rework)} trainers (fixed others' work)")
                 
                 # ---------------------------------------------------------
-                # STEP 4: Get avg_rating from task_raw
-                # Formula: SUM(sum_score) / SUM(count_reviews) WHERE count_reviews > 0 AND sum_followup_required = 0
+                # STEP 3.5: Get delivery stats with proper attribution
+                # 
+                # Delivered Tasks = Tasks where delivery_status = 'delivered'
+                # In Delivery Queue = Tasks where delivery_batch_name IS NOT NULL AND delivery_status != 'delivered'
+                #
+                # Attribution: Use the LAST COMPLETER from task_history_raw (same as Approved)
+                # This ensures consistency - the person who completed the work gets credit for delivery
                 # ---------------------------------------------------------
-                rating_query = session.query(
-                    TaskRaw.trainer,
-                    func.sum(TaskRaw.sum_score).label('total_score'),
-                    func.sum(TaskRaw.count_reviews).label('total_reviews')
+                
+                # Get delivered task IDs
+                delivered_tasks_query = session.query(
+                    TaskRaw.task_id
                 ).filter(
-                    TaskRaw.count_reviews > 0,
-                    TaskRaw.sum_followup_required == 0,
+                    func.lower(TaskRaw.delivery_status) == 'delivered',
                     TaskRaw.project_id.in_(filter_project_ids)
+                )
+                if start_date:
+                    delivered_tasks_query = delivered_tasks_query.filter(TaskRaw.last_completed_date >= start_date)
+                if end_date:
+                    delivered_tasks_query = delivered_tasks_query.filter(TaskRaw.last_completed_date <= end_date)
+                delivered_task_ids = [r.task_id for r in delivered_tasks_query.all()]
+                
+                # Get in-queue task IDs
+                in_queue_tasks_query = session.query(
+                    TaskRaw.task_id
+                ).filter(
+                    TaskRaw.delivery_batch_name.isnot(None),
+                    TaskRaw.delivery_batch_name != '',
+                    or_(
+                        func.lower(TaskRaw.delivery_status) != 'delivered',
+                        TaskRaw.delivery_status.is_(None)
+                    ),
+                    TaskRaw.project_id.in_(filter_project_ids)
+                )
+                if start_date:
+                    in_queue_tasks_query = in_queue_tasks_query.filter(TaskRaw.last_completed_date >= start_date)
+                if end_date:
+                    in_queue_tasks_query = in_queue_tasks_query.filter(TaskRaw.last_completed_date <= end_date)
+                in_queue_task_ids = [r.task_id for r in in_queue_tasks_query.all()]
+                
+                logger.info(f"Found {len(delivered_task_ids)} delivered tasks, {len(in_queue_task_ids)} in-queue tasks")
+                
+                # Attribute delivery stats to last completer
+                trainer_delivered = {}
+                trainer_in_queue = {}
+                
+                all_delivery_task_ids = list(set(delivered_task_ids + in_queue_task_ids))
+                
+                if all_delivery_task_ids:
+                    # Get completion events for delivery tasks
+                    delivery_completion_events = session.query(
+                        TaskHistoryRaw.task_id,
+                        TaskHistoryRaw.author,
+                        TaskHistoryRaw.time_stamp
+                    ).filter(
+                        TaskHistoryRaw.task_id.in_(all_delivery_task_ids),
+                        TaskHistoryRaw.new_status == 'completed',
+                        TaskHistoryRaw.old_status != 'completed-approval',
+                        TaskHistoryRaw.author.isnot(None)
+                    ).all()
+                    
+                    # Group by task_id and find last completer
+                    delivery_task_completions = defaultdict(list)
+                    for event in delivery_completion_events:
+                        delivery_task_completions[event.task_id].append({
+                            'author': event.author.lower().strip() if event.author else None,
+                            'time_stamp': event.time_stamp
+                        })
+                    
+                    # Attribute to last completer
+                    delivered_set = set(delivered_task_ids)
+                    in_queue_set = set(in_queue_task_ids)
+                    
+                    for task_id, completions in delivery_task_completions.items():
+                        if not completions:
+                            continue
+                        # Find last completer
+                        completions_sorted = sorted(completions, key=lambda x: x['time_stamp'] or '')
+                        last_completer = completions_sorted[-1]['author']
+                        
+                        if not last_completer:
+                            continue
+                        
+                        if task_id in delivered_set:
+                            trainer_delivered[last_completer] = trainer_delivered.get(last_completer, 0) + 1
+                        if task_id in in_queue_set:
+                            trainer_in_queue[last_completer] = trainer_in_queue.get(last_completer, 0) + 1
+                
+                logger.info(f"Attributed delivery stats to {len(trainer_delivered)} trainers (delivered), {len(trainer_in_queue)} trainers (in queue)")
+                
+                # ---------------------------------------------------------
+                # STEP 4 & 5: Get avg_rating and total_reviews from trainer_review_stats
+                # 
+                # NEW APPROACH: Each review is attributed to the trainer who did the work
+                # that was reviewed (not the current task owner).
+                #
+                # Example:
+                # - Trainer A completes task -> rejected (3.3) -> reworks -> approved (4.8)
+                #   Trainer A gets 2 reviews: avg = (3.3 + 4.8) / 2 = 4.05
+                #
+                # - Trainer A completes task -> rejected (2.3) -> Trainer B reworks -> approved (5.0)
+                #   Trainer A gets 1 review: 2.3
+                #   Trainer B gets 1 review: 5.0
+                # ---------------------------------------------------------
+                trainer_review_query = session.query(
+                    TrainerReviewStats.trainer_email,
+                    func.count(TrainerReviewStats.review_id).label('total_reviews'),
+                    func.sum(TrainerReviewStats.score).label('total_score')
+                ).filter(
+                    TrainerReviewStats.project_id.in_(filter_project_ids),
+                    TrainerReviewStats.score.isnot(None)
                 )
                 
                 if start_date:
-                    rating_query = rating_query.filter(TaskRaw.last_completed_date >= start_date)
+                    trainer_review_query = trainer_review_query.filter(TrainerReviewStats.review_date >= start_date)
                 if end_date:
-                    rating_query = rating_query.filter(TaskRaw.last_completed_date <= end_date)
+                    trainer_review_query = trainer_review_query.filter(TrainerReviewStats.review_date <= end_date)
                 
-                rating_query = rating_query.group_by(TaskRaw.trainer)
-                rating_results = rating_query.all()
+                trainer_review_query = trainer_review_query.group_by(TrainerReviewStats.trainer_email)
+                trainer_review_results = trainer_review_query.all()
                 
                 trainer_ratings = {}
-                for r in rating_results:
-                    if r.trainer and r.total_reviews and r.total_reviews > 0:
-                        email = r.trainer.lower().strip()
-                        trainer_ratings[email] = round(float(r.total_score) / float(r.total_reviews), 2)
-                
-                # ---------------------------------------------------------
-                # STEP 5: Get total_reviews from task_raw using derived_status
-                # Formula: SUM(count_reviews) WHERE derived_status='Reviewed' AND followup_required=0
-                # ---------------------------------------------------------
-                total_reviews_query = session.query(
-                    TaskRaw.trainer,
-                    func.sum(TaskRaw.count_reviews).label('total_reviews')
-                ).filter(
-                    TaskRaw.derived_status == 'Reviewed',
-                    TaskRaw.followup_required == 0,
-                    TaskRaw.project_id.in_(filter_project_ids)
-                )
-                
-                if start_date:
-                    total_reviews_query = total_reviews_query.filter(TaskRaw.last_completed_date >= start_date)
-                if end_date:
-                    total_reviews_query = total_reviews_query.filter(TaskRaw.last_completed_date <= end_date)
-                
-                total_reviews_query = total_reviews_query.group_by(TaskRaw.trainer)
-                total_reviews_results = total_reviews_query.all()
-                
                 trainer_total_reviews = {}
-                for tr in total_reviews_results:
-                    if tr.trainer:
-                        email = tr.trainer.lower().strip()
-                        trainer_total_reviews[email] = tr.total_reviews or 0
+                trainer_total_scores = {}  # For POD-level aggregation
+                for r in trainer_review_results:
+                    if r.trainer_email:
+                        email = r.trainer_email.lower().strip()
+                        trainer_total_reviews[email] = r.total_reviews or 0
+                        trainer_total_scores[email] = float(r.total_score or 0)
+                        if r.total_reviews and r.total_reviews > 0 and r.total_score:
+                            trainer_ratings[email] = round(float(r.total_score) / float(r.total_reviews), 2)
                 
-                logger.info(f"Found total_reviews for {len(trainer_total_reviews)} trainers")
+                logger.info(f"Found trainer-attributed reviews for {len(trainer_total_reviews)} trainers (using TrainerReviewStats)")
                 
                 # ---------------------------------------------------------
                 # STEP 6: Get Jibble hours for trainers AND POD Leads
@@ -1892,6 +2324,17 @@ class QueryService:
                 if end_date:
                     jibble_query = jibble_query.filter(JibbleHours.entry_date <= end_date)
                 
+                # Apply project filter if provided - map project_id to project name
+                project_name_map = {
+                    36: 'SysBench',
+                    37: 'CFBench',
+                    38: 'InverseIFEval',
+                    39: 'Multichallenge',
+                }
+                if project_id and project_id in project_name_map:
+                    project_pattern = f"%{project_name_map[project_id]}%"
+                    jibble_query = jibble_query.filter(JibbleHours.project.ilike(project_pattern))
+                
                 jibble_query = jibble_query.group_by(JibbleHours.member_code)
                 jibble_results = jibble_query.all()
                 
@@ -1903,36 +2346,49 @@ class QueryService:
                         if trainer_email:
                             trainer_jibble_hours[trainer_email] = float(jr.total_hours or 0)
                 
-                # Query Jibble hours for POD Leads (by matching contributor name to full_name)
-                # Build name -> hours mapping from jibble_hours
-                jibble_by_name_query = session.query(
-                    func.lower(JibbleHours.full_name).label('full_name'),
-                    func.sum(JibbleHours.logged_hours).label('total_hours')
-                )
-                
-                if start_date:
-                    jibble_by_name_query = jibble_by_name_query.filter(JibbleHours.entry_date >= start_date)
-                if end_date:
-                    jibble_by_name_query = jibble_by_name_query.filter(JibbleHours.entry_date <= end_date)
-                
-                jibble_by_name_query = jibble_by_name_query.group_by(func.lower(JibbleHours.full_name))
-                jibble_name_results = jibble_by_name_query.all()
-                
-                jibble_hours_by_name = {}
-                for jr in jibble_name_results:
-                    if jr.full_name:
-                        jibble_hours_by_name[jr.full_name.lower()] = float(jr.total_hours or 0)
-                
-                # Get POD Lead names from contributor table and map to jibble hours
-                pod_lead_jibble_hours = {}
+                # Query Jibble hours for POD Leads using member_code from pod_lead_mapping
+                # First, get POD Lead jibble_ids from their own trainer entries in pod_lead_mapping
+                pod_lead_jibble_ids = {}
                 for pod_email in pod_trainers.keys():
-                    pod_contributor = session.query(Contributor).filter(
-                        func.lower(Contributor.turing_email) == pod_email.lower()
+                    # POD Leads have their own entry in pod_lead_mapping with trainer_email = pod_lead_email
+                    pod_mapping = session.query(PodLeadMapping).filter(
+                        func.lower(PodLeadMapping.trainer_email) == pod_email.lower()
                     ).first()
-                    if pod_contributor and pod_contributor.name:
-                        pod_name_lower = pod_contributor.name.lower()
-                        if pod_name_lower in jibble_hours_by_name:
-                            pod_lead_jibble_hours[pod_email] = jibble_hours_by_name[pod_name_lower]
+                    if pod_mapping and pod_mapping.jibble_id:
+                        pod_lead_jibble_ids[pod_email] = pod_mapping.jibble_id
+                
+                logger.info(f"Found jibble_ids for {len(pod_lead_jibble_ids)} POD Leads")
+                
+                # Now query jibble_hours using member_code for POD Leads
+                pod_lead_jibble_hours = {}
+                if pod_lead_jibble_ids:
+                    jibble_id_list = list(pod_lead_jibble_ids.values())
+                    
+                    pod_jibble_query = session.query(
+                        JibbleHours.member_code,
+                        func.sum(JibbleHours.logged_hours).label('total_hours')
+                    ).filter(JibbleHours.member_code.in_(jibble_id_list))
+                    
+                    if start_date:
+                        pod_jibble_query = pod_jibble_query.filter(JibbleHours.entry_date >= start_date)
+                    if end_date:
+                        pod_jibble_query = pod_jibble_query.filter(JibbleHours.entry_date <= end_date)
+                    
+                    # Apply project filter for POD leads too
+                    if project_id and project_id in project_name_map:
+                        project_pattern = f"%{project_name_map[project_id]}%"
+                        pod_jibble_query = pod_jibble_query.filter(JibbleHours.project.ilike(project_pattern))
+                    
+                    pod_jibble_query = pod_jibble_query.group_by(JibbleHours.member_code)
+                    pod_jibble_results = pod_jibble_query.all()
+                    
+                    # Build member_code -> hours mapping
+                    member_code_to_hours = {str(r.member_code): float(r.total_hours or 0) for r in pod_jibble_results}
+                    
+                    # Map back to pod_email
+                    for pod_email, jibble_id in pod_lead_jibble_ids.items():
+                        if str(jibble_id) in member_code_to_hours:
+                            pod_lead_jibble_hours[pod_email] = member_code_to_hours[str(jibble_id)]
                 
                 logger.info(f"Found Jibble hours for {len(trainer_jibble_hours)} trainers, {len(pod_lead_jibble_hours)} POD Leads")
                 
@@ -1953,7 +2409,10 @@ class QueryService:
                         'unique_tasks': 0,
                         'new_tasks': 0,
                         'rework': 0,
-                        'ready_for_delivery': 0,
+                        'approved_tasks': 0,  # Approved new tasks
+                        'approved_rework': 0,  # Approved rework tasks
+                        'delivered_tasks': 0,
+                        'in_delivery_queue': 0,
                         'sum_turns': 0,
                         'total_score': 0,
                         'total_reviews': 0,
@@ -1977,7 +2436,10 @@ class QueryService:
                         rework = hist.get('rework', 0)
                         
                         sum_turns = trainer_turns.get(trainer_email, 0)
-                        ready = trainer_ready.get(trainer_email, 0)
+                        approved = trainer_approved.get(trainer_email, 0)  # Approved new tasks
+                        approved_rework = trainer_approved_rework.get(trainer_email, 0)  # Approved rework tasks
+                        delivered = trainer_delivered.get(trainer_email, 0)
+                        in_queue = trainer_in_queue.get(trainer_email, 0)
                         avg_rating = trainer_ratings.get(trainer_email)
                         jibble_hours = trainer_jibble_hours.get(trainer_email, 0)
                         
@@ -1988,7 +2450,7 @@ class QueryService:
                         # Avg Rework = (total_completions / unique_tasks - 1) * 100
                         # Where total_completions = new_tasks + rework (all completion events from task_history_raw)
                         submissions = new_tasks + rework
-                        avg_rework = round(((submissions / unique_tasks) - 1) * 100, 1) if unique_tasks > 0 else None
+                        avg_rework = round((submissions / unique_tasks) - 1, 2) if unique_tasks > 0 else None
                         rework_pct = round((rework / submissions) * 100, 1) if submissions > 0 else None
                         merged_aht = round((new_tasks * 10 + rework * 4) / submissions, 2) if submissions > 0 else None
                         # AHT of Submission = jibble_hours / (new_tasks + rework)
@@ -2001,7 +2463,10 @@ class QueryService:
                             'new_tasks': new_tasks,
                             'rework': rework,
                             'total_reviews': total_reviews,
-                            'ready_for_delivery': ready,
+                            'approved_tasks': approved,  # Approved new tasks (first completion approved)
+                            'approved_rework': approved_rework,  # Approved rework (fixed someone else's task)
+                            'delivered_tasks': delivered,
+                            'in_delivery_queue': in_queue,
                             'avg_rework': avg_rework,
                             'rework_percent': rework_pct,
                             'avg_rating': avg_rating,
@@ -2015,18 +2480,17 @@ class QueryService:
                         pod_totals['unique_tasks'] += unique_tasks
                         pod_totals['new_tasks'] += new_tasks
                         pod_totals['rework'] += rework
-                        pod_totals['ready_for_delivery'] += ready
+                        pod_totals['approved_tasks'] += approved
+                        pod_totals['approved_rework'] += approved_rework
+                        pod_totals['delivered_tasks'] += delivered
+                        pod_totals['in_delivery_queue'] += in_queue
                         pod_totals['sum_turns'] += sum_turns
                         pod_totals['total_reviews_sum'] = pod_totals.get('total_reviews_sum', 0) + total_reviews
                         pod_totals['trainer_jibble_hours'] = pod_totals.get('trainer_jibble_hours', 0) + jibble_hours
                         
-                        # For avg_rating aggregation, we need sum_score and sum_reviews
-                        # Find them from rating_results
-                        for r in rating_results:
-                            if r.trainer and r.trainer.lower().strip() == trainer_email:
-                                pod_totals['total_score'] += float(r.total_score or 0)
-                                pod_totals['total_reviews'] += int(r.total_reviews or 0)
-                                break
+                        # For avg_rating aggregation, use trainer_total_scores (from TrainerReviewStats)
+                        pod_totals['total_score'] += trainer_total_scores.get(trainer_email, 0)
+                        pod_totals['total_reviews'] += trainer_total_reviews.get(trainer_email, 0)
                     
                     # Filter out trainers with no data in this project
                     trainers_with_data = [t for t in trainers_data if t['unique_tasks'] > 0 or t['new_tasks'] > 0 or t['rework'] > 0 or t['total_reviews'] > 0]
@@ -2038,7 +2502,7 @@ class QueryService:
                     # Calculate POD-level metrics
                     # Avg Rework = (total_completions / unique_tasks - 1) * 100
                     pod_total_submissions = pod_totals['new_tasks'] + pod_totals['rework']
-                    pod_avg_rework = round(((pod_total_submissions / pod_totals['unique_tasks']) - 1) * 100, 1) if pod_totals['unique_tasks'] > 0 else None
+                    pod_avg_rework = round((pod_total_submissions / pod_totals['unique_tasks']) - 1, 2) if pod_totals['unique_tasks'] > 0 else None
                     pod_rework_pct = round((pod_totals['rework'] / pod_total_submissions) * 100, 1) if pod_total_submissions > 0 else None
                     pod_avg_rating = round(pod_totals['total_score'] / pod_totals['total_reviews'], 2) if pod_totals['total_reviews'] > 0 else None
                     pod_merged_aht = round((pod_totals['new_tasks'] * 10 + pod_totals['rework'] * 4) / pod_total_submissions, 2) if pod_total_submissions > 0 else None
@@ -2057,7 +2521,10 @@ class QueryService:
                         'new_tasks': pod_totals['new_tasks'],
                         'rework': pod_totals['rework'],
                         'total_reviews': pod_totals.get('total_reviews_sum', 0),
-                        'ready_for_delivery': pod_totals['ready_for_delivery'],
+                        'approved_tasks': pod_totals['approved_tasks'],  # Approved new tasks
+                        'approved_rework': pod_totals['approved_rework'],  # Approved rework tasks
+                        'delivered_tasks': pod_totals['delivered_tasks'],
+                        'in_delivery_queue': pod_totals['in_delivery_queue'],
                         'avg_rework': pod_avg_rework,
                         'rework_percent': pod_rework_pct,
                         'avg_rating': pod_avg_rating,
@@ -2116,8 +2583,9 @@ class QueryService:
                     project_name = project_names.get(project_id, f"Project {project_id}")
                     
                     # Get metrics from task_history_raw for this project
+                    # FIX: Use task_history_raw.author for proper attribution
                     history_query = session.query(
-                        TaskRaw.trainer,
+                        TaskHistoryRaw.author,
                         func.count(distinct(TaskHistoryRaw.task_id)).label('unique_tasks'),
                         func.sum(case(
                             (TaskHistoryRaw.completed_status_count == 1, 1),
@@ -2127,12 +2595,11 @@ class QueryService:
                             (TaskHistoryRaw.completed_status_count > 1, 1),
                             else_=0
                         )).label('rework')
-                    ).join(
-                        TaskRaw, TaskHistoryRaw.task_id == TaskRaw.task_id
                     ).filter(
                         TaskHistoryRaw.new_status == 'completed',
                         TaskHistoryRaw.old_status != 'completed-approval',
-                        TaskHistoryRaw.project_id == project_id
+                        TaskHistoryRaw.project_id == project_id,
+                        TaskHistoryRaw.author.isnot(None)
                     )
                     
                     if start_date:
@@ -2140,14 +2607,14 @@ class QueryService:
                     if end_date:
                         history_query = history_query.filter(TaskHistoryRaw.date <= end_date)
                     
-                    history_query = history_query.group_by(TaskRaw.trainer)
+                    history_query = history_query.group_by(TaskHistoryRaw.author)
                     history_results = history_query.all()
                     
                     # Build trainer -> history stats
                     trainer_history = {}
                     for hs in history_results:
-                        if hs.trainer:
-                            email = hs.trainer.lower().strip()
+                        if hs.author:
+                            email = hs.author.lower().strip()
                             trainer_history[email] = {
                                 'unique_tasks': hs.unique_tasks or 0,
                                 'new_tasks': hs.new_tasks or 0,
@@ -2155,12 +2622,12 @@ class QueryService:
                             }
                     
                     # Get total_reviews from task_raw for this project
+                    # Get total_reviews - removed followup_required filter to include all reviews
                     reviews_query = session.query(
                         TaskRaw.trainer,
                         func.sum(TaskRaw.count_reviews).label('total_reviews')
                     ).filter(
-                        TaskRaw.derived_status == 'Reviewed',
-                        TaskRaw.followup_required == 0,
+                        TaskRaw.count_reviews > 0,  # Only tasks that have been reviewed
                         TaskRaw.project_id == project_id
                     )
                     
@@ -2187,6 +2654,18 @@ class QueryService:
                         jibble_query = jibble_query.filter(JibbleHours.entry_date >= start_date)
                     if end_date:
                         jibble_query = jibble_query.filter(JibbleHours.entry_date <= end_date)
+                    
+                    # Apply project filter - map project_id to project name
+                    project_name_map = {
+                        36: 'SysBench',
+                        37: 'CFBench',
+                        38: 'InverseIFEval',
+                        39: 'Multichallenge',
+                    }
+                    if project_id and project_id in project_name_map:
+                        project_pattern = f"%{project_name_map[project_id]}%"
+                        jibble_query = jibble_query.filter(JibbleHours.project.ilike(project_pattern))
+                    
                     jibble_query = jibble_query.group_by(JibbleHours.full_name)
                     jibble_results = jibble_query.all()
                     
@@ -2243,7 +2722,7 @@ class QueryService:
                     
                     for pod_email, agg in pod_aggregates.items():
                         submissions = agg['new_tasks'] + agg['rework']
-                        avg_rework = round(((submissions / agg['unique_tasks']) - 1) * 100, 1) if agg['unique_tasks'] > 0 else None
+                        avg_rework = round((submissions / agg['unique_tasks']) - 1, 2) if agg['unique_tasks'] > 0 else None
                         rework_pct = round((agg['rework'] / submissions) * 100, 1) if submissions > 0 else None
                         merged_aht = round((agg['new_tasks'] * 10 + agg['rework'] * 4) / submissions, 2) if submissions > 0 else None
                         
@@ -2281,7 +2760,7 @@ class QueryService:
                     
                     # Calculate project-level metrics
                     proj_submissions = project_totals['new_tasks'] + project_totals['rework']
-                    proj_avg_rework = round(((proj_submissions / project_totals['unique_tasks']) - 1) * 100, 1) if project_totals['unique_tasks'] > 0 else None
+                    proj_avg_rework = round((proj_submissions / project_totals['unique_tasks']) - 1, 2) if project_totals['unique_tasks'] > 0 else None
                     proj_rework_pct = round((project_totals['rework'] / proj_submissions) * 100, 1) if proj_submissions > 0 else None
                     proj_merged_aht = round((project_totals['new_tasks'] * 10 + project_totals['rework'] * 4) / proj_submissions, 2) if proj_submissions > 0 else None
                     

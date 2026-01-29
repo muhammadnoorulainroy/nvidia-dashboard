@@ -447,3 +447,183 @@ class JibbleHours(Base):
     full_name = Column(String(255))
     logged_hours = Column(Float, default=0)
     last_synced = Column(DateTime, server_default='now()')
+
+
+# ==================== Trainer Review Attribution ====================
+
+class TrainerReviewStats(Base):
+    """
+    Individual reviews attributed to the trainer who did the specific work.
+    
+    Each row represents ONE review that has been attributed to the trainer
+    who completed the task just before that review was submitted.
+    
+    This enables accurate per-trainer metrics:
+    - Trainer A completes task -> rejected (3.3) -> Trainer A reworks -> approved (4.8)
+      Result: Trainer A gets 2 reviews: 3.3 and 4.8, avg = 4.05
+    
+    - Trainer A completes task -> rejected (2.3) -> Trainer B completes rework -> approved (5.0)
+      Result: Trainer A gets 1 review: 2.3
+              Trainer B gets 1 review: 5.0
+    """
+    __tablename__ = 'trainer_review_stats'
+    
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    
+    # Review identification
+    review_id = Column(BigInteger, unique=True, index=True)  # BigQuery review.id
+    task_id = Column(BigInteger, index=True)  # conversation_id
+    
+    # Trainer attribution - who did the work that was reviewed
+    trainer_email = Column(String(255), index=True)  # The trainer who completed the work
+    
+    # Completion info - which completion triggered this review
+    completion_time = Column(DateTime)  # When the trainer completed
+    completion_number = Column(Integer)  # 1 = first completion (new task), >1 = rework
+    
+    # Review info
+    review_time = Column(DateTime)
+    review_date = Column(Date, index=True)
+    score = Column(Float)
+    followup_required = Column(Integer, default=0)  # 0 = approved, 1 = sent to rework
+    
+    # Project info for filtering
+    project_id = Column(Integer, index=True)
+    
+    # Metadata
+    last_synced = Column(DateTime, server_default='now()')
+    
+    # Composite indexes for common queries
+    __table_args__ = (
+        Index('ix_trainer_review_trainer_project', 'trainer_email', 'project_id'),
+        Index('ix_trainer_review_trainer_date', 'trainer_email', 'review_date'),
+    )
+
+
+# ==================== AHT Configuration ====================
+
+class AHTConfiguration(Base):
+    """
+    Project-wise AHT (Average Handling Time) configuration.
+    
+    Stores the expected hours for new tasks and rework tasks per project.
+    These values are used to calculate Merged Exp. AHT:
+    Formula: (New Tasks × new_task_aht + Rework × rework_aht) / Total Submissions
+    
+    Default values:
+    - New Task AHT: 10 hours (fresh tasks require more research and initial work)
+    - Rework AHT: 4 hours (fixing/revising existing tasks takes less time)
+    """
+    __tablename__ = 'aht_configuration'
+    
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    
+    # Project identification
+    project_id = Column(Integer, unique=True, index=True, nullable=False)
+    project_name = Column(String(255), nullable=False)
+    
+    # AHT values in hours
+    new_task_aht = Column(Float, nullable=False, default=10.0)  # Expected hours for new tasks
+    rework_aht = Column(Float, nullable=False, default=4.0)     # Expected hours for rework tasks
+    
+    # Metadata
+    created_at = Column(DateTime, server_default='now()')
+    updated_at = Column(DateTime, server_default='now()', onupdate='now()')
+    updated_by = Column(String(255))  # Email of user who last updated
+
+
+# ==================== Generic Project Configuration ====================
+
+class ProjectConfiguration(Base):
+    """
+    Generic, extensible configuration system for project-level settings.
+    
+    Supports multiple configuration types:
+    - throughput_target: Daily throughput targets for trainers
+    - review_target: Review throughput targets for reviewers/pod leads
+    - performance_weights: Weighted scoring configuration
+    - classification_threshold: A/B/C performer bucket thresholds
+    - effort_threshold: Hours vs expected effort thresholds
+    - color_coding: VMO color coding rules
+    - general: General settings
+    
+    Features:
+    - Per-project settings
+    - Entity-level settings (trainer/reviewer specific)
+    - Historical tracking with effective dates
+    - JSON values for flexible data structures
+    
+    Example configurations:
+    
+    1. Trainer throughput target:
+       {
+           "project_id": 36,
+           "config_type": "throughput_target",
+           "config_key": "daily_tasks",
+           "entity_type": "trainer",
+           "entity_email": "trainer@turing.com",
+           "config_value": {"target": 5, "unit": "tasks"}
+       }
+    
+    2. Performance weights:
+       {
+           "project_id": 36,
+           "config_type": "performance_weights",
+           "config_key": "default",
+           "config_value": {
+               "throughput": 30,
+               "avg_rating": 25,
+               "rating_change": 10,
+               "rework_rate": 20,
+               "delivered": 15
+           }
+       }
+    
+    3. Classification thresholds:
+       {
+           "project_id": 36,
+           "config_type": "classification_threshold",
+           "config_key": "performer_buckets",
+           "config_value": {
+               "A": {"min_score": 80},
+               "B": {"min_score": 50},
+               "C": {"min_score": 0}
+           }
+       }
+    """
+    __tablename__ = 'project_configuration'
+    
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    
+    # Project identification
+    project_id = Column(Integer, nullable=False, index=True)
+    
+    # Configuration type and key
+    config_type = Column(String(50), nullable=False, index=True)
+    config_key = Column(String(100), nullable=False)
+    
+    # Entity-level configuration (optional)
+    entity_type = Column(String(50), nullable=True)  # 'trainer', 'reviewer', 'pod_lead', null for project-level
+    entity_id = Column(Integer, nullable=True)       # contributor.id or null
+    entity_email = Column(String(255), nullable=True) # For easier lookups
+    
+    # Configuration value (JSON for flexibility)
+    # Using Text with JSON serialization for compatibility
+    config_value = Column(Text, nullable=False)  # Store as JSON string (or JSONB in PostgreSQL)
+    
+    # Effective date range (for historical tracking)
+    effective_from = Column(Date, nullable=False, server_default='CURRENT_DATE')
+    effective_to = Column(Date, nullable=True)  # null = currently active
+    
+    # Metadata
+    description = Column(Text, nullable=True)
+    created_at = Column(DateTime, server_default='now()', nullable=False)
+    updated_at = Column(DateTime, server_default='now()', nullable=False)
+    created_by = Column(String(255), nullable=True)
+    updated_by = Column(String(255), nullable=True)
+    
+    # Composite indexes for common queries
+    __table_args__ = (
+        Index('ix_project_config_project_type', 'project_id', 'config_type'),
+        Index('ix_project_config_entity', 'entity_type', 'entity_id'),
+    )

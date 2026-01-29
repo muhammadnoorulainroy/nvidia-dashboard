@@ -19,6 +19,7 @@ import {
 import {
   Menu as MenuIcon,
   Business as BusinessIcon,
+  Settings as SettingsIcon,
 } from '@mui/icons-material'
 
 const drawerWidth = 260
@@ -34,7 +35,8 @@ interface MenuItem {
 }
 
 const menuItems: MenuItem[] = [
-  { text: 'Pre-Delivery', icon: <BusinessIcon />, path: '/pre-delivery' },
+  { text: 'Task Metrics', icon: <BusinessIcon />, path: '/task-metrics' },
+  { text: 'Configuration', icon: <SettingsIcon />, path: '/configuration' },
 ]
 
 interface LayoutProps {
@@ -60,77 +62,92 @@ export default function Layout({ children }: LayoutProps) {
   }
 
   const drawer = (
-    <Box sx={{ height: '100%' }}>
+    <Box sx={{ height: '100%', backgroundColor: '#1E293B' }}>
       <Toolbar
         sx={{
-          backgroundColor: '#76B900',
-          minHeight: 80,
+          backgroundColor: '#0F172A',
+          minHeight: 72,
           flexDirection: 'column',
           alignItems: 'flex-start',
           justifyContent: 'center',
-          py: 2.5,
-          px: 3,
+          py: 2,
+          px: 2.5,
+          borderBottom: '1px solid rgba(255,255,255,0.08)',
         }}
       >
-        <Typography 
-          variant="h5" 
-          component="div" 
-          sx={{ 
-            fontWeight: 800,
-            letterSpacing: '-0.02em',
-            mb: 0.5,
-            color: '#FFFFFF',
-            fontSize: '16px',
-          }}
-        >
-          {APP_NAME.toUpperCase()}
-        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 0.5 }}>
+          <Box 
+            sx={{ 
+              width: 32, 
+              height: 32, 
+              borderRadius: 1.5,
+              background: 'linear-gradient(135deg, #76B900 0%, #5A8F00 100%)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 2px 8px rgba(118, 185, 0, 0.3)',
+            }}
+          >
+            <Typography sx={{ color: 'white', fontWeight: 800, fontSize: '14px' }}>N</Typography>
+          </Box>
+          <Typography 
+            variant="h6" 
+            component="div" 
+            sx={{ 
+              fontWeight: 700,
+              letterSpacing: '-0.01em',
+              color: '#F8FAFC',
+              fontSize: '15px',
+            }}
+          >
+            {APP_NAME}
+          </Typography>
+        </Box>
         <Typography 
           variant="caption" 
           sx={{ 
-            color: 'rgba(255,255,255,0.8)',
+            color: 'rgba(148, 163, 184, 0.8)',
             fontWeight: 500,
-            letterSpacing: '0.05em',
-            textTransform: 'uppercase',
+            fontSize: '11px',
+            pl: 5.5,
           }}
         >
-          Task metrics dashboard v{APP_VERSION}
+          Task Metrics v{APP_VERSION}
         </Typography>
       </Toolbar>
-      <Divider />
-      <List sx={{ pt: 3, px: 2.5 }}>
+      <List sx={{ pt: 2, px: 1.5 }}>
         {menuItems.map((item) => {
           const isActive = location.pathname === item.path
           return (
-            <ListItem key={item.text} disablePadding sx={{ mb: 1 }}>
+            <ListItem key={item.text} disablePadding sx={{ mb: 0.5 }}>
               <ListItemButton
                 onClick={() => handleNavigation(item.path)}
                 selected={isActive}
                 sx={{
-                  borderRadius: 2,
-                  py: 1.5,
+                  borderRadius: 1.5,
+                  py: 1.25,
                   px: 2,
-                  transition: 'all 0.2s ease',
+                  transition: 'all 0.15s ease',
                   '&.Mui-selected': {
                     backgroundColor: 'rgba(118, 185, 0, 0.15)',
                     color: '#76B900',
-                    borderLeft: '3px solid #76B900',
                     '&:hover': {
-                      backgroundColor: 'rgba(118, 185, 0, 0.25)',
+                      backgroundColor: 'rgba(118, 185, 0, 0.2)',
                     },
                     '& .MuiListItemIcon-root': {
                       color: '#76B900',
                     },
                   },
                   '&:hover': {
-                    backgroundColor: '#F9FAFB',
+                    backgroundColor: 'rgba(255, 255, 255, 0.05)',
                   },
+                  color: '#94A3B8',
                 }}
               >
                 <ListItemIcon
                   sx={{
-                    color: isActive ? 'inherit' : '#6B7280',
-                    minWidth: 40,
+                    color: isActive ? '#76B900' : '#64748B',
+                    minWidth: 36,
                   }}
                 >
                   {item.icon}
@@ -138,7 +155,7 @@ export default function Layout({ children }: LayoutProps) {
                 <ListItemText
                   primary={item.text}
                   primaryTypographyProps={{
-                    fontSize: '0.9375rem',
+                    fontSize: '0.875rem',
                     fontWeight: isActive ? 600 : 500,
                     letterSpacing: '-0.01em',
                   }}
@@ -196,8 +213,8 @@ export default function Layout({ children }: LayoutProps) {
             '& .MuiDrawer-paper': { 
               boxSizing: 'border-box', 
               width: drawerWidth,
-              backgroundColor: 'white',
-              borderRight: '1px solid #E2E8F0',
+              backgroundColor: '#1E293B',
+              borderRight: 'none',
             },
           }}
         >
@@ -210,9 +227,9 @@ export default function Layout({ children }: LayoutProps) {
             '& .MuiDrawer-paper': { 
               boxSizing: 'border-box', 
               width: drawerWidth,
-              backgroundColor: 'white',
-              borderRight: '1px solid #E2E8F0',
-              boxShadow: 'none',
+              backgroundColor: '#1E293B',
+              borderRight: 'none',
+              boxShadow: '4px 0 24px rgba(0, 0, 0, 0.08)',
             },
           }}
           open
@@ -224,10 +241,10 @@ export default function Layout({ children }: LayoutProps) {
         component="main"
         sx={{
           flexGrow: 1,
-          p: 4,
+          p: 3,
           pt: { xs: 10, sm: 3 },
           width: { sm: `calc(100% - ${drawerWidth}px)` },
-          backgroundColor: '#FFFFFF',
+          backgroundColor: '#F8FAFC',
           minHeight: '100vh',
         }}
       >

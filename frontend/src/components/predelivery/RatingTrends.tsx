@@ -410,10 +410,10 @@ export function RatingTrends() {
                     <TableHead>
                       <TableRow sx={{ bgcolor: 'grey.100' }}>
                         <TableCell>Trainer</TableCell>
-                        <TableCell align="center">First Rating</TableCell>
-                        <TableCell align="center">Latest Rating</TableCell>
-                        <TableCell align="center">Change</TableCell>
-                        <TableCell align="center">Data Points</TableCell>
+                        <TableCell align="left">First Rating</TableCell>
+                        <TableCell align="left">Latest Rating</TableCell>
+                        <TableCell align="left">Change</TableCell>
+                        <TableCell align="left">Data Points</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -430,9 +430,9 @@ export function RatingTrends() {
                         .map((row) => (
                           <TableRow key={row.trainer} hover>
                             <TableCell>{row.trainer}</TableCell>
-                            <TableCell align="center">{row.first?.toFixed(2) || '-'}</TableCell>
-                            <TableCell align="center">{row.last?.toFixed(2) || '-'}</TableCell>
-                            <TableCell align="center">
+                            <TableCell align="left">{row.first?.toFixed(2) || '-'}</TableCell>
+                            <TableCell align="left">{row.last?.toFixed(2) || '-'}</TableCell>
+                            <TableCell align="left">
                               <Chip
                                 size="small"
                                 label={row.change ? (row.change > 0 ? '+' : '') + row.change.toFixed(2) : '-'}
@@ -440,7 +440,7 @@ export function RatingTrends() {
                                 icon={row.change && row.change > 0 ? <TrendingUpIcon /> : row.change && row.change < 0 ? <TrendingDownIcon /> : undefined}
                               />
                             </TableCell>
-                            <TableCell align="center">{row.points}</TableCell>
+                            <TableCell align="left">{row.points}</TableCell>
                           </TableRow>
                         ))}
                     </TableBody>
@@ -566,23 +566,23 @@ export function RatingTrends() {
                   <TableHead>
                     <TableRow>
                       <TableCell>Trainer</TableCell>
-                      <TableCell align="center">Period 1 Rating</TableCell>
-                      <TableCell align="center">Period 1 Reviews</TableCell>
-                      <TableCell align="center">Period 2 Rating</TableCell>
-                      <TableCell align="center">Period 2 Reviews</TableCell>
-                      <TableCell align="center">Change</TableCell>
-                      <TableCell align="center">Trend</TableCell>
+                      <TableCell align="left">Period 1 Rating</TableCell>
+                      <TableCell align="left">Period 1 Reviews</TableCell>
+                      <TableCell align="left">Period 2 Rating</TableCell>
+                      <TableCell align="left">Period 2 Reviews</TableCell>
+                      <TableCell align="left">Change</TableCell>
+                      <TableCell align="left">Trend</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {comparisonData.by_trainer.map((row) => (
                       <TableRow key={row.trainer} hover>
                         <TableCell>{row.trainer}</TableCell>
-                        <TableCell align="center">{row.period1_rating?.toFixed(2) || '-'}</TableCell>
-                        <TableCell align="center">{row.period1_reviews}</TableCell>
-                        <TableCell align="center">{row.period2_rating?.toFixed(2) || '-'}</TableCell>
-                        <TableCell align="center">{row.period2_reviews}</TableCell>
-                        <TableCell align="center">
+                        <TableCell align="left">{row.period1_rating?.toFixed(2) || '-'}</TableCell>
+                        <TableCell align="left">{row.period1_reviews}</TableCell>
+                        <TableCell align="left">{row.period2_rating?.toFixed(2) || '-'}</TableCell>
+                        <TableCell align="left">{row.period2_reviews}</TableCell>
+                        <TableCell align="left">
                           {row.rating_change !== null ? (
                             <Chip
                               size="small"
@@ -591,7 +591,7 @@ export function RatingTrends() {
                             />
                           ) : '-'}
                         </TableCell>
-                        <TableCell align="center">
+                        <TableCell align="left">
                           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5 }}>
                             {getTrendIcon(row.trend)}
                             <Typography variant="caption">
