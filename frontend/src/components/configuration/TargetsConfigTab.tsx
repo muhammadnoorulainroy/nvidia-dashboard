@@ -615,7 +615,7 @@ export default function TargetsConfigTab() {
                   No individual trainer overrides set.
                 </Typography>
                 <Typography variant="caption" sx={{ display: 'block', mt: 1 }}>
-                  All trainers use the project default target of {projectState.trainerDefault} tasks/day.
+                  All trainers use the project default targets: {projectState.trainerNewTaskTarget} new tasks/day, {projectState.trainerReworkTarget} rework/day.
                 </Typography>
               </Box>
             ) : (
@@ -656,7 +656,7 @@ export default function TargetsConfigTab() {
                   No individual reviewer overrides set.
                 </Typography>
                 <Typography variant="caption" sx={{ display: 'block', mt: 1 }}>
-                  All reviewers use the project default target of {projectState.reviewerDefault} reviews/day.
+                  All reviewers use the project default targets: {projectState.reviewerNewTaskTarget} new reviews/day, {projectState.reviewerReworkTarget} rework/day.
                 </Typography>
               </Box>
             ) : (
