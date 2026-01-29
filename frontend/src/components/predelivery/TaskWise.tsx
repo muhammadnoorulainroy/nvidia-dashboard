@@ -3,10 +3,16 @@ import {
   Box,
   Typography,
   Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  TableContainer,
+  TablePagination,
   Autocomplete,
   TextField,
   Chip,
-  IconButton,
   Button,
   Slider,
   Popover,
@@ -23,7 +29,9 @@ import SortIcon from '@mui/icons-material/Sort'
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 import FilterListIcon from '@mui/icons-material/FilterList'
-import { DataGrid, GridColDef, GridSortModel } from '@mui/x-data-grid'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import Tooltip from '@mui/material/Tooltip'
+import { getTooltipForHeader } from '../../utils/columnTooltips'
 import { getTaskLevelInfo } from '../../services/api'
 import type { TaskLevelInfo } from '../../types'
 import LoadingSpinner from '../LoadingSpinner'
@@ -58,11 +66,10 @@ export default function TaskWise() {
   const [textFilters, setTextFilters] = useState<Record<string, TextFilter>>({})
   const [filterAnchorEl, setFilterAnchorEl] = useState<HTMLElement | null>(null)
   const [activeFilterColumn, setActiveFilterColumn] = useState<string>('')
-  const [sortModel, setSortModel] = useState<GridSortModel>([])
-  const [paginationModel, setPaginationModel] = useState({
-    pageSize: 20,
-    page: 0,
-  })
+  const [sortColumn, setSortColumn] = useState<string>('')
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc')
+  const [page, setPage] = useState(0)
+  const [rowsPerPage, setRowsPerPage] = useState(100)
 
   const fetchData = async () => {
     try {
@@ -84,7 +91,8 @@ export default function TaskWise() {
       setNumericFilters(freshFilters)
       setTextFilters({})
       setSelectedOptions([])
-      setSortModel([])
+      setSortColumn('')
+      setSortDirection('asc')
       
       console.log('TaskWise: Filters initialized')
     } catch (err: any) {
@@ -276,7 +284,7 @@ export default function TaskWise() {
     
     console.log('Filtered count:', filtered.length)
     setFilteredData(filtered)
-    setPaginationModel({ ...paginationModel, page: 0 })
+    setPage(0)
   }, [selectedOptions, textFilters, numericFilters, dateFrom, dateTo, data])
 
   // Build search options from data
@@ -348,60 +356,92 @@ export default function TaskWise() {
     return <ErrorDisplay message={error} onRetry={fetchData} />
   }
 
-  // Custom header renderer with dropdown arrow
-  // Render header with dropdown for numeric columns (with slider) or regular columns (with sort only)
-  const renderHeaderWithDropdown = (headerName: string, _isNumeric: boolean = false, fieldKey?: string) => (_params: any) => {
-    const handleFilterClick = (e: React.MouseEvent<HTMLElement>) => {
-      e.stopPropagation()
-      
-      // Always use our custom popover for columns with fieldKey
-      if (fieldKey) {
-        setActiveFilterColumn(fieldKey)
-        setFilterAnchorEl(e.currentTarget)
-      }
-    }
-    
-    return (
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'flex-start',
-          width: '100%',
-          gap: 0.5,
-          py: 1,
+  // Render column header with dropdown and tooltip (matching PodLeadTab style)
+  const renderHeaderWithFilter = (label: string, columnKey: string, isNumeric: boolean = false) => (
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 0.5,
+        cursor: 'pointer',
+        overflow: 'visible',
+        '&:hover': { opacity: 0.8 }
+      }}
+      onClick={(e) => {
+        setFilterAnchorEl(e.currentTarget as HTMLElement)
+        setActiveFilterColumn(columnKey)
+      }}
+    >
+      <ArrowDropDownIcon sx={{ fontSize: 18, color: '#64748B', flexShrink: 0 }} />
+      <span style={{ whiteSpace: 'nowrap' }}>{label}</span>
+      {sortColumn === columnKey && (
+        sortDirection === 'asc' ? 
+          <ArrowUpwardIcon sx={{ fontSize: 14, flexShrink: 0 }} /> : 
+          <ArrowDownwardIcon sx={{ fontSize: 14, flexShrink: 0 }} />
+      )}
+      <Tooltip 
+        title={getTooltipForHeader(label)}
+        arrow
+        placement="top"
+        enterDelay={200}
+        slotProps={{
+          tooltip: {
+            sx: {
+              bgcolor: '#1E293B',
+              color: '#F8FAFC',
+              fontSize: '0.75rem',
+              maxWidth: 300,
+              p: '8px 12px',
+              borderRadius: 1,
+              zIndex: 9999,
+            },
+          },
+          popper: {
+            sx: {
+              zIndex: 9999,
+            },
+          },
         }}
       >
-        <IconButton
-          size="small"
-          onClick={handleFilterClick}
-          sx={{
-            padding: 0,
-            minWidth: 'auto',
-            color: '#6B7280',
-            '&:hover': {
-              color: '#374151',
-              backgroundColor: 'transparent',
-            },
-          }}
-        >
-          <ArrowDropDownIcon fontSize="small" />
-        </IconButton>
-        <Typography
-          variant="caption"
-          sx={{
-            fontWeight: 700,
-            textTransform: 'uppercase',
-            fontSize: '0.75rem',
-            whiteSpace: 'nowrap',
-            overflow: 'visible',
-          }}
-        >
-          {headerName}
-        </Typography>
-      </Box>
-    )
-  }
+        <InfoOutlinedIcon 
+          sx={{ 
+            fontSize: 14, 
+            color: '#94A3B8', 
+            cursor: 'help', 
+            ml: 0.25, 
+            flexShrink: 0,
+            '&:hover': { color: '#64748B' } 
+          }} 
+          onClick={(e) => e.stopPropagation()}
+        />
+      </Tooltip>
+    </Box>
+  )
+
+  // Sort the filtered data
+  const sortedData = [...filteredData].sort((a, b) => {
+    if (!sortColumn) return 0
+    
+    let aVal: any = (a as any)[sortColumn]
+    let bVal: any = (b as any)[sortColumn]
+    
+    // Handle null/undefined
+    if (aVal === null || aVal === undefined) aVal = sortDirection === 'asc' ? Infinity : -Infinity
+    if (bVal === null || bVal === undefined) bVal = sortDirection === 'asc' ? Infinity : -Infinity
+    
+    // String comparison
+    if (typeof aVal === 'string' && typeof bVal === 'string') {
+      return sortDirection === 'asc' 
+        ? aVal.localeCompare(bVal)
+        : bVal.localeCompare(aVal)
+    }
+    
+    // Numeric comparison
+    return sortDirection === 'asc' ? aVal - bVal : bVal - aVal
+  })
+
+  // Paginate the sorted data
+  const paginatedData = sortedData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
   
   // Handle slider change
   const handleSliderChange = (fieldKey: string, newValue: number | number[]) => {
@@ -426,272 +466,6 @@ export default function TaskWise() {
     }))
   }
 
-  // Calculate column width based on content - exact fit
-  const calculateColumnWidth = (headerName: string, data: any[], fieldName: string) => {
-    // Calculate header width (including dropdown arrow icon)
-    const headerWidth = headerName.length * 9 + 50
-    
-    // Calculate max content width
-    let maxContentWidth = headerWidth
-    if (data.length > 0) {
-      const contentLengths = data.map(row => {
-        const value = row[fieldName]
-        return String(value || '').length * 8.5 + 16
-      })
-      maxContentWidth = Math.max(headerWidth, ...contentLengths)
-    }
-    
-    // Return exact width needed (no artificial max cap)
-    return Math.max(maxContentWidth, 100)
-  }
-
-  // Build dynamic columns
-  const columns: GridColDef[] = [
-    {
-      field: 'task_id',
-      headerName: 'Task ID',
-      width: calculateColumnWidth('Task ID', filteredData, 'task_id'),
-      align: 'center' as const,
-      headerAlign: 'left' as const,
-      renderHeader: renderHeaderWithDropdown('Task ID', false, 'task_id'),
-      renderCell: (params) => {
-        const taskId = params.value || 'N/A'
-        
-        // Use labeling tool link for Nvidia (prod_labeling_tool_n)
-        if (taskId && taskId !== 'N/A') {
-          const labelingToolUrl = `https://labeling-n.turing.com/conversations/${taskId}/view`
-          
-          return (
-            <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-              <a
-                href={labelingToolUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ textDecoration: 'none' }}
-              >
-                <Chip
-                  label={taskId}
-                  size="small"
-                  variant="outlined"
-                  clickable
-                  sx={{
-                    borderColor: '#76B900',
-                    color: '#76B900',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    '&:hover': {
-                      backgroundColor: '#76B90010',
-                      borderColor: '#5A8F00',
-                    },
-                  }}
-                />
-              </a>
-            </Box>
-          )
-        }
-        
-        return (
-          <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-            <Chip
-              label={taskId}
-              size="small"
-              variant="outlined"
-              sx={{
-                borderColor: '#E5E7EB',
-                color: '#1F2937',
-                fontWeight: 500,
-              }}
-            />
-          </Box>
-        )
-      },
-    },
-    {
-      field: 'annotator_name',
-      headerName: 'Annotator',
-      width: calculateColumnWidth('Annotator', filteredData, 'annotator_name'),
-      align: 'center' as const,
-      headerAlign: 'left' as const,
-      renderHeader: renderHeaderWithDropdown('Annotator', false, 'annotator_name'),
-      renderCell: (params) => (
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
-          <Typography variant="body2" sx={{ fontWeight: 500, color: '#1F2937' }}>
-            {params.value || 'Unknown'}
-          </Typography>
-          <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.7rem' }}>
-            ID: {params.row.annotator_id || 'N/A'}
-          </Typography>
-        </Box>
-      ),
-    },
-    {
-      field: 'annotator_email',
-      headerName: 'Annotator Email',
-      width: Math.max(calculateColumnWidth('Annotator Email', filteredData, 'annotator_email'), 200),
-      align: 'center' as const,
-      headerAlign: 'left' as const,
-      renderHeader: renderHeaderWithDropdown('Annotator Email', false, 'annotator_email'),
-      renderCell: (params) => (
-        <Typography variant="body2" sx={{ color: '#1F2937', textAlign: 'center', width: '100%', fontSize: '0.875rem' }}>
-          {params.value || 'N/A'}
-        </Typography>
-      ),
-    },
-    {
-      field: 'reviewer_name',
-      headerName: 'Reviewer',
-      width: calculateColumnWidth('Reviewer', filteredData, 'reviewer_name'),
-      align: 'center' as const,
-      headerAlign: 'left' as const,
-      renderHeader: renderHeaderWithDropdown('Reviewer', false, 'reviewer_name'),
-      renderCell: (params) => (
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
-          <Typography variant="body2" sx={{ fontWeight: 500, color: '#1F2937' }}>
-            {params.value || 'N/A'}
-          </Typography>
-          <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.7rem' }}>
-            ID: {params.row.reviewer_id || 'N/A'}
-          </Typography>
-        </Box>
-      ),
-    },
-    {
-      field: 'reviewer_email',
-      headerName: 'Reviewer Email',
-      width: Math.max(calculateColumnWidth('Reviewer Email', filteredData, 'reviewer_email'), 200),
-      align: 'center' as const,
-      headerAlign: 'left' as const,
-      renderHeader: renderHeaderWithDropdown('Reviewer Email', false, 'reviewer_email'),
-      renderCell: (params) => (
-        <Typography variant="body2" sx={{ color: '#1F2937', textAlign: 'center', width: '100%', fontSize: '0.875rem' }}>
-          {params.value || 'N/A'}
-        </Typography>
-      ),
-    },
-    {
-      field: 'task_score',
-      headerName: 'Task Score',
-      width: calculateColumnWidth('Task Score', filteredData, 'task_score'),
-      type: 'number',
-      align: 'center' as const,
-      headerAlign: 'left' as const,
-      renderHeader: renderHeaderWithDropdown('Task Score', true, 'task_score'),
-      renderCell: (params) => (
-        <Typography
-          variant="body2"
-          sx={{
-            fontWeight: 600,
-            color: '#1F2937',
-            textAlign: 'center',
-            width: '100%',
-          }}
-        >
-          {params.value !== null && params.value !== undefined ? params.value : 'N/A'}
-        </Typography>
-      ),
-    },
-    {
-      field: 'rework_count',
-      headerName: 'Rework Count',
-      width: calculateColumnWidth('Rework Count', filteredData, 'rework_count'),
-      type: 'number',
-      align: 'center' as const,
-      headerAlign: 'left' as const,
-      renderHeader: renderHeaderWithDropdown('Rework Count', true, 'rework_count'),
-      renderCell: (params) => (
-        <Typography
-          variant="body2"
-          sx={{
-            fontWeight: 600,
-            color: '#1F2937',
-            textAlign: 'center',
-            width: '100%',
-          }}
-        >
-          {params.value !== null && params.value !== undefined ? params.value : 0}
-        </Typography>
-      ),
-    },
-    {
-      field: 'duration_minutes',
-      headerName: 'AHT (mins)',
-      width: calculateColumnWidth('AHT (mins)', filteredData, 'duration_minutes'),
-      type: 'number',
-      align: 'center' as const,
-      headerAlign: 'left' as const,
-      renderHeader: renderHeaderWithDropdown('AHT (mins)', true, 'duration_minutes'),
-      renderCell: (params) => (
-        <Typography
-          variant="body2"
-          sx={{
-            fontWeight: 600,
-            color: params.value !== null && params.value !== undefined ? '#1F2937' : '#9CA3AF',
-            textAlign: 'center',
-            width: '100%',
-          }}
-        >
-          {params.value !== null && params.value !== undefined ? `${params.value}m` : 'N/A'}
-        </Typography>
-      ),
-    },
-    {
-      field: 'week_number',
-      headerName: 'Week Number',
-      width: calculateColumnWidth('Week Number', filteredData, 'week_number'),
-      align: 'center' as const,
-      headerAlign: 'left' as const,
-      renderHeader: renderHeaderWithDropdown('Week Number', true, 'week_number'),
-      renderCell: (params) => (
-        <Typography
-          variant="body2"
-          sx={{
-            fontWeight: 600,
-            color: '#1F2937',
-            textAlign: 'center',
-            width: '100%',
-          }}
-        >
-          {params.value !== null && params.value !== undefined ? params.value : 'N/A'}
-        </Typography>
-      ),
-    },
-    {
-      field: 'updated_at',
-      headerName: 'Updated Date',
-      width: calculateColumnWidth('Updated Date', filteredData, 'updated_at'),
-      align: 'center' as const,
-      headerAlign: 'left' as const,
-      renderHeader: renderHeaderWithDropdown('Updated Date', false, 'updated_at'),
-      renderCell: (params) => {
-        const dateStr = params.value
-        if (!dateStr) return <Typography variant="body2" sx={{ color: '#6B7280' }}>N/A</Typography>
-        
-        try {
-          const date = new Date(dateStr)
-          const formattedDate = date.toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-          })
-          return (
-            <Typography
-              variant="body2"
-              sx={{
-                fontWeight: 500,
-                color: '#111827',
-                textAlign: 'center',
-                width: '100%',
-              }}
-            >
-              {formattedDate}
-            </Typography>
-          )
-        } catch {
-          return <Typography variant="body2" sx={{ color: '#6B7280' }}>Invalid</Typography>
-        }
-      },
-    },
-  ]
 
   // Check if any filters are active
   const hasActiveFilters = () => {
@@ -709,27 +483,6 @@ export default function TaskWise() {
     return hasTextFilters || hasNumericFilters || hasDateFilters
   }
 
-  // Build rows with quality dimensions as separate fields
-  const rows = (filteredData || []).map((task, index) => {
-    const row: any = {
-      id: index,
-      task_id: task.task_id,
-      task_score: task.task_score,
-      rework_count: task.rework_count || 0,
-      duration_minutes: task.duration_minutes,
-      week_number: task.week_number,
-      annotator_id: task.annotator_id,
-      annotator_name: task.annotator_name,
-      annotator_email: task.annotator_email,
-      reviewer_id: task.reviewer_id,
-      reviewer_name: task.reviewer_name,
-      reviewer_email: task.reviewer_email,
-      updated_at: task.updated_at,
-      colab_link: task.colab_link,
-    }
-    
-    return row
-  })
 
   return (
     <Box>
@@ -966,7 +719,8 @@ export default function TaskWise() {
                     setSelectedOptions([])
                     setTextFilters({})
                     setNumericFilters(resetFilters)
-                    setSortModel([])
+                    setSortColumn('')
+                    setSortDirection('asc')
                     setDateFrom('')
                     setDateTo('')
                   }}
@@ -976,7 +730,8 @@ export default function TaskWise() {
                     setSelectedOptions([])
                     setTextFilters({})
                     setNumericFilters(resetFilters)
-                    setSortModel([])
+                    setSortColumn('')
+                    setSortDirection('asc')
                     setDateFrom('')
                     setDateTo('')
                   }}
@@ -1004,80 +759,185 @@ export default function TaskWise() {
           </Box>
         </Box>
 
-        <Box sx={{ height: 600, width: '100%' }}>
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            paginationModel={paginationModel}
-            onPaginationModelChange={setPaginationModel}
-            sortModel={sortModel}
-            onSortModelChange={setSortModel}
-            pageSizeOptions={[10, 20, 50]}
-            disableRowSelectionOnClick
-            disableColumnMenu={true}
-            sortingOrder={['asc', 'desc']}
-            sx={{
-              border: 'none',
-              backgroundColor: 'white',
-              '& .MuiDataGrid-cell': {
-                borderBottom: '1px solid #E5E7EB',
-                color: '#111827',
-                fontSize: '0.875rem',
-                paddingX: 1.5,
-              },
-              '& .MuiDataGrid-columnHeaders': {
-                backgroundColor: '#F9FAFB',
-                borderBottom: '1px solid #E5E7EB',
-                minHeight: '48px !important',
-                maxHeight: '48px !important',
-              },
-              '& .MuiDataGrid-columnHeader': {
-                cursor: 'pointer',
-                paddingX: 1.5,
-                '&:hover': {
-                  backgroundColor: '#F3F4F6',
-                },
-                '&:focus': {
-                  outline: 'none',
-                },
-              },
-              '& .MuiDataGrid-columnHeaderTitle': {
-                fontWeight: 600,
-                fontSize: '0.75rem',
-                color: '#6B7280',
-                textTransform: 'uppercase',
-                letterSpacing: '0.05em',
-              },
-              '& .MuiDataGrid-columnSeparator': {
-                display: 'none',
-              },
-              '& .MuiDataGrid-menuIcon': {
-                visibility: 'hidden',
-                width: 0,
-                opacity: 0,
-              },
-              '& .MuiDataGrid-iconButtonContainer': {
-                visibility: 'hidden',
-                width: 0,
-              },
-              '& .MuiDataGrid-row': {
-                '&:hover': {
-                  backgroundColor: '#F9FAFB',
-                  },
-                '&:last-child .MuiDataGrid-cell': {
-                  borderBottom: 'none',
-                },
-              },
-              '& .MuiDataGrid-footerContainer': {
-                borderTop: '1px solid #E5E7EB',
-                backgroundColor: '#F9FAFB',
-              },
-              '& .MuiDataGrid-sortIcon': {
-                display: 'none',
-              },
-            }}
-          />
-        </Box>
+        <TableContainer sx={{ maxHeight: 600, overflowX: 'auto' }}>
+          <Table stickyHeader size="small" sx={{ minWidth: 1600 }}>
+            <TableHead>
+              <TableRow>
+                <TableCell sx={{ 
+                  fontWeight: 600, 
+                  bgcolor: '#F8FAFC', 
+                  color: '#334155', 
+                  minWidth: 120, 
+                  borderBottom: '2px solid #E2E8F0', 
+                  fontSize: '0.8125rem', 
+                  textTransform: 'uppercase', 
+                  letterSpacing: '0.025em',
+                  position: 'sticky',
+                  left: 0,
+                  zIndex: 3,
+                  borderRight: '2px solid #E2E8F0',
+                }}>
+                  {renderHeaderWithFilter('Task ID', 'task_id', false)}
+                </TableCell>
+                <TableCell sx={{ 
+                  fontWeight: 600, 
+                  bgcolor: '#F8FAFC', 
+                  color: '#334155', 
+                  minWidth: 150, 
+                  borderBottom: '2px solid #E2E8F0', 
+                  fontSize: '0.8125rem', 
+                  textTransform: 'uppercase', 
+                  letterSpacing: '0.025em',
+                  position: 'sticky',
+                  left: 120,
+                  zIndex: 3,
+                  borderRight: '2px solid #E2E8F0',
+                }}>
+                  {renderHeaderWithFilter('Annotator', 'annotator_name', false)}
+                </TableCell>
+                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 180, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em', whiteSpace: 'nowrap' }}>
+                  {renderHeaderWithFilter('Annotator Email', 'annotator_email', false)}
+                </TableCell>
+                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 150, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em', whiteSpace: 'nowrap' }}>
+                  {renderHeaderWithFilter('Reviewer', 'reviewer_name', false)}
+                </TableCell>
+                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 180, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em', whiteSpace: 'nowrap' }}>
+                  {renderHeaderWithFilter('Reviewer Email', 'reviewer_email', false)}
+                </TableCell>
+                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 100, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em', whiteSpace: 'nowrap' }}>
+                  {renderHeaderWithFilter('Task Score', 'task_score', true)}
+                </TableCell>
+                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 110, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em', whiteSpace: 'nowrap' }}>
+                  {renderHeaderWithFilter('Rework Count', 'rework_count', true)}
+                </TableCell>
+                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 100, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em', whiteSpace: 'nowrap' }}>
+                  {renderHeaderWithFilter('AHT (mins)', 'duration_minutes', true)}
+                </TableCell>
+                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 110, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em', whiteSpace: 'nowrap' }}>
+                  {renderHeaderWithFilter('Week Number', 'week_number', true)}
+                </TableCell>
+                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 120, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em', whiteSpace: 'nowrap' }}>
+                  {renderHeaderWithFilter('Updated Date', 'updated_at', false)}
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {paginatedData.map((task, idx) => {
+                const taskId = task.task_id
+                const labelingToolUrl = taskId ? `https://labeling-n.turing.com/conversations/${taskId}/view` : null
+                
+                return (
+                  <TableRow key={idx} sx={{ '&:hover': { bgcolor: '#F8FAFC' } }}>
+                    <TableCell sx={{ 
+                      position: 'sticky', 
+                      left: 0, 
+                      bgcolor: 'white', 
+                      borderRight: '2px solid #E2E8F0',
+                      zIndex: 1,
+                    }}>
+                      {labelingToolUrl ? (
+                        <a href={labelingToolUrl} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                          <Chip
+                            label={taskId}
+                            size="small"
+                            variant="outlined"
+                            clickable
+                            sx={{
+                              borderColor: '#76B900',
+                              color: '#76B900',
+                              fontWeight: 600,
+                              cursor: 'pointer',
+                              '&:hover': {
+                                backgroundColor: '#76B90010',
+                                borderColor: '#5A8F00',
+                              },
+                            }}
+                          />
+                        </a>
+                      ) : (
+                        <Chip label="N/A" size="small" variant="outlined" sx={{ borderColor: '#E5E7EB', color: '#1F2937' }} />
+                      )}
+                    </TableCell>
+                    <TableCell sx={{ 
+                      position: 'sticky', 
+                      left: 120, 
+                      bgcolor: 'white', 
+                      borderRight: '2px solid #E2E8F0',
+                      zIndex: 1,
+                    }}>
+                      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                        <Typography variant="body2" sx={{ fontWeight: 500, color: '#1F2937' }}>
+                          {task.annotator_name || 'Unknown'}
+                        </Typography>
+                        <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.7rem' }}>
+                          ID: {task.annotator_id || 'N/A'}
+                        </Typography>
+                      </Box>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="body2" sx={{ color: '#1F2937', fontSize: '0.875rem' }}>
+                        {task.annotator_email || 'N/A'}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                        <Typography variant="body2" sx={{ fontWeight: 500, color: '#1F2937' }}>
+                          {task.reviewer_name || 'N/A'}
+                        </Typography>
+                        <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.7rem' }}>
+                          ID: {task.reviewer_id || 'N/A'}
+                        </Typography>
+                      </Box>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="body2" sx={{ color: '#1F2937', fontSize: '0.875rem' }}>
+                        {task.reviewer_email || 'N/A'}
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Typography variant="body2" sx={{ fontWeight: 600, color: '#1F2937' }}>
+                        {task.task_score !== null && task.task_score !== undefined ? task.task_score : 'N/A'}
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Typography variant="body2" sx={{ fontWeight: 600, color: '#1F2937' }}>
+                        {task.rework_count || 0}
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Typography variant="body2" sx={{ fontWeight: 600, color: task.duration_minutes !== null ? '#1F2937' : '#9CA3AF' }}>
+                        {task.duration_minutes !== null && task.duration_minutes !== undefined ? `${task.duration_minutes}m` : 'N/A'}
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Typography variant="body2" sx={{ fontWeight: 600, color: '#1F2937' }}>
+                        {task.week_number !== null && task.week_number !== undefined ? task.week_number : 'N/A'}
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Typography variant="body2" sx={{ fontWeight: 500, color: '#111827' }}>
+                        {task.updated_at ? new Date(task.updated_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : 'N/A'}
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                )
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[10, 25, 50, 100]}
+          component="div"
+          count={sortedData.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={(_, newPage) => setPage(newPage)}
+          onRowsPerPageChange={(e) => {
+            setRowsPerPage(parseInt(e.target.value, 10))
+            setPage(0)
+          }}
+          sx={{ borderTop: '1px solid #E2E8F0' }}
+        />
       </Paper>
 
       {/* Filter Popover - Unified for both numeric and non-numeric columns */}
@@ -1108,7 +968,8 @@ export default function TaskWise() {
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
                 <MenuItem
                   onClick={() => {
-                    setSortModel([{ field: activeFilterColumn, sort: 'asc' }])
+                    setSortColumn(activeFilterColumn)
+                    setSortDirection('asc')
                   }}
                   sx={{
                     borderRadius: 1,
@@ -1125,7 +986,8 @@ export default function TaskWise() {
                 </MenuItem>
                 <MenuItem
                   onClick={() => {
-                    setSortModel([{ field: activeFilterColumn, sort: 'desc' }])
+                    setSortColumn(activeFilterColumn)
+                    setSortDirection('desc')
                   }}
                   sx={{
                     borderRadius: 1,
@@ -1329,7 +1191,8 @@ export default function TaskWise() {
                     })
                   }
                   // Reset sort
-                  setSortModel([])
+                  setSortColumn('')
+                  setSortDirection('asc')
                 }}
                 sx={{
                   borderColor: '#E5E7EB',

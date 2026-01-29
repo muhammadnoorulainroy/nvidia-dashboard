@@ -180,12 +180,13 @@ async def get_stats_by_trainer_level(
     summary="Get trainer statistics at date level (trainer x date)"
 )
 async def get_trainer_daily_stats(
-    trainer: Optional[str] = Query(None, description="Filter by trainer ID")
+    trainer: Optional[str] = Query(None, description="Filter by trainer ID"),
+    project_id: Optional[int] = Query(None, description="Filter by project ID")
 ):
     """Get trainer statistics at date level for time-series analysis"""
     try:
         service = get_query_service()
-        filters = {'trainer': trainer}
+        filters = {'trainer': trainer, 'project_id': project_id}
         result = service.get_trainer_daily_stats(filters)
         return result
     except Exception as e:
@@ -197,12 +198,13 @@ async def get_trainer_daily_stats(
     summary="Get overall trainer statistics with correct avg_rework"
 )
 async def get_trainer_overall_stats(
-    trainer: Optional[str] = Query(None, description="Filter by trainer ID")
+    trainer: Optional[str] = Query(None, description="Filter by trainer ID"),
+    project_id: Optional[int] = Query(None, description="Filter by project ID")
 ):
     """Get overall trainer statistics using ContributorTaskStats for accurate avg_rework"""
     try:
         service = get_query_service()
-        filters = {'trainer': trainer}
+        filters = {'trainer': trainer, 'project_id': project_id}
         result = service.get_trainer_overall_stats(filters)
         return result
     except Exception as e:
@@ -545,4 +547,120 @@ async def get_project_stats(
         return result
     except Exception as e:
         logger.error(f"Error getting project stats: {e}")
+        raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
+
+
+# =============================================================================
+# Target vs Actual Comparison Endpoints
+# =============================================================================
+
+@router.get(
+    "/target-comparison/trainers/{project_id}",
+    summary="Get target vs actual comparison for trainers"
+)
+async def get_trainer_target_comparison(
+    project_id: int,
+    trainer_email: Optional[str] = Query(None, description="Filter by specific trainer email"),
+    start_date: Optional[str] = Query(None, description="Start date (YYYY-MM-DD)"),
+    end_date: Optional[str] = Query(None, description="End date (YYYY-MM-DD)"),
+    rollup: str = Query("weekly", description="Rollup period: daily, weekly, monthly")
+):
+    """
+    Get target vs actual comparison for trainers.
+    
+    Returns:
+    - target_daily: Daily target from configuration
+    - target_period: Total target for the period
+    - actual: Actual tasks completed
+    - gap: Difference (actual - target)
+    - achievement_percent: Percentage of target achieved
+    """
+    from app.services.target_comparison_service import get_target_comparison_service, RollupPeriod
+    from datetime import datetime
+    
+    try:
+        # Parse dates
+        parsed_start = datetime.strptime(start_date, "%Y-%m-%d").date() if start_date else None
+        parsed_end = datetime.strptime(end_date, "%Y-%m-%d").date() if end_date else None
+        
+        # Parse rollup
+        rollup_enum = RollupPeriod(rollup.lower())
+        
+        service = get_target_comparison_service()
+        comparisons = service.get_trainer_comparison(
+            project_id=project_id,
+            trainer_email=trainer_email,
+            start_date=parsed_start,
+            end_date=parsed_end,
+            rollup=rollup_enum
+        )
+        
+        return {
+            "project_id": project_id,
+            "rollup": rollup,
+            "period_start": comparisons[0].period_start.isoformat() if comparisons else None,
+            "period_end": comparisons[0].period_end.isoformat() if comparisons else None,
+            "working_days": comparisons[0].working_days if comparisons else 0,
+            "comparisons": [
+                {
+                    "entity_type": c.entity_type,
+                    "entity_id": c.entity_id,
+                    "entity_email": c.entity_email,
+                    "entity_name": c.entity_name,
+                    "target_daily": c.target_daily,
+                    "target_period": c.target_period,
+                    "target_source": c.target_source,
+                    "actual": c.actual,
+                    "gap": c.gap,
+                    "achievement_percent": c.achievement_percent
+                }
+                for c in comparisons
+            ]
+        }
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=f"Invalid parameter: {str(e)}")
+    except Exception as e:
+        logger.error(f"Error getting trainer target comparison: {e}")
+        raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
+
+
+@router.get(
+    "/target-comparison/summary/{project_id}",
+    summary="Get project-level target vs actual summary"
+)
+async def get_project_target_summary(
+    project_id: int,
+    start_date: Optional[str] = Query(None, description="Start date (YYYY-MM-DD)"),
+    end_date: Optional[str] = Query(None, description="End date (YYYY-MM-DD)"),
+    rollup: str = Query("weekly", description="Rollup period: daily, weekly, monthly")
+):
+    """
+    Get summary of target vs actual for entire project.
+    
+    Returns:
+    - Overall achievement percentage
+    - Count of trainers meeting/below target
+    - Top performers and those needing attention
+    """
+    from app.services.target_comparison_service import get_target_comparison_service, RollupPeriod
+    from datetime import datetime
+    
+    try:
+        parsed_start = datetime.strptime(start_date, "%Y-%m-%d").date() if start_date else None
+        parsed_end = datetime.strptime(end_date, "%Y-%m-%d").date() if end_date else None
+        rollup_enum = RollupPeriod(rollup.lower())
+        
+        service = get_target_comparison_service()
+        summary = service.get_project_summary(
+            project_id=project_id,
+            start_date=parsed_start,
+            end_date=parsed_end,
+            rollup=rollup_enum
+        )
+        
+        return summary
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=f"Invalid parameter: {str(e)}")
+    except Exception as e:
+        logger.error(f"Error getting project target summary: {e}")
         raise HTTPException(status_code=500, detail=f"Error: {str(e)}")

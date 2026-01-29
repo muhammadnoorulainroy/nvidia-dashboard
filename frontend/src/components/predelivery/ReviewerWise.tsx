@@ -35,16 +35,20 @@ import FilterListIcon from '@mui/icons-material/FilterList'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import DownloadIcon from '@mui/icons-material/Download'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import { getTooltipForHeader } from '../../utils/columnTooltips'
 import { exportReviewerWithTrainersToExcel } from '../../utils/exportToExcel'
 import { getReviewerDailyStats, getTrainersByReviewerDate, TrainerByReviewerDate } from '../../services/api'
 import type { ReviewerDailyStats, AggregatedReviewerStats } from '../../types'
 import LoadingSpinner from '../LoadingSpinner'
 import ErrorDisplay from '../ErrorDisplay'
+import { useAHTConfiguration, DEFAULT_NEW_TASK_AHT, DEFAULT_REWORK_AHT } from '../../hooks/useAHTConfiguration'
 import ColorSettingsPanel, { 
   ColorSettings, 
   defaultColorSettings, 
   getColorForValue, 
   getBackgroundColorForValue,
+  getTextColorForValue,
   useColorSettings 
 } from './ColorSettingsPanel'
 
@@ -74,15 +78,21 @@ function TrainerRow({
   showDate: boolean,
   colorSettings: ColorSettings 
 }) {
-  // Calculate merged_exp_aht for this trainer
+  // Calculate merged_exp_aht for this trainer using default AHT values
   const newTasks = trainer.new_tasks_reviewed || 0
   const rework = trainer.rework_reviewed || 0
   const total = newTasks + rework
-  const merged_exp_aht = total > 0 ? (newTasks * 10 + rework * 4) / total : null
+  const merged_exp_aht = total > 0 ? (newTasks * DEFAULT_NEW_TASK_AHT + rework * DEFAULT_REWORK_AHT) / total : null
 
   return (
     <TableRow sx={{ backgroundColor: '#F0F4FF', '&:hover': { backgroundColor: '#E8EEFF' } }}>
-      <TableCell>
+      <TableCell sx={{ 
+        position: 'sticky',
+        left: 0,
+        zIndex: 1,
+        bgcolor: '#F0F4FF',
+        borderRight: '2px solid #E2E8F0',
+      }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, pl: 4 }}>
           <Typography variant="body2" sx={{ fontWeight: 500, color: '#374151' }}>
             ↳ {trainer.trainer_name || 'Unknown'}
@@ -92,20 +102,20 @@ function TrainerRow({
           </Typography>
         </Box>
       </TableCell>
-      <TableCell align="center">
+      <TableCell align="left">
         <Typography variant="body2" sx={{ color: '#6B7280', fontSize: '0.8rem' }}>
           {trainer.trainer_email || 'N/A'}
         </Typography>
       </TableCell>
       {showDate && (
-        <TableCell align="center">
+        <TableCell align="left">
           <Typography variant="body2" sx={{ color: '#6B7280', fontSize: '0.8rem' }}>
             -
           </Typography>
         </TableCell>
       )}
       <TableCell 
-        align="center"
+        align="left"
         sx={{ backgroundColor: getBackgroundColorForValue(trainer.tasks_reviewed, colorSettings.tasks_reviewed) }}
       >
         <Typography variant="body2" sx={{ fontWeight: 600, color: getColorForValue(trainer.tasks_reviewed, colorSettings.tasks_reviewed) }}>
@@ -113,7 +123,7 @@ function TrainerRow({
         </Typography>
       </TableCell>
       <TableCell 
-        align="center"
+        align="left"
         sx={{ backgroundColor: getBackgroundColorForValue(trainer.new_tasks_reviewed, colorSettings.new_tasks_reviewed) }}
       >
         <Typography variant="body2" sx={{ fontWeight: 600, color: getColorForValue(trainer.new_tasks_reviewed, colorSettings.new_tasks_reviewed) }}>
@@ -121,7 +131,7 @@ function TrainerRow({
         </Typography>
       </TableCell>
       <TableCell 
-        align="center"
+        align="left"
         sx={{ backgroundColor: getBackgroundColorForValue(trainer.rework_reviewed, colorSettings.rework_reviewed) }}
       >
         <Typography variant="body2" sx={{ fontWeight: 600, color: getColorForValue(trainer.rework_reviewed, colorSettings.rework_reviewed) }}>
@@ -129,7 +139,7 @@ function TrainerRow({
         </Typography>
       </TableCell>
       <TableCell 
-        align="center"
+        align="left"
         sx={{ backgroundColor: getBackgroundColorForValue(trainer.total_reviews, colorSettings.total_reviews) }}
       >
         <Typography variant="body2" sx={{ fontWeight: 600, color: getColorForValue(trainer.total_reviews, colorSettings.total_reviews) }}>
@@ -137,7 +147,7 @@ function TrainerRow({
         </Typography>
       </TableCell>
       <TableCell 
-        align="center"
+        align="left"
         sx={{ backgroundColor: getBackgroundColorForValue(trainer.ready_for_delivery, colorSettings.ready_for_delivery) }}
       >
         <Typography variant="body2" sx={{ fontWeight: 600, color: getColorForValue(trainer.ready_for_delivery, colorSettings.ready_for_delivery) }}>
@@ -145,15 +155,15 @@ function TrainerRow({
         </Typography>
       </TableCell>
       <TableCell 
-        align="center"
+        align="left"
         sx={{ backgroundColor: getBackgroundColorForValue(trainer.avg_rework, colorSettings.avg_rework) }}
       >
         <Typography variant="body2" sx={{ fontWeight: 600, color: getColorForValue(trainer.avg_rework, colorSettings.avg_rework) }}>
-          {trainer.avg_rework !== null && trainer.avg_rework !== undefined ? `${Math.round(trainer.avg_rework)}%` : '-'}
+          {trainer.avg_rework !== null && trainer.avg_rework !== undefined ? trainer.avg_rework.toFixed(2) : '-'}
         </Typography>
       </TableCell>
       <TableCell 
-        align="center"
+        align="left"
         sx={{ backgroundColor: getBackgroundColorForValue(trainer.rework_percent, colorSettings.rework_percent) }}
       >
         <Typography variant="body2" sx={{ fontWeight: 600, color: getColorForValue(trainer.rework_percent, colorSettings.rework_percent) }}>
@@ -161,7 +171,7 @@ function TrainerRow({
         </Typography>
       </TableCell>
       <TableCell 
-        align="center"
+        align="left"
         sx={{ backgroundColor: getBackgroundColorForValue(trainer.avg_rating, colorSettings.avg_rating) }}
       >
         <Typography variant="body2" sx={{ fontWeight: 600, color: getColorForValue(trainer.avg_rating, colorSettings.avg_rating) }}>
@@ -169,7 +179,7 @@ function TrainerRow({
         </Typography>
       </TableCell>
       <TableCell 
-        align="center"
+        align="left"
         sx={{ backgroundColor: getBackgroundColorForValue(merged_exp_aht, colorSettings.merged_exp_aht) }}
       >
         <Typography variant="body2" sx={{ fontWeight: 600, color: getColorForValue(merged_exp_aht, colorSettings.merged_exp_aht) }}>
@@ -193,11 +203,11 @@ function ReviewerRowComponent({
   const [open, setOpen] = useState(false)
   const hasTrainers = reviewer.trainers && reviewer.trainers.length > 0
 
-  // Calculate merged_exp_aht
+  // Calculate merged_exp_aht using default AHT values
   const newTasks = reviewer.new_tasks_reviewed || 0
   const rework = reviewer.rework_reviewed || 0
   const total = newTasks + rework
-  const merged_exp_aht = total > 0 ? (newTasks * 10 + rework * 4) / total : null
+  const merged_exp_aht = total > 0 ? (newTasks * DEFAULT_NEW_TASK_AHT + rework * DEFAULT_REWORK_AHT) / total : null
 
   return (
     <>
@@ -208,7 +218,13 @@ function ReviewerRowComponent({
         }}
         onClick={() => hasTrainers && setOpen(!open)}
       >
-        <TableCell>
+        <TableCell sx={{ 
+          position: 'sticky',
+          left: 0,
+          zIndex: 1,
+          bgcolor: '#FFFFFF',
+          borderRight: '2px solid #E2E8F0',
+        }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             {hasTrainers && (
               <IconButton size="small" onClick={(e) => { e.stopPropagation(); setOpen(!open); }}>
@@ -226,13 +242,13 @@ function ReviewerRowComponent({
             </Box>
           </Box>
         </TableCell>
-        <TableCell align="center">
+        <TableCell align="left">
           <Typography variant="body2" sx={{ color: '#1F2937', fontSize: '0.875rem' }}>
             {reviewer.reviewer_email || 'N/A'}
           </Typography>
         </TableCell>
         {showDate && (
-          <TableCell align="center">
+          <TableCell align="left">
             {reviewer.review_date ? (
               <Typography variant="body2" sx={{ fontWeight: 600, color: '#6366F1' }}>
                 {new Date(reviewer.review_date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
@@ -243,7 +259,7 @@ function ReviewerRowComponent({
           </TableCell>
         )}
         <TableCell 
-          align="center"
+          align="left"
           sx={{ backgroundColor: getBackgroundColorForValue(reviewer.unique_tasks_reviewed, colorSettings.tasks_reviewed) }}
         >
           <Typography variant="body2" sx={{ fontWeight: 600, color: getColorForValue(reviewer.unique_tasks_reviewed, colorSettings.tasks_reviewed) }}>
@@ -251,7 +267,7 @@ function ReviewerRowComponent({
           </Typography>
         </TableCell>
         <TableCell 
-          align="center"
+          align="left"
           sx={{ backgroundColor: getBackgroundColorForValue(reviewer.new_tasks_reviewed, colorSettings.new_tasks_reviewed) }}
         >
           <Typography variant="body2" sx={{ fontWeight: 600, color: getColorForValue(reviewer.new_tasks_reviewed, colorSettings.new_tasks_reviewed) }}>
@@ -259,7 +275,7 @@ function ReviewerRowComponent({
           </Typography>
         </TableCell>
         <TableCell 
-          align="center"
+          align="left"
           sx={{ backgroundColor: getBackgroundColorForValue(reviewer.rework_reviewed, colorSettings.rework_reviewed) }}
         >
           <Typography variant="body2" sx={{ fontWeight: 600, color: getColorForValue(reviewer.rework_reviewed, colorSettings.rework_reviewed) }}>
@@ -267,7 +283,7 @@ function ReviewerRowComponent({
           </Typography>
         </TableCell>
         <TableCell 
-          align="center"
+          align="left"
           sx={{ backgroundColor: getBackgroundColorForValue(reviewer.total_reviews, colorSettings.total_reviews) }}
         >
           <Typography variant="body2" sx={{ fontWeight: 600, color: getColorForValue(reviewer.total_reviews, colorSettings.total_reviews) }}>
@@ -275,7 +291,7 @@ function ReviewerRowComponent({
           </Typography>
         </TableCell>
         <TableCell 
-          align="center"
+          align="left"
           sx={{ backgroundColor: getBackgroundColorForValue(reviewer.tasks_ready_for_delivery, colorSettings.ready_for_delivery) }}
         >
           <Typography variant="body2" sx={{ fontWeight: 600, color: getColorForValue(reviewer.tasks_ready_for_delivery, colorSettings.ready_for_delivery) }}>
@@ -283,15 +299,15 @@ function ReviewerRowComponent({
           </Typography>
         </TableCell>
         <TableCell 
-          align="center"
+          align="left"
           sx={{ backgroundColor: getBackgroundColorForValue(reviewer.avg_rework, colorSettings.avg_rework) }}
         >
           <Typography variant="body2" sx={{ fontWeight: 600, color: getColorForValue(reviewer.avg_rework, colorSettings.avg_rework) }}>
-            {reviewer.avg_rework !== null && reviewer.avg_rework !== undefined ? `${Math.round(reviewer.avg_rework)}%` : '-'}
+            {reviewer.avg_rework !== null && reviewer.avg_rework !== undefined ? reviewer.avg_rework.toFixed(2) : '-'}
           </Typography>
         </TableCell>
         <TableCell 
-          align="center"
+          align="left"
           sx={{ backgroundColor: getBackgroundColorForValue(reviewer.rework_percent, colorSettings.rework_percent) }}
         >
           <Typography variant="body2" sx={{ fontWeight: 600, color: getColorForValue(reviewer.rework_percent, colorSettings.rework_percent) }}>
@@ -299,7 +315,7 @@ function ReviewerRowComponent({
           </Typography>
         </TableCell>
         <TableCell 
-          align="center"
+          align="left"
           sx={{ backgroundColor: getBackgroundColorForValue(reviewer.avg_rating, colorSettings.avg_rating) }}
         >
           <Typography variant="body2" sx={{ fontWeight: 600, color: getColorForValue(reviewer.avg_rating, colorSettings.avg_rating) }}>
@@ -307,7 +323,7 @@ function ReviewerRowComponent({
           </Typography>
         </TableCell>
         <TableCell 
-          align="center"
+          align="left"
           sx={{ backgroundColor: getBackgroundColorForValue(merged_exp_aht, colorSettings.merged_exp_aht) }}
         >
           <Typography variant="body2" sx={{ fontWeight: 600, color: getColorForValue(merged_exp_aht, colorSettings.merged_exp_aht) }}>
@@ -419,7 +435,7 @@ export default function ReviewerWise({ isClientDelivery = false }: ReviewerWiseP
     reviewerMap.forEach((reviewer) => {
       // Avg Rework = ((sum_number_of_turns / unique_tasks) - 1) * 100
       if (reviewer.unique_tasks_reviewed > 0) {
-        reviewer.avg_rework = Math.round((((reviewer.sum_number_of_turns || 0) / reviewer.unique_tasks_reviewed) - 1) * 100)
+        reviewer.avg_rework = parseFloat((((reviewer.sum_number_of_turns || 0) / reviewer.unique_tasks_reviewed) - 1).toFixed(2))
       }
       // Rework % = rework / (rework + new_tasks) * 100
       const total = (reviewer.rework_reviewed || 0) + (reviewer.new_tasks_reviewed || 0)
@@ -791,90 +807,159 @@ export default function ReviewerWise({ isClientDelivery = false }: ReviewerWiseP
         </Box>
 
         {/* Table */}
-        <TableContainer sx={{ maxHeight: 600 }}>
-          <Table stickyHeader size="small">
+        <TableContainer sx={{ maxHeight: 600, overflowX: 'auto' }}>
+          <Table stickyHeader size="small" sx={{ minWidth: 1600 }}>
             <TableHead>
               <TableRow>
                 <TableCell 
-                  sx={{ fontWeight: 700, backgroundColor: '#F9FAFB', minWidth: 200, cursor: 'pointer' }}
+                  sx={{ 
+                    fontWeight: 700, 
+                    backgroundColor: '#F9FAFB', 
+                    minWidth: 200, 
+                    cursor: 'pointer',
+                    position: 'sticky',
+                    left: 0,
+                    zIndex: 3,
+                    borderRight: '2px solid #E2E8F0',
+                  }}
                   onClick={() => handleSort('reviewer_name')}
                 >
-                  Reviewer {orderBy === 'reviewer_name' && (order === 'asc' ? '↑' : '↓')}
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                    Reviewer {orderBy === 'reviewer_name' && (order === 'asc' ? '↑' : '↓')}
+                    <Tooltip title={getTooltipForHeader('Reviewer Name')} arrow placement="top" enterDelay={200} slotProps={{ tooltip: { sx: { bgcolor: '#1E293B', color: '#F8FAFC', fontSize: '0.75rem', maxWidth: 300, p: '8px 12px', borderRadius: 1 } } }}>
+                      <InfoOutlinedIcon sx={{ fontSize: 14, color: '#94A3B8', cursor: 'help', flexShrink: 0, visibility: 'visible !important', opacity: '1 !important', '&:hover': { color: '#64748B' } }} onClick={(e) => e.stopPropagation()} />
+                    </Tooltip>
+                  </Box>
                 </TableCell>
-                <TableCell sx={{ fontWeight: 700, backgroundColor: '#F9FAFB', minWidth: 180 }} align="center">
-                  Email
+                <TableCell sx={{ fontWeight: 700, backgroundColor: '#F9FAFB', minWidth: 180 }} align="left">
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                    Email
+                    <Tooltip title={getTooltipForHeader('Reviewer Email')} arrow placement="top" enterDelay={200} slotProps={{ tooltip: { sx: { bgcolor: '#1E293B', color: '#F8FAFC', fontSize: '0.75rem', maxWidth: 300, p: '8px 12px', borderRadius: 1 } } }}>
+                      <InfoOutlinedIcon sx={{ fontSize: 14, color: '#94A3B8', cursor: 'help', flexShrink: 0, visibility: 'visible !important', opacity: '1 !important', '&:hover': { color: '#64748B' } }} />
+                    </Tooltip>
+                  </Box>
                 </TableCell>
                 {showDate && (
                   <TableCell 
                     sx={{ fontWeight: 700, backgroundColor: '#F9FAFB', cursor: 'pointer' }} 
-                    align="center"
+                    align="left"
                     onClick={() => handleSort('review_date')}
                   >
-                    Date {orderBy === 'review_date' && (order === 'asc' ? '↑' : '↓')}
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                      Date {orderBy === 'review_date' && (order === 'asc' ? '↑' : '↓')}
+                      <Tooltip title={getTooltipForHeader('Date')} arrow placement="top" enterDelay={200} slotProps={{ tooltip: { sx: { bgcolor: '#1E293B', color: '#F8FAFC', fontSize: '0.75rem', maxWidth: 300, p: '8px 12px', borderRadius: 1 } } }}>
+                        <InfoOutlinedIcon sx={{ fontSize: 14, color: '#94A3B8', cursor: 'help', flexShrink: 0, visibility: 'visible !important', opacity: '1 !important', '&:hover': { color: '#64748B' } }} onClick={(e) => e.stopPropagation()} />
+                      </Tooltip>
+                    </Box>
                   </TableCell>
                 )}
                 <TableCell 
                   sx={{ fontWeight: 700, backgroundColor: '#F9FAFB', cursor: 'pointer' }} 
-                  align="center"
+                  align="left"
                   onClick={() => handleSort('unique_tasks_reviewed')}
                 >
-                  Unique Tasks {orderBy === 'unique_tasks_reviewed' && (order === 'asc' ? '↑' : '↓')}
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                    Unique Tasks {orderBy === 'unique_tasks_reviewed' && (order === 'asc' ? '↑' : '↓')}
+                    <Tooltip title={getTooltipForHeader('Unique Tasks')} arrow placement="top" enterDelay={200} slotProps={{ tooltip: { sx: { bgcolor: '#1E293B', color: '#F8FAFC', fontSize: '0.75rem', maxWidth: 300, p: '8px 12px', borderRadius: 1 } } }}>
+                      <InfoOutlinedIcon sx={{ fontSize: 14, color: '#94A3B8', cursor: 'help', flexShrink: 0, visibility: 'visible !important', opacity: '1 !important', '&:hover': { color: '#64748B' } }} onClick={(e) => e.stopPropagation()} />
+                    </Tooltip>
+                  </Box>
                 </TableCell>
                 <TableCell 
                   sx={{ fontWeight: 700, backgroundColor: '#F9FAFB', cursor: 'pointer' }} 
-                  align="center"
+                  align="left"
                   onClick={() => handleSort('new_tasks_reviewed')}
                 >
-                  New Tasks {orderBy === 'new_tasks_reviewed' && (order === 'asc' ? '↑' : '↓')}
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                    New Tasks {orderBy === 'new_tasks_reviewed' && (order === 'asc' ? '↑' : '↓')}
+                    <Tooltip title={getTooltipForHeader('New Tasks')} arrow placement="top" enterDelay={200} slotProps={{ tooltip: { sx: { bgcolor: '#1E293B', color: '#F8FAFC', fontSize: '0.75rem', maxWidth: 300, p: '8px 12px', borderRadius: 1 } } }}>
+                      <InfoOutlinedIcon sx={{ fontSize: 14, color: '#94A3B8', cursor: 'help', flexShrink: 0, visibility: 'visible !important', opacity: '1 !important', '&:hover': { color: '#64748B' } }} onClick={(e) => e.stopPropagation()} />
+                    </Tooltip>
+                  </Box>
                 </TableCell>
                 <TableCell 
                   sx={{ fontWeight: 700, backgroundColor: '#F9FAFB', cursor: 'pointer' }} 
-                  align="center"
+                  align="left"
                   onClick={() => handleSort('rework_reviewed')}
                 >
-                  Rework Reviewed {orderBy === 'rework_reviewed' && (order === 'asc' ? '↑' : '↓')}
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                    Rework Reviewed {orderBy === 'rework_reviewed' && (order === 'asc' ? '↑' : '↓')}
+                    <Tooltip title={getTooltipForHeader('Rework Reviewed')} arrow placement="top" enterDelay={200} slotProps={{ tooltip: { sx: { bgcolor: '#1E293B', color: '#F8FAFC', fontSize: '0.75rem', maxWidth: 300, p: '8px 12px', borderRadius: 1 } } }}>
+                      <InfoOutlinedIcon sx={{ fontSize: 14, color: '#94A3B8', cursor: 'help', flexShrink: 0, visibility: 'visible !important', opacity: '1 !important', '&:hover': { color: '#64748B' } }} onClick={(e) => e.stopPropagation()} />
+                    </Tooltip>
+                  </Box>
                 </TableCell>
                 <TableCell 
                   sx={{ fontWeight: 700, backgroundColor: '#F9FAFB', cursor: 'pointer' }} 
-                  align="center"
+                  align="left"
                   onClick={() => handleSort('total_reviews')}
                 >
-                  Total Reviews {orderBy === 'total_reviews' && (order === 'asc' ? '↑' : '↓')}
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                    Total Reviews {orderBy === 'total_reviews' && (order === 'asc' ? '↑' : '↓')}
+                    <Tooltip title={getTooltipForHeader('Total Reviews')} arrow placement="top" enterDelay={200} slotProps={{ tooltip: { sx: { bgcolor: '#1E293B', color: '#F8FAFC', fontSize: '0.75rem', maxWidth: 300, p: '8px 12px', borderRadius: 1 } } }}>
+                      <InfoOutlinedIcon sx={{ fontSize: 14, color: '#94A3B8', cursor: 'help', flexShrink: 0, visibility: 'visible !important', opacity: '1 !important', '&:hover': { color: '#64748B' } }} onClick={(e) => e.stopPropagation()} />
+                    </Tooltip>
+                  </Box>
                 </TableCell>
                 <TableCell 
                   sx={{ fontWeight: 700, backgroundColor: '#F9FAFB', cursor: 'pointer' }} 
-                  align="center"
+                  align="left"
                   onClick={() => handleSort('tasks_ready_for_delivery')}
                 >
-                  Ready for Delivery {orderBy === 'tasks_ready_for_delivery' && (order === 'asc' ? '↑' : '↓')}
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                    Ready for Delivery {orderBy === 'tasks_ready_for_delivery' && (order === 'asc' ? '↑' : '↓')}
+                    <Tooltip title={getTooltipForHeader('Ready for Delivery')} arrow placement="top" enterDelay={200} slotProps={{ tooltip: { sx: { bgcolor: '#1E293B', color: '#F8FAFC', fontSize: '0.75rem', maxWidth: 300, p: '8px 12px', borderRadius: 1 } } }}>
+                      <InfoOutlinedIcon sx={{ fontSize: 14, color: '#94A3B8', cursor: 'help', flexShrink: 0, visibility: 'visible !important', opacity: '1 !important', '&:hover': { color: '#64748B' } }} onClick={(e) => e.stopPropagation()} />
+                    </Tooltip>
+                  </Box>
                 </TableCell>
                 <TableCell 
                   sx={{ fontWeight: 700, backgroundColor: '#F9FAFB', cursor: 'pointer' }} 
-                  align="center"
+                  align="left"
                   onClick={() => handleSort('avg_rework')}
                 >
-                  Avg Rework {orderBy === 'avg_rework' && (order === 'asc' ? '↑' : '↓')}
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                    Avg Rework {orderBy === 'avg_rework' && (order === 'asc' ? '↑' : '↓')}
+                    <Tooltip title={getTooltipForHeader('Avg Rework')} arrow placement="top" enterDelay={200} slotProps={{ tooltip: { sx: { bgcolor: '#1E293B', color: '#F8FAFC', fontSize: '0.75rem', maxWidth: 300, p: '8px 12px', borderRadius: 1 } } }}>
+                      <InfoOutlinedIcon sx={{ fontSize: 14, color: '#94A3B8', cursor: 'help', flexShrink: 0, visibility: 'visible !important', opacity: '1 !important', '&:hover': { color: '#64748B' } }} onClick={(e) => e.stopPropagation()} />
+                    </Tooltip>
+                  </Box>
                 </TableCell>
                 <TableCell 
                   sx={{ fontWeight: 700, backgroundColor: '#F9FAFB', cursor: 'pointer' }} 
-                  align="center"
+                  align="left"
                   onClick={() => handleSort('rework_percent')}
                 >
-                  Rework % {orderBy === 'rework_percent' && (order === 'asc' ? '↑' : '↓')}
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                    Rework % {orderBy === 'rework_percent' && (order === 'asc' ? '↑' : '↓')}
+                    <Tooltip title={getTooltipForHeader('Rework %')} arrow placement="top" enterDelay={200} slotProps={{ tooltip: { sx: { bgcolor: '#1E293B', color: '#F8FAFC', fontSize: '0.75rem', maxWidth: 300, p: '8px 12px', borderRadius: 1 } } }}>
+                      <InfoOutlinedIcon sx={{ fontSize: 14, color: '#94A3B8', cursor: 'help', flexShrink: 0, visibility: 'visible !important', opacity: '1 !important', '&:hover': { color: '#64748B' } }} onClick={(e) => e.stopPropagation()} />
+                    </Tooltip>
+                  </Box>
                 </TableCell>
                 <TableCell 
                   sx={{ fontWeight: 700, backgroundColor: '#F9FAFB', cursor: 'pointer' }} 
-                  align="center"
+                  align="left"
                   onClick={() => handleSort('avg_rating')}
                 >
-                  Avg Rating {orderBy === 'avg_rating' && (order === 'asc' ? '↑' : '↓')}
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                    Avg Rating {orderBy === 'avg_rating' && (order === 'asc' ? '↑' : '↓')}
+                    <Tooltip title={getTooltipForHeader('Avg Rating')} arrow placement="top" enterDelay={200} slotProps={{ tooltip: { sx: { bgcolor: '#1E293B', color: '#F8FAFC', fontSize: '0.75rem', maxWidth: 300, p: '8px 12px', borderRadius: 1 } } }}>
+                      <InfoOutlinedIcon sx={{ fontSize: 14, color: '#94A3B8', cursor: 'help', flexShrink: 0, visibility: 'visible !important', opacity: '1 !important', '&:hover': { color: '#64748B' } }} onClick={(e) => e.stopPropagation()} />
+                    </Tooltip>
+                  </Box>
                 </TableCell>
                 <TableCell 
                   sx={{ fontWeight: 700, backgroundColor: '#F9FAFB', cursor: 'pointer' }} 
-                  align="center"
+                  align="left"
                   onClick={() => handleSort('merged_exp_aht')}
                 >
-                  Merged Exp. AHT {orderBy === 'merged_exp_aht' && (order === 'asc' ? '↑' : '↓')}
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                    Merged Exp. AHT {orderBy === 'merged_exp_aht' && (order === 'asc' ? '↑' : '↓')}
+                    <Tooltip title={getTooltipForHeader('Merged Exp. AHT')} arrow placement="top" enterDelay={200} slotProps={{ tooltip: { sx: { bgcolor: '#1E293B', color: '#F8FAFC', fontSize: '0.75rem', maxWidth: 300, p: '8px 12px', borderRadius: 1 } } }}>
+                      <InfoOutlinedIcon sx={{ fontSize: 14, color: '#94A3B8', cursor: 'help', flexShrink: 0, visibility: 'visible !important', opacity: '1 !important', '&:hover': { color: '#64748B' } }} onClick={(e) => e.stopPropagation()} />
+                    </Tooltip>
+                  </Box>
                 </TableCell>
               </TableRow>
             </TableHead>

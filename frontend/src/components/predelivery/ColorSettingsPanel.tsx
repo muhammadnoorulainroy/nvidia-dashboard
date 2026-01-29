@@ -80,7 +80,7 @@ export const defaultColorSettings: ColorSettings = {
     min: -100,  // Can be negative
     max: 200,
     inverse: true,
-    label: 'Avg Rework %',
+    label: 'Avg Rework',
     unit: '%',
     step: 20,
   },
@@ -156,7 +156,189 @@ export function getColorForValue(
   }
 }
 
-// Background color with low opacity
+// =============================================================================
+// BUSINESS COLOR CODING RULES - Configurable Thresholds
+// =============================================================================
+
+export const COLOR_THRESHOLDS = {
+  // Ratings: > 4.8 Green, 4.0-4.7 Yellow, < 4.0 Red
+  rating: {
+    green: 4.8,    // >= this is green
+    yellow: 4.0,   // >= this is yellow, < green threshold
+    // Below yellow threshold is red
+  },
+  
+  // AHT Efficiency: Expected vs Actual
+  // < 1.15x Green, 1.15-1.4x Yellow, > 1.4x Red
+  ahtEfficiency: {
+    greenMultiplier: 1.15,   // < this multiplier is green (90% efficiency)
+    yellowMultiplier: 1.4,   // < this multiplier is yellow (70% efficiency)
+    // Above yellow multiplier is red
+  },
+  
+  // Review Coverage: unique reviews / unique submissions
+  // >= 90% Green, 70-90% Yellow, < 70% Red
+  reviewCoverage: {
+    green: 90,    // >= this % is green
+    yellow: 70,   // >= this % is yellow
+    // Below yellow is red
+  },
+  
+  // Rework %: Lower is better
+  // <= 30% Green, 30-50% Yellow, > 50% Red
+  reworkPercent: {
+    green: 30,    // <= this % is green
+    yellow: 50,   // <= this % is yellow
+    // Above yellow is red
+  },
+  
+  // Avg Rework: Lower is better (values like 0.5, 1.0, 1.5)
+  // <= 1 Green, 1-2 Yellow, > 2 Red
+  avgReworkPercent: {
+    green: 1,     // <= this value is green
+    yellow: 2,    // <= this value is yellow
+    // Above yellow is red
+  },
+}
+
+// Professional color palette - subtle backgrounds
+const COLORS = {
+  green: {
+    bg: '#F0FDF4',      // Very light green background
+    text: '#166534',    // Dark green text
+    border: '#86EFAC',  // Light green border
+  },
+  yellow: {
+    bg: '#FFFBEB',      // Very light amber background
+    text: '#92400E',    // Dark amber text
+    border: '#FCD34D',  // Amber border
+  },
+  red: {
+    bg: '#FEF2F2',      // Very light red background
+    text: '#991B1B',    // Dark red text
+    border: '#FECACA',  // Light red border
+  },
+  neutral: {
+    bg: 'transparent',
+    text: '#374151',    // Gray text
+    border: 'transparent',
+  },
+}
+
+// =============================================================================
+// SPECIFIC METRIC COLOR FUNCTIONS
+// =============================================================================
+
+// Rating color: > 4.8 Green, 4.0-4.7 Yellow, < 4.0 Red
+export function getRatingColor(value: number | null | undefined): { bg: string; text: string } {
+  if (value === null || value === undefined) return COLORS.neutral
+  
+  if (value >= COLOR_THRESHOLDS.rating.green) {
+    return { bg: COLORS.green.bg, text: COLORS.green.text }
+  } else if (value >= COLOR_THRESHOLDS.rating.yellow) {
+    return { bg: COLORS.yellow.bg, text: COLORS.yellow.text }
+  } else {
+    return { bg: COLORS.red.bg, text: COLORS.red.text }
+  }
+}
+
+// Rework % color: <= 30% Green, 30-50% Yellow, > 50% Red
+export function getReworkPercentColor(value: number | null | undefined): { bg: string; text: string } {
+  if (value === null || value === undefined) return COLORS.neutral
+  
+  if (value <= COLOR_THRESHOLDS.reworkPercent.green) {
+    return { bg: COLORS.green.bg, text: COLORS.green.text }
+  } else if (value <= COLOR_THRESHOLDS.reworkPercent.yellow) {
+    return { bg: COLORS.yellow.bg, text: COLORS.yellow.text }
+  } else {
+    return { bg: COLORS.red.bg, text: COLORS.red.text }
+  }
+}
+
+// Avg Rework color: <= 1 Green, 1-2 Yellow, > 2 Red
+export function getAvgReworkPercentColor(value: number | null | undefined): { bg: string; text: string } {
+  if (value === null || value === undefined) return COLORS.neutral
+  
+  if (value <= COLOR_THRESHOLDS.avgReworkPercent.green) {
+    return { bg: COLORS.green.bg, text: COLORS.green.text }
+  } else if (value <= COLOR_THRESHOLDS.avgReworkPercent.yellow) {
+    return { bg: COLORS.yellow.bg, text: COLORS.yellow.text }
+  } else {
+    return { bg: COLORS.red.bg, text: COLORS.red.text }
+  }
+}
+
+// AHT Efficiency color based on Expected AHT
+// actualAHT < 1.15 * expectedAHT = Green
+// actualAHT < 1.4 * expectedAHT = Yellow
+// actualAHT >= 1.4 * expectedAHT = Red
+export function getAHTEfficiencyColor(
+  actualAHT: number | null | undefined, 
+  expectedAHT: number | null | undefined
+): { bg: string; text: string } {
+  if (actualAHT === null || actualAHT === undefined || 
+      expectedAHT === null || expectedAHT === undefined || expectedAHT === 0) {
+    return COLORS.neutral
+  }
+  
+  const ratio = actualAHT / expectedAHT
+  
+  if (ratio < COLOR_THRESHOLDS.ahtEfficiency.greenMultiplier) {
+    return { bg: COLORS.green.bg, text: COLORS.green.text }
+  } else if (ratio < COLOR_THRESHOLDS.ahtEfficiency.yellowMultiplier) {
+    return { bg: COLORS.yellow.bg, text: COLORS.yellow.text }
+  } else {
+    return { bg: COLORS.red.bg, text: COLORS.red.text }
+  }
+}
+
+// Review Coverage color: >= 90% Green, 70-90% Yellow, < 70% Red
+export function getReviewCoverageColor(
+  uniqueReviews: number | null | undefined,
+  uniqueSubmissions: number | null | undefined
+): { bg: string; text: string } {
+  if (uniqueReviews === null || uniqueReviews === undefined ||
+      uniqueSubmissions === null || uniqueSubmissions === undefined || uniqueSubmissions === 0) {
+    return COLORS.neutral
+  }
+  
+  const coverage = (uniqueReviews / uniqueSubmissions) * 100
+  
+  if (coverage >= COLOR_THRESHOLDS.reviewCoverage.green) {
+    return { bg: COLORS.green.bg, text: COLORS.green.text }
+  } else if (coverage >= COLOR_THRESHOLDS.reviewCoverage.yellow) {
+    return { bg: COLORS.yellow.bg, text: COLORS.yellow.text }
+  } else {
+    return { bg: COLORS.red.bg, text: COLORS.red.text }
+  }
+}
+
+// Time Theft color: Hours > 0 but tasks = 0 = Red, Hours > efforts = Yellow
+export function getTimeTheftColor(
+  hours: number | null | undefined,
+  tasks: number | null | undefined,
+  expectedEffort?: number | null | undefined
+): { bg: string; text: string } {
+  if (hours === null || hours === undefined) return COLORS.neutral
+  
+  // Hours logged but no tasks = Red (potential time theft)
+  if (hours > 0 && (tasks === null || tasks === undefined || tasks === 0)) {
+    return { bg: COLORS.red.bg, text: COLORS.red.text }
+  }
+  
+  // Hours greater than expected effort = Yellow (needs review)
+  if (expectedEffort !== null && expectedEffort !== undefined && hours > expectedEffort) {
+    return { bg: COLORS.yellow.bg, text: COLORS.yellow.text }
+  }
+  
+  return COLORS.neutral
+}
+
+// =============================================================================
+// GENERIC COLOR FUNCTIONS (for backward compatibility)
+// =============================================================================
+
+// Generic background color function - uses metric-specific rules based on config
 export function getBackgroundColorForValue(
   value: number | null | undefined,
   config: MetricColorConfig | undefined
@@ -165,8 +347,19 @@ export function getBackgroundColorForValue(
     return 'transparent'
   }
 
-  const { min, max, inverse } = config
+  // Use specific metric rules based on label
+  const label = config.label.toLowerCase()
   
+  if (label.includes('rating')) {
+    return getRatingColor(value).bg
+  } else if (label === 'rework %' || label === 'rework_percent') {
+    return getReworkPercentColor(value).bg
+  } else if (label.includes('avg rework')) {
+    return getAvgReworkPercentColor(value).bg
+  }
+  
+  // For other metrics, use the inverse flag to determine direction
+  const { min, max, inverse } = config
   let normalized = (value - min) / (max - min)
   normalized = Math.max(0, Math.min(1, normalized))
   
@@ -174,13 +367,51 @@ export function getBackgroundColorForValue(
     normalized = 1 - normalized
   }
 
-  // More visible background colors - stronger opacity
-  if (normalized <= 0.5) {
-    const opacity = 0.2 + normalized * 0.3
-    return `rgba(239, 68, 68, ${opacity})`
+  // Three-tier system: Red (0-33%), Yellow (33-66%), Green (66-100%)
+  if (normalized < 0.33) {
+    return COLORS.red.bg
+  } else if (normalized < 0.66) {
+    return COLORS.yellow.bg
   } else {
-    const opacity = 0.2 + (normalized - 0.5) * 0.3
-    return `rgba(16, 185, 129, ${opacity})`
+    return COLORS.green.bg
+  }
+}
+
+// Generic text color function
+export function getTextColorForValue(
+  value: number | null | undefined,
+  config: MetricColorConfig | undefined
+): string {
+  if (value === null || value === undefined || !config || !config.enabled) {
+    return '#374151'
+  }
+
+  // Use specific metric rules based on label
+  const label = config.label.toLowerCase()
+  
+  if (label.includes('rating')) {
+    return getRatingColor(value).text
+  } else if (label === 'rework %' || label === 'rework_percent') {
+    return getReworkPercentColor(value).text
+  } else if (label.includes('avg rework')) {
+    return getAvgReworkPercentColor(value).text
+  }
+  
+  // For other metrics, use the inverse flag
+  const { min, max, inverse } = config
+  let normalized = (value - min) / (max - min)
+  normalized = Math.max(0, Math.min(1, normalized))
+  
+  if (inverse) {
+    normalized = 1 - normalized
+  }
+
+  if (normalized < 0.33) {
+    return COLORS.red.text
+  } else if (normalized < 0.66) {
+    return COLORS.yellow.text
+  } else {
+    return COLORS.green.text
   }
 }
 
@@ -395,7 +626,7 @@ export default function ColorSettingsPanel({
                     }}
                     valueLabelDisplay="auto"
                     min={0}
-                    max={metric === 'avg_rating' ? 5 : metric === 'merged_exp_aht' ? 15 : metric === 'avg_rework' ? 300 : 100}
+                    max={metric === 'avg_rating' ? 5 : metric === 'merged_exp_aht' ? 15 : metric === 'avg_rework' ? 3 : 100}
                     step={config.step || 1}
                     disabled={!config.enabled}
                     sx={{

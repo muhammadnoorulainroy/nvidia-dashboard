@@ -10,7 +10,7 @@ from google.cloud import bigquery
 
 from app.config import get_settings
 from app.services.db_service import get_db_service
-from app.models.db_models import ReviewDetail, Task, Contributor, DataSyncLog, TaskReviewedInfo, TaskAHT, ContributorTaskStats, ContributorDailyStats, ReviewerDailyStats, TaskRaw, TaskHistoryRaw, PodLeadMapping, ReviewerTrainerDailyStats
+from app.models.db_models import ReviewDetail, Task, Contributor, DataSyncLog, TaskReviewedInfo, TaskAHT, ContributorTaskStats, ContributorDailyStats, ReviewerDailyStats, TaskRaw, TaskHistoryRaw, PodLeadMapping, ReviewerTrainerDailyStats, TrainerReviewStats
 
 logger = logging.getLogger(__name__)
 
@@ -271,7 +271,8 @@ class DataSyncService:
             rework_counts AS (
                 SELECT 
                     conversation_id,
-                    COUNTIF(old_status = 'rework' OR new_status = 'rework') AS rework_count
+                    -- Count only transitions INTO rework status (times task was sent to rework)
+                    COUNTIF(new_status = 'rework') AS rework_count
                 FROM `turing-gpt.{self.settings.bigquery_dataset}.conversation_status_history`
                 WHERE conversation_id IN (SELECT r_id FROM task_reviewed_info)
                 GROUP BY conversation_id
@@ -1625,9 +1626,39 @@ class DataSyncService:
             logger.error(f"✗ Error syncing task_history_raw: {e}")
             return False
     
-    def sync_pod_lead_mapping(self, sync_type: str = 'initial') -> bool:
-        """Sync POD Lead mapping from static Excel file.
+    def _get_google_sheets_credentials(self):
+        """Build Google service account credentials from environment variables."""
+        import json
+        from google.oauth2.service_account import Credentials
         
+        # Build credentials dict from environment variables
+        credentials_dict = {
+            "type": os.environ.get('GOOGLE_SERVICE_ACCOUNT_TYPE', 'service_account'),
+            "project_id": os.environ.get('GOOGLE_PROJECT_ID'),
+            "private_key_id": os.environ.get('GOOGLE_PRIVATE_KEY_ID'),
+            "private_key": os.environ.get('GOOGLE_PRIVATE_KEY', '').replace('\\n', '\n'),
+            "client_email": os.environ.get('GOOGLE_CLIENT_EMAIL'),
+            "client_id": os.environ.get('GOOGLE_CLIENT_ID'),
+            "auth_uri": os.environ.get('GOOGLE_AUTH_URI', 'https://accounts.google.com/o/oauth2/auth'),
+            "token_uri": os.environ.get('GOOGLE_TOKEN_URI', 'https://oauth2.googleapis.com/token'),
+            "auth_provider_x509_cert_url": os.environ.get('GOOGLE_AUTH_PROVIDER_CERT_URL', 'https://www.googleapis.com/oauth2/v1/certs'),
+            "client_x509_cert_url": os.environ.get('GOOGLE_CLIENT_CERT_URL'),
+            "universe_domain": os.environ.get('GOOGLE_UNIVERSE_DOMAIN', 'googleapis.com')
+        }
+        
+        # Define scopes for Google Sheets and Drive access
+        scopes = [
+            'https://www.googleapis.com/auth/spreadsheets.readonly',
+            'https://www.googleapis.com/auth/drive.readonly'
+        ]
+        
+        credentials = Credentials.from_service_account_info(credentials_dict, scopes=scopes)
+        return credentials
+    
+    def sync_pod_lead_mapping(self, sync_type: str = 'initial') -> bool:
+        """Sync POD Lead mapping from Google Sheets.
+        
+        Falls back to local Excel file if Google Sheets is unavailable.
         Uses raw SQL inserts to avoid SQLAlchemy type caching issues.
         """
         import os
@@ -1636,21 +1667,73 @@ class DataSyncService:
         log_id = self.log_sync_start('pod_lead_mapping', sync_type)
         
         try:
-            # Find the Excel file
-            excel_path = os.path.join(
-                os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
-                'static_data',
-                'pod_Jibble_mapping.xlsx'
-            )
+            df = None
+            source = None
             
-            if not os.path.exists(excel_path):
-                logger.warning(f"POD Lead mapping file not found: {excel_path}")
-                return False
+            # Try Google Sheets first
+            sheet_id = os.environ.get('POD_LEAD_MAPPING_SHEET_ID')
+            if sheet_id:
+                try:
+                    import gspread
+                    
+                    logger.info(f"Attempting to load POD Lead mapping from Google Sheets: {sheet_id}")
+                    
+                    # Get credentials and authorize
+                    credentials = self._get_google_sheets_credentials()
+                    gc = gspread.authorize(credentials)
+                    
+                    # Open the spreadsheet by ID
+                    spreadsheet = gc.open_by_key(sheet_id)
+                    
+                    # Get the first worksheet (mapping sheet)
+                    worksheet = spreadsheet.sheet1
+                    
+                    # Get all values (handles duplicate headers)
+                    all_values = worksheet.get_all_values()
+                    
+                    if len(all_values) < 2:
+                        raise ValueError("Google Sheet has no data rows")
+                    
+                    # First row is header - make headers unique
+                    headers = all_values[0]
+                    seen = {}
+                    unique_headers = []
+                    for h in headers:
+                        if h in seen:
+                            seen[h] += 1
+                            unique_headers.append(f"{h}.{seen[h]}")
+                        else:
+                            seen[h] = 0
+                            unique_headers.append(h)
+                    
+                    # Convert to DataFrame with unique headers
+                    df = pd.DataFrame(all_values[1:], columns=unique_headers)
+                    source = 'Google Sheets'
+                    
+                    logger.info(f"Successfully loaded {len(df)} rows from Google Sheets")
+                    
+                except ImportError:
+                    logger.warning("gspread not installed, falling back to Excel file")
+                except Exception as e:
+                    logger.warning(f"Failed to load from Google Sheets: {e}, falling back to Excel file")
             
-            logger.info(f"Loading POD Lead mapping from: {excel_path}")
+            # Fallback to local Excel file
+            if df is None:
+                excel_path = os.path.join(
+                    os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
+                    'static_data',
+                    'pod_Jibble_mapping.xlsx'
+                )
+                
+                if not os.path.exists(excel_path):
+                    logger.error(f"POD Lead mapping file not found: {excel_path}")
+                    return False
+                
+                logger.info(f"Loading POD Lead mapping from Excel: {excel_path}")
+                df = pd.read_excel(excel_path)
+                source = 'Excel file'
             
-            # Read Excel file
-            df = pd.read_excel(excel_path)
+            logger.info(f"Loaded POD Lead mapping from {source}")
             
             # Include all Nvidia projects (36, 37, 38, 39)
             nvidia_projects = [
@@ -1663,7 +1746,10 @@ class DataSyncService:
             df = df[df['Jibble Project'].isin(nvidia_projects)]
             
             # Only include records with POD Lead assigned
-            df = df[df['Pod Lead.1'].notna()]
+            # POD Lead is in column K (index 10), which becomes 'Pod Lead.1' after deduplicating headers
+            # (Column I contains a different "Pod Lead" column which is NOT the authoritative one)
+            # Filter out both NaN and empty strings
+            df = df[df['Pod Lead.1'].notna() & (df['Pod Lead.1'].str.strip() != '')]
             
             # Remove duplicate trainers (keep first occurrence)
             df['trainer_email_lower'] = df['Turing Email'].str.lower().str.strip()
@@ -1673,13 +1759,16 @@ class DataSyncService:
             
             with self.db_service.get_session() as session:
                 # Clear existing mappings using raw SQL
-                session.execute(text("DELETE FROM pod_lead_mapping"))
+                # Preserve POD Lead self-entries (where trainer_email = pod_lead_email and role = 'POD Lead')
+                # These contain POD Lead jibble_id mappings that were manually added
+                session.execute(text("DELETE FROM pod_lead_mapping WHERE role != 'POD Lead' OR role IS NULL"))
                 
                 # Prepare data for raw SQL insert
                 records_inserted = 0
                 for _, row in df.iterrows():
                     trainer_email = row.get('Turing Email', '')
                     trainer_email = trainer_email.lower().strip() if pd.notna(trainer_email) else None
+                    # Use 'Pod Lead.1' (Column K) - the authoritative POD Lead column
                     pod_lead_email = row.get('Pod Lead.1', '')
                     pod_lead_email = pod_lead_email.lower().strip() if pd.notna(pod_lead_email) else None
                     
@@ -1713,7 +1802,7 @@ class DataSyncService:
                 session.commit()
             
             self.log_sync_complete(log_id, records_inserted, True)
-            logger.info(f"✓ Successfully synced {records_inserted} pod_lead_mapping records")
+            logger.info(f"✓ Successfully synced {records_inserted} pod_lead_mapping records from {source}")
             return True
         except Exception as e:
             self.log_sync_complete(log_id, 0, False, str(e))
@@ -1791,6 +1880,161 @@ class DataSyncService:
             logger.error(f"✗ Error syncing jibble_hours: {e}")
             return False
     
+    def sync_trainer_review_stats(self, sync_type: str = 'scheduled') -> bool:
+        """
+        Sync trainer review attribution - attributes each review to the trainer
+        who did the specific work that was reviewed.
+        
+        For each review:
+        1. Find the most recent completion event BEFORE the review was submitted
+        2. The trainer who made that completion gets the review attributed to them
+        
+        This enables accurate per-trainer metrics:
+        - Trainer A completes -> rejected (3.3) -> reworks -> approved (4.8)
+          = Trainer A gets 2 reviews with scores [3.3, 4.8]
+        - Trainer A completes -> rejected (2.3) -> Trainer B reworks -> approved (5.0)
+          = Trainer A gets 1 review [2.3], Trainer B gets 1 review [5.0]
+        """
+        log_id = self.log_sync_start('trainer_review_stats', sync_type)
+        
+        try:
+            self.initialize_bigquery_client()
+            
+            # Get project IDs from settings
+            project_ids = self.settings.project_id_filter
+            if isinstance(project_ids, int):
+                project_ids = [project_ids]
+            elif isinstance(project_ids, str):
+                project_ids = [int(p.strip()) for p in project_ids.split(',')]
+            
+            # Add all Nvidia project IDs
+            all_project_ids = list(set(project_ids + [36, 37, 38, 39]))
+            project_filter = ','.join(map(str, all_project_ids))
+            
+            logger.info(f"Syncing trainer_review_stats for projects: {all_project_ids}")
+            
+            # Query to attribute each review to the trainer who did the work
+            query = f"""
+            WITH completions AS (
+                -- All completion events with trainer info
+                SELECT 
+                    csh.conversation_id,
+                    csh.created_at as completion_time,
+                    c.turing_email as trainer_email,
+                    ROW_NUMBER() OVER (
+                        PARTITION BY csh.conversation_id 
+                        ORDER BY csh.created_at
+                    ) as completion_number
+                FROM `turing-gpt.{self.settings.bigquery_dataset}.conversation_status_history` csh
+                JOIN `turing-gpt.{self.settings.bigquery_dataset}.contributor` c 
+                    ON csh.author_id = c.id
+                JOIN `turing-gpt.{self.settings.bigquery_dataset}.conversation` conv 
+                    ON conv.id = csh.conversation_id
+                WHERE csh.new_status = 'completed'
+                AND csh.old_status != 'completed-approval'
+                AND conv.project_id IN ({project_filter})
+            ),
+            reviews AS (
+                -- All published manual reviews
+                SELECT 
+                    r.id as review_id,
+                    r.conversation_id,
+                    r.score,
+                    r.followup_required,
+                    r.created_at as review_time,
+                    conv.project_id
+                FROM `turing-gpt.{self.settings.bigquery_dataset}.review` r
+                JOIN `turing-gpt.{self.settings.bigquery_dataset}.conversation` conv 
+                    ON conv.id = r.conversation_id
+                WHERE r.review_type = 'manual'
+                AND r.status = 'published'
+                AND conv.project_id IN ({project_filter})
+            ),
+            review_completion_match AS (
+                -- Match each review to the completion that triggered it
+                SELECT 
+                    r.review_id,
+                    r.conversation_id as task_id,
+                    r.score,
+                    r.followup_required,
+                    r.review_time,
+                    r.project_id,
+                    c.trainer_email,
+                    c.completion_time,
+                    c.completion_number,
+                    ROW_NUMBER() OVER (
+                        PARTITION BY r.review_id 
+                        ORDER BY c.completion_time DESC
+                    ) as rn
+                FROM reviews r
+                JOIN completions c ON c.conversation_id = r.conversation_id
+                    AND c.completion_time <= r.review_time
+            )
+            SELECT 
+                review_id,
+                task_id,
+                trainer_email,
+                completion_time,
+                completion_number,
+                review_time,
+                DATE(review_time) as review_date,
+                score,
+                followup_required,
+                project_id
+            FROM review_completion_match
+            WHERE rn = 1 
+            AND trainer_email IS NOT NULL
+            ORDER BY review_time DESC
+            """
+            
+            logger.info("Fetching trainer review attribution from BigQuery...")
+            query_job = self.bq_client.query(query)
+            results = query_job.result()
+            
+            data = []
+            for row in results:
+                row_dict = dict(row)
+                data.append({
+                    'review_id': row_dict.get('review_id'),
+                    'task_id': row_dict.get('task_id'),
+                    'trainer_email': row_dict.get('trainer_email', '').lower().strip() if row_dict.get('trainer_email') else None,
+                    'completion_time': row_dict.get('completion_time'),
+                    'completion_number': row_dict.get('completion_number'),
+                    'review_time': row_dict.get('review_time'),
+                    'review_date': row_dict.get('review_date'),
+                    'score': float(row_dict.get('score')) if row_dict.get('score') is not None else None,
+                    'followup_required': int(row_dict.get('followup_required', 0)),
+                    'project_id': row_dict.get('project_id')
+                })
+            
+            logger.info(f"Fetched {len(data)} trainer review attribution records")
+            
+            with self.db_service.get_session() as session:
+                # Clear existing data
+                logger.info("Clearing existing trainer_review_stats data...")
+                session.execute(delete(TrainerReviewStats))
+                session.commit()
+                
+                # Batch insert
+                batch_size = 5000
+                for i in range(0, len(data), batch_size):
+                    batch = data[i:i + batch_size]
+                    objects = [TrainerReviewStats(**record) for record in batch if record.get('trainer_email')]
+                    session.bulk_save_objects(objects)
+                    session.commit()
+                    logger.info(f"Synced {min(i + batch_size, len(data))}/{len(data)} trainer_review_stats records")
+            
+            self.log_sync_complete(log_id, len(data), True)
+            logger.info(f"✓ Successfully synced {len(data)} trainer_review_stats records")
+            return True
+            
+        except Exception as e:
+            self.log_sync_complete(log_id, 0, False, str(e))
+            logger.error(f"✗ Error syncing trainer_review_stats: {e}")
+            import traceback
+            traceback.print_exc()
+            return False
+    
     def sync_all_tables(self, sync_type: str = 'scheduled') -> Dict[str, bool]:
         """Sync all required data from BigQuery to PostgreSQL"""
         logger.info(f"Starting data sync ({sync_type})...")
@@ -1812,6 +2056,7 @@ class DataSyncService:
             ('task_history_raw', self.sync_task_history_raw),
             ('pod_lead_mapping', self.sync_pod_lead_mapping),
             ('jibble_hours', self.sync_jibble_hours),
+            ('trainer_review_stats', self.sync_trainer_review_stats),  # Per-trainer review attribution
         ]
         
         for table_name, sync_func in sync_order:

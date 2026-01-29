@@ -81,6 +81,12 @@ export interface TrainerDailyStats {
   avg_rework: number | null
   rework_percent: number | null
   avg_rating: number | null
+  total_reviews?: number
+  approved?: number
+  approved_rework?: number
+  delivered?: number
+  in_queue?: number
+  jibble_hours?: number | null
 }
 
 export interface ReviewerDailyStats {
@@ -186,5 +192,6 @@ export interface FilterParams {
   min_task_count?: number
   date_from?: string
   date_to?: string
+  project_id?: number
 }
 
