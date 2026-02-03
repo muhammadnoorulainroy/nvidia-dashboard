@@ -2756,15 +2756,17 @@ class QueryService:
                         func.sum(JibbleHours.logged_hours).label('total_hours')
                     )
                     
-                    # Filter by specific project - use original Jibble project names
-                    # Handle Multichallenge which has two Jibble projects (regular + Advanced)
-                    if project_id == 39:  # Multichallenge includes both regular and Advanced
+                    # Filter by specific project - SWAP CFBench and Multichallenge
+                    # Data issue: CFBench trainers logged under Multichallenge, and vice versa
+                    if project_id == 37:  # CFBench - use Multichallenge jibble hours (swapped)
                         jibble_query = jibble_query.filter(
                             or_(
                                 JibbleHours.project == 'Nvidia - Multichallenge',
                                 JibbleHours.project == 'Nvidia - Multichallenge Advanced'
                             )
                         )
+                    elif project_id == 39:  # Multichallenge - use CFBench jibble hours (swapped)
+                        jibble_query = jibble_query.filter(JibbleHours.project == 'Nvidia - CFBench Multilingual')
                     elif jibble_project_name:
                         jibble_query = jibble_query.filter(JibbleHours.project == jibble_project_name)
                     
