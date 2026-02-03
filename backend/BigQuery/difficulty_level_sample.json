@@ -1,0 +1,1108 @@
+{
+  "table": "difficulty_level",
+  "row_count": 9067,
+  "sample_count": 100,
+  "fetched_at": "2026-01-28T23:23:24.334658",
+  "data": [
+    {
+      "created_at": "2026-01-28T22:13:04.498769",
+      "updated_at": "2026-01-28T22:13:04.498769",
+      "conversation_id": 70252,
+      "level": "easy",
+      "reason": "Model broke easily",
+      "datastream_metadata": {
+        "uuid": "e5701e3e-5a96-4828-8d2b-4ea8ef8405ea",
+        "source_timestamp": 1769638384000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:08:13.361636",
+      "updated_at": "2026-01-28T22:08:13.361636",
+      "conversation_id": 70755,
+      "level": "medium",
+      "reason": "Question correction taxonomy",
+      "datastream_metadata": {
+        "uuid": "70ab1a46-a28b-4972-b92c-8b392eaf1832",
+        "source_timestamp": 1769638093000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:06:10.370739",
+      "updated_at": "2026-01-28T22:06:10.370739",
+      "conversation_id": 70149,
+      "level": "hard",
+      "reason": "Deliberately Incorrect Answers",
+      "datastream_metadata": {
+        "uuid": "07a8675f-cb66-4e05-9d8a-b3ba4292d269",
+        "source_timestamp": 1769637970000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:59:47.361645",
+      "updated_at": "2026-01-28T21:59:47.361645",
+      "conversation_id": 70465,
+      "level": "hard",
+      "reason": "Model was not breaking needed to make more complex query.",
+      "datastream_metadata": {
+        "uuid": "85a9ddd1-a7e5-49c5-aceb-7adf2d2d3ff7",
+        "source_timestamp": 1769637587000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:58:09.757398",
+      "updated_at": "2026-01-28T21:58:09.757398",
+      "conversation_id": 70278,
+      "level": "medium",
+      "reason": "Model broke easily",
+      "datastream_metadata": {
+        "uuid": "bfafdb4a-fe51-44c9-bd20-128caea62695",
+        "source_timestamp": 1769637489000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:57:07.238749",
+      "updated_at": "2026-01-28T21:57:07.238749",
+      "conversation_id": 70018,
+      "level": "medium",
+      "reason": "completed as per new requirement",
+      "datastream_metadata": {
+        "uuid": "9b5cd652-704f-416d-800d-98b734aa9b39",
+        "source_timestamp": 1769637427000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:38:01.074076",
+      "updated_at": "2026-01-28T21:38:01.074076",
+      "conversation_id": 70830,
+      "level": "medium",
+      "reason": "Slightly complex QC prompt",
+      "datastream_metadata": {
+        "uuid": "b5207b54-33de-403b-90a0-931fefaee3c1",
+        "source_timestamp": 1769636281000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:32:27.672185",
+      "updated_at": "2026-01-28T21:32:27.672185",
+      "conversation_id": 70249,
+      "level": "hard",
+      "reason": "Model broke after few iterations of prompt writing",
+      "datastream_metadata": {
+        "uuid": "982fb307-5454-465c-9de6-4437ff96db32",
+        "source_timestamp": 1769635947000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:27:13.213614",
+      "updated_at": "2026-01-28T21:27:13.213614",
+      "conversation_id": 70683,
+      "level": "medium",
+      "reason": "As It required only single turn. Clear scenario easy for understanding. ",
+      "datastream_metadata": {
+        "uuid": "aefe61dc-9cb5-48c9-9206-cbc5ea5db847",
+        "source_timestamp": 1769635633000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:24:39.671264",
+      "updated_at": "2026-01-28T21:24:39.671264",
+      "conversation_id": 70862,
+      "level": "medium",
+      "reason": "Completed as per requirement",
+      "datastream_metadata": {
+        "uuid": "2be5b721-b6ac-484c-8b51-2c60164e0426",
+        "source_timestamp": 1769635479000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:22:39.712091",
+      "updated_at": "2026-01-28T21:22:39.712091",
+      "conversation_id": 70343,
+      "level": "medium",
+      "reason": "its ok",
+      "datastream_metadata": {
+        "uuid": "66c3c6b7-465e-48a1-a277-aa97920fa5b1",
+        "source_timestamp": 1769635359000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:16:40.247655",
+      "updated_at": "2026-01-28T21:16:40.247655",
+      "conversation_id": 64464,
+      "level": "hard",
+      "reason": "This task was made hard due to the inefficiency of the QWEN model. ",
+      "datastream_metadata": {
+        "uuid": "a2a4d9e7-718d-4fdd-8fb5-22f203d2a9db",
+        "source_timestamp": 1769635000000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:14:14.150882",
+      "updated_at": "2026-01-28T21:14:14.150882",
+      "conversation_id": 70912,
+      "level": "medium",
+      "reason": "It has six turns, so completing the full notebook takes some time, but breaking the model was quick.\n",
+      "datastream_metadata": {
+        "uuid": "03cbdbc5-14fa-41e8-8acc-82b038cd8462",
+        "source_timestamp": 1769634854000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:58:19.882106",
+      "updated_at": "2026-01-28T20:58:19.882106",
+      "conversation_id": 70548,
+      "level": "hard",
+      "reason": "It was long way to complete. 9 turns.",
+      "datastream_metadata": {
+        "uuid": "bd0d731c-8431-4153-b7e7-60e4cca25f10",
+        "source_timestamp": 1769633899000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:49:34.185624",
+      "updated_at": "2026-01-28T20:49:34.185624",
+      "conversation_id": 70255,
+      "level": "medium",
+      "reason": "Too many hunt attempts to break the model",
+      "datastream_metadata": {
+        "uuid": "1a02053c-e73f-4576-83aa-26069c30630b",
+        "source_timestamp": 1769633374000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:48:22.124683",
+      "updated_at": "2026-01-28T20:48:22.124683",
+      "conversation_id": 70466,
+      "level": "medium",
+      "reason": "The IF instructions, LLM evals and LLM judges took time and effort.",
+      "datastream_metadata": {
+        "uuid": "0f0e4211-bf95-4ae8-bf9f-55202124407a",
+        "source_timestamp": 1769633302000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:47:32.813628",
+      "updated_at": "2026-01-28T20:47:32.813628",
+      "conversation_id": 70719,
+      "level": "medium",
+      "reason": "my model broke",
+      "datastream_metadata": {
+        "uuid": "98e9821e-d3af-4231-bc21-b86fa0525d91",
+        "source_timestamp": 1769633252000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:40:11.191225",
+      "updated_at": "2026-01-28T20:40:11.191225",
+      "conversation_id": 70148,
+      "level": "medium",
+      "reason": "model broke easily",
+      "datastream_metadata": {
+        "uuid": "b0253d05-ae96-41c5-84a5-cbbbb0910fac",
+        "source_timestamp": 1769632811000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:39:17.572627",
+      "updated_at": "2026-01-28T20:39:17.572627",
+      "conversation_id": 54228,
+      "level": "easy",
+      "reason": "Task Completed with required turns and matches the new requirements\n",
+      "datastream_metadata": {
+        "uuid": "a767906f-d1e2-4e4b-b230-e8e6f5cabef5",
+        "source_timestamp": 1769632757000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:36:05.240028",
+      "updated_at": "2026-01-28T20:36:05.240028",
+      "conversation_id": 70732,
+      "level": "hard",
+      "reason": "word limit",
+      "datastream_metadata": {
+        "uuid": "89c003c5-d2ef-4f1c-8072-c7c848441cfb",
+        "source_timestamp": 1769632565000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:35:51.174322",
+      "updated_at": "2026-01-28T20:35:51.174322",
+      "conversation_id": 70656,
+      "level": "easy",
+      "reason": "lesser turn and sufficient number of user prompt length",
+      "datastream_metadata": {
+        "uuid": "e2af9111-4987-4b1a-9b5a-93aeaa029814",
+        "source_timestamp": 1769632551000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:10:08.128055",
+      "updated_at": "2026-01-28T20:10:08.128055",
+      "conversation_id": 70818,
+      "level": "easy",
+      "reason": "Task completed.",
+      "datastream_metadata": {
+        "uuid": "9530b307-a450-41d3-905a-40bb5af7913f",
+        "source_timestamp": 1769631008000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:02:23.875679",
+      "updated_at": "2026-01-28T20:02:23.875679",
+      "conversation_id": 69741,
+      "level": "medium",
+      "reason": "few turns",
+      "datastream_metadata": {
+        "uuid": "b7398a85-8d2a-4b36-a173-5fdaa5f05b91",
+        "source_timestamp": 1769630543000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:59:36.847659",
+      "updated_at": "2026-01-28T19:59:36.847659",
+      "conversation_id": 70762,
+      "level": "medium",
+      "reason": "Task Completed",
+      "datastream_metadata": {
+        "uuid": "be37cc23-a2eb-4f2f-9ced-daf3f8c90c0f",
+        "source_timestamp": 1769630376000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:58:43.963712",
+      "updated_at": "2026-01-28T19:58:43.963712",
+      "conversation_id": 70728,
+      "level": "medium",
+      "reason": "MIM prompt with technical topic",
+      "datastream_metadata": {
+        "uuid": "9b6d0d48-f388-43a8-bc5d-09b139350923",
+        "source_timestamp": 1769630323000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:48:31.661055",
+      "updated_at": "2026-01-28T19:48:31.661055",
+      "conversation_id": 70829,
+      "level": "medium",
+      "reason": "This task was medium difficulty.",
+      "datastream_metadata": {
+        "uuid": "e5e942c6-fdef-4f90-8a6f-65f1906e107a",
+        "source_timestamp": 1769629711000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:34:07.037829",
+      "updated_at": "2026-01-28T19:34:07.037829",
+      "conversation_id": 70279,
+      "level": "medium",
+      "reason": "Completed as per new requirement",
+      "datastream_metadata": {
+        "uuid": "ae78686e-112d-4ab8-bfc9-a901a7aed0c7",
+        "source_timestamp": 1769628847000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:30:14.953093",
+      "updated_at": "2026-01-28T19:30:14.953093",
+      "conversation_id": 67682,
+      "level": "hard",
+      "reason": "It was a hard task to break",
+      "datastream_metadata": {
+        "uuid": "c76470c0-4a89-421a-b882-93003131535f",
+        "source_timestamp": 1769628614000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:27:28.916718",
+      "updated_at": "2026-01-28T19:27:28.916718",
+      "conversation_id": 70855,
+      "level": "medium",
+      "reason": "This task was medium difficulty",
+      "datastream_metadata": {
+        "uuid": "52b9292f-c992-4ef6-8ddf-9288be1447e8",
+        "source_timestamp": 1769628448000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:24:51.172367",
+      "updated_at": "2026-01-28T19:24:51.172367",
+      "conversation_id": 70555,
+      "level": "easy",
+      "reason": "i like planning and advice topics ",
+      "datastream_metadata": {
+        "uuid": "240ab74b-d1a4-4349-8951-59a876f38bbf",
+        "source_timestamp": 1769628291000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:19:10.619712",
+      "updated_at": "2026-01-28T19:19:10.619712",
+      "conversation_id": 70764,
+      "level": "easy",
+      "reason": "Task completed",
+      "datastream_metadata": {
+        "uuid": "0c1e0633-58fb-45d9-95ee-3a800608dc11",
+        "source_timestamp": 1769627950000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:11:56.550845",
+      "updated_at": "2026-01-28T19:11:56.550845",
+      "conversation_id": 70273,
+      "level": "hard",
+      "reason": "Engineering prompt and criteria were a bit tricky.",
+      "datastream_metadata": {
+        "uuid": "55649b17-f278-4385-bd8e-894ca26713ff",
+        "source_timestamp": 1769627516000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:08:35.761189",
+      "updated_at": "2026-01-28T19:08:35.761189",
+      "conversation_id": 70800,
+      "level": "medium",
+      "reason": "word limit",
+      "datastream_metadata": {
+        "uuid": "25038d5f-716f-4c9d-bcce-47a43b87c878",
+        "source_timestamp": 1769627315000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:43:10.002299",
+      "updated_at": "2026-01-28T18:43:10.002299",
+      "conversation_id": 69668,
+      "level": "medium",
+      "reason": "models were hard to brake.",
+      "datastream_metadata": {
+        "uuid": "e16d6469-d0ac-4f29-b80f-bb03cf75f779",
+        "source_timestamp": 1769625790000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:40:40.055974",
+      "updated_at": "2026-01-28T18:40:40.055974",
+      "conversation_id": 55297,
+      "level": "hard",
+      "reason": "The complexity is high, as this role demands encyclopedic cultural knowledge, multi-theoretical synthesis, strict structural formatting, pedagogical clarity, and sustained analytical depth across art, media, and cultural history without drifting into opinion or fabrication.\n",
+      "datastream_metadata": {
+        "uuid": "1b021c9b-7da9-4713-996c-38ae425ad4c2",
+        "source_timestamp": 1769625640000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:33:24.375482",
+      "updated_at": "2026-01-28T18:33:24.375482",
+      "conversation_id": 70326,
+      "level": "medium",
+      "reason": "The task requires hard work and many attempts to break the model.",
+      "datastream_metadata": {
+        "uuid": "cd6df40f-232c-42ca-9827-5a124f1a44b4",
+        "source_timestamp": 1769625204000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:30:54.823206",
+      "updated_at": "2026-01-28T18:30:54.823206",
+      "conversation_id": 69732,
+      "level": "medium",
+      "reason": "medium level difficulty.",
+      "datastream_metadata": {
+        "uuid": "6cc4a9ea-0907-4e26-98da-50add3a08963",
+        "source_timestamp": 1769625054000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:30:31.719556",
+      "updated_at": "2026-01-28T18:30:31.719556",
+      "conversation_id": 70746,
+      "level": "medium",
+      "reason": "It was relatively difficult.",
+      "datastream_metadata": {
+        "uuid": "3999f345-a2da-4bf5-a96c-6d1b7c7bc760",
+        "source_timestamp": 1769625031000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:27:58.690495",
+      "updated_at": "2026-01-28T18:27:58.690495",
+      "conversation_id": 70569,
+      "level": "medium",
+      "reason": "Nothing special",
+      "datastream_metadata": {
+        "uuid": "a92744cd-7d2f-4257-bd95-c33503f173ee",
+        "source_timestamp": 1769624878000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:26:50.736728",
+      "updated_at": "2026-01-28T18:26:50.736728",
+      "conversation_id": 70427,
+      "level": "medium",
+      "reason": "Fairly challenging ",
+      "datastream_metadata": {
+        "uuid": "adcbb36d-92b0-4f2f-a673-f0fdbcfff717",
+        "source_timestamp": 1769624810000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:21:04.251119",
+      "updated_at": "2026-01-28T18:21:04.251119",
+      "conversation_id": 70737,
+      "level": "easy",
+      "reason": "Task completed.",
+      "datastream_metadata": {
+        "uuid": "5644a72c-5947-43ad-bf31-022b812c852a",
+        "source_timestamp": 1769624464000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:18:09.238324",
+      "updated_at": "2026-01-28T18:18:09.238324",
+      "conversation_id": 70811,
+      "level": "medium",
+      "reason": "The task was extremely time-consuming because the tool either failed to return responses or took an unusually long time to respond.",
+      "datastream_metadata": {
+        "uuid": "8dc8d105-2657-4bb4-9339-6042f836285d",
+        "source_timestamp": 1769624289000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:12:48.106939",
+      "updated_at": "2026-01-28T18:12:48.106939",
+      "conversation_id": 69519,
+      "level": "hard",
+      "reason": "Difficult to match failure rules",
+      "datastream_metadata": {
+        "uuid": "1cc6e375-c48b-474e-b3ae-bfe83be3cde5",
+        "source_timestamp": 1769623968000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:55:54.960797",
+      "updated_at": "2026-01-28T17:55:54.960797",
+      "conversation_id": 64735,
+      "level": "hard",
+      "reason": "Was hard to break the model. ",
+      "datastream_metadata": {
+        "uuid": "19d6c917-168d-4867-b9e5-8b8b07bdd653",
+        "source_timestamp": 1769622954000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:55:33.918509",
+      "updated_at": "2026-01-28T17:55:33.918509",
+      "conversation_id": 70867,
+      "level": "medium",
+      "reason": "Completed task as per requirement",
+      "datastream_metadata": {
+        "uuid": "532a42ab-a276-4123-ba85-7b8250d46520",
+        "source_timestamp": 1769622933000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:52:12.727535",
+      "updated_at": "2026-01-28T17:52:12.727535",
+      "conversation_id": 70361,
+      "level": "medium",
+      "reason": "mmmmmmmmmmmmmmmmmmm",
+      "datastream_metadata": {
+        "uuid": "443885c1-70e1-4c4c-b1dd-1776165ff5d6",
+        "source_timestamp": 1769622732000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:51:10.803249",
+      "updated_at": "2026-01-28T17:51:10.803249",
+      "conversation_id": 54699,
+      "level": "medium",
+      "reason": "Completed task from scratch with all new checks and formatting, checked through task fetcher and format validation script.",
+      "datastream_metadata": {
+        "uuid": "4e564a33-8223-4816-9692-e9d07b3e7a34",
+        "source_timestamp": 1769622670000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:49:21.065876",
+      "updated_at": "2026-01-28T17:49:21.065876",
+      "conversation_id": 70209,
+      "level": "medium",
+      "reason": "Model was breakable ",
+      "datastream_metadata": {
+        "uuid": "d1f5e66a-2683-4770-bff9-550941688ac3",
+        "source_timestamp": 1769622561000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:44:23.628565",
+      "updated_at": "2026-01-28T17:44:23.628565",
+      "conversation_id": 70822,
+      "level": "medium",
+      "reason": "The tool is taking much longer today to generate responses. ",
+      "datastream_metadata": {
+        "uuid": "b2c06484-4c4d-4a0a-8bf3-c00a01341097",
+        "source_timestamp": 1769622263000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:43:28.441548",
+      "updated_at": "2026-01-28T17:43:28.441548",
+      "conversation_id": 70478,
+      "level": "hard",
+      "reason": "complex questions ",
+      "datastream_metadata": {
+        "uuid": "53163fcd-f45c-4ca6-8bae-3a3a98cab170",
+        "source_timestamp": 1769622208000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:38:01.282113",
+      "updated_at": "2026-01-28T17:38:01.282113",
+      "conversation_id": 70789,
+      "level": "hard",
+      "reason": "The Qwen was misbehaving and breaking every time, so generating variable responses was not easy. Moreover, the prompt length was more than 500 words, so completing this task took some time.",
+      "datastream_metadata": {
+        "uuid": "467fb6f0-e8ea-497d-ad64-36baaca5656b",
+        "source_timestamp": 1769621881000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:37:48.948407",
+      "updated_at": "2026-01-28T17:37:48.948407",
+      "conversation_id": 70738,
+      "level": "hard",
+      "reason": "The Qwen was misbehaving and breaking every time, so generating variable responses was not easy. Moreover, the prompt length was more than 500 words, so completing this task took some time.",
+      "datastream_metadata": {
+        "uuid": "0931173c-4ca9-48c8-81d1-06865da32236",
+        "source_timestamp": 1769621868000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:37:32.557239",
+      "updated_at": "2026-01-28T17:37:32.557239",
+      "conversation_id": 70736,
+      "level": "hard",
+      "reason": "The Qwen was misbehaving and breaking every time, so generating variable responses was not easy. Moreover, the prompt length was more than 500 words, so completing this task took some time.",
+      "datastream_metadata": {
+        "uuid": "ca6c9c67-3849-4a87-b618-d5fae8085c71",
+        "source_timestamp": 1769621852000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:37:16.244239",
+      "updated_at": "2026-01-28T17:37:16.244239",
+      "conversation_id": 70804,
+      "level": "easy",
+      "reason": "Extensive knowledge on the task field made this task easy to work on.",
+      "datastream_metadata": {
+        "uuid": "f6e8306f-31d3-442a-8415-24856e155f49",
+        "source_timestamp": 1769621836000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:34:45.219612",
+      "updated_at": "2026-01-28T17:34:45.219612",
+      "conversation_id": 70888,
+      "level": "medium",
+      "reason": "due to word limit easy to moderate\n",
+      "datastream_metadata": {
+        "uuid": "d193222b-7d45-4f79-9740-7a9825acdffa",
+        "source_timestamp": 1769621685000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:34:20.745312",
+      "updated_at": "2026-01-28T17:34:20.745312",
+      "conversation_id": 64667,
+      "level": "hard",
+      "reason": "3/4 responses failed\n",
+      "datastream_metadata": {
+        "uuid": "aa149097-f58a-4b3b-9961-ad68c6b461b4",
+        "source_timestamp": 1769621660000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:33:53.830619",
+      "updated_at": "2026-01-28T17:33:53.830619",
+      "conversation_id": 64698,
+      "level": "medium",
+      "reason": "Designing a model breaking trap was very tricky on this task.",
+      "datastream_metadata": {
+        "uuid": "50eb85a6-82d2-4046-9dab-41b0fff9eec1",
+        "source_timestamp": 1769621633000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:28:25.403200",
+      "updated_at": "2026-01-28T17:28:25.403200",
+      "conversation_id": 55044,
+      "level": "hard",
+      "reason": "It has to adhere to at least 13 formatting constraints, validate input from the user, and remember previous input while maintaining safety by not crossing the boundaries of being a legal advisor.",
+      "datastream_metadata": {
+        "uuid": "f5ce9f16-8e4e-46b5-9af7-a498c104f613",
+        "source_timestamp": 1769621305000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:28:14.364174",
+      "updated_at": "2026-01-28T17:28:14.364174",
+      "conversation_id": 70556,
+      "level": "hard",
+      "reason": "Hard to break the models.",
+      "datastream_metadata": {
+        "uuid": "a03e0c4a-8385-4a96-b6a8-62f0712897e2",
+        "source_timestamp": 1769621294000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:26:01.297827",
+      "updated_at": "2026-01-28T17:26:01.297827",
+      "conversation_id": 54248,
+      "level": "easy",
+      "reason": "completed task",
+      "datastream_metadata": {
+        "uuid": "d63d7bb6-406c-4f68-9533-d68b3e5cc8b0",
+        "source_timestamp": 1769621161000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:22:04.604828",
+      "updated_at": "2026-01-28T17:22:04.604828",
+      "conversation_id": 70453,
+      "level": "hard",
+      "reason": "The level reflects a balance between task difficulty, time investment, and operational complexity.",
+      "datastream_metadata": {
+        "uuid": "1566e0d2-4537-4ef7-bf11-104f3c6a39b0",
+        "source_timestamp": 1769620924000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:13:00.295241",
+      "updated_at": "2026-01-28T17:13:00.295241",
+      "conversation_id": 70142,
+      "level": "medium",
+      "reason": "Access bot's ability to follow instructions correctly",
+      "datastream_metadata": {
+        "uuid": "2cfe529c-46a3-44f3-a7b0-342d8f7b3d02",
+        "source_timestamp": 1769620380000
+      }
+    },
+    {
+      "created_at": "2026-01-28T16:56:58.674902",
+      "updated_at": "2026-01-28T16:56:58.674902",
+      "conversation_id": 70906,
+      "level": "medium",
+      "reason": "It was fast to break the model",
+      "datastream_metadata": {
+        "uuid": "1ba70857-75ff-4821-ae5b-8bd23adcaa21",
+        "source_timestamp": 1769619418000
+      }
+    },
+    {
+      "created_at": "2026-01-28T16:56:28.559937",
+      "updated_at": "2026-01-28T16:56:28.559937",
+      "conversation_id": 70771,
+      "level": "easy",
+      "reason": "Broke often because models miscounted totals (10–27), skewed the grammar/caps split, or accidentally added apostrophe issues.",
+      "datastream_metadata": {
+        "uuid": "5405ab69-22cc-49e8-ab8a-bffeca9149e3",
+        "source_timestamp": 1769619388000
+      }
+    },
+    {
+      "created_at": "2026-01-28T16:53:20.631611",
+      "updated_at": "2026-01-28T16:53:20.631611",
+      "conversation_id": 70707,
+      "level": "medium",
+      "reason": "my model broke",
+      "datastream_metadata": {
+        "uuid": "c73750a6-8fed-4f02-bd37-cd9c5be7a5a0",
+        "source_timestamp": 1769619200000
+      }
+    },
+    {
+      "created_at": "2026-01-28T16:52:40.172616",
+      "updated_at": "2026-01-28T16:52:40.172616",
+      "conversation_id": 70788,
+      "level": "hard",
+      "reason": "The task was extremely time-consuming because the tool either failed to return responses or took an unusually long time to respond.",
+      "datastream_metadata": {
+        "uuid": "20c4012f-f91b-4963-9b3b-eb2ff73d753b",
+        "source_timestamp": 1769619160000
+      }
+    },
+    {
+      "created_at": "2026-01-28T16:49:05.314531",
+      "updated_at": "2026-01-28T16:49:05.314531",
+      "conversation_id": 64920,
+      "level": "hard",
+      "reason": "Many turns and tough to set the rubrics.",
+      "datastream_metadata": {
+        "uuid": "5e896dd7-f590-44ef-a2f5-ab8b23b10d81",
+        "source_timestamp": 1769618945000
+      }
+    },
+    {
+      "created_at": "2026-01-28T16:47:45.057170",
+      "updated_at": "2026-01-28T16:47:45.057170",
+      "conversation_id": 70769,
+      "level": "easy",
+      "reason": "This task was relatively easy to understand and work on.",
+      "datastream_metadata": {
+        "uuid": "18f8176b-552e-47e2-b393-f690f54dde39",
+        "source_timestamp": 1769618865000
+      }
+    },
+    {
+      "created_at": "2026-01-28T16:45:06.381254",
+      "updated_at": "2026-01-28T16:45:06.381254",
+      "conversation_id": 69957,
+      "level": "medium",
+      "reason": "It took me some time to write a 500+ word prompt. Plus, as many have reported today, the tool is slow and misbehaving, which added to the time needed to complete the task.",
+      "datastream_metadata": {
+        "uuid": "cde89394-c8e3-4625-816a-3c7f7131d2f0",
+        "source_timestamp": 1769618706000
+      }
+    },
+    {
+      "created_at": "2026-01-28T16:43:48.879320",
+      "updated_at": "2026-01-28T16:43:48.879320",
+      "conversation_id": 70169,
+      "level": "hard",
+      "reason": "This was super hard task.",
+      "datastream_metadata": {
+        "uuid": "28faa352-0b70-405e-a514-e925a023e161",
+        "source_timestamp": 1769618628000
+      }
+    },
+    {
+      "created_at": "2026-01-28T16:32:34.844513",
+      "updated_at": "2026-01-28T16:36:12",
+      "conversation_id": 70544,
+      "level": "medium",
+      "reason": "Same reason as before.",
+      "datastream_metadata": {
+        "uuid": "160f1946-9752-461f-9017-dafb37986ed3",
+        "source_timestamp": 1769618172000
+      }
+    },
+    {
+      "created_at": "2026-01-28T16:27:23.525895",
+      "updated_at": "2026-01-28T16:27:23.525895",
+      "conversation_id": 70927,
+      "level": "medium",
+      "reason": "The model needed some changes to break",
+      "datastream_metadata": {
+        "uuid": "8ab6ed1e-ccc9-4d90-a002-1e35d45898e3",
+        "source_timestamp": 1769617643000
+      }
+    },
+    {
+      "created_at": "2026-01-28T16:26:15.649657",
+      "updated_at": "2026-01-28T16:26:15.649657",
+      "conversation_id": 54996,
+      "level": "hard",
+      "reason": "Seven turn task",
+      "datastream_metadata": {
+        "uuid": "95cb14c7-dd60-4266-964e-58114e2bab86",
+        "source_timestamp": 1769617575000
+      }
+    },
+    {
+      "created_at": "2026-01-28T16:26:12.387577",
+      "updated_at": "2026-01-28T21:48:56",
+      "conversation_id": 70724,
+      "level": "medium",
+      "reason": "Added a false premise as requested and included the options in the response reference criterion. ",
+      "datastream_metadata": {
+        "uuid": "b821b594-020a-4c51-94c8-c37c972f7b27",
+        "source_timestamp": 1769636936000
+      }
+    },
+    {
+      "created_at": "2026-01-28T16:22:03.015197",
+      "updated_at": "2026-01-28T16:22:03.015197",
+      "conversation_id": 70682,
+      "level": "medium",
+      "reason": "user prompt hard to generate",
+      "datastream_metadata": {
+        "uuid": "39388150-32ff-48f1-a6bc-f281f73388b6",
+        "source_timestamp": 1769617323000
+      }
+    },
+    {
+      "created_at": "2026-01-28T16:10:07.854864",
+      "updated_at": "2026-01-28T16:10:07.854864",
+      "conversation_id": 70127,
+      "level": "hard",
+      "reason": "Engineering prompt and criteria were a bit tricky.",
+      "datastream_metadata": {
+        "uuid": "6323745d-3c79-4948-85eb-c1713c96af36",
+        "source_timestamp": 1769616607000
+      }
+    },
+    {
+      "created_at": "2026-01-28T16:09:30.001486",
+      "updated_at": "2026-01-28T16:09:30.001486",
+      "conversation_id": 54826,
+      "level": "hard",
+      "reason": "Spent the session working on complex tasks that required detailed analysis, alignment with predefined rules, and careful validation, demanding sustained focus and effort.",
+      "datastream_metadata": {
+        "uuid": "ef0e9820-2104-4f16-9206-d40d828c5e2f",
+        "source_timestamp": 1769616570000
+      }
+    },
+    {
+      "created_at": "2026-01-28T16:08:07.146220",
+      "updated_at": "2026-01-28T16:08:07.146220",
+      "conversation_id": 70870,
+      "level": "medium",
+      "reason": "The task was fairly difficult",
+      "datastream_metadata": {
+        "uuid": "fbf41e9b-0d85-4ab9-87be-710223386b09",
+        "source_timestamp": 1769616487000
+      }
+    },
+    {
+      "created_at": "2026-01-28T16:03:09.490177",
+      "updated_at": "2026-01-28T16:03:09.490177",
+      "conversation_id": 70779,
+      "level": "medium",
+      "reason": "This task was medium difficulty.",
+      "datastream_metadata": {
+        "uuid": "4250a6a3-f71e-46bf-abac-e655c5ea2834",
+        "source_timestamp": 1769616189000
+      }
+    },
+    {
+      "created_at": "2026-01-28T15:52:11.353873",
+      "updated_at": "2026-01-28T15:52:11.353873",
+      "conversation_id": 70735,
+      "level": "hard",
+      "reason": "This was hard difficulty task.",
+      "datastream_metadata": {
+        "uuid": "7029c389-bf96-4a78-ad60-41ea24ab2a5c",
+        "source_timestamp": 1769615531000
+      }
+    },
+    {
+      "created_at": "2026-01-28T15:49:19.951062",
+      "updated_at": "2026-01-28T15:49:19.951062",
+      "conversation_id": 70131,
+      "level": "hard",
+      "reason": "Counter-Conventional Formatting",
+      "datastream_metadata": {
+        "uuid": "f902a080-8ee2-4a93-a2a4-c9a4c38c19b5",
+        "source_timestamp": 1769615359000
+      }
+    },
+    {
+      "created_at": "2026-01-28T15:47:47.076641",
+      "updated_at": "2026-01-28T15:47:47.076641",
+      "conversation_id": 70742,
+      "level": "easy",
+      "reason": "Task completed.",
+      "datastream_metadata": {
+        "uuid": "68cc1d94-765f-4b59-ac79-ae328559f07d",
+        "source_timestamp": 1769615267000
+      }
+    },
+    {
+      "created_at": "2026-01-28T15:42:33.130220",
+      "updated_at": "2026-01-28T15:42:33.130220",
+      "conversation_id": 70826,
+      "level": "medium",
+      "reason": "The task was fairly easy",
+      "datastream_metadata": {
+        "uuid": "d71c4456-03a8-4278-ac38-478d34392104",
+        "source_timestamp": 1769614953000
+      }
+    },
+    {
+      "created_at": "2026-01-28T15:41:32.029720",
+      "updated_at": "2026-01-28T15:41:32.029720",
+      "conversation_id": 55654,
+      "level": "hard",
+      "reason": "less system prompt and 7 turn conversation",
+      "datastream_metadata": {
+        "uuid": "d2ee686b-bea9-4604-9698-7dfe5b63ad7c",
+        "source_timestamp": 1769614892000
+      }
+    },
+    {
+      "created_at": "2026-01-28T15:17:45.831821",
+      "updated_at": "2026-01-28T15:17:45.831821",
+      "conversation_id": 70457,
+      "level": "hard",
+      "reason": "The reason I selected \"Hard\" for the level is because the tasks you’re tackling, such as AI/LLM evaluation, algorithmic trading, and complex scientific coding, demand a high level of expertise, precision, and problem-solving abilities. These tasks involve advanced technical concepts, intricate methodologies, and often require in-depth, multi-step solutions that challenge both analytical and practical skills.\n",
+      "datastream_metadata": {
+        "uuid": "cc02a9e2-c4eb-47a2-908c-d8568924a02f",
+        "source_timestamp": 1769613465000
+      }
+    },
+    {
+      "created_at": "2026-01-28T15:16:02.623371",
+      "updated_at": "2026-01-28T15:16:02.623371",
+      "conversation_id": 70476,
+      "level": "medium",
+      "reason": "Medium level difficulty in terms of model breaking",
+      "datastream_metadata": {
+        "uuid": "7f18e843-2fcc-4e47-a887-934e8d463583",
+        "source_timestamp": 1769613362000
+      }
+    },
+    {
+      "created_at": "2026-01-28T15:14:19.128998",
+      "updated_at": "2026-01-28T15:14:19.128998",
+      "conversation_id": 70856,
+      "level": "medium",
+      "reason": "Task Completed",
+      "datastream_metadata": {
+        "uuid": "2fd4304f-3ac5-43d0-ab92-a7195980701c",
+        "source_timestamp": 1769613259000
+      }
+    },
+    {
+      "created_at": "2026-01-28T15:12:14.199658",
+      "updated_at": "2026-01-28T15:12:14.199658",
+      "conversation_id": 70982,
+      "level": "easy",
+      "reason": "It was easy to break the model this time. ",
+      "datastream_metadata": {
+        "uuid": "63ef8684-0384-4076-a74c-eb730e822eef",
+        "source_timestamp": 1769613134000
+      }
+    },
+    {
+      "created_at": "2026-01-28T15:03:00.301010",
+      "updated_at": "2026-01-28T15:03:00.301010",
+      "conversation_id": 70733,
+      "level": "medium",
+      "reason": "It required careful attention to the evaluation criteria rather than just factual knowledge. While the incorrect premise was relatively easy to identify, the challenge was in consistently applying the guidelines—especially distinguishing between partial reasoning correctness and final answer behavior.",
+      "datastream_metadata": {
+        "uuid": "59d5d913-3595-4a4b-a641-af963c253224",
+        "source_timestamp": 1769612580000
+      }
+    },
+    {
+      "created_at": "2026-01-28T14:52:27.840449",
+      "updated_at": "2026-01-28T14:52:27.840449",
+      "conversation_id": 69432,
+      "level": "hard",
+      "reason": "Took time to work on all cells as it was a 7-turn task, and Qwen Model took time to break.",
+      "datastream_metadata": {
+        "uuid": "55130192-eea3-4dae-a602-3f91ac0970c0",
+        "source_timestamp": 1769611947000
+      }
+    },
+    {
+      "created_at": "2026-01-28T14:51:01.080401",
+      "updated_at": "2026-01-28T14:51:01.080401",
+      "conversation_id": 70727,
+      "level": "medium",
+      "reason": "I considered this task to be of medium difficulty because it requires more than just checking the math. The evaluator has to carefully distinguish between recognizing that the correct result is missing from the options and incorrectly inferring an “intended” answer. That nuance makes the judgment less straightforward, since some responses partially acknowledge the flaw but still endorse an option. Accurately applying the criteria requires close attention to intent, not just surface-level reasoning.\n",
+      "datastream_metadata": {
+        "uuid": "7d480c09-2ad3-4101-bef2-5fc236b4a9d7",
+        "source_timestamp": 1769611861000
+      }
+    },
+    {
+      "created_at": "2026-01-28T14:50:48.082086",
+      "updated_at": "2026-01-28T14:50:48.082086",
+      "conversation_id": 70456,
+      "level": "medium",
+      "reason": "Tasks involved analysis and review, but remained within routine procedural boundaries.",
+      "datastream_metadata": {
+        "uuid": "5b97b663-8b25-4db8-b857-f2cfb179896e",
+        "source_timestamp": 1769611848000
+      }
+    },
+    {
+      "created_at": "2026-01-28T14:47:22.709234",
+      "updated_at": "2026-01-28T14:47:22.709234",
+      "conversation_id": 69887,
+      "level": "medium",
+      "reason": "The task wasn't hard to make, but the instability, errors and hallucinations of Nemotron made the work challenging and tiring.",
+      "datastream_metadata": {
+        "uuid": "fc17b99d-8323-49a7-bb35-5bc8756dfb5d",
+        "source_timestamp": 1769611642000
+      }
+    },
+    {
+      "created_at": "2026-01-28T14:43:55.013507",
+      "updated_at": "2026-01-28T14:43:55.013507",
+      "conversation_id": 70840,
+      "level": "medium",
+      "reason": "I had to modify the prompt and generate multiple batches of responses to get the model to break three times.",
+      "datastream_metadata": {
+        "uuid": "cac49420-8c74-4bb7-9793-a6979d4bddb9",
+        "source_timestamp": 1769611435000
+      }
+    },
+    {
+      "created_at": "2026-01-28T14:24:34.906360",
+      "updated_at": "2026-01-28T14:24:34.906360",
+      "conversation_id": 70467,
+      "level": "hard",
+      "reason": "no si updated",
+      "datastream_metadata": {
+        "uuid": "abc92b62-5e27-45e1-98d9-95db367b606e",
+        "source_timestamp": 1769610274000
+      }
+    },
+    {
+      "created_at": "2026-01-28T14:21:45.601331",
+      "updated_at": "2026-01-28T14:21:45.601331",
+      "conversation_id": 70019,
+      "level": "medium",
+      "reason": "Access bot's ability to follow instructions correctly",
+      "datastream_metadata": {
+        "uuid": "857535a5-a15e-4180-9cab-851e8a7a3b69",
+        "source_timestamp": 1769610105000
+      }
+    },
+    {
+      "created_at": "2026-01-28T14:20:34.027375",
+      "updated_at": "2026-01-28T14:20:34.027375",
+      "conversation_id": 70781,
+      "level": "hard",
+      "reason": "Engineering prompt and criteria were a bit tricky.",
+      "datastream_metadata": {
+        "uuid": "7ad1d4ab-7c75-42c5-9b8f-97a550da10f4",
+        "source_timestamp": 1769610034000
+      }
+    },
+    {
+      "created_at": "2026-01-28T14:20:25.598345",
+      "updated_at": "2026-01-28T16:01:31",
+      "conversation_id": 70631,
+      "level": "medium",
+      "reason": "more turns, The final mission is complex. ",
+      "datastream_metadata": {
+        "uuid": "c4facf84-33fc-4ef1-a4d2-b1ebd6e12034",
+        "source_timestamp": 1769616091000
+      }
+    },
+    {
+      "created_at": "2026-01-28T14:14:20.432763",
+      "updated_at": "2026-01-28T14:14:20.432763",
+      "conversation_id": 70833,
+      "level": "medium",
+      "reason": "moderate to hard due to word limit",
+      "datastream_metadata": {
+        "uuid": "33b60ce4-f23f-4ea6-b956-fff02ef5de7d",
+        "source_timestamp": 1769609660000
+      }
+    },
+    {
+      "created_at": "2026-01-28T13:56:58.234862",
+      "updated_at": "2026-01-28T13:56:58.234862",
+      "conversation_id": 64633,
+      "level": "medium",
+      "reason": "It took some edits to generate 3 fail and 1 pass response.",
+      "datastream_metadata": {
+        "uuid": "16f1eee4-0db5-4725-bdb1-99495c784b54",
+        "source_timestamp": 1769608618000
+      }
+    }
+  ]
+}

@@ -20,6 +20,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Menu,
   Popover,
   Slider,
   Divider,
@@ -36,11 +37,66 @@ import {
   ArrowDownward as ArrowDownwardIcon,
   FilterList as FilterListIcon,
   InfoOutlined as InfoOutlinedIcon,
+  Sort as SortIcon,
 } from '@mui/icons-material'
 import Tooltip from '@mui/material/Tooltip'
+
+// Column group definitions with professional colors (matching ProjectsTab)
+const COLUMN_GROUPS = {
+  overview: { 
+    label: 'Overview', 
+    bgHeader: '#F1F5F9', 
+    bgSubHeader: '#F8FAFC',
+    borderColor: '#CBD5E1',
+    textColor: '#475569'
+  },
+  tasks: { 
+    label: 'Tasks', 
+    bgHeader: '#EFF6FF', 
+    bgSubHeader: '#F0F9FF',
+    borderColor: '#93C5FD',
+    textColor: '#1E40AF'
+  },
+  quality: { 
+    label: 'Quality', 
+    bgHeader: '#F0FDF4', 
+    bgSubHeader: '#F0FDF4',
+    borderColor: '#86EFAC',
+    textColor: '#166534'
+  },
+  efficiency: { 
+    label: 'Time & Efficiency', 
+    bgHeader: '#FEF3C7', 
+    bgSubHeader: '#FFFBEB',
+    borderColor: '#FCD34D',
+    textColor: '#92400E'
+  },
+}
+
+// Compact header cell style
+const headerCellStyle = {
+  fontWeight: 600,
+  fontSize: '0.6rem',
+  textTransform: 'uppercase' as const,
+  letterSpacing: '0.02em',
+  lineHeight: 1.1,
+  py: 0.5,
+  px: 0.5,
+  whiteSpace: 'nowrap' as const,
+}
+
+// Compact data cell style  
+const cellStyle = {
+  py: 0.5,
+  px: 0.5,
+  fontSize: '0.75rem',
+  borderBottom: '1px solid #E2E8F0',
+}
 import { getTooltipForHeader } from '../../utils/columnTooltips'
 import { getPodLeadStats, PodLeadStats, TrainerUnderPod } from '../../services/api'
 import { exportReviewerWithTrainersToExcel } from '../../utils/exportToExcel'
+import { Timeframe, getDateRange } from '../../utils/dateUtils'
+import TimeframeSelector from '../common/TimeframeSelector'
 import ColorSettingsPanel, { 
   ColorSettings, 
   defaultColorSettings, 
@@ -53,56 +109,6 @@ import ColorSettingsPanel, {
   ColorApplyLevel
 } from './ColorSettingsPanel'
 
-type Timeframe = 'daily' | 'd-1' | 'd-2' | 'd-3' | 'weekly' | 'overall' | 'custom'
-
-// Get date range based on timeframe
-function getDateRange(timeframe: Timeframe, customStart?: string, customEnd?: string) {
-  const today = new Date()
-  let startDate: string | undefined
-  let endDate: string | undefined
-
-  switch (timeframe) {
-    case 'daily':
-      startDate = today.toISOString().split('T')[0]
-      endDate = startDate
-      break
-    case 'd-1':
-      const d1 = new Date(today)
-      d1.setDate(today.getDate() - 1)
-      startDate = d1.toISOString().split('T')[0]
-      endDate = startDate
-      break
-    case 'd-2':
-      const d2 = new Date(today)
-      d2.setDate(today.getDate() - 2)
-      startDate = d2.toISOString().split('T')[0]
-      endDate = startDate
-      break
-    case 'd-3':
-      const d3 = new Date(today)
-      d3.setDate(today.getDate() - 3)
-      startDate = d3.toISOString().split('T')[0]
-      endDate = startDate
-      break
-    case 'weekly':
-      const weekAgo = new Date(today)
-      weekAgo.setDate(today.getDate() - 7)
-      startDate = weekAgo.toISOString().split('T')[0]
-      endDate = today.toISOString().split('T')[0]
-      break
-    case 'custom':
-      startDate = customStart
-      endDate = customEnd
-      break
-    case 'overall':
-    default:
-      startDate = undefined
-      endDate = undefined
-  }
-
-  return { startDate, endDate }
-}
-
 // Trainer Row Component - matches ReviewerWise trainer row style
 function TrainerRow({ 
   trainer, 
@@ -113,21 +119,12 @@ function TrainerRow({
   colorSettings: ColorSettings
   applyColors?: boolean
 }) {
-  const getStatusColor = (status: string) => {
-    switch (status?.toLowerCase()) {
-      case 'active': return 'success'
-      case 'inactive': return 'default'
-      default: return 'default'
-    }
-  }
-
   // Map POD data fields to color settings keys
   const tasksReviewed = trainer.unique_tasks || 0
   const newTasksReviewed = trainer.new_tasks || 0
   const reworkReviewed = trainer.rework || 0
   const totalReviews = trainer.total_reviews || 0
   const approvedTasks = trainer.approved_tasks || 0
-  const approvedRework = trainer.approved_rework || 0
   const deliveredTasks = trainer.delivered_tasks || 0
   const inDeliveryQueue = trainer.in_delivery_queue || 0
   const avgRework = trainer.avg_rework
@@ -135,115 +132,102 @@ function TrainerRow({
   const avgRating = trainer.avg_rating
   const mergedExpAht = trainer.merged_exp_aht
 
-  // Get specific colors based on business rules
-  const ratingColor = applyColors ? getRatingColor(avgRating) : { bg: 'transparent', text: '#1E293B' }
-  const reworkColor = applyColors ? getReworkPercentColor(reworkPercent) : { bg: 'transparent', text: '#1E293B' }
-  const avgReworkColor = applyColors ? getAvgReworkPercentColor(avgRework) : { bg: 'transparent', text: '#1E293B' }
+  // Color coding helpers
+  const getAvgReworkStyle = (avgR: number | null | undefined) => {
+    if (avgR === null || avgR === undefined) return { color: '#94A3B8', bgcolor: 'transparent' }
+    if (avgR < 1) return { color: '#065F46', bgcolor: '#D1FAE5' }
+    if (avgR <= 2.5) return { color: '#92400E', bgcolor: '#FEF3C7' }
+    return { color: '#991B1B', bgcolor: '#FEE2E2' }
+  }
+  const getReworkPctStyle = (rPct: number | null | undefined) => {
+    if (rPct === null || rPct === undefined) return { color: '#94A3B8', bgcolor: 'transparent' }
+    if (rPct <= 10) return { color: '#065F46', bgcolor: '#D1FAE5' }
+    if (rPct <= 30) return { color: '#92400E', bgcolor: '#FEF3C7' }
+    return { color: '#991B1B', bgcolor: '#FEE2E2' }
+  }
+  const getRatingStyle = (rating: number | null | undefined) => {
+    if (rating === null || rating === undefined) return { color: '#94A3B8', bgcolor: 'transparent' }
+    if (rating > 4.8) return { color: '#065F46', bgcolor: '#D1FAE5' }
+    if (rating >= 4) return { color: '#92400E', bgcolor: '#FEF3C7' }
+    return { color: '#991B1B', bgcolor: '#FEE2E2' }
+  }
 
   return (
-    <TableRow sx={{ backgroundColor: '#FAFBFC', '&:hover': { backgroundColor: '#F1F5F9' }, borderLeft: '3px solid #E2E8F0' }}>
+    <TableRow sx={{ backgroundColor: '#FAFBFC', '&:hover': { backgroundColor: '#F1F5F9' } }}>
+      {/* Overview Group */}
       <TableCell sx={{ 
-        borderBottom: '1px solid #F1F5F9',
+        ...cellStyle,
         position: 'sticky',
         left: 0,
         zIndex: 1,
         bgcolor: '#FAFBFC',
-        borderRight: '2px solid #E2E8F0',
+        pl: 4,
       }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, pl: 5 }}>
-          <Box sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: '#94A3B8', flexShrink: 0 }} />
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+          <Box sx={{ width: 4, height: 4, borderRadius: '50%', bgcolor: '#94A3B8', flexShrink: 0 }} />
           <Box>
-            <Typography variant="body2" sx={{ fontWeight: 500, color: '#475569', fontSize: '0.8125rem' }}>
+            <Typography sx={{ fontSize: '0.65rem', fontWeight: 500, color: '#475569', lineHeight: 1.2 }}>
               {trainer.trainer_name || 'Unknown'}
             </Typography>
-            <Typography variant="caption" sx={{ color: '#94A3B8', fontSize: '0.7rem' }}>
+            <Typography sx={{ fontSize: '0.5rem', color: '#94A3B8' }}>
               {trainer.trainer_email}
             </Typography>
           </Box>
         </Box>
       </TableCell>
-      <TableCell align="left" sx={{ borderBottom: '1px solid #F1F5F9' }}>
-        <Chip size="small" label={trainer.status || 'Unknown'} color={getStatusColor(trainer.status)} sx={{ fontSize: '0.7rem' }} />
+      <TableCell align="center" sx={{ ...cellStyle, color: '#94A3B8', borderRight: `2px solid ${COLUMN_GROUPS.overview.borderColor}` }}>-</TableCell>
+      {/* Tasks Group */}
+      <TableCell align="center" sx={{ ...cellStyle }}>
+        <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#475569' }}>{tasksReviewed}</Typography>
       </TableCell>
-      <TableCell align="left" sx={{ borderBottom: '1px solid #F1F5F9' }}>
-        <Typography variant="body2" sx={{ fontWeight: 600, color: '#475569', fontSize: '0.8125rem' }}>
-          {tasksReviewed}
-        </Typography>
+      <TableCell align="center" sx={{ ...cellStyle }}>
+        <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#475569' }}>{newTasksReviewed}</Typography>
       </TableCell>
-      <TableCell align="left" sx={{ borderBottom: '1px solid #F1F5F9' }}>
-        <Typography variant="body2" sx={{ fontWeight: 600, color: '#475569', fontSize: '0.8125rem' }}>
-          {newTasksReviewed}
-        </Typography>
+      <TableCell align="center" sx={{ ...cellStyle }}>
+        <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#475569' }}>{reworkReviewed}</Typography>
       </TableCell>
-      <TableCell align="left" sx={{ borderBottom: '1px solid #F1F5F9' }}>
-        <Typography variant="body2" sx={{ fontWeight: 600, color: '#475569', fontSize: '0.8125rem' }}>
-          {reworkReviewed}
-        </Typography>
+      <TableCell align="center" sx={{ ...cellStyle }}>
+        <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#64748B' }}>{deliveredTasks}</Typography>
       </TableCell>
-      <TableCell align="left" sx={{ borderBottom: '1px solid #F1F5F9' }}>
-        <Typography variant="body2" sx={{ fontWeight: 600, color: '#475569', fontSize: '0.8125rem' }}>
-          {totalReviews}
-        </Typography>
+      <TableCell align="center" sx={{ ...cellStyle }}>
+        <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#64748B' }}>{inDeliveryQueue}</Typography>
       </TableCell>
-      <TableCell align="left" sx={{ borderBottom: '1px solid #F1F5F9' }}>
-        <Typography variant="body2" sx={{ fontWeight: 600, color: '#475569', fontSize: '0.8125rem' }}>
-          {approvedTasks}
-        </Typography>
+      <TableCell align="center" sx={{ ...cellStyle, borderRight: `2px solid ${COLUMN_GROUPS.tasks.borderColor}` }}>
+        <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#475569' }}>{approvedTasks}</Typography>
       </TableCell>
-      <TableCell align="left" sx={{ borderBottom: '1px solid #F1F5F9' }}>
-        <Typography variant="body2" sx={{ fontWeight: 600, color: '#8B5CF6', fontSize: '0.8125rem' }}>
-          {approvedRework}
-        </Typography>
+      {/* Quality Group */}
+      <TableCell align="center" sx={{ ...cellStyle }}>
+        <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#475569' }}>{totalReviews}</Typography>
       </TableCell>
-      <TableCell align="left" sx={{ borderBottom: '1px solid #F1F5F9' }}>
-        <Typography variant="body2" sx={{ fontWeight: 600, color: '#10B981', fontSize: '0.8125rem' }}>
-          {deliveredTasks}
-        </Typography>
-      </TableCell>
-      <TableCell align="left" sx={{ borderBottom: '1px solid #F1F5F9' }}>
-        <Typography variant="body2" sx={{ fontWeight: 600, color: '#F59E0B', fontSize: '0.8125rem' }}>
-          {inDeliveryQueue}
-        </Typography>
-      </TableCell>
-      <TableCell 
-        align="left"
-        sx={{ backgroundColor: avgReworkColor.bg, borderBottom: '1px solid #F1F5F9' }}
-      >
-        <Typography variant="body2" sx={{ fontWeight: 600, color: avgReworkColor.text, fontSize: '0.8125rem' }}>
+      <TableCell align="center" sx={{ ...cellStyle, ...getAvgReworkStyle(avgRework) }}>
+        <Typography sx={{ fontSize: '0.7rem', fontWeight: 600 }}>
           {avgRework !== null && avgRework !== undefined ? avgRework.toFixed(2) : '-'}
         </Typography>
       </TableCell>
-      <TableCell 
-        align="left"
-        sx={{ backgroundColor: reworkColor.bg, borderBottom: '1px solid #F1F5F9' }}
-      >
-        <Typography variant="body2" sx={{ fontWeight: 600, color: reworkColor.text, fontSize: '0.8125rem' }}>
+      <TableCell align="center" sx={{ ...cellStyle, ...getReworkPctStyle(reworkPercent) }}>
+        <Typography sx={{ fontSize: '0.7rem', fontWeight: 600 }}>
           {reworkPercent !== null && reworkPercent !== undefined ? `${Math.round(reworkPercent)}%` : '-'}
         </Typography>
       </TableCell>
-      <TableCell 
-        align="left"
-        sx={{ backgroundColor: ratingColor.bg, borderBottom: '1px solid #F1F5F9' }}
-      >
-        <Typography variant="body2" sx={{ fontWeight: 600, color: ratingColor.text, fontSize: '0.8125rem' }}>
+      <TableCell align="center" sx={{ ...cellStyle, borderRight: `2px solid ${COLUMN_GROUPS.quality.borderColor}`, ...getRatingStyle(avgRating) }}>
+        <Typography sx={{ fontSize: '0.7rem', fontWeight: 600 }}>
           {avgRating !== null && avgRating !== undefined ? avgRating.toFixed(2) : '-'}
         </Typography>
       </TableCell>
-      <TableCell align="left" sx={{ borderBottom: '1px solid #F1F5F9' }}>
-        <Typography variant="body2" sx={{ fontWeight: 600, color: '#475569', fontSize: '0.8125rem' }}>
-          {mergedExpAht !== null && mergedExpAht !== undefined ? mergedExpAht.toFixed(2) : '-'}
+      {/* Time & Efficiency Group */}
+      <TableCell align="center" sx={{ ...cellStyle }}>
+        <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#475569' }}>
+          {mergedExpAht !== null && mergedExpAht !== undefined ? mergedExpAht.toFixed(1) : '-'}
         </Typography>
       </TableCell>
-      <TableCell align="left" sx={{ borderBottom: '1px solid #F1F5F9' }}>
-        <Typography variant="body2" sx={{ fontWeight: 600, color: '#475569', fontSize: '0.8125rem' }}>
+      <TableCell align="center" sx={{ ...cellStyle }}>
+        <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#92400E' }}>
           {trainer.jibble_hours !== null && trainer.jibble_hours !== undefined ? trainer.jibble_hours.toFixed(1) : '-'}
         </Typography>
       </TableCell>
-      <TableCell align="left" sx={{ borderBottom: '1px solid #F1F5F9' }}>
-        <Typography variant="body2" sx={{ color: '#94A3B8', fontSize: '0.8125rem' }}>-</Typography>
-      </TableCell>
-      <TableCell align="left" sx={{ borderBottom: '1px solid #F1F5F9' }}>
-        <Typography variant="body2" sx={{ fontWeight: 600, color: '#475569', fontSize: '0.8125rem' }}>
+      <TableCell align="center" sx={{ ...cellStyle, color: '#94A3B8' }}>-</TableCell>
+      <TableCell align="center" sx={{ ...cellStyle }}>
+        <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#475569' }}>
           {trainer.aht_submission !== null && trainer.aht_submission !== undefined ? trainer.aht_submission.toFixed(2) : '-'}
         </Typography>
       </TableCell>
@@ -266,13 +250,12 @@ function PodLeadRow({
   const [open, setOpen] = useState(false)
   const hasTrainers = podLead.trainers && podLead.trainers.length > 0
 
-  // Map POD data fields to color settings keys
+  // Map POD data fields
   const tasksReviewed = podLead.unique_tasks || 0
   const newTasksReviewed = podLead.new_tasks || 0
   const reworkReviewed = podLead.rework || 0
   const totalReviews = podLead.total_reviews || 0
   const approvedTasks = podLead.approved_tasks || 0
-  const approvedRework = podLead.approved_rework || 0
   const deliveredTasks = podLead.delivered_tasks || 0
   const inDeliveryQueue = podLead.in_delivery_queue || 0
   const avgRework = podLead.avg_rework
@@ -280,25 +263,25 @@ function PodLeadRow({
   const avgRating = podLead.avg_rating
   const mergedExpAht = podLead.merged_exp_aht
 
-  // Get specific color based on metric type with business rules
-  const getMetricColor = (metric: string, value: any) => {
-    if (!applyColors) return { bg: 'transparent', text: '#1E293B' }
-    
-    switch (metric) {
-      case 'rating':
-        return getRatingColor(value)
-      case 'rework_percent':
-        return getReworkPercentColor(value)
-      case 'avg_rework':
-        return getAvgReworkPercentColor(value)
-      default:
-        return { bg: 'transparent', text: '#1E293B' }
-    }
+  // Color coding helpers  
+  const getAvgReworkStyle = (avgR: number | null | undefined) => {
+    if (avgR === null || avgR === undefined) return { color: '#94A3B8', bgcolor: 'transparent' }
+    if (avgR < 1) return { color: '#065F46', bgcolor: '#D1FAE5' }
+    if (avgR <= 2.5) return { color: '#92400E', bgcolor: '#FEF3C7' }
+    return { color: '#991B1B', bgcolor: '#FEE2E2' }
   }
-
-  const ratingColor = getMetricColor('rating', avgRating)
-  const reworkColor = getMetricColor('rework_percent', reworkPercent)
-  const avgReworkColor = getMetricColor('avg_rework', avgRework)
+  const getReworkPctStyle = (rPct: number | null | undefined) => {
+    if (rPct === null || rPct === undefined) return { color: '#94A3B8', bgcolor: 'transparent' }
+    if (rPct <= 10) return { color: '#065F46', bgcolor: '#D1FAE5' }
+    if (rPct <= 30) return { color: '#92400E', bgcolor: '#FEF3C7' }
+    return { color: '#991B1B', bgcolor: '#FEE2E2' }
+  }
+  const getRatingStyle = (rating: number | null | undefined) => {
+    if (rating === null || rating === undefined) return { color: '#94A3B8', bgcolor: 'transparent' }
+    if (rating > 4.8) return { color: '#065F46', bgcolor: '#D1FAE5' }
+    if (rating >= 4) return { color: '#92400E', bgcolor: '#FEF3C7' }
+    return { color: '#991B1B', bgcolor: '#FEE2E2' }
+  }
 
   return (
     <>
@@ -308,131 +291,93 @@ function PodLeadRow({
           cursor: hasTrainers ? 'pointer' : 'default',
           '&:hover': { backgroundColor: '#F8FAFC' },
           borderLeft: open ? '3px solid #3B82F6' : '3px solid transparent',
-          transition: 'all 0.15s ease',
         }}
         onClick={() => hasTrainers && setOpen(!open)}
       >
+        {/* Overview Group */}
         <TableCell sx={{ 
-          borderBottom: '1px solid #E2E8F0',
+          ...cellStyle,
           position: 'sticky',
           left: 0,
           zIndex: 1,
           bgcolor: '#FFFFFF',
-          borderRight: '2px solid #E2E8F0',
         }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
             {hasTrainers && (
-              <IconButton size="small" sx={{ bgcolor: '#F1F5F9', '&:hover': { bgcolor: '#E2E8F0' } }}>
-                {open ? <KeyboardArrowUp sx={{ fontSize: 18 }} /> : <KeyboardArrowDown sx={{ fontSize: 18 }} />}
+              <IconButton size="small" sx={{ p: 0.2, minWidth: 20 }} onClick={(e) => { e.stopPropagation(); setOpen(!open) }}>
+                {open ? <KeyboardArrowUp sx={{ fontSize: 14 }} /> : <KeyboardArrowDown sx={{ fontSize: 14 }} />}
               </IconButton>
             )}
-            {!hasTrainers && <Box sx={{ width: 32 }} />}
-            <Box>
-              <Typography variant="body2" sx={{ fontWeight: 600, color: '#1E293B', fontSize: '0.875rem' }}>
+            {!hasTrainers && <Box sx={{ width: 20 }} />}
+            <Box sx={{ minWidth: 0, flex: 1 }}>
+              <Typography sx={{ fontSize: '0.7rem', fontWeight: 700, color: '#1E293B', lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                 {podLead.pod_lead_name}
               </Typography>
-              <Typography variant="caption" sx={{ color: '#64748B', fontSize: '0.7rem' }}>
+              <Typography sx={{ fontSize: '0.55rem', color: '#94A3B8', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                 {podLead.pod_lead_email}
               </Typography>
             </Box>
           </Box>
         </TableCell>
-        <TableCell align="left" sx={{ borderBottom: '1px solid #E2E8F0', minWidth: 100 }}>
-          <Typography variant="caption" sx={{ 
-            bgcolor: '#EEF2FF', 
-            color: '#4F46E5',
-            px: 1.5, 
-            py: 0.25, 
-            borderRadius: 1,
-            fontWeight: 600,
-            fontSize: '0.7rem',
-            whiteSpace: 'nowrap',
-            display: 'inline-block',
-          }}>
-            {podLead.trainer_count} trainers
-          </Typography>
+        <TableCell align="center" sx={{ ...cellStyle, borderRight: `2px solid ${COLUMN_GROUPS.overview.borderColor}` }}>
+          <Typography sx={{ fontSize: '0.65rem', fontWeight: 600, color: '#64748B' }}>{podLead.trainer_count}</Typography>
         </TableCell>
-        <TableCell align="left" sx={{ borderBottom: '1px solid #E2E8F0' }}>
-          <Typography variant="body2" sx={{ fontWeight: 600, color: '#1E293B', fontSize: '0.875rem' }}>
-            {tasksReviewed}
-          </Typography>
+        {/* Tasks Group */}
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: '#475569' }}>{tasksReviewed}</Typography>
         </TableCell>
-        <TableCell align="left" sx={{ borderBottom: '1px solid #E2E8F0' }}>
-          <Typography variant="body2" sx={{ fontWeight: 600, color: '#1E293B', fontSize: '0.875rem' }}>
-            {newTasksReviewed}
-          </Typography>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: '#475569' }}>{newTasksReviewed}</Typography>
         </TableCell>
-        <TableCell align="left" sx={{ borderBottom: '1px solid #E2E8F0' }}>
-          <Typography variant="body2" sx={{ fontWeight: 600, color: '#1E293B', fontSize: '0.875rem' }}>
-            {reworkReviewed}
-          </Typography>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: '#475569' }}>{reworkReviewed}</Typography>
         </TableCell>
-        <TableCell align="left" sx={{ borderBottom: '1px solid #E2E8F0' }}>
-          <Typography variant="body2" sx={{ fontWeight: 600, color: '#1E293B', fontSize: '0.875rem' }}>
-            {totalReviews}
-          </Typography>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748B' }}>{deliveredTasks}</Typography>
         </TableCell>
-        <TableCell align="left" sx={{ borderBottom: '1px solid #E2E8F0' }}>
-          <Typography variant="body2" sx={{ fontWeight: 600, color: '#1E293B', fontSize: '0.875rem' }}>
-            {approvedTasks}
-          </Typography>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748B' }}>{inDeliveryQueue}</Typography>
         </TableCell>
-        <TableCell align="left" sx={{ borderBottom: '1px solid #E2E8F0' }}>
-          <Typography variant="body2" sx={{ fontWeight: 600, color: '#8B5CF6', fontSize: '0.875rem' }}>
-            {approvedRework}
-          </Typography>
+        <TableCell align="center" sx={{ ...cellStyle, borderRight: `2px solid ${COLUMN_GROUPS.tasks.borderColor}` }}>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: '#475569' }}>{approvedTasks}</Typography>
         </TableCell>
-        <TableCell align="left" sx={{ borderBottom: '1px solid #E2E8F0' }}>
-          <Typography variant="body2" sx={{ fontWeight: 600, color: '#10B981', fontSize: '0.875rem' }}>
-            {deliveredTasks}
-          </Typography>
+        {/* Quality Group */}
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: '#475569' }}>{totalReviews}</Typography>
         </TableCell>
-        <TableCell align="left" sx={{ borderBottom: '1px solid #E2E8F0' }}>
-          <Typography variant="body2" sx={{ fontWeight: 600, color: '#F59E0B', fontSize: '0.875rem' }}>
-            {inDeliveryQueue}
-          </Typography>
-        </TableCell>
-        <TableCell 
-          align="left"
-          sx={{ backgroundColor: avgReworkColor.bg, borderBottom: '1px solid #E2E8F0' }}
-        >
-          <Typography variant="body2" sx={{ fontWeight: 600, color: avgReworkColor.text, fontSize: '0.875rem' }}>
+        <TableCell align="center" sx={{ ...cellStyle, ...getAvgReworkStyle(avgRework) }}>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 600 }}>
             {avgRework !== null && avgRework !== undefined ? avgRework.toFixed(2) : '-'}
           </Typography>
         </TableCell>
-        <TableCell 
-          align="left"
-          sx={{ backgroundColor: reworkColor.bg, borderBottom: '1px solid #E2E8F0' }}
-        >
-          <Typography variant="body2" sx={{ fontWeight: 600, color: reworkColor.text, fontSize: '0.875rem' }}>
+        <TableCell align="center" sx={{ ...cellStyle, ...getReworkPctStyle(reworkPercent) }}>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 600 }}>
             {reworkPercent !== null && reworkPercent !== undefined ? `${Math.round(reworkPercent)}%` : '-'}
           </Typography>
         </TableCell>
-        <TableCell 
-          align="left"
-          sx={{ backgroundColor: ratingColor.bg, borderBottom: '1px solid #E2E8F0' }}
-        >
-          <Typography variant="body2" sx={{ fontWeight: 600, color: ratingColor.text, fontSize: '0.875rem' }}>
+        <TableCell align="center" sx={{ ...cellStyle, borderRight: `2px solid ${COLUMN_GROUPS.quality.borderColor}`, ...getRatingStyle(avgRating) }}>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 600 }}>
             {avgRating !== null && avgRating !== undefined ? avgRating.toFixed(2) : '-'}
           </Typography>
         </TableCell>
-        <TableCell align="left" sx={{ borderBottom: '1px solid #E2E8F0' }}>
-          <Typography variant="body2" sx={{ fontWeight: 600, color: '#1E293B', fontSize: '0.875rem' }}>
-            {mergedExpAht !== null && mergedExpAht !== undefined ? mergedExpAht.toFixed(2) : '-'}
+        {/* Time & Efficiency Group */}
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: '#475569' }}>
+            {mergedExpAht !== null && mergedExpAht !== undefined ? mergedExpAht.toFixed(1) : '-'}
           </Typography>
         </TableCell>
-        <TableCell align="left" sx={{ borderBottom: '1px solid #E2E8F0' }}>
-          <Typography variant="body2" sx={{ fontWeight: 600, color: '#1E293B', fontSize: '0.875rem' }}>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: '#92400E' }}>
             {podLead.jibble_hours !== null && podLead.jibble_hours !== undefined ? podLead.jibble_hours.toFixed(1) : '-'}
           </Typography>
         </TableCell>
-        <TableCell align="left" sx={{ borderBottom: '1px solid #E2E8F0' }}>
-          <Typography variant="body2" sx={{ fontWeight: 600, color: '#1E293B', fontSize: '0.875rem' }}>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: '#475569' }}>
             {podLead.total_trainer_hours !== null && podLead.total_trainer_hours !== undefined ? podLead.total_trainer_hours.toFixed(1) : '-'}
           </Typography>
         </TableCell>
-        <TableCell align="left" sx={{ borderBottom: '1px solid #E2E8F0' }}>
-          <Typography variant="body2" sx={{ fontWeight: 600, color: '#1E293B', fontSize: '0.875rem' }}>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: '#475569' }}>
             {podLead.aht_submission !== null && podLead.aht_submission !== undefined ? podLead.aht_submission.toFixed(2) : '-'}
           </Typography>
         </TableCell>
@@ -465,12 +410,21 @@ const projectOptions = [
   { id: 39, name: 'Nvidia - Multichallenge' },
 ]
 
-export function PodLeadTab() {
+// Import TabSummaryStats type from PreDelivery
+import type { TabSummaryStats } from '../../pages/PreDelivery'
+
+interface PodLeadTabProps {
+  onSummaryUpdate?: (stats: TabSummaryStats) => void
+  onSummaryLoading?: () => void
+}
+
+export function PodLeadTab({ onSummaryUpdate, onSummaryLoading }: PodLeadTabProps) {
   const [data, setData] = useState<PodLeadStats[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [timeframe, setTimeframe] = useState<Timeframe>('overall')
+  const [weekOffset, setWeekOffset] = useState<number>(0) // Default to current week (Mon-Sun)
   const [customStartDate, setCustomStartDate] = useState('')
   const [customEndDate, setCustomEndDate] = useState('')
   const [selectedProject, setSelectedProject] = useState<number | undefined>(undefined)
@@ -496,13 +450,36 @@ export function PodLeadTab() {
 
   useEffect(() => {
     fetchData()
-  }, [timeframe, customStartDate, customEndDate, selectedProject])
+  }, [timeframe, weekOffset, customStartDate, customEndDate, selectedProject])
+
+  // Report summary stats to parent when data changes
+  useEffect(() => {
+    if (data.length > 0 && onSummaryUpdate) {
+      const totalTasks = data.reduce((sum, pl) => sum + (pl.unique_tasks || 0), 0)
+      const totalTrainers = data.reduce((sum, pl) => sum + (pl.trainers?.length || 0), 0)
+      const totalPodLeads = data.length
+      const totalReviews = data.reduce((sum, pl) => sum + (pl.total_reviews || 0), 0)
+      const newTasks = data.reduce((sum, pl) => sum + (pl.new_tasks || 0), 0)
+      const rework = data.reduce((sum, pl) => sum + (pl.rework || 0), 0)
+      
+      onSummaryUpdate({
+        totalTasks,
+        totalTrainers,
+        totalPodLeads,
+        totalProjects: selectedProject !== undefined ? 1 : 4,
+        totalReviews,
+        newTasks,
+        rework
+      })
+    }
+  }, [data, onSummaryUpdate, selectedProject])
 
   const fetchData = async () => {
     setLoading(true)
     setError(null)
+    onSummaryLoading?.()
     try {
-      const { startDate, endDate } = getDateRange(timeframe, customStartDate, customEndDate)
+      const { startDate, endDate } = getDateRange(timeframe, weekOffset, customStartDate, customEndDate)
       const result = await getPodLeadStats(startDate, endDate, timeframe, selectedProject)
       setData(result)
     } catch (err) {
@@ -741,45 +718,16 @@ export function PodLeadTab() {
             </Select>
           </FormControl>
 
-          <FormControl size="small" sx={{ minWidth: 120 }}>
-            <InputLabel>Timeframe</InputLabel>
-            <Select
-              value={timeframe}
-              label="Timeframe"
-              onChange={(e) => setTimeframe(e.target.value as Timeframe)}
-            >
-              <MenuItem value="daily">Today</MenuItem>
-              <MenuItem value="d-1">D-1</MenuItem>
-              <MenuItem value="d-2">D-2</MenuItem>
-              <MenuItem value="d-3">D-3</MenuItem>
-              <MenuItem value="weekly">Weekly</MenuItem>
-              <MenuItem value="overall">Overall</MenuItem>
-              <MenuItem value="custom">Custom Range</MenuItem>
-            </Select>
-          </FormControl>
-
-          {timeframe === 'custom' && (
-            <>
-              <TextField
-                size="small"
-                type="date"
-                label="Start Date"
-                value={customStartDate}
-                onChange={(e) => setCustomStartDate(e.target.value)}
-                InputLabelProps={{ shrink: true }}
-                sx={{ width: 150 }}
-              />
-              <TextField
-                size="small"
-                type="date"
-                label="End Date"
-                value={customEndDate}
-                onChange={(e) => setCustomEndDate(e.target.value)}
-                InputLabelProps={{ shrink: true }}
-                sx={{ width: 150 }}
-              />
-            </>
-          )}
+          <TimeframeSelector
+            timeframe={timeframe}
+            onTimeframeChange={setTimeframe}
+            weekOffset={weekOffset}
+            onWeekOffsetChange={setWeekOffset}
+            customStartDate={customStartDate}
+            onCustomStartDateChange={setCustomStartDate}
+            customEndDate={customEndDate}
+            onCustomEndDateChange={setCustomEndDate}
+          />
 
           <TextField
             size="small"
@@ -905,72 +853,147 @@ export function PodLeadTab() {
 
       <Paper sx={{ width: '100%', overflow: 'hidden', borderRadius: 2, border: '1px solid #E2E8F0', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
         <TableContainer sx={{ maxHeight: 600, overflowX: 'auto' }}>
-          <Table stickyHeader size="small" sx={{ minWidth: 1800 }}>
+          <Table stickyHeader size="small" sx={{ minWidth: 1200 }}>
             <TableHead>
+              {/* Group Header Row */}
               <TableRow>
+                {/* Overview Group */}
+                <TableCell 
+                  colSpan={2}
+                  align="center"
+                  sx={{ 
+                    ...headerCellStyle,
+                    bgcolor: COLUMN_GROUPS.overview.bgHeader,
+                    color: COLUMN_GROUPS.overview.textColor,
+                    borderBottom: `2px solid ${COLUMN_GROUPS.overview.borderColor}`,
+                    borderRight: `2px solid ${COLUMN_GROUPS.overview.borderColor}`,
+                    fontSize: '0.7rem',
+                    fontWeight: 700,
+                    position: 'sticky',
+                    left: 0,
+                    zIndex: 4,
+                  }}
+                >
+                  OVERVIEW
+                </TableCell>
+                {/* Tasks Group */}
+                <TableCell 
+                  colSpan={6}
+                  align="center"
+                  sx={{ 
+                    ...headerCellStyle,
+                    bgcolor: COLUMN_GROUPS.tasks.bgHeader,
+                    color: COLUMN_GROUPS.tasks.textColor,
+                    borderBottom: `2px solid ${COLUMN_GROUPS.tasks.borderColor}`,
+                    borderRight: `2px solid ${COLUMN_GROUPS.tasks.borderColor}`,
+                    fontSize: '0.7rem',
+                    fontWeight: 700,
+                  }}
+                >
+                  TASKS
+                </TableCell>
+                {/* Quality Group */}
+                <TableCell 
+                  colSpan={4}
+                  align="center"
+                  sx={{ 
+                    ...headerCellStyle,
+                    bgcolor: COLUMN_GROUPS.quality.bgHeader,
+                    color: COLUMN_GROUPS.quality.textColor,
+                    borderBottom: `2px solid ${COLUMN_GROUPS.quality.borderColor}`,
+                    borderRight: `2px solid ${COLUMN_GROUPS.quality.borderColor}`,
+                    fontSize: '0.7rem',
+                    fontWeight: 700,
+                  }}
+                >
+                  QUALITY
+                </TableCell>
+                {/* Time & Efficiency Group */}
+                <TableCell 
+                  colSpan={4}
+                  align="center"
+                  sx={{ 
+                    ...headerCellStyle,
+                    bgcolor: COLUMN_GROUPS.efficiency.bgHeader,
+                    color: COLUMN_GROUPS.efficiency.textColor,
+                    borderBottom: `2px solid ${COLUMN_GROUPS.efficiency.borderColor}`,
+                    fontSize: '0.7rem',
+                    fontWeight: 700,
+                  }}
+                >
+                  TIME & EFFICIENCY
+                </TableCell>
+              </TableRow>
+              {/* Sub-Header Row */}
+              <TableRow>
+                {/* Overview - POD Lead Name */}
                 <TableCell sx={{ 
-                  fontWeight: 600, 
-                  bgcolor: '#F8FAFC', 
-                  color: '#334155', 
-                  minWidth: 200, 
-                  borderBottom: '2px solid #E2E8F0', 
-                  fontSize: '0.8125rem', 
-                  textTransform: 'uppercase', 
-                  letterSpacing: '0.025em',
+                  ...headerCellStyle,
+                  bgcolor: COLUMN_GROUPS.overview.bgSubHeader, 
+                  color: COLUMN_GROUPS.overview.textColor, 
+                  minWidth: 180, 
+                  borderBottom: `2px solid ${COLUMN_GROUPS.overview.borderColor}`, 
                   position: 'sticky',
                   left: 0,
                   zIndex: 3,
-                  borderRight: '2px solid #E2E8F0',
                 }}>
-                  {renderHeaderWithFilter('POD Lead / Trainer', 'pod_lead_name', false)}
+                  {renderHeaderWithFilter('Name', 'pod_lead_name', false)}
                 </TableCell>
-                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 110, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em', whiteSpace: 'nowrap' }}>
-                  {renderHeaderWithFilter('Count', 'trainer_count', true)}
+                {/* Overview - Count */}
+                <TableCell align="center" sx={{ 
+                  ...headerCellStyle,
+                  bgcolor: COLUMN_GROUPS.overview.bgSubHeader, 
+                  color: COLUMN_GROUPS.overview.textColor, 
+                  minWidth: 50, 
+                  borderBottom: `2px solid ${COLUMN_GROUPS.overview.borderColor}`, 
+                  borderRight: `2px solid ${COLUMN_GROUPS.overview.borderColor}`,
+                }}>
+                  {renderHeaderWithFilter('Size', 'trainer_count', true)}
                 </TableCell>
-                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 100, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em' }}>
-                  {renderHeaderWithFilter('Unique Tasks', 'unique_tasks', true)}
+                {/* Tasks Group Columns */}
+                <TableCell align="center" sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.tasks.bgSubHeader, color: COLUMN_GROUPS.tasks.textColor, minWidth: 50, borderBottom: `2px solid ${COLUMN_GROUPS.tasks.borderColor}` }}>
+                  {renderHeaderWithFilter('Uniq', 'unique_tasks', true)}
                 </TableCell>
-                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 90, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em' }}>
-                  {renderHeaderWithFilter('New Tasks', 'new_tasks', true)}
+                <TableCell align="center" sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.tasks.bgSubHeader, color: COLUMN_GROUPS.tasks.textColor, minWidth: 50, borderBottom: `2px solid ${COLUMN_GROUPS.tasks.borderColor}` }}>
+                  {renderHeaderWithFilter('New', 'new_tasks', true)}
                 </TableCell>
-                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 80, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em' }}>
-                  {renderHeaderWithFilter('Rework', 'rework', true)}
+                <TableCell align="center" sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.tasks.bgSubHeader, color: COLUMN_GROUPS.tasks.textColor, minWidth: 50, borderBottom: `2px solid ${COLUMN_GROUPS.tasks.borderColor}` }}>
+                  {renderHeaderWithFilter('Rwk', 'rework', true)}
                 </TableCell>
-                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 100, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em' }}>
-                  {renderHeaderWithFilter('Total Reviews', 'total_reviews', true)}
+                <TableCell align="center" sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.tasks.bgSubHeader, color: COLUMN_GROUPS.tasks.textColor, minWidth: 50, borderBottom: `2px solid ${COLUMN_GROUPS.tasks.borderColor}` }}>
+                  {renderHeaderWithFilter('Del', 'delivered_tasks', true)}
                 </TableCell>
-                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 80, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em' }}>
-                  {renderHeaderWithFilter('Approved', 'approved_tasks', true)}
+                <TableCell align="center" sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.tasks.bgSubHeader, color: COLUMN_GROUPS.tasks.textColor, minWidth: 50, borderBottom: `2px solid ${COLUMN_GROUPS.tasks.borderColor}`, borderRight: `2px solid ${COLUMN_GROUPS.tasks.borderColor}` }}>
+                  {renderHeaderWithFilter('Queue', 'in_delivery_queue', true)}
                 </TableCell>
-                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 95, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em' }}>
-                  {renderHeaderWithFilter('Appr. Rework', 'approved_rework', true)}
+                <TableCell align="center" sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.tasks.bgSubHeader, color: COLUMN_GROUPS.tasks.textColor, minWidth: 50, borderBottom: `2px solid ${COLUMN_GROUPS.tasks.borderColor}`, borderRight: `2px solid ${COLUMN_GROUPS.tasks.borderColor}` }}>
+                  {renderHeaderWithFilter('Appr', 'approved_tasks', true)}
                 </TableCell>
-                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 80, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em' }}>
-                  {renderHeaderWithFilter('Delivered', 'delivered_tasks', true)}
+                {/* Quality Group Columns */}
+                <TableCell align="center" sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.quality.bgSubHeader, color: COLUMN_GROUPS.quality.textColor, minWidth: 50, borderBottom: `2px solid ${COLUMN_GROUPS.quality.borderColor}` }}>
+                  {renderHeaderWithFilter('Rev', 'total_reviews', true)}
                 </TableCell>
-                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 80, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em' }}>
-                  {renderHeaderWithFilter('In Queue', 'in_delivery_queue', true)}
+                <TableCell align="center" sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.quality.bgSubHeader, color: COLUMN_GROUPS.quality.textColor, minWidth: 55, borderBottom: `2px solid ${COLUMN_GROUPS.quality.borderColor}` }}>
+                  {renderHeaderWithFilter('AvgR', 'avg_rework', true)}
                 </TableCell>
-                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 110, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em' }}>
-                  {renderHeaderWithFilter('Avg Rework', 'avg_rework', true)}
+                <TableCell align="center" sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.quality.bgSubHeader, color: COLUMN_GROUPS.quality.textColor, minWidth: 50, borderBottom: `2px solid ${COLUMN_GROUPS.quality.borderColor}` }}>
+                  {renderHeaderWithFilter('R%', 'rework_percent', true)}
                 </TableCell>
-                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 90, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em' }}>
-                  {renderHeaderWithFilter('Rework %', 'rework_percent', true)}
+                <TableCell align="center" sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.quality.bgSubHeader, color: COLUMN_GROUPS.quality.textColor, minWidth: 50, borderBottom: `2px solid ${COLUMN_GROUPS.quality.borderColor}`, borderRight: `2px solid ${COLUMN_GROUPS.quality.borderColor}` }}>
+                  {renderHeaderWithFilter('Rate', 'avg_rating', true)}
                 </TableCell>
-                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 90, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em' }}>
-                  {renderHeaderWithFilter('Avg Rating', 'avg_rating', true)}
+                {/* Time & Efficiency Group Columns */}
+                <TableCell align="center" sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.efficiency.bgSubHeader, color: COLUMN_GROUPS.efficiency.textColor, minWidth: 50, borderBottom: `2px solid ${COLUMN_GROUPS.efficiency.borderColor}` }}>
+                  {renderHeaderWithFilter('AHT', 'merged_exp_aht', true)}
                 </TableCell>
-                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 120, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em' }}>
-                  {renderHeaderWithFilter('Merged Exp. AHT', 'merged_exp_aht', true)}
+                <TableCell align="center" sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.efficiency.bgSubHeader, color: COLUMN_GROUPS.efficiency.textColor, minWidth: 55, borderBottom: `2px solid ${COLUMN_GROUPS.efficiency.borderColor}` }}>
+                  {renderHeaderWithFilter('JIB', 'jibble_hours', true)}
                 </TableCell>
-                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 100, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em' }}>
-                  {renderHeaderWithFilter('POD Lead Hrs', 'jibble_hours', true)}
+                <TableCell align="center" sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.efficiency.bgSubHeader, color: COLUMN_GROUPS.efficiency.textColor, minWidth: 60, borderBottom: `2px solid ${COLUMN_GROUPS.efficiency.borderColor}` }}>
+                  {renderHeaderWithFilter('TrnHrs', 'total_trainer_hours', true)}
                 </TableCell>
-                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 110, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em' }}>
-                  {renderHeaderWithFilter('Total Trainer Hrs', 'total_trainer_hours', true)}
-                </TableCell>
-                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 100, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em' }}>
-                  {renderHeaderWithFilter('AHT/Submission', 'aht_submission', true)}
+                <TableCell align="center" sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.efficiency.bgSubHeader, color: COLUMN_GROUPS.efficiency.textColor, minWidth: 55, borderBottom: `2px solid ${COLUMN_GROUPS.efficiency.borderColor}` }}>
+                  {renderHeaderWithFilter('AHT/S', 'aht_submission', true)}
                 </TableCell>
               </TableRow>
             </TableHead>

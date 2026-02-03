@@ -1,0 +1,52 @@
+{
+  "table": "integration",
+  "row_count": 4,
+  "sample_count": 4,
+  "fetched_at": "2026-01-28T23:23:34.592667",
+  "data": [
+    {
+      "id": 4,
+      "name": "persuasion-chat",
+      "description": "Integration for Persuasion Chat Project",
+      "created_at": "2025-11-10T04:34:56.499763",
+      "updated_at": "2025-11-10T04:34:56.499763",
+      "datastream_metadata": {
+        "uuid": "2d7851e0-7eb5-4a19-bfee-3ed600011110",
+        "source_timestamp": 1762749296000
+      }
+    },
+    {
+      "id": 3,
+      "name": "rlhf-supervision",
+      "description": "Integration for RLHF Supervision",
+      "created_at": "2025-01-30T04:33:54.755374",
+      "updated_at": "2025-01-30T04:33:54.755374",
+      "datastream_metadata": {
+        "uuid": "d64fba20-d000-473f-87b8-acc100011111",
+        "source_timestamp": 1738211634000
+      }
+    },
+    {
+      "id": 2,
+      "name": "form",
+      "description": "Integration for FORM",
+      "created_at": "2024-12-16T04:33:58.704393",
+      "updated_at": "2024-12-16T04:33:58.704393",
+      "datastream_metadata": {
+        "uuid": "823538c4-9e6b-41da-9eb0-37ef01101110",
+        "source_timestamp": 1734323638000
+      }
+    },
+    {
+      "id": 1,
+      "name": "rlhf",
+      "description": "Integration for RLHF",
+      "created_at": "2024-06-28T06:53:40.804998",
+      "updated_at": "2024-06-28T06:53:40.804998",
+      "datastream_metadata": {
+        "uuid": "1778f500-ccda-4748-b251-824200000000",
+        "source_timestamp": 1721939912000
+      }
+    }
+  ]
+}

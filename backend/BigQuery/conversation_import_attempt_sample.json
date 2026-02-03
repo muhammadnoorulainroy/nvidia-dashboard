@@ -1,0 +1,1308 @@
+{
+  "table": "conversation_import_attempt",
+  "row_count": 19818,
+  "sample_count": 100,
+  "fetched_at": "2026-01-28T23:22:51.072463",
+  "data": [
+    {
+      "created_at": "2026-01-28T05:46:21.907809",
+      "updated_at": "2026-01-28T05:46:21.907809",
+      "id": 19818,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70913,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "187d12c5-6b9e-4056-aa09-8096d17050b4",
+        "source_timestamp": 1769579181000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:15.654653",
+      "updated_at": "2026-01-28T05:46:15.654653",
+      "id": 19817,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70959,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "cbb1f180-9c99-4d49-830f-46e3311f3345",
+        "source_timestamp": 1769579175000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:15.372717",
+      "updated_at": "2026-01-28T05:46:15.372717",
+      "id": 19816,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70982,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "7e699126-eebc-49ec-8e68-0445cacfda8b",
+        "source_timestamp": 1769579175000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:14.886901",
+      "updated_at": "2026-01-28T05:46:14.886901",
+      "id": 19815,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70981,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "60eaf2de-5f16-43ad-aff6-31437fab7bd1",
+        "source_timestamp": 1769579174000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:14.777119",
+      "updated_at": "2026-01-28T05:46:14.777119",
+      "id": 19814,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70980,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "af49089c-fde8-4434-b02d-bfb2c2aff140",
+        "source_timestamp": 1769579174000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:14.480251",
+      "updated_at": "2026-01-28T05:46:14.480251",
+      "id": 19813,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70978,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "6abb71d7-eacc-4c08-8935-25e3de434a7e",
+        "source_timestamp": 1769579174000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:14.388501",
+      "updated_at": "2026-01-28T05:46:14.388501",
+      "id": 19812,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70976,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "a73347f9-5a4c-4f48-9f21-b1998dd6b99f",
+        "source_timestamp": 1769579174000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:14.197282",
+      "updated_at": "2026-01-28T05:46:14.197282",
+      "id": 19811,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70972,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "372796bb-93bd-4e40-9c8e-912a122a9950",
+        "source_timestamp": 1769579174000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:14.022694",
+      "updated_at": "2026-01-28T05:46:14.022694",
+      "id": 19810,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70979,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "fa31f982-e8d4-4cfb-8b39-8dca456c921f",
+        "source_timestamp": 1769579174000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:13.930562",
+      "updated_at": "2026-01-28T05:46:13.930562",
+      "id": 19809,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70963,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "b896dfaa-b24f-45f5-8c5a-9a7b4a72bb2a",
+        "source_timestamp": 1769579173000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:13.874285",
+      "updated_at": "2026-01-28T05:46:13.874285",
+      "id": 19808,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70977,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "d26cced0-7b23-4742-8cd1-ee1d772b7fdf",
+        "source_timestamp": 1769579173000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:13.866027",
+      "updated_at": "2026-01-28T05:46:13.866027",
+      "id": 19807,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70969,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "95881e67-fe0d-4712-b0a0-5837ad8263e0",
+        "source_timestamp": 1769579173000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:13.830070",
+      "updated_at": "2026-01-28T05:46:13.830070",
+      "id": 19806,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70974,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "25b5ed90-5047-4566-a85a-ae07e7f91a90",
+        "source_timestamp": 1769579173000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:13.754923",
+      "updated_at": "2026-01-28T05:46:13.754923",
+      "id": 19805,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70964,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "00474542-ca18-494f-a5c9-5636004fd8a0",
+        "source_timestamp": 1769579173000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:13.705351",
+      "updated_at": "2026-01-28T05:46:13.705351",
+      "id": 19804,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70975,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "ef63cd9d-27a9-4a77-84e5-cbbdc8c77702",
+        "source_timestamp": 1769579173000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:13.690380",
+      "updated_at": "2026-01-28T05:46:13.690380",
+      "id": 19803,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70970,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "bf11b6fc-8d23-4fc3-b721-a3691e370bb6",
+        "source_timestamp": 1769579173000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:13.663888",
+      "updated_at": "2026-01-28T05:46:13.663888",
+      "id": 19802,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70971,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "2b123079-8993-45ae-b2f5-306135aed061",
+        "source_timestamp": 1769579173000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:13.661010",
+      "updated_at": "2026-01-28T05:46:13.661010",
+      "id": 19801,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70973,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "7cdf286c-1990-48e3-8724-d8fb7ea81058",
+        "source_timestamp": 1769579173000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:13.632771",
+      "updated_at": "2026-01-28T05:46:13.632771",
+      "id": 19800,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70960,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "8f015d20-b876-4fd4-9851-e6d51ca30bc5",
+        "source_timestamp": 1769579173000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:13.557994",
+      "updated_at": "2026-01-28T05:46:13.557994",
+      "id": 19799,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70967,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "552c99ea-42d0-4969-a3e9-3266b9f2bc44",
+        "source_timestamp": 1769579173000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:13.468398",
+      "updated_at": "2026-01-28T05:46:13.468398",
+      "id": 19798,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70968,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "62ef3cd9-0635-4779-992e-87e48940ecbf",
+        "source_timestamp": 1769579173000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:13.467413",
+      "updated_at": "2026-01-28T05:46:13.467413",
+      "id": 19797,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70957,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "16b4521b-e612-4213-8f79-36f16dcfcc74",
+        "source_timestamp": 1769579173000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:13.457668",
+      "updated_at": "2026-01-28T05:46:13.457668",
+      "id": 19796,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70966,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "5e4ed160-8949-422b-9e21-922f403bf96b",
+        "source_timestamp": 1769579173000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:13.177683",
+      "updated_at": "2026-01-28T05:46:13.177683",
+      "id": 19795,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70965,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "e35e3c57-ac08-4d4b-b3a5-3dc1ef11cbe7",
+        "source_timestamp": 1769579173000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:13.172270",
+      "updated_at": "2026-01-28T05:46:13.172270",
+      "id": 19794,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70953,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "63bbdd17-7e23-41b9-8950-2b0d8fc83971",
+        "source_timestamp": 1769579173000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:12.940917",
+      "updated_at": "2026-01-28T05:46:12.940917",
+      "id": 19793,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70958,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "9f254d66-f59b-4f5e-858d-d8dbf1194867",
+        "source_timestamp": 1769579172000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:12.882338",
+      "updated_at": "2026-01-28T05:46:12.882338",
+      "id": 19792,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70961,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "2de5dd5b-f7ac-4c83-86ec-438a5b162845",
+        "source_timestamp": 1769579172000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:12.835648",
+      "updated_at": "2026-01-28T05:46:12.835648",
+      "id": 19791,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70962,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "e439735a-5a49-49a3-bc8c-153674911456",
+        "source_timestamp": 1769579172000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:12.788919",
+      "updated_at": "2026-01-28T05:46:12.788919",
+      "id": 19790,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70954,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "0a54c8c7-724a-4c31-9638-894e0d798b76",
+        "source_timestamp": 1769579172000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:12.750419",
+      "updated_at": "2026-01-28T05:46:12.750419",
+      "id": 19789,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70946,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "7486033b-1073-4fb9-b4ef-fbb3b92af918",
+        "source_timestamp": 1769579172000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:12.699280",
+      "updated_at": "2026-01-28T05:46:12.699280",
+      "id": 19788,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70955,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "fb168d55-1191-4b3d-839e-2dee47dac2ca",
+        "source_timestamp": 1769579172000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:12.669182",
+      "updated_at": "2026-01-28T05:46:12.669182",
+      "id": 19787,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70956,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "a5094480-2ff5-401f-b71e-ad67438fe1b4",
+        "source_timestamp": 1769579172000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:12.628559",
+      "updated_at": "2026-01-28T05:46:12.628559",
+      "id": 19786,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70950,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "99ca5a40-7215-40fb-9ae8-211483c750df",
+        "source_timestamp": 1769579172000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:12.622922",
+      "updated_at": "2026-01-28T05:46:12.622922",
+      "id": 19785,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70941,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "af1528cd-045f-4c6d-8763-b550c7bfd5fe",
+        "source_timestamp": 1769579172000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:12.526591",
+      "updated_at": "2026-01-28T05:46:12.526591",
+      "id": 19784,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70947,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "c15c59c7-df36-4228-9bda-3e4107ac0cf0",
+        "source_timestamp": 1769579172000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:12.506535",
+      "updated_at": "2026-01-28T05:46:12.506535",
+      "id": 19783,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70949,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "ef3032b5-9f9a-47d1-904b-8942aaf53c01",
+        "source_timestamp": 1769579172000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:12.495903",
+      "updated_at": "2026-01-28T05:46:12.495903",
+      "id": 19782,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70952,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "88cd6760-b56e-4d13-b966-b5f8384f2ddc",
+        "source_timestamp": 1769579172000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:12.471384",
+      "updated_at": "2026-01-28T05:46:12.471384",
+      "id": 19781,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70951,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "f3c5bfd3-25ed-4b02-aea9-15ecdcb11ef6",
+        "source_timestamp": 1769579172000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:12.435009",
+      "updated_at": "2026-01-28T05:46:12.435009",
+      "id": 19780,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70948,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "e0b201e0-8338-4b4f-9353-b672b0615300",
+        "source_timestamp": 1769579172000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:12.284316",
+      "updated_at": "2026-01-28T05:46:12.284316",
+      "id": 19779,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70942,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "46819234-1a45-44ab-98b4-91a9cddfe444",
+        "source_timestamp": 1769579172000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:12.279813",
+      "updated_at": "2026-01-28T05:46:12.279813",
+      "id": 19778,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70945,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "37326ef6-b677-46d6-9994-d30c3ef6a339",
+        "source_timestamp": 1769579172000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:12.263484",
+      "updated_at": "2026-01-28T05:46:12.263484",
+      "id": 19777,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70944,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "f3b549b0-8330-4315-b30b-982cc20a6c21",
+        "source_timestamp": 1769579172000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:12.191932",
+      "updated_at": "2026-01-28T05:46:12.191932",
+      "id": 19776,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70937,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "ad560e7e-0254-481c-b9c5-b5fc6eb62bbe",
+        "source_timestamp": 1769579172000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:12.179222",
+      "updated_at": "2026-01-28T05:46:12.179222",
+      "id": 19775,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70943,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "be23643a-31fc-4a15-99f8-64262475b2a8",
+        "source_timestamp": 1769579172000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:11.951137",
+      "updated_at": "2026-01-28T05:46:11.951137",
+      "id": 19774,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70939,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "6ffff75f-5124-4555-b2cf-c5bd5d6efa14",
+        "source_timestamp": 1769579171000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:11.885023",
+      "updated_at": "2026-01-28T05:46:11.885023",
+      "id": 19773,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70936,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "1354ad82-ae92-4d8b-9d6d-1ee21eb16dc4",
+        "source_timestamp": 1769579171000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:11.862641",
+      "updated_at": "2026-01-28T05:46:11.862641",
+      "id": 19772,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70938,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "67668b98-d1f2-44ee-8499-57d17ca8218a",
+        "source_timestamp": 1769579171000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:11.800702",
+      "updated_at": "2026-01-28T05:46:11.800702",
+      "id": 19771,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70934,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "1c9abd08-0340-4bee-a680-c214e6bc1430",
+        "source_timestamp": 1769579171000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:11.760661",
+      "updated_at": "2026-01-28T05:46:11.760661",
+      "id": 19770,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70940,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "9c697cfc-39a9-43a5-b39e-2a59dfbb8fcb",
+        "source_timestamp": 1769579171000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:11.657437",
+      "updated_at": "2026-01-28T05:46:11.657437",
+      "id": 19769,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70928,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "22b95963-23a7-4423-825a-4b601f1742c6",
+        "source_timestamp": 1769579171000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:11.649752",
+      "updated_at": "2026-01-28T05:46:11.649752",
+      "id": 19768,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70912,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "f7c7dd44-9076-4222-9916-7942786451ac",
+        "source_timestamp": 1769579171000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:11.636639",
+      "updated_at": "2026-01-28T05:46:11.636639",
+      "id": 19767,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70933,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "05c8364a-31ce-4852-b05e-182f7e0e1421",
+        "source_timestamp": 1769579171000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:11.627429",
+      "updated_at": "2026-01-28T05:46:11.627429",
+      "id": 19766,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70935,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "27ddb089-4d29-46b3-9d00-2c4fbe8ceb02",
+        "source_timestamp": 1769579171000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:11.597070",
+      "updated_at": "2026-01-28T05:46:11.597070",
+      "id": 19765,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70931,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "882303ac-66c3-4dd8-85ff-b54f9cbd3408",
+        "source_timestamp": 1769579171000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:11.585000",
+      "updated_at": "2026-01-28T05:46:11.585000",
+      "id": 19764,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70927,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "0639b951-20f1-4565-b892-ef6818b6c6c1",
+        "source_timestamp": 1769579171000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:11.491116",
+      "updated_at": "2026-01-28T05:46:11.491116",
+      "id": 19763,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70930,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "7be8e583-28a1-49f7-814a-d1989b5ae9ad",
+        "source_timestamp": 1769579171000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:11.462968",
+      "updated_at": "2026-01-28T05:46:11.462968",
+      "id": 19762,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70926,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "cc3c0a0a-4914-4c41-9bed-4f5f993c45cf",
+        "source_timestamp": 1769579171000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:11.387534",
+      "updated_at": "2026-01-28T05:46:11.387534",
+      "id": 19761,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70915,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "a3a16735-13aa-49de-925e-16f254bf28c1",
+        "source_timestamp": 1769579171000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:11.366024",
+      "updated_at": "2026-01-28T05:46:11.366024",
+      "id": 19760,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70932,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "ed90d0da-2380-4e6b-9ff7-e938149fda25",
+        "source_timestamp": 1769579171000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:11.342508",
+      "updated_at": "2026-01-28T05:46:11.342508",
+      "id": 19759,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70924,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "0d02851a-9c58-4194-b56f-f2d4387347b8",
+        "source_timestamp": 1769579171000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:11.224332",
+      "updated_at": "2026-01-28T05:46:11.224332",
+      "id": 19758,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70929,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "917a4cee-2d56-4699-a206-4fe5429365a5",
+        "source_timestamp": 1769579171000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:11.204720",
+      "updated_at": "2026-01-28T05:46:11.204720",
+      "id": 19757,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70925,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "0ae7a931-9efc-49e5-ae55-a30682711eed",
+        "source_timestamp": 1769579171000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:11.120444",
+      "updated_at": "2026-01-28T05:46:11.120444",
+      "id": 19756,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70923,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "e9c694b1-ce91-4cf4-a96f-e6b5714bbc20",
+        "source_timestamp": 1769579171000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:11.059584",
+      "updated_at": "2026-01-28T05:46:11.059584",
+      "id": 19755,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70914,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "cf2dc54e-c7f7-427a-921a-8faa27ae4053",
+        "source_timestamp": 1769579171000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:11.056372",
+      "updated_at": "2026-01-28T05:46:11.056372",
+      "id": 19754,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70906,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "2646ff3e-f0b5-4c58-9f44-ae001cd63a82",
+        "source_timestamp": 1769579171000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:10.950462",
+      "updated_at": "2026-01-28T05:46:10.950462",
+      "id": 19753,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70911,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "29c4c158-b537-4490-9b02-1b26eddb1244",
+        "source_timestamp": 1769579170000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:10.936533",
+      "updated_at": "2026-01-28T05:46:10.936533",
+      "id": 19752,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70920,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "ea132763-418b-42b6-9e62-f3f8353cd548",
+        "source_timestamp": 1769579170000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:10.846125",
+      "updated_at": "2026-01-28T05:46:10.846125",
+      "id": 19751,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70921,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "53a7b4d4-1222-4db1-adb0-58fcf53346bb",
+        "source_timestamp": 1769579170000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:10.801070",
+      "updated_at": "2026-01-28T05:46:10.801070",
+      "id": 19750,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70903,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "6a60e723-3ab7-4692-b8e4-95fcf2a43b24",
+        "source_timestamp": 1769579170000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:10.770043",
+      "updated_at": "2026-01-28T05:46:10.770043",
+      "id": 19749,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70907,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "8e1d41e2-2e9f-45c7-9802-cb9c9b268e34",
+        "source_timestamp": 1769579170000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:10.755375",
+      "updated_at": "2026-01-28T05:46:10.755375",
+      "id": 19747,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70904,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "7f0bbf20-a409-451b-ac5c-910aae117a7b",
+        "source_timestamp": 1769579170000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:10.755266",
+      "updated_at": "2026-01-28T05:46:10.755266",
+      "id": 19748,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70910,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "54e274a2-18ae-45cf-b291-8df37eada73a",
+        "source_timestamp": 1769579170000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:10.746209",
+      "updated_at": "2026-01-28T05:46:10.746209",
+      "id": 19746,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70918,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "8d750f23-4b43-4b34-a47c-ba561695f89f",
+        "source_timestamp": 1769579170000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:10.741702",
+      "updated_at": "2026-01-28T05:46:10.741702",
+      "id": 19745,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70917,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "6a62ee24-4f2e-4bed-80a4-2d41b08678fb",
+        "source_timestamp": 1769579170000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:10.733463",
+      "updated_at": "2026-01-28T05:46:10.733463",
+      "id": 19744,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70916,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "6addad3c-4eba-4250-a2ae-6e7c88380160",
+        "source_timestamp": 1769579170000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:10.725653",
+      "updated_at": "2026-01-28T05:46:10.725653",
+      "id": 19743,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70919,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "a5e167f6-03a1-49e8-b575-4cad154028a2",
+        "source_timestamp": 1769579170000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:10.693628",
+      "updated_at": "2026-01-28T05:46:10.693628",
+      "id": 19742,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70922,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "9c07acf4-8a42-4a9f-b097-3d0024a3ca5a",
+        "source_timestamp": 1769579170000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:10.595892",
+      "updated_at": "2026-01-28T05:46:10.595892",
+      "id": 19741,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70909,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "855a0e93-bf25-40ee-8962-0528b8ed1336",
+        "source_timestamp": 1769579170000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:10.493592",
+      "updated_at": "2026-01-28T05:46:10.493592",
+      "id": 19740,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70908,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "06632e1c-498d-4d3f-b9c1-20e6e315a093",
+        "source_timestamp": 1769579170000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:46:10.327801",
+      "updated_at": "2026-01-28T05:46:10.327801",
+      "id": 19739,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70905,
+      "batch_import_attempt_id": 491,
+      "datastream_metadata": {
+        "uuid": "eaba5757-a7a9-46ca-9715-3252d558a378",
+        "source_timestamp": 1769579170000
+      }
+    },
+    {
+      "created_at": "2026-01-27T21:32:04.864108",
+      "updated_at": "2026-01-27T21:32:04.864108",
+      "id": 19738,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70876,
+      "batch_import_attempt_id": 490,
+      "datastream_metadata": {
+        "uuid": "d2955aa4-1194-480f-bee4-801af52f96ca",
+        "source_timestamp": 1769549524000
+      }
+    },
+    {
+      "created_at": "2026-01-27T21:32:04.719423",
+      "updated_at": "2026-01-27T21:32:04.719423",
+      "id": 19737,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70902,
+      "batch_import_attempt_id": 490,
+      "datastream_metadata": {
+        "uuid": "30b6199d-43c2-4dc1-8e74-e341eb71291c",
+        "source_timestamp": 1769549524000
+      }
+    },
+    {
+      "created_at": "2026-01-27T21:32:04.678060",
+      "updated_at": "2026-01-27T21:32:04.678060",
+      "id": 19736,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70895,
+      "batch_import_attempt_id": 490,
+      "datastream_metadata": {
+        "uuid": "65813ca1-3e39-4248-9c25-0512079e2f16",
+        "source_timestamp": 1769549524000
+      }
+    },
+    {
+      "created_at": "2026-01-27T21:32:04.494125",
+      "updated_at": "2026-01-27T21:32:04.494125",
+      "id": 19735,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70901,
+      "batch_import_attempt_id": 490,
+      "datastream_metadata": {
+        "uuid": "8bc670d0-f618-403e-b5bd-34bc99f40bf8",
+        "source_timestamp": 1769549524000
+      }
+    },
+    {
+      "created_at": "2026-01-27T21:32:04.488143",
+      "updated_at": "2026-01-27T21:32:04.488143",
+      "id": 19734,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70899,
+      "batch_import_attempt_id": 490,
+      "datastream_metadata": {
+        "uuid": "c0aa9328-73d9-4db5-a947-b4d32a8665ba",
+        "source_timestamp": 1769549524000
+      }
+    },
+    {
+      "created_at": "2026-01-27T21:32:04.453586",
+      "updated_at": "2026-01-27T21:32:04.453586",
+      "id": 19733,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70898,
+      "batch_import_attempt_id": 490,
+      "datastream_metadata": {
+        "uuid": "6db33ed9-ac88-4bd4-9dde-1e76a301b170",
+        "source_timestamp": 1769549524000
+      }
+    },
+    {
+      "created_at": "2026-01-27T21:32:04.411484",
+      "updated_at": "2026-01-27T21:32:04.411484",
+      "id": 19732,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70900,
+      "batch_import_attempt_id": 490,
+      "datastream_metadata": {
+        "uuid": "fd440eb7-5386-4576-9d19-fa5c95bdec06",
+        "source_timestamp": 1769549524000
+      }
+    },
+    {
+      "created_at": "2026-01-27T21:32:04.357022",
+      "updated_at": "2026-01-27T21:32:04.357022",
+      "id": 19731,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70892,
+      "batch_import_attempt_id": 490,
+      "datastream_metadata": {
+        "uuid": "a03e43d2-e4eb-4c4b-9898-58371585d924",
+        "source_timestamp": 1769549524000
+      }
+    },
+    {
+      "created_at": "2026-01-27T21:32:04.250519",
+      "updated_at": "2026-01-27T21:32:04.250519",
+      "id": 19730,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70896,
+      "batch_import_attempt_id": 490,
+      "datastream_metadata": {
+        "uuid": "2d2957d2-f1bd-43f0-83a1-6afe70ddb51a",
+        "source_timestamp": 1769549524000
+      }
+    },
+    {
+      "created_at": "2026-01-27T21:32:04.250204",
+      "updated_at": "2026-01-27T21:32:04.250204",
+      "id": 19729,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70887,
+      "batch_import_attempt_id": 490,
+      "datastream_metadata": {
+        "uuid": "2f291630-8a88-4bfa-8945-e4e6a8505c06",
+        "source_timestamp": 1769549524000
+      }
+    },
+    {
+      "created_at": "2026-01-27T21:32:04.249906",
+      "updated_at": "2026-01-27T21:32:04.249906",
+      "id": 19728,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70894,
+      "batch_import_attempt_id": 490,
+      "datastream_metadata": {
+        "uuid": "21b9876e-5d1b-407e-a288-318b61eda40c",
+        "source_timestamp": 1769549524000
+      }
+    },
+    {
+      "created_at": "2026-01-27T21:32:04.221432",
+      "updated_at": "2026-01-27T21:32:04.221432",
+      "id": 19727,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70897,
+      "batch_import_attempt_id": 490,
+      "datastream_metadata": {
+        "uuid": "af340fbc-8865-48ca-81e2-0b6ce06b3328",
+        "source_timestamp": 1769549524000
+      }
+    },
+    {
+      "created_at": "2026-01-27T21:32:04.217656",
+      "updated_at": "2026-01-27T21:32:04.217656",
+      "id": 19726,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70893,
+      "batch_import_attempt_id": 490,
+      "datastream_metadata": {
+        "uuid": "d81bbd92-d570-4af1-a3eb-104daf955afd",
+        "source_timestamp": 1769549524000
+      }
+    },
+    {
+      "created_at": "2026-01-27T21:32:04.191842",
+      "updated_at": "2026-01-27T21:32:04.191842",
+      "id": 19725,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70890,
+      "batch_import_attempt_id": 490,
+      "datastream_metadata": {
+        "uuid": "c98ee62e-402c-4793-ae5d-faa946610aee",
+        "source_timestamp": 1769549524000
+      }
+    },
+    {
+      "created_at": "2026-01-27T21:32:04.190911",
+      "updated_at": "2026-01-27T21:32:04.190911",
+      "id": 19724,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70891,
+      "batch_import_attempt_id": 490,
+      "datastream_metadata": {
+        "uuid": "36fbb77d-984f-4f00-bcf6-8b4f80356bca",
+        "source_timestamp": 1769549524000
+      }
+    },
+    {
+      "created_at": "2026-01-27T21:32:04.080230",
+      "updated_at": "2026-01-27T21:32:04.080230",
+      "id": 19723,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70888,
+      "batch_import_attempt_id": 490,
+      "datastream_metadata": {
+        "uuid": "cb368c92-7911-4f19-9125-4ce79371620d",
+        "source_timestamp": 1769549524000
+      }
+    },
+    {
+      "created_at": "2026-01-27T21:32:04.036853",
+      "updated_at": "2026-01-27T21:32:04.036853",
+      "id": 19722,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70889,
+      "batch_import_attempt_id": 490,
+      "datastream_metadata": {
+        "uuid": "11a07451-ec97-48f9-b871-6f767fa48fcf",
+        "source_timestamp": 1769549524000
+      }
+    },
+    {
+      "created_at": "2026-01-27T21:32:04.004419",
+      "updated_at": "2026-01-27T21:32:04.004419",
+      "id": 19721,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70886,
+      "batch_import_attempt_id": 490,
+      "datastream_metadata": {
+        "uuid": "b25a6a7d-2406-441f-a3d0-2a7b76d4021f",
+        "source_timestamp": 1769549524000
+      }
+    },
+    {
+      "created_at": "2026-01-27T21:32:03.977176",
+      "updated_at": "2026-01-27T21:32:03.977176",
+      "id": 19720,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70885,
+      "batch_import_attempt_id": 490,
+      "datastream_metadata": {
+        "uuid": "af13f710-28db-4aab-ac26-d0976ffb3fff",
+        "source_timestamp": 1769549523000
+      }
+    },
+    {
+      "created_at": "2026-01-27T21:32:03.929933",
+      "updated_at": "2026-01-27T21:32:03.929933",
+      "id": 19719,
+      "status": "success",
+      "notes": "",
+      "conversation_id": 70884,
+      "batch_import_attempt_id": 490,
+      "datastream_metadata": {
+        "uuid": "02253a31-21af-42ad-8fa9-131b77100509",
+        "source_timestamp": 1769549523000
+      }
+    }
+  ]
+}

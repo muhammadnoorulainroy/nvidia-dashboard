@@ -2,6 +2,7 @@
 Data synchronization service to sync CTE results from BigQuery to PostgreSQL
 For nvidia: prod_labeling_tool_n, project_id 39
 """
+import os
 import logging
 from datetime import datetime
 from typing import Dict, Optional
@@ -220,11 +221,11 @@ class DataSyncService:
                     logger.info(f"Synced {min(i + batch_size, len(data))}/{len(data)} review_detail records")
             
             self.log_sync_complete(log_id, len(data), True)
-            logger.info(f"✓ Successfully synced {len(data)} review_detail records")
+            logger.info(f"[OK] Successfully synced {len(data)} review_detail records")
             return True
         except Exception as e:
             self.log_sync_complete(log_id, 0, False, str(e))
-            logger.error(f"✗ Error syncing review_detail: {e}")
+            logger.error(f"[ERROR] Error syncing review_detail: {e}")
             return False
     
     def _build_task_query(self) -> str:
@@ -343,11 +344,11 @@ class DataSyncService:
                     logger.info(f"Synced {min(i + batch_size, len(data))}/{len(data)} task records")
             
             self.log_sync_complete(log_id, len(data), True)
-            logger.info(f"✓ Successfully synced {len(data)} task records")
+            logger.info(f"[OK] Successfully synced {len(data)} task records")
             return True
         except Exception as e:
             self.log_sync_complete(log_id, 0, False, str(e))
-            logger.error(f"✗ Error syncing task: {e}")
+            logger.error(f"[ERROR] Error syncing task: {e}")
             return False
     
     def sync_contributor(self, sync_type: str = 'scheduled') -> bool:
@@ -406,11 +407,11 @@ class DataSyncService:
                     session.commit()
             
             self.log_sync_complete(log_id, len(data), True)
-            logger.info(f"✓ Successfully synced {len(data)} contributor records")
+            logger.info(f"[OK] Successfully synced {len(data)} contributor records")
             return True
         except Exception as e:
             self.log_sync_complete(log_id, 0, False, str(e))
-            logger.error(f"✗ Error syncing contributor: {e}")
+            logger.error(f"[ERROR] Error syncing contributor: {e}")
             return False
     
     def sync_task_reviewed_info(self, sync_type: str = 'scheduled') -> bool:
@@ -495,11 +496,11 @@ class DataSyncService:
                     logger.info(f"Synced {min(i + batch_size, len(data))}/{len(data)} task_reviewed_info records")
             
             self.log_sync_complete(log_id, len(data), True)
-            logger.info(f"✓ Successfully synced {len(data)} task_reviewed_info records")
+            logger.info(f"[OK] Successfully synced {len(data)} task_reviewed_info records")
             return True
         except Exception as e:
             self.log_sync_complete(log_id, 0, False, str(e))
-            logger.error(f"✗ Error syncing task_reviewed_info: {e}")
+            logger.error(f"[ERROR] Error syncing task_reviewed_info: {e}")
             return False
     
     def sync_task_aht(self, sync_type: str = 'scheduled') -> bool:
@@ -628,11 +629,11 @@ class DataSyncService:
                     logger.info(f"Synced {min(i + batch_size, len(data))}/{len(data)} task_aht records")
             
             self.log_sync_complete(log_id, len(data), True)
-            logger.info(f"✓ Successfully synced {len(data)} task_aht records")
+            logger.info(f"[OK] Successfully synced {len(data)} task_aht records")
             return True
         except Exception as e:
             self.log_sync_complete(log_id, 0, False, str(e))
-            logger.error(f"✗ Error syncing task_aht: {e}")
+            logger.error(f"[ERROR] Error syncing task_aht: {e}")
             return False
     
     def sync_contributor_task_stats(self, sync_type: str = 'scheduled') -> bool:
@@ -745,11 +746,11 @@ class DataSyncService:
                     logger.info(f"Synced {min(i + batch_size, len(data))}/{len(data)} contributor_task_stats records")
             
             self.log_sync_complete(log_id, len(data), True)
-            logger.info(f"✓ Successfully synced {len(data)} contributor_task_stats records")
+            logger.info(f"[OK] Successfully synced {len(data)} contributor_task_stats records")
             return True
         except Exception as e:
             self.log_sync_complete(log_id, 0, False, str(e))
-            logger.error(f"✗ Error syncing contributor_task_stats: {e}")
+            logger.error(f"[ERROR] Error syncing contributor_task_stats: {e}")
             return False
     
     def sync_contributor_daily_stats(self, sync_type: str = 'scheduled') -> bool:
@@ -910,11 +911,11 @@ class DataSyncService:
                 logger.info(f"Updated {result.rowcount} records with tasks_ready_for_delivery")
             
             self.log_sync_complete(log_id, len(data), True)
-            logger.info(f"✓ Successfully synced {len(data)} contributor_daily_stats records")
+            logger.info(f"[OK] Successfully synced {len(data)} contributor_daily_stats records")
             return True
         except Exception as e:
             self.log_sync_complete(log_id, 0, False, str(e))
-            logger.error(f"✗ Error syncing contributor_daily_stats: {e}")
+            logger.error(f"[ERROR] Error syncing contributor_daily_stats: {e}")
             return False
     
     def sync_reviewer_daily_stats(self, sync_type: str = 'scheduled') -> bool:
@@ -1063,11 +1064,11 @@ class DataSyncService:
                 logger.info(f"Updated {result.rowcount} records with tasks_ready_for_delivery")
             
             self.log_sync_complete(log_id, len(data), True)
-            logger.info(f"✓ Successfully synced {len(data)} reviewer_daily_stats records")
+            logger.info(f"[OK] Successfully synced {len(data)} reviewer_daily_stats records")
             return True
         except Exception as e:
             self.log_sync_complete(log_id, 0, False, str(e))
-            logger.error(f"✗ Error syncing reviewer_daily_stats: {e}")
+            logger.error(f"[ERROR] Error syncing reviewer_daily_stats: {e}")
             return False
     
     def sync_reviewer_trainer_daily_stats(self, sync_type: str = 'scheduled') -> bool:
@@ -1200,11 +1201,11 @@ class DataSyncService:
                     logger.info(f"Synced {min(i + batch_size, len(data))}/{len(data)} reviewer_trainer_daily_stats records")
             
             self.log_sync_complete(log_id, len(data), True)
-            logger.info(f"✓ Successfully synced {len(data)} reviewer_trainer_daily_stats records")
+            logger.info(f"[OK] Successfully synced {len(data)} reviewer_trainer_daily_stats records")
             return True
         except Exception as e:
             self.log_sync_complete(log_id, 0, False, str(e))
-            logger.error(f"✗ Error syncing reviewer_trainer_daily_stats: {e}")
+            logger.error(f"[ERROR] Error syncing reviewer_trainer_daily_stats: {e}")
             return False
     
     def sync_task_history_raw(self, sync_type: str = 'scheduled') -> bool:
@@ -1289,11 +1290,11 @@ class DataSyncService:
                     logger.info(f"Synced {min(i + batch_size, len(data))}/{len(data)} task_history_raw records")
             
             self.log_sync_complete(log_id, len(data), True)
-            logger.info(f"✓ Successfully synced {len(data)} task_history_raw records")
+            logger.info(f"[OK] Successfully synced {len(data)} task_history_raw records")
             return True
         except Exception as e:
             self.log_sync_complete(log_id, 0, False, str(e))
-            logger.error(f"✗ Error syncing task_history_raw: {e}")
+            logger.error(f"[ERROR] Error syncing task_history_raw: {e}")
             return False
     
     def sync_task_raw(self, sync_type: str = 'scheduled') -> bool:
@@ -1528,11 +1529,11 @@ class DataSyncService:
                     logger.info(f"Synced {min(i + batch_size, len(data))}/{len(data)} task_raw records")
             
             self.log_sync_complete(log_id, len(data), True)
-            logger.info(f"✓ Successfully synced {len(data)} task_raw records")
+            logger.info(f"[OK] Successfully synced {len(data)} task_raw records")
             return True
         except Exception as e:
             self.log_sync_complete(log_id, 0, False, str(e))
-            logger.error(f"✗ Error syncing task_raw: {e}")
+            logger.error(f"[ERROR] Error syncing task_raw: {e}")
             return False
     
     def sync_task_history_raw(self, sync_type: str = 'scheduled') -> bool:
@@ -1619,17 +1620,21 @@ class DataSyncService:
                     logger.info(f"Synced {min(i + batch_size, len(data))}/{len(data)} task_history_raw records")
             
             self.log_sync_complete(log_id, len(data), True)
-            logger.info(f"✓ Successfully synced {len(data)} task_history_raw records")
+            logger.info(f"[OK] Successfully synced {len(data)} task_history_raw records")
             return True
         except Exception as e:
             self.log_sync_complete(log_id, 0, False, str(e))
-            logger.error(f"✗ Error syncing task_history_raw: {e}")
+            logger.error(f"[ERROR] Error syncing task_history_raw: {e}")
             return False
     
     def _get_google_sheets_credentials(self):
         """Build Google service account credentials from environment variables."""
         import json
+        from dotenv import load_dotenv
         from google.oauth2.service_account import Credentials
+        
+        # Ensure .env is loaded (for multiline GOOGLE_PRIVATE_KEY)
+        load_dotenv()
         
         # Build credentials dict from environment variables
         credentials_dict = {
@@ -1802,11 +1807,11 @@ class DataSyncService:
                 session.commit()
             
             self.log_sync_complete(log_id, records_inserted, True)
-            logger.info(f"✓ Successfully synced {records_inserted} pod_lead_mapping records from {source}")
+            logger.info(f"[OK] Successfully synced {records_inserted} pod_lead_mapping records from {source}")
             return True
         except Exception as e:
             self.log_sync_complete(log_id, 0, False, str(e))
-            logger.error(f"✗ Error syncing pod_lead_mapping: {e}")
+            logger.error(f"[ERROR] Error syncing pod_lead_mapping: {e}")
             return False
     
     def sync_jibble_hours(self, sync_type: str = 'initial') -> bool:
@@ -1873,11 +1878,455 @@ class DataSyncService:
                 session.commit()
             
             self.log_sync_complete(log_id, len(data), True)
-            logger.info(f"✓ Successfully synced {len(data)} jibble_hours records")
+            logger.info(f"[OK] Successfully synced {len(data)} jibble_hours records")
             return True
         except Exception as e:
             self.log_sync_complete(log_id, 0, False, str(e))
-            logger.error(f"✗ Error syncing jibble_hours: {e}")
+            logger.error(f"[ERROR] Error syncing jibble_hours: {e}")
+            return False
+    
+    def sync_jibble_email_mapping(self, sync_type: str = 'initial') -> bool:
+        """Sync Jibble ID to Turing Email mapping from Google Sheets.
+        
+        Sheet: https://docs.google.com/spreadsheets/d/1nR15UwSHx2WwQYFePAQIyIORf2aSCNp4ny33jetETZ8/
+        Columns: Jibble ID | Jibble Email | Jibble Name | Turing Email
+        
+        This mapping links jibble_hours.member_code to trainer turing emails.
+        """
+        from app.models.db_models import JibbleEmailMapping
+        import pandas as pd
+        
+        log_id = self.log_sync_start('jibble_email_mapping', sync_type)
+        
+        try:
+            # Sheet ID from environment or use default
+            sheet_id = os.environ.get(
+                'JIBBLE_EMAIL_MAPPING_SHEET_ID', 
+                '1nR15UwSHx2WwQYFePAQIyIORf2aSCNp4ny33jetETZ8'
+            )
+            # Specific worksheet gid for "Brittney's Mapping" tab
+            worksheet_gid = os.environ.get('JIBBLE_EMAIL_MAPPING_SHEET_GID', '1375209319')
+            
+            try:
+                import gspread
+                
+                logger.info(f"Loading Jibble email mapping from Google Sheet: {sheet_id}")
+                
+                # Get credentials and authorize
+                credentials = self._get_google_sheets_credentials()
+                gc = gspread.authorize(credentials)
+                
+                # Open the spreadsheet by ID
+                spreadsheet = gc.open_by_key(sheet_id)
+                
+                # Get specific worksheet by gid
+                worksheet = None
+                for ws in spreadsheet.worksheets():
+                    if str(ws.id) == worksheet_gid:
+                        worksheet = ws
+                        break
+                
+                if worksheet is None:
+                    # Fallback to first sheet
+                    worksheet = spreadsheet.sheet1
+                    logger.warning(f"Worksheet gid {worksheet_gid} not found, using first sheet")
+                
+                # Get all values
+                all_values = worksheet.get_all_values()
+                
+                if len(all_values) < 2:
+                    raise ValueError("Google Sheet has no data rows")
+                
+                # First row is header
+                headers = all_values[0]
+                logger.info(f"Sheet headers: {headers}")
+                
+                # Convert to DataFrame
+                df = pd.DataFrame(all_values[1:], columns=headers)
+                logger.info(f"Loaded {len(df)} rows from Google Sheet")
+                
+            except ImportError:
+                logger.error("gspread not installed - cannot sync jibble_email_mapping")
+                self.log_sync_complete(log_id, 0, False, "gspread not installed")
+                return False
+            except Exception as e:
+                logger.error(f"Failed to load from Google Sheet: {e}")
+                self.log_sync_complete(log_id, 0, False, str(e))
+                return False
+            
+            # Process the data
+            # Expected columns: Jibble ID, Jibble Email, Jibble Name, Turing Email
+            records_inserted = 0
+            
+            with self.db_service.get_session() as session:
+                # Clear existing mappings
+                session.execute(text("DELETE FROM jibble_email_mapping"))
+                
+                for _, row in df.iterrows():
+                    jibble_id = str(row.get('Jibble ID', '')).strip()
+                    jibble_email = str(row.get('Jibble Email', '')).strip().lower()
+                    jibble_name = str(row.get('Jibble Name', '')).strip()
+                    turing_email = str(row.get('Turing Email', '')).strip().lower()
+                    
+                    # Skip rows without jibble_id or turing_email
+                    if not jibble_id or not turing_email or jibble_id == 'nan' or turing_email == 'nan':
+                        continue
+                    
+                    # Insert using raw SQL to avoid caching issues
+                    session.execute(text("""
+                        INSERT INTO jibble_email_mapping 
+                        (jibble_id, jibble_email, jibble_name, turing_email, last_synced)
+                        VALUES (:jibble_id, :jibble_email, :jibble_name, :turing_email, NOW())
+                        ON CONFLICT (jibble_id) DO UPDATE SET
+                            jibble_email = EXCLUDED.jibble_email,
+                            jibble_name = EXCLUDED.jibble_name,
+                            turing_email = EXCLUDED.turing_email,
+                            last_synced = NOW()
+                    """), {
+                        "jibble_id": jibble_id,
+                        "jibble_email": jibble_email if jibble_email != 'nan' else None,
+                        "jibble_name": jibble_name if jibble_name != 'nan' else None,
+                        "turing_email": turing_email
+                    })
+                    records_inserted += 1
+                
+                session.commit()
+            
+            self.log_sync_complete(log_id, records_inserted, True)
+            logger.info(f"[OK] Successfully synced {records_inserted} jibble_email_mapping records")
+            return True
+            
+        except Exception as e:
+            self.log_sync_complete(log_id, 0, False, str(e))
+            logger.error(f"[ERROR] Error syncing jibble_email_mapping: {e}")
+            return False
+    
+    def sync_jibble_hours_from_api(self, sync_type: str = 'auto', days_back: int = None) -> bool:
+        """
+        Sync ALL Jibble hours from API to local database.
+        
+        Strategy:
+        1. Fetch ALL timesheets from Jibble API (for all people)
+        2. Store everything in jibble_hours table with source='jibble_api'
+        3. Filtering for Nvidia team happens at QUERY time using jibble_email_mapping
+        
+        Args:
+            sync_type: 'auto' (detect), 'initial' (90 days), 'scheduled' (7 days)
+            days_back: Override days to fetch (default: auto-detected)
+        
+        Auto-detection:
+        - If no API records exist in jibble_hours, treat as initial (90 days)
+        - If API records exist, treat as scheduled (7 days)
+        
+        Benefits:
+        - Doesn't rely on flaky People endpoint
+        - Simple sync - just fetch and store
+        - Local filtering is fast and flexible
+        - Hourly sync keeps data fresh
+        """
+        from app.models.db_models import JibbleHours
+        from app.services.jibble_service import JibbleService
+        from datetime import timedelta
+        
+        log_id = self.log_sync_start('jibble_hours_api', sync_type)
+        
+        try:
+            # Auto-detect sync type by checking if API data exists
+            if sync_type == 'auto' or days_back is None:
+                with self.db_service.get_session() as session:
+                    api_count = session.execute(text(
+                        "SELECT COUNT(*) FROM jibble_hours WHERE source = 'jibble_api'"
+                    )).scalar()
+                
+                is_first_sync = api_count == 0
+                
+                if days_back is None:
+                    if is_first_sync:
+                        days_back = 90  # 3 months for first sync
+                        sync_type = 'initial'
+                    else:
+                        days_back = 7   # 1 week for subsequent syncs
+                        sync_type = 'scheduled'
+                
+                logger.info(f"Auto-detected: {'First sync' if is_first_sync else 'Subsequent sync'} (API records: {api_count})")
+            
+            logger.info(f"Starting Jibble API sync (last {days_back} days, type={sync_type})...")
+            
+            # Initialize Jibble service
+            jibble_service = JibbleService()
+            
+            # Test connection (just verifies token)
+            conn_test = jibble_service.test_connection()
+            if not conn_test.get("success"):
+                raise Exception(f"Jibble API connection failed: {conn_test.get('message')}")
+            
+            # Date range
+            end_date = datetime.now()
+            start_date = end_date - timedelta(days=days_back)
+            
+            logger.info(f"Fetching data from {start_date.date()} to {end_date.date()}")
+            
+            # Step 1: Fetch timesheets in chunks (API has date range limits)
+            logger.info("Step 1: Fetching ALL timesheets from Jibble API...")
+            
+            timesheets = {}
+            chunk_days = 14  # Smaller chunks for reliability
+            current_start = start_date
+            
+            while current_start < end_date:
+                chunk_end = min(current_start + timedelta(days=chunk_days), end_date)
+                logger.info(f"  Fetching: {current_start.date()} to {chunk_end.date()}")
+                
+                try:
+                    chunk_data = jibble_service.get_timesheets_summary(current_start, chunk_end)
+                    
+                    # Merge chunk data
+                    for person_id, data in chunk_data.items():
+                        if person_id not in timesheets:
+                            timesheets[person_id] = {"_name": data.get("_name", ""), "_total": 0}
+                        
+                        for key, value in data.items():
+                            if key == "_total":
+                                timesheets[person_id]["_total"] = timesheets[person_id].get("_total", 0) + value
+                            elif key == "_name":
+                                if not timesheets[person_id].get("_name"):
+                                    timesheets[person_id]["_name"] = value
+                            else:
+                                # Daily entry
+                                if key not in timesheets[person_id]:
+                                    timesheets[person_id][key] = value
+                    
+                    logger.info(f"    Got {len(chunk_data)} people")
+                except Exception as chunk_err:
+                    logger.warning(f"    Chunk failed: {chunk_err}")
+                
+                current_start = chunk_end + timedelta(days=1)
+            
+            logger.info(f"Total: {len(timesheets)} people with timesheet data")
+            
+            # Step 2: Load email mapping for turing_email matching (optional enhancement)
+            logger.info("Step 2: Loading email mappings for turing_email enrichment...")
+            
+            name_to_turing = {}
+            with self.db_service.get_session() as session:
+                mappings = session.execute(text("""
+                    SELECT jibble_name, turing_email
+                    FROM jibble_email_mapping
+                    WHERE turing_email IS NOT NULL AND jibble_name IS NOT NULL
+                """)).fetchall()
+                
+                for m in mappings:
+                    if m.jibble_name:
+                        name_to_turing[m.jibble_name.lower().strip()] = m.turing_email.lower()
+            
+            logger.info(f"Loaded {len(name_to_turing)} name->turing_email mappings")
+            
+            # Step 3: Store ALL data in database
+            logger.info("Step 3: Storing data in database...")
+            
+            records = []
+            for person_id, data in timesheets.items():
+                full_name = data.get("_name", "")
+                
+                # Try to match turing_email by name (for convenience, not filtering)
+                turing_email = name_to_turing.get(full_name.lower().strip()) if full_name else None
+                
+                # Process daily breakdown
+                for date_str, hours in data.items():
+                    if date_str.startswith("_"):
+                        continue
+                    if hours == 0:
+                        continue
+                    
+                    try:
+                        entry_date = datetime.fromisoformat(date_str).date()
+                    except:
+                        continue
+                    
+                    records.append({
+                        'member_code': person_id,  # Use UUID as member_code
+                        'entry_date': entry_date,
+                        'project': 'Jibble API',  # Mark as coming from API
+                        'full_name': full_name,
+                        'logged_hours': float(hours),
+                        'turing_email': turing_email,  # May be None - filtered at query time
+                    })
+            
+            logger.info(f"Prepared {len(records)} records to insert")
+            
+            # Safety check: Only proceed if we have data to insert
+            if not records:
+                logger.warning("No records fetched from API - skipping delete to preserve existing data")
+                self.log_sync_complete(log_id, 0, True, "No new records fetched")
+                return True
+            
+            # Step 4: Store ALL data in database (atomic transaction)
+            logger.info("Step 4: Storing in database...")
+            
+            with self.db_service.get_session() as session:
+                # Clear existing API-sourced data for the date range
+                # This is safe because we verified we have records to insert above
+                deleted = session.execute(text("""
+                    DELETE FROM jibble_hours 
+                    WHERE source = 'jibble_api'
+                    AND entry_date >= :start_date 
+                    AND entry_date <= :end_date
+                """), {
+                    "start_date": start_date.date(),
+                    "end_date": end_date.date()
+                })
+                logger.info(f"Cleared {deleted.rowcount} old API records for date range")
+                
+                # Batch insert for performance
+                if records:
+                    # Insert in batches of 1000
+                    batch_size = 1000
+                    inserted = 0
+                    
+                    for i in range(0, len(records), batch_size):
+                        batch = records[i:i + batch_size]
+                        
+                        for record in batch:
+                            session.execute(text("""
+                                INSERT INTO jibble_hours 
+                                (member_code, entry_date, project, full_name, logged_hours, 
+                                 turing_email, source, last_synced)
+                                VALUES 
+                                (:member_code, :entry_date, :project, :full_name, :logged_hours,
+                                 :turing_email, 'jibble_api', NOW())
+                            """), record)
+                            inserted += 1
+                        
+                        logger.info(f"  Inserted batch {i//batch_size + 1}: {len(batch)} records")
+                    
+                    session.commit()
+                else:
+                    inserted = 0
+            
+            # Count how many have turing_email for stats
+            with self.db_service.get_session() as session:
+                matched = session.execute(text("""
+                    SELECT COUNT(*) FROM jibble_hours 
+                    WHERE source = 'jibble_api' AND turing_email IS NOT NULL
+                """)).scalar()
+                total = session.execute(text("""
+                    SELECT COUNT(*) FROM jibble_hours WHERE source = 'jibble_api'
+                """)).scalar()
+            
+            self.log_sync_complete(log_id, inserted, True)
+            logger.info(f"Successfully synced {inserted} jibble_hours records from API")
+            logger.info(f"  With turing_email (Nvidia team): {matched}")
+            logger.info(f"  Without turing_email (all others): {total - matched}")
+            return True
+            
+        except Exception as e:
+            self.log_sync_complete(log_id, 0, False, str(e))
+            logger.error(f"[ERROR] Error syncing jibble_hours from API: {e}")
+            import traceback
+            logger.error(traceback.format_exc())
+            return False
+    
+    def sync_jibble_hours_by_project(self, sync_type: str = 'scheduled') -> bool:
+        """
+        Sync Jibble hours using TimeEntries API with project filtering.
+        
+        This provides accurate per-project hours by:
+        1. Fetching TimeEntries filtered by Nvidia project IDs
+        2. Calculating hours from In/Out entry pairs
+        3. Storing with actual project names for filtering
+        
+        Slower than TimesheetsSummary but gives project breakdown.
+        """
+        from app.models.db_models import JibbleHours
+        from app.services.jibble_timeentries_sync import JibbleTimeEntriesSync, NVIDIA_PROJECTS
+        
+        log_id = self.log_sync_start('jibble_hours_by_project', sync_type)
+        
+        try:
+            logger.info("Starting Jibble TimeEntries sync for Nvidia projects...")
+            
+            sync = JibbleTimeEntriesSync()
+            all_records = []
+            
+            # Load email mappings for turing_email enrichment
+            name_to_turing = {}
+            with self.db_service.get_session() as session:
+                mappings = session.execute(text("""
+                    SELECT jibble_name, turing_email
+                    FROM jibble_email_mapping
+                    WHERE turing_email IS NOT NULL AND jibble_name IS NOT NULL
+                """)).fetchall()
+                
+                for m in mappings:
+                    if m.jibble_name:
+                        name_to_turing[m.jibble_name.lower().strip()] = m.turing_email.lower()
+            
+            logger.info(f"Loaded {len(name_to_turing)} name->turing_email mappings")
+            
+            # Sync each Nvidia project
+            for project_id, project_name in NVIDIA_PROJECTS.items():
+                logger.info(f"Syncing {project_name}...")
+                
+                try:
+                    results = sync.sync_nvidia_project_hours(project_id, project_name)
+                    
+                    # Enrich with turing_email
+                    for r in results:
+                        full_name = r.get("full_name", "")
+                        turing_email = name_to_turing.get(full_name.lower().strip()) if full_name else None
+                        r["turing_email"] = turing_email
+                    
+                    all_records.extend(results)
+                    logger.info(f"  Got {len(results)} records for {project_name}")
+                except Exception as proj_err:
+                    logger.warning(f"  Error syncing {project_name}: {proj_err}")
+            
+            logger.info(f"Total records from all Nvidia projects: {len(all_records)}")
+            
+            if not all_records:
+                logger.warning("No records fetched - keeping existing data")
+                self.log_sync_complete(log_id, 0, True, "No new records")
+                return True
+            
+            # Store in database
+            with self.db_service.get_session() as session:
+                # Delete existing project-specific entries (source='jibble_api_timeentries')
+                session.execute(text("""
+                    DELETE FROM jibble_hours 
+                    WHERE source = 'jibble_api_timeentries'
+                """))
+                
+                # Insert new records
+                inserted = 0
+                batch_size = 500
+                
+                for i in range(0, len(all_records), batch_size):
+                    batch = all_records[i:i+batch_size]
+                    
+                    for record in batch:
+                        session.execute(text("""
+                            INSERT INTO jibble_hours 
+                            (member_code, entry_date, project, full_name, logged_hours, 
+                             turing_email, source, last_synced)
+                            VALUES 
+                            (:person_id, :entry_date, :project, :full_name, :logged_hours,
+                             :turing_email, 'jibble_api_timeentries', NOW())
+                        """), record)
+                        inserted += 1
+                    
+                    logger.info(f"  Inserted batch {i//batch_size + 1}")
+                
+                session.commit()
+            
+            self.log_sync_complete(log_id, inserted, True)
+            logger.info(f"[OK] Successfully synced {inserted} jibble_hours records with project breakdown")
+            return True
+            
+        except Exception as e:
+            self.log_sync_complete(log_id, 0, False, str(e))
+            logger.error(f"[ERROR] Error syncing jibble_hours by project: {e}")
+            import traceback
+            logger.error(traceback.format_exc())
             return False
     
     def sync_trainer_review_stats(self, sync_type: str = 'scheduled') -> bool:
@@ -2025,12 +2474,12 @@ class DataSyncService:
                     logger.info(f"Synced {min(i + batch_size, len(data))}/{len(data)} trainer_review_stats records")
             
             self.log_sync_complete(log_id, len(data), True)
-            logger.info(f"✓ Successfully synced {len(data)} trainer_review_stats records")
+            logger.info(f"[OK] Successfully synced {len(data)} trainer_review_stats records")
             return True
             
         except Exception as e:
             self.log_sync_complete(log_id, 0, False, str(e))
-            logger.error(f"✗ Error syncing trainer_review_stats: {e}")
+            logger.error(f"[ERROR] Error syncing trainer_review_stats: {e}")
             import traceback
             traceback.print_exc()
             return False
@@ -2055,7 +2504,8 @@ class DataSyncService:
             ('task_raw', self.sync_task_raw),
             ('task_history_raw', self.sync_task_history_raw),
             ('pod_lead_mapping', self.sync_pod_lead_mapping),
-            ('jibble_hours', self.sync_jibble_hours),
+            ('jibble_email_mapping', self.sync_jibble_email_mapping),  # Jibble ID to Turing email mapping
+            ('jibble_hours', self.sync_jibble_hours),  # Jibble hours from BigQuery
             ('trainer_review_stats', self.sync_trainer_review_stats),  # Per-trainer review attribution
         ]
         

@@ -17,6 +17,7 @@ import {
   Button,
   Slider,
   Popover,
+  Menu,
   Divider,
   MenuItem,
   ListItemIcon,
@@ -33,6 +34,58 @@ import FilterListIcon from '@mui/icons-material/FilterList'
 import DownloadIcon from '@mui/icons-material/Download'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import Tooltip from '@mui/material/Tooltip'
+
+// Column group definitions with professional colors (matching ProjectsTab)
+const COLUMN_GROUPS = {
+  overview: { 
+    label: 'Overview', 
+    bgHeader: '#F1F5F9', 
+    bgSubHeader: '#F8FAFC',
+    borderColor: '#CBD5E1',
+    textColor: '#475569'
+  },
+  tasks: { 
+    label: 'Tasks', 
+    bgHeader: '#EFF6FF', 
+    bgSubHeader: '#F0F9FF',
+    borderColor: '#93C5FD',
+    textColor: '#1E40AF'
+  },
+  quality: { 
+    label: 'Quality', 
+    bgHeader: '#F0FDF4', 
+    bgSubHeader: '#F0FDF4',
+    borderColor: '#86EFAC',
+    textColor: '#166534'
+  },
+  efficiency: { 
+    label: 'Time & Efficiency', 
+    bgHeader: '#FEF3C7', 
+    bgSubHeader: '#FFFBEB',
+    borderColor: '#FCD34D',
+    textColor: '#92400E'
+  },
+}
+
+// Compact header cell style
+const headerCellStyle = {
+  fontWeight: 600,
+  fontSize: '0.6rem',
+  textTransform: 'uppercase' as const,
+  letterSpacing: '0.02em',
+  lineHeight: 1.1,
+  py: 0.5,
+  px: 0.5,
+  whiteSpace: 'nowrap' as const,
+}
+
+// Compact data cell style
+const cellStyle = {
+  py: 0.5,
+  px: 0.5,
+  fontSize: '0.75rem',
+  borderBottom: '1px solid #E2E8F0',
+}
 import { getTooltipForHeader } from '../../utils/columnTooltips'
 import { exportToExcel, formatPercent, formatDecimal, formatDate } from '../../utils/exportToExcel'
 import { getTrainerStats, getTaskLevelInfo, getClientDeliveryTrainerStats, getTrainerDailyStats, getTrainerOverallStats, getThroughputTargets, clearCache } from '../../services/api'
@@ -41,6 +94,8 @@ import LoadingSpinner from '../LoadingSpinner'
 import ErrorDisplay from '../ErrorDisplay'
 import { useAHTConfiguration } from '../../hooks/useAHTConfiguration'
 import TrackChangesIcon from '@mui/icons-material/TrackChanges'
+import { Timeframe, getDateRange } from '../../utils/dateUtils'
+import TimeframeSelector from '../common/TimeframeSelector'
 
 interface NumericFilter {
   min: number
@@ -53,11 +108,16 @@ interface TextFilter {
   value: string
 }
 
+// Import TabSummaryStats type from PreDelivery
+import type { TabSummaryStats } from '../../pages/PreDelivery'
+
 interface TrainerWiseProps {
   isClientDelivery?: boolean
+  onSummaryUpdate?: (stats: TabSummaryStats) => void
+  onSummaryLoading?: () => void
 }
 
-type TimeframeOption = 'daily' | 'd-1' | 'd-2' | 'd-3' | 'weekly' | 'custom' | 'overall'
+type TimeframeOption = Timeframe // Alias for backward compatibility
 
 // Project options for dropdown
 const projectOptions = [
@@ -91,7 +151,7 @@ interface AggregatedTrainerStats {
   jibble_hours?: number | null
 }
 
-export default function TrainerWise({ isClientDelivery = false }: TrainerWiseProps) {
+export default function TrainerWise({ isClientDelivery = false, onSummaryUpdate, onSummaryLoading }: TrainerWiseProps) {
   const [data, setData] = useState<TrainerDailyStats[]>([])
   const [overallData, setOverallData] = useState<TrainerDailyStats[]>([])
   const [filteredData, setFilteredData] = useState<AggregatedTrainerStats[]>([])
@@ -100,9 +160,10 @@ export default function TrainerWise({ isClientDelivery = false }: TrainerWisePro
   const [error, setError] = useState<string | null>(null)
   const [selectedTrainers, setSelectedTrainers] = useState<string[]>([])
   const [timeframe, setTimeframe] = useState<TimeframeOption>('overall')
+  const [weekOffset, setWeekOffset] = useState<number>(0) // Default to current week (Mon-Sun)
   const [selectedProject, setSelectedProject] = useState<number | undefined>(undefined)
-  const [startDate, setStartDate] = useState<string>('')
-  const [endDate, setEndDate] = useState<string>('')
+  const [customStartDate, setCustomStartDate] = useState<string>('')
+  const [customEndDate, setCustomEndDate] = useState<string>('')
   const [numericFilters, setNumericFilters] = useState<Record<string, NumericFilter>>({})
   const [textFilters, setTextFilters] = useState<Record<string, TextFilter>>({})
   const [filterAnchorEl, setFilterAnchorEl] = useState<HTMLElement | null>(null)
@@ -111,6 +172,27 @@ export default function TrainerWise({ isClientDelivery = false }: TrainerWisePro
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc')
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(100)
+
+  // Report summary stats to parent when data changes
+  useEffect(() => {
+    if (overallData.length > 0 && onSummaryUpdate) {
+      const totalTasks = overallData.reduce((sum, t) => sum + (t.unique_tasks || 0), 0)
+      const totalTrainers = overallData.length
+      const totalReviews = overallData.reduce((sum, t) => sum + (t.total_reviews || 0), 0)
+      const newTasks = overallData.reduce((sum, t) => sum + (t.new_tasks_submitted || 0), 0)
+      const rework = overallData.reduce((sum, t) => sum + (t.rework_submitted || 0), 0)
+      
+      onSummaryUpdate({
+        totalTasks,
+        totalTrainers,
+        totalPodLeads: 0, // Not available in this tab
+        totalProjects: selectedProject !== undefined ? 1 : 4, // 4 Nvidia projects
+        totalReviews,
+        newTasks,
+        rework
+      })
+    }
+  }, [overallData, onSummaryUpdate, selectedProject])
   
   // AHT Configuration hook - fetch project-wise AHT values
   const { calculateMergedAHT, calculateTotalExpectedHours, getAHTForProject } = useAHTConfiguration()
@@ -119,46 +201,17 @@ export default function TrainerWise({ isClientDelivery = false }: TrainerWisePro
   const [newTaskTarget, setNewTaskTarget] = useState<number>(3) // Default 3 new tasks/day
   const [reworkTarget, setReworkTarget] = useState<number>(5)   // Default 5 rework/day
 
-  // Calculate date range based on timeframe
-  const getDateRange = (): { start_date?: string; end_date?: string } => {
-    const today = new Date()
-    const formatDate = (d: Date) => d.toISOString().split('T')[0]
-    
-    switch (timeframe) {
-      case 'daily':
-        return { start_date: formatDate(today), end_date: formatDate(today) }
-      case 'd-1': {
-        const d1 = new Date(today)
-        d1.setDate(d1.getDate() - 1)
-        return { start_date: formatDate(d1), end_date: formatDate(d1) }
-      }
-      case 'd-2': {
-        const d2 = new Date(today)
-        d2.setDate(d2.getDate() - 2)
-        return { start_date: formatDate(d2), end_date: formatDate(d2) }
-      }
-      case 'd-3': {
-        const d3 = new Date(today)
-        d3.setDate(d3.getDate() - 3)
-        return { start_date: formatDate(d3), end_date: formatDate(d3) }
-      }
-      case 'weekly': {
-        const weekAgo = new Date(today)
-        weekAgo.setDate(weekAgo.getDate() - 7)
-        return { start_date: formatDate(weekAgo), end_date: formatDate(today) }
-      }
-      case 'custom':
-        return startDate && endDate ? { start_date: startDate, end_date: endDate } : {}
-      case 'overall':
-      default:
-        return {} // No date filter = all time
-    }
+  // Get date range from shared utility
+  const getCurrentDateRange = () => {
+    const { startDate, endDate } = getDateRange(timeframe, weekOffset, customStartDate, customEndDate)
+    return { start_date: startDate, end_date: endDate }
   }
 
   const fetchData = async () => {
     try {
       setLoading(true)
       setError(null)
+      onSummaryLoading?.()
       
       const filters: any = {}
       if (selectedProject !== undefined) {
@@ -166,7 +219,7 @@ export default function TrainerWise({ isClientDelivery = false }: TrainerWisePro
       }
       
       // Add date range to filters for Jibble hours filtering
-      const dateRange = getDateRange()
+      const dateRange = getCurrentDateRange()
       if (dateRange.start_date) filters.start_date = dateRange.start_date
       if (dateRange.end_date) filters.end_date = dateRange.end_date
       
@@ -216,7 +269,7 @@ export default function TrainerWise({ isClientDelivery = false }: TrainerWisePro
     // Clear cache to ensure fresh data with Jibble hours
     clearCache()
     fetchData()
-  }, [isClientDelivery, selectedProject, timeframe, startDate, endDate])
+  }, [isClientDelivery, selectedProject, timeframe, weekOffset, customStartDate, customEndDate])
 
   // Helper function to aggregate daily data to trainer level
   const aggregateByTrainer = (dailyData: TrainerDailyStats[]): AggregatedTrainerStats[] => {
@@ -332,9 +385,9 @@ export default function TrainerWise({ isClientDelivery = false }: TrainerWisePro
         return filteredDaily // Return daily breakdown for weekly
       }
       case 'custom': {
-        if (!startDate || !endDate) return allData
-        const start = new Date(startDate)
-        const end = new Date(endDate)
+        if (!customStartDate || !customEndDate) return allData
+        const start = new Date(customStartDate)
+        const end = new Date(customEndDate)
         filteredDaily = allData.filter(d => {
           if (!d.submission_date) return false
           const submissionDate = new Date(d.submission_date)
@@ -489,7 +542,7 @@ export default function TrainerWise({ isClientDelivery = false }: TrainerWisePro
 
     setFilteredData(filtered)
     setPage(0)
-  }, [selectedTrainers, textFilters, numericFilters, data, timeframe, startDate, endDate])
+  }, [selectedTrainers, textFilters, numericFilters, data, timeframe, weekOffset, customStartDate, customEndDate])
 
   // Get unique trainer names for autocomplete (since we have multiple rows per trainer)
   const trainerOptions = Array.from(new Set(data.map(t => {
@@ -719,48 +772,16 @@ export default function TrainerWise({ isClientDelivery = false }: TrainerWisePro
           </FormControl>
 
           {/* Timeframe Selector */}
-          <FormControl size="small" sx={{ minWidth: 140 }}>
-            <InputLabel id="timeframe-label">Timeframe</InputLabel>
-            <Select
-              labelId="timeframe-label"
-              value={timeframe}
-              label="Timeframe"
-              onChange={(e) => setTimeframe(e.target.value as TimeframeOption)}
-              sx={{ backgroundColor: 'white' }}
-            >
-              <MenuItem value="daily">Daily (Today)</MenuItem>
-              <MenuItem value="d-1">D-1 (Yesterday)</MenuItem>
-              <MenuItem value="d-2">D-2</MenuItem>
-              <MenuItem value="d-3">D-3</MenuItem>
-              <MenuItem value="weekly">Weekly (Last 7 days)</MenuItem>
-              <MenuItem value="custom">Custom Range</MenuItem>
-              <MenuItem value="overall">Overall (All time)</MenuItem>
-            </Select>
-          </FormControl>
-
-          {/* Date Range Picker - shown when Custom Range is selected */}
-          {timeframe === 'custom' && (
-            <>
-              <TextField
-                type="date"
-                size="small"
-                label="Start Date"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-                InputLabelProps={{ shrink: true }}
-                sx={{ width: 160, backgroundColor: 'white' }}
-              />
-              <TextField
-                type="date"
-                size="small"
-                label="End Date"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-                InputLabelProps={{ shrink: true }}
-                sx={{ width: 160, backgroundColor: 'white' }}
-              />
-            </>
-          )}
+          <TimeframeSelector
+            timeframe={timeframe}
+            onTimeframeChange={setTimeframe}
+            weekOffset={weekOffset}
+            onWeekOffsetChange={setWeekOffset}
+            customStartDate={customStartDate}
+            onCustomStartDateChange={setCustomStartDate}
+            customEndDate={customEndDate}
+            onCustomEndDateChange={setCustomEndDate}
+          />
 
           <Box sx={{ flex: 1 }}>
             <Autocomplete
@@ -1009,100 +1030,157 @@ export default function TrainerWise({ isClientDelivery = false }: TrainerWisePro
         </Box>
 
         <TableContainer sx={{ maxHeight: 600, overflowX: 'auto' }}>
-          <Table stickyHeader size="small" sx={{ minWidth: 1400 }}>
+          <Table stickyHeader size="small" sx={{ minWidth: 1200 }}>
             <TableHead>
+              {/* Group Header Row */}
               <TableRow>
+                {/* Overview Group */}
+                <TableCell 
+                  colSpan={2}
+                  align="center"
+                  sx={{ 
+                    ...headerCellStyle,
+                    bgcolor: COLUMN_GROUPS.overview.bgHeader,
+                    color: COLUMN_GROUPS.overview.textColor,
+                    borderBottom: `2px solid ${COLUMN_GROUPS.overview.borderColor}`,
+                    borderRight: `2px solid ${COLUMN_GROUPS.overview.borderColor}`,
+                    fontSize: '0.7rem',
+                    fontWeight: 700,
+                    position: 'sticky',
+                    left: 0,
+                    zIndex: 4,
+                  }}
+                >
+                  OVERVIEW
+                </TableCell>
+                {/* Tasks Group */}
+                <TableCell 
+                  colSpan={6}
+                  align="center"
+                  sx={{ 
+                    ...headerCellStyle,
+                    bgcolor: COLUMN_GROUPS.tasks.bgHeader,
+                    color: COLUMN_GROUPS.tasks.textColor,
+                    borderBottom: `2px solid ${COLUMN_GROUPS.tasks.borderColor}`,
+                    borderRight: `2px solid ${COLUMN_GROUPS.tasks.borderColor}`,
+                    fontSize: '0.7rem',
+                    fontWeight: 700,
+                  }}
+                >
+                  TASKS
+                </TableCell>
+                {/* Quality Group */}
+                <TableCell 
+                  colSpan={4}
+                  align="center"
+                  sx={{ 
+                    ...headerCellStyle,
+                    bgcolor: COLUMN_GROUPS.quality.bgHeader,
+                    color: COLUMN_GROUPS.quality.textColor,
+                    borderBottom: `2px solid ${COLUMN_GROUPS.quality.borderColor}`,
+                    borderRight: `2px solid ${COLUMN_GROUPS.quality.borderColor}`,
+                    fontSize: '0.7rem',
+                    fontWeight: 700,
+                  }}
+                >
+                  QUALITY
+                </TableCell>
+                {/* Time & Efficiency Group */}
+                <TableCell 
+                  colSpan={selectedProject !== undefined ? 4 : 2}
+                  align="center"
+                  sx={{ 
+                    ...headerCellStyle,
+                    bgcolor: COLUMN_GROUPS.efficiency.bgHeader,
+                    color: COLUMN_GROUPS.efficiency.textColor,
+                    borderBottom: `2px solid ${COLUMN_GROUPS.efficiency.borderColor}`,
+                    fontSize: '0.7rem',
+                    fontWeight: 700,
+                  }}
+                >
+                  TIME & EFFICIENCY
+                </TableCell>
+              </TableRow>
+              {/* Sub-Header Row */}
+              <TableRow>
+                {/* Overview - Trainer Name */}
                 <TableCell sx={{ 
-                  fontWeight: 600, 
-                  bgcolor: '#F8FAFC', 
-                  color: '#334155', 
-                  minWidth: 180, 
-                  borderBottom: '2px solid #E2E8F0', 
-                  fontSize: '0.8125rem', 
-                  textTransform: 'uppercase', 
-                  letterSpacing: '0.025em',
+                  ...headerCellStyle,
+                  bgcolor: COLUMN_GROUPS.overview.bgSubHeader, 
+                  color: COLUMN_GROUPS.overview.textColor, 
+                  minWidth: 160, 
+                  borderBottom: `2px solid ${COLUMN_GROUPS.overview.borderColor}`, 
                   position: 'sticky',
                   left: 0,
                   zIndex: 3,
-                  borderRight: '2px solid #E2E8F0',
                 }}>
                   {renderHeaderWithFilter('Trainer', 'trainer_name', false)}
                 </TableCell>
+                {/* Overview - Trainer Email */}
                 <TableCell sx={{ 
-                  fontWeight: 600, 
-                  bgcolor: '#F8FAFC', 
-                  color: '#334155', 
-                  minWidth: 200, 
-                  borderBottom: '2px solid #E2E8F0', 
-                  fontSize: '0.8125rem', 
-                  textTransform: 'uppercase', 
-                  letterSpacing: '0.025em',
+                  ...headerCellStyle,
+                  bgcolor: COLUMN_GROUPS.overview.bgSubHeader, 
+                  color: COLUMN_GROUPS.overview.textColor, 
+                  minWidth: 180, 
+                  borderBottom: `2px solid ${COLUMN_GROUPS.overview.borderColor}`, 
+                  borderRight: `2px solid ${COLUMN_GROUPS.overview.borderColor}`,
                   position: 'sticky',
-                  left: 180,
+                  left: 160,
                   zIndex: 3,
-                  borderRight: '2px solid #E2E8F0',
                 }}>
-                  {renderHeaderWithFilter('Trainer Email', 'trainer_email', false)}
+                  {renderHeaderWithFilter('Email', 'trainer_email', false)}
                 </TableCell>
-                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 90, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em', whiteSpace: 'nowrap' }}>
-                  {renderHeaderWithFilter('Unique', 'unique_tasks', true)}
+                {/* Tasks Group Columns */}
+                <TableCell align="center" sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.tasks.bgSubHeader, color: COLUMN_GROUPS.tasks.textColor, minWidth: 50, borderBottom: `2px solid ${COLUMN_GROUPS.tasks.borderColor}` }}>
+                  {renderHeaderWithFilter('Uniq', 'unique_tasks', true)}
                 </TableCell>
-                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 100, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em', whiteSpace: 'nowrap' }}>
-                  {renderHeaderWithFilter('New Tasks', 'new_tasks_submitted', true)}
+                <TableCell align="center" sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.tasks.bgSubHeader, color: COLUMN_GROUPS.tasks.textColor, minWidth: 50, borderBottom: `2px solid ${COLUMN_GROUPS.tasks.borderColor}` }}>
+                  {renderHeaderWithFilter('New', 'new_tasks_submitted', true)}
                 </TableCell>
-                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 100, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em', whiteSpace: 'nowrap' }}>
-                  {renderHeaderWithFilter('Rework', 'rework_submitted', true)}
+                <TableCell align="center" sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.tasks.bgSubHeader, color: COLUMN_GROUPS.tasks.textColor, minWidth: 50, borderBottom: `2px solid ${COLUMN_GROUPS.tasks.borderColor}` }}>
+                  {renderHeaderWithFilter('Rwk', 'rework_submitted', true)}
                 </TableCell>
-                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 110, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em', whiteSpace: 'nowrap' }}>
-                  {renderHeaderWithFilter('Total Reviews', 'total_reviews', true)}
+                <TableCell align="center" sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.tasks.bgSubHeader, color: COLUMN_GROUPS.tasks.textColor, minWidth: 50, borderBottom: `2px solid ${COLUMN_GROUPS.tasks.borderColor}` }}>
+                  {renderHeaderWithFilter('Appr', 'approved', true)}
                 </TableCell>
-                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 90, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em', whiteSpace: 'nowrap' }}>
-                  {renderHeaderWithFilter('Approved', 'approved', true)}
+                <TableCell align="center" sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.tasks.bgSubHeader, color: COLUMN_GROUPS.tasks.textColor, minWidth: 50, borderBottom: `2px solid ${COLUMN_GROUPS.tasks.borderColor}` }}>
+                  {renderHeaderWithFilter('Del', 'delivered', true)}
                 </TableCell>
-                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 110, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em', whiteSpace: 'nowrap' }}>
-                  {renderHeaderWithFilter('Appr. Rework', 'approved_rework', true)}
+                <TableCell align="center" sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.tasks.bgSubHeader, color: COLUMN_GROUPS.tasks.textColor, minWidth: 50, borderBottom: `2px solid ${COLUMN_GROUPS.tasks.borderColor}`, borderRight: `2px solid ${COLUMN_GROUPS.tasks.borderColor}` }}>
+                  {renderHeaderWithFilter('Queue', 'in_queue', true)}
                 </TableCell>
-                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 90, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em', whiteSpace: 'nowrap' }}>
-                  {renderHeaderWithFilter('Delivered', 'delivered', true)}
+                {/* Quality Group Columns */}
+                <TableCell align="center" sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.quality.bgSubHeader, color: COLUMN_GROUPS.quality.textColor, minWidth: 50, borderBottom: `2px solid ${COLUMN_GROUPS.quality.borderColor}` }}>
+                  {renderHeaderWithFilter('Rev', 'total_reviews', true)}
                 </TableCell>
-                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 90, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em', whiteSpace: 'nowrap' }}>
-                  {renderHeaderWithFilter('In Queue', 'in_queue', true)}
+                <TableCell align="center" sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.quality.bgSubHeader, color: COLUMN_GROUPS.quality.textColor, minWidth: 55, borderBottom: `2px solid ${COLUMN_GROUPS.quality.borderColor}` }}>
+                  {renderHeaderWithFilter('AvgR', 'avg_rework', true)}
                 </TableCell>
-                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 100, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em', whiteSpace: 'nowrap' }}>
-                  {renderHeaderWithFilter('Avg Rework', 'avg_rework', true)}
+                <TableCell align="center" sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.quality.bgSubHeader, color: COLUMN_GROUPS.quality.textColor, minWidth: 50, borderBottom: `2px solid ${COLUMN_GROUPS.quality.borderColor}` }}>
+                  {renderHeaderWithFilter('R%', 'rework_percent', true)}
                 </TableCell>
-                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 90, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em', whiteSpace: 'nowrap' }}>
-                  {renderHeaderWithFilter('Rework %', 'rework_percent', true)}
+                <TableCell align="center" sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.quality.bgSubHeader, color: COLUMN_GROUPS.quality.textColor, minWidth: 50, borderBottom: `2px solid ${COLUMN_GROUPS.quality.borderColor}`, borderRight: `2px solid ${COLUMN_GROUPS.quality.borderColor}` }}>
+                  {renderHeaderWithFilter('Rate', 'avg_rating', true)}
                 </TableCell>
-                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 90, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em', whiteSpace: 'nowrap' }}>
-                  {renderHeaderWithFilter('Avg Rating', 'avg_rating', true)}
+                {/* Time & Efficiency Group Columns */}
+                <TableCell align="center" sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.efficiency.bgSubHeader, color: COLUMN_GROUPS.efficiency.textColor, minWidth: 50, borderBottom: `2px solid ${COLUMN_GROUPS.efficiency.borderColor}` }}>
+                  {renderHeaderWithFilter('AHT', 'merged_exp_aht', true)}
                 </TableCell>
-                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 120, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em', whiteSpace: 'nowrap' }}>
-                  {renderHeaderWithFilter('Merged Exp. AHT', 'merged_exp_aht', true)}
-                </TableCell>
-                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#FEF3C7', color: '#92400E', minWidth: 100, borderBottom: '2px solid #FCD34D', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em', whiteSpace: 'nowrap' }}>
-                  {renderHeaderWithFilter('Jibble Hrs', 'jibble_hours', true)}
+                <TableCell align="center" sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.efficiency.bgSubHeader, color: COLUMN_GROUPS.efficiency.textColor, minWidth: 55, borderBottom: `2px solid ${COLUMN_GROUPS.efficiency.borderColor}`, borderRight: selectedProject === undefined ? 'none' : `2px solid ${COLUMN_GROUPS.efficiency.borderColor}` }}>
+                  {renderHeaderWithFilter('Jibble', 'jibble_hours', true)}
                 </TableCell>
                 {/* Time Theft Detection Columns - Only show when project is selected */}
                 {selectedProject !== undefined && (
                   <>
-                    {/* Accounted Hours = Merged Exp. AHT (work they actually did) */}
-                    <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F0FDF4', color: '#166534', minWidth: 100, borderBottom: '2px solid #86EFAC', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.025em', whiteSpace: 'nowrap' }}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                        Accounted Hrs
-                        <Tooltip title="Hours accounted for by actual work = Merged Exp. AHT (New×AHT + Rework×AHT)" arrow placement="top">
-                          <InfoOutlinedIcon sx={{ fontSize: 12, color: '#22C55E', cursor: 'help' }} />
-                        </Tooltip>
-                      </Box>
+                    <TableCell align="center" sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.efficiency.bgSubHeader, color: COLUMN_GROUPS.efficiency.textColor, minWidth: 55, borderBottom: `2px solid ${COLUMN_GROUPS.efficiency.borderColor}` }}>
+                      <Tooltip title="Hours accounted for by actual work = New×AHT + Rework×AHT" arrow placement="top">
+                        <span>Acct</span>
+                      </Tooltip>
                     </TableCell>
-                    {/* Efficiency - KEY METRIC for time theft */}
-                    <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#FEF2F2', color: '#991B1B', minWidth: 100, borderBottom: '2px solid #FCA5A5', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.025em', whiteSpace: 'nowrap' }}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                        Efficiency
-                        <Tooltip title="Efficiency = (Accounted Hrs / Jibble Hrs) × 100. Below 50% = Time Theft Flag" arrow placement="top">
-                          <InfoOutlinedIcon sx={{ fontSize: 12, color: '#DC2626', cursor: 'help' }} />
-                        </Tooltip>
-                      </Box>
+                    <TableCell align="center" sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.efficiency.bgSubHeader, color: COLUMN_GROUPS.efficiency.textColor, minWidth: 55, borderBottom: `2px solid ${COLUMN_GROUPS.efficiency.borderColor}` }}>
+                      <Tooltip title="Efficiency = (Accounted Hrs / Jibble Hrs) × 100" arrow placement="top">
+                        <span>Eff%</span>
+                      </Tooltip>
                     </TableCell>
                   </>
                 )}
@@ -1114,179 +1192,145 @@ export default function TrainerWise({ isClientDelivery = false }: TrainerWisePro
                 const rework = trainer.rework_submitted || 0
                 const mergedExpAht = calculateMergedAHT(newTasks, rework, selectedProject)
                 
+                // Color coding helpers
+                const getAvgReworkStyle = (avgR: number | null) => {
+                  if (avgR === null) return { color: '#94A3B8', bgcolor: 'transparent' }
+                  if (avgR < 1) return { color: '#065F46', bgcolor: '#D1FAE5' }
+                  if (avgR <= 2.5) return { color: '#92400E', bgcolor: '#FEF3C7' }
+                  return { color: '#991B1B', bgcolor: '#FEE2E2' }
+                }
+                const getReworkPctStyle = (rPct: number | null) => {
+                  if (rPct === null) return { color: '#94A3B8', bgcolor: 'transparent' }
+                  if (rPct <= 10) return { color: '#065F46', bgcolor: '#D1FAE5' }
+                  if (rPct <= 30) return { color: '#92400E', bgcolor: '#FEF3C7' }
+                  return { color: '#991B1B', bgcolor: '#FEE2E2' }
+                }
+                const getRatingStyle = (rating: number | null) => {
+                  if (rating === null) return { color: '#94A3B8', bgcolor: 'transparent' }
+                  if (rating > 4.8) return { color: '#065F46', bgcolor: '#D1FAE5' }
+                  if (rating >= 4) return { color: '#92400E', bgcolor: '#FEF3C7' }
+                  return { color: '#991B1B', bgcolor: '#FEE2E2' }
+                }
+                
                 return (
                   <TableRow key={idx} sx={{ '&:hover': { bgcolor: '#F8FAFC' } }}>
+                    {/* Overview Group */}
                     <TableCell sx={{ 
+                      ...cellStyle,
                       position: 'sticky', 
                       left: 0, 
                       bgcolor: 'white', 
-                      borderRight: '2px solid #E2E8F0',
                       zIndex: 1,
                     }}>
                       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                        <Typography variant="body2" sx={{ fontWeight: 600, color: '#1F2937' }}>
+                        <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#1E293B' }}>
                           {trainer.trainer_name || 'Unknown'}
                         </Typography>
-                        <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.7rem' }}>
+                        <Typography sx={{ fontSize: '0.55rem', color: '#94A3B8' }}>
                           ID: {trainer.trainer_id || 'N/A'}
                         </Typography>
                       </Box>
                     </TableCell>
                     <TableCell sx={{ 
+                      ...cellStyle,
                       position: 'sticky', 
-                      left: 180, 
+                      left: 160, 
                       bgcolor: 'white', 
-                      borderRight: '2px solid #E2E8F0',
+                      borderRight: `2px solid ${COLUMN_GROUPS.overview.borderColor}`,
                       zIndex: 1,
                     }}>
-                      <Typography variant="body2" sx={{ color: '#1F2937', fontSize: '0.875rem' }}>
+                      <Typography sx={{ fontSize: '0.65rem', color: '#64748B' }}>
                         {trainer.trainer_email || 'N/A'}
                       </Typography>
                     </TableCell>
-                    <TableCell align="center">
-                      <Typography variant="body2" sx={{ fontWeight: 600, color: '#1F2937' }}>
+                    {/* Tasks Group */}
+                    <TableCell align="center" sx={{ ...cellStyle }}>
+                      <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#475569' }}>
                         {trainer.unique_tasks ?? 0}
                       </Typography>
                     </TableCell>
-                    <TableCell align="center">
-                      <Typography variant="body2" sx={{ fontWeight: 600, color: newTasks ? '#10B981' : '#9CA3AF' }}>
+                    <TableCell align="center" sx={{ ...cellStyle }}>
+                      <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#475569' }}>
                         {newTasks}
                       </Typography>
                     </TableCell>
-                    <TableCell align="center">
-                      <Typography variant="body2" sx={{ fontWeight: 600, color: rework ? '#F59E0B' : '#9CA3AF' }}>
+                    <TableCell align="center" sx={{ ...cellStyle }}>
+                      <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#475569' }}>
                         {rework}
                       </Typography>
                     </TableCell>
-                    <TableCell align="center">
-                      <Typography variant="body2" sx={{ fontWeight: 600, color: '#1F2937' }}>
-                        {trainer.total_reviews ?? 0}
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Typography variant="body2" sx={{ fontWeight: 600, color: trainer.approved ? '#10B981' : '#9CA3AF' }}>
+                    <TableCell align="center" sx={{ ...cellStyle }}>
+                      <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#475569' }}>
                         {trainer.approved ?? 0}
                       </Typography>
                     </TableCell>
-                    <TableCell align="center">
-                      <Typography variant="body2" sx={{ fontWeight: 600, color: trainer.approved_rework ? '#F59E0B' : '#9CA3AF' }}>
-                        {trainer.approved_rework ?? 0}
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Typography variant="body2" sx={{ fontWeight: 600, color: trainer.delivered ? '#10B981' : '#9CA3AF' }}>
+                    <TableCell align="center" sx={{ ...cellStyle }}>
+                      <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#64748B' }}>
                         {trainer.delivered ?? 0}
                       </Typography>
                     </TableCell>
-                    <TableCell align="center">
-                      <Typography variant="body2" sx={{ fontWeight: 600, color: trainer.in_queue ? '#EF4444' : '#9CA3AF' }}>
+                    <TableCell align="center" sx={{ ...cellStyle, borderRight: `2px solid ${COLUMN_GROUPS.tasks.borderColor}` }}>
+                      <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#64748B' }}>
                         {trainer.in_queue ?? 0}
                       </Typography>
                     </TableCell>
-                    <TableCell align="center">
-                      <Typography variant="body2" sx={{ 
-                        fontWeight: 600, 
-                        color: trainer.avg_rework !== null 
-                          ? (trainer.avg_rework >= 3 ? '#EF4444' : trainer.avg_rework >= 2 ? '#F59E0B' : '#10B981')
-                          : '#9CA3AF'
-                      }}>
+                    {/* Quality Group */}
+                    <TableCell align="center" sx={{ ...cellStyle }}>
+                      <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#475569' }}>
+                        {trainer.total_reviews ?? 0}
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="center" sx={{ ...cellStyle, ...getAvgReworkStyle(trainer.avg_rework) }}>
+                      <Typography sx={{ fontSize: '0.7rem', fontWeight: 600 }}>
                         {trainer.avg_rework !== null ? trainer.avg_rework.toFixed(2) : '-'}
                       </Typography>
                     </TableCell>
-                    <TableCell align="center">
-                      <Typography variant="body2" sx={{ 
-                        fontWeight: 600, 
-                        color: trainer.rework_percent !== null 
-                          ? (trainer.rework_percent >= 70 ? '#EF4444' : trainer.rework_percent >= 50 ? '#F59E0B' : '#10B981')
-                          : '#9CA3AF'
-                      }}>
+                    <TableCell align="center" sx={{ ...cellStyle, ...getReworkPctStyle(trainer.rework_percent) }}>
+                      <Typography sx={{ fontSize: '0.7rem', fontWeight: 600 }}>
                         {trainer.rework_percent !== null ? `${Math.round(trainer.rework_percent)}%` : '-'}
                       </Typography>
                     </TableCell>
-                    <TableCell align="center">
-                      <Typography variant="body2" sx={{ 
-                        fontWeight: 600, 
-                        color: trainer.avg_rating !== null 
-                          ? (trainer.avg_rating >= 4.5 ? '#10B981' : trainer.avg_rating >= 3.5 ? '#F59E0B' : '#EF4444')
-                          : '#9CA3AF'
-                      }}>
+                    <TableCell align="center" sx={{ ...cellStyle, borderRight: `2px solid ${COLUMN_GROUPS.quality.borderColor}`, ...getRatingStyle(trainer.avg_rating) }}>
+                      <Typography sx={{ fontSize: '0.7rem', fontWeight: 600 }}>
                         {trainer.avg_rating !== null ? trainer.avg_rating.toFixed(2) : '-'}
                       </Typography>
                     </TableCell>
-                    <TableCell align="center">
-                      <Typography variant="body2" sx={{ fontWeight: 600, color: mergedExpAht !== null ? '#1F2937' : '#9CA3AF' }}>
-                        {mergedExpAht !== null ? mergedExpAht.toFixed(2) : '-'}
+                    {/* Time & Efficiency Group */}
+                    <TableCell align="center" sx={{ ...cellStyle }}>
+                      <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#475569' }}>
+                        {mergedExpAht !== null ? mergedExpAht.toFixed(1) : '-'}
                       </Typography>
                     </TableCell>
-                    <TableCell align="center" sx={{ bgcolor: '#FFFBEB' }}>
-                      <Typography variant="body2" sx={{ fontWeight: 600, color: trainer.jibble_hours ? '#92400E' : '#9CA3AF' }}>
+                    <TableCell align="center" sx={{ ...cellStyle, borderRight: selectedProject === undefined ? 'none' : `2px solid ${COLUMN_GROUPS.efficiency.borderColor}` }}>
+                      <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#92400E' }}>
                         {trainer.jibble_hours !== null && trainer.jibble_hours !== undefined ? trainer.jibble_hours.toFixed(1) : '-'}
                       </Typography>
                     </TableCell>
                     {/* Time Theft Detection Cells - Only show when project is selected */}
                     {selectedProject !== undefined && (() => {
-                      // Accounted Hours = Total Expected Hours based on AHT
-                      // Formula: (newTasks × newTaskAht) + (rework × reworkAht)
                       const accountedHrs = calculateTotalExpectedHours(newTasks, rework, selectedProject)
                       const jibbleHrs = trainer.jibble_hours
-                      
-                      // Efficiency = Accounted Hours / Jibble Hours × 100
-                      // Below 50% = Time Theft Flag
                       const efficiency = (accountedHrs !== null && jibbleHrs && jibbleHrs > 0) 
                         ? (accountedHrs / jibbleHrs) * 100 
                         : null
-                      
-                      // Time theft flag: efficiency < 50%
-                      const isTimeTheft = efficiency !== null && efficiency < 50
-                      const isWarning = efficiency !== null && efficiency >= 50 && efficiency < 70
+                      const getEffStyle = (eff: number | null) => {
+                        if (eff === null) return { color: '#94A3B8', bgcolor: 'transparent' }
+                        if (eff >= 90) return { color: '#065F46', bgcolor: '#D1FAE5' }
+                        if (eff >= 70) return { color: '#92400E', bgcolor: '#FEF3C7' }
+                        return { color: '#991B1B', bgcolor: '#FEE2E2' }
+                      }
                       
                       return (
                         <>
-                          {/* Accounted Hours */}
-                          <TableCell align="center" sx={{ bgcolor: '#F0FDF4', px: 1 }}>
-                            {accountedHrs !== null ? (
-                              <Tooltip title={`New: ${newTasks} tasks, Rework: ${rework} tasks`} arrow>
-                                <Typography variant="body2" sx={{ fontWeight: 600, color: '#166534' }}>
-                                  {accountedHrs.toFixed(1)}
-                                </Typography>
-                              </Tooltip>
-                            ) : (
-                              <Typography variant="body2" sx={{ color: '#9CA3AF' }}>-</Typography>
-                            )}
+                          <TableCell align="center" sx={{ ...cellStyle }}>
+                            <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#475569' }}>
+                              {accountedHrs !== null ? accountedHrs.toFixed(1) : '-'}
+                            </Typography>
                           </TableCell>
-                          {/* Efficiency - Time Theft Detection */}
-                          <TableCell align="center" sx={{ 
-                            bgcolor: isTimeTheft ? '#FEE2E2' : isWarning ? '#FEF3C7' : '#F0FDF4', 
-                            px: 1 
-                          }}>
-                            {efficiency !== null ? (
-                              <Tooltip 
-                                title={
-                                  isTimeTheft 
-                                    ? `⚠️ TIME THEFT FLAG: Only ${efficiency.toFixed(0)}% of logged time accounted for. Unaccounted: ${(jibbleHrs! - (accountedHrs || 0)).toFixed(1)} hrs`
-                                    : `Accounted: ${accountedHrs?.toFixed(1)}hrs / Logged: ${jibbleHrs?.toFixed(1)}hrs`
-                                } 
-                                arrow
-                              >
-                                <Chip
-                                  label={`${efficiency.toFixed(0)}%`}
-                                  size="small"
-                                  icon={isTimeTheft ? <span style={{ fontSize: '10px' }}>🚨</span> : undefined}
-                                  sx={{
-                                    fontWeight: 700,
-                                    fontSize: '0.75rem',
-                                    bgcolor: isTimeTheft ? '#DC2626' : isWarning ? '#F59E0B' : efficiency >= 90 ? '#10B981' : '#3B82F6',
-                                    color: 'white',
-                                    minWidth: 60,
-                                    '& .MuiChip-icon': { marginLeft: '4px' }
-                                  }}
-                                />
-                              </Tooltip>
-                            ) : (
-                              <Tooltip title="Requires Jibble hours data" arrow>
-                                <Typography variant="body2" sx={{ color: '#9CA3AF', cursor: 'help', fontSize: '0.75rem' }}>-</Typography>
-                              </Tooltip>
-                            )}
+                          <TableCell align="center" sx={{ ...cellStyle, ...getEffStyle(efficiency) }}>
+                            <Typography sx={{ fontSize: '0.7rem', fontWeight: 600 }}>
+                              {efficiency !== null ? `${efficiency.toFixed(0)}%` : '-'}
+                            </Typography>
                           </TableCell>
                         </>
                       )

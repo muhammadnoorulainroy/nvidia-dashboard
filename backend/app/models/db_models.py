@@ -426,27 +426,52 @@ class JibbleTimeEntry(Base):
 
 
 class JibbleEmailMapping(Base):
-    """Mapping between Turing email and Jibble email"""
+    """Mapping between Turing email and Jibble ID/email.
+    
+    Synced from Google Sheet: Jibble ID <> Turing Email mapping
+    This table links BigQuery jibble_hours.member_code to turing emails.
+    """
     __tablename__ = 'jibble_email_mapping'
     
     id = Column(Integer, primary_key=True, autoincrement=True)
-    turing_email = Column(String(255), unique=True, index=True)
+    jibble_id = Column(String(50), unique=True, index=True)  # Maps to jibble_hours.member_code
     jibble_email = Column(String(255), index=True)
+    jibble_name = Column(String(255))
+    turing_email = Column(String(255), index=True)
     last_synced = Column(DateTime)
     created_at = Column(DateTime, server_default='now()')
+    
+    # Index for quick lookups
+    __table_args__ = (
+        Index('ix_jibble_email_mapping_turing', 'turing_email'),
+    )
 
 
 class JibbleHours(Base):
-    """Jibble hours synced from BigQuery turing-230020.test.Jibblelogs"""
+    """Jibble hours - synced from BigQuery OR Jibble API directly.
+    
+    Sources:
+    - 'bigquery': From turing-230020.test.Jibblelogs (uses member_code as numeric ID)
+    - 'jibble_api': From Jibble API directly (uses member_code as UUID)
+    """
     __tablename__ = 'jibble_hours'
     
     id = Column(Integer, primary_key=True, autoincrement=True)
-    member_code = Column(String(50), index=True)  # Maps to jibble_id in pod_lead_mapping
+    member_code = Column(String(100), index=True)  # Numeric ID (BigQuery) or UUID (API)
     entry_date = Column(Date, index=True)
     project = Column(String(255), index=True)
     full_name = Column(String(255))
     logged_hours = Column(Float, default=0)
+    jibble_email = Column(String(255), index=True)  # Personal email from Jibble
+    turing_email = Column(String(255), index=True)  # Matched Turing email
+    source = Column(String(50), default='bigquery', index=True)  # 'bigquery' or 'jibble_api'
     last_synced = Column(DateTime, server_default='now()')
+    
+    # Composite index for common queries
+    __table_args__ = (
+        Index('ix_jibble_hours_email_date', 'turing_email', 'entry_date'),
+        Index('ix_jibble_hours_source_date', 'source', 'entry_date'),
+    )
 
 
 # ==================== Trainer Review Attribution ====================

@@ -1,0 +1,327 @@
+{
+  "table": "language",
+  "row_count": 29,
+  "sample_count": 29,
+  "fetched_at": "2026-01-28T23:23:55.436109",
+  "data": [
+    {
+      "id": 29,
+      "name": "Bhojpuri",
+      "code": "bho",
+      "is_available": 1,
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06501101001",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 28,
+      "name": "Levantine Arabic",
+      "code": "apc",
+      "is_available": 1,
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06501101000",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 27,
+      "name": "Gujarati",
+      "code": "gu",
+      "is_available": 1,
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06501100111",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 26,
+      "name": "Hausa",
+      "code": "ha",
+      "is_available": 1,
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06501100110",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 25,
+      "name": "Italian",
+      "code": "it",
+      "is_available": 1,
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06501100101",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 24,
+      "name": "Persian (Iranian Persian)",
+      "code": "fa",
+      "is_available": 1,
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06501100100",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 23,
+      "name": "Javanese",
+      "code": "jv",
+      "is_available": 1,
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06501100011",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 22,
+      "name": "French",
+      "code": "fr",
+      "is_available": 1,
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06501100010",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 21,
+      "name": "Indonesian",
+      "code": "id",
+      "is_available": 1,
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06501100001",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 20,
+      "name": "German",
+      "code": "de",
+      "is_available": 1,
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06501100000",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 19,
+      "name": "Urdu",
+      "code": "ur",
+      "is_available": 1,
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06501011111",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 18,
+      "name": "Tamil",
+      "code": "ta",
+      "is_available": 1,
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06501011110",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 17,
+      "name": "Korean",
+      "code": "ko",
+      "is_available": 1,
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06501011101",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 16,
+      "name": "Telugu",
+      "code": "te",
+      "is_available": 1,
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06501011100",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 15,
+      "name": "Marathi",
+      "code": "mr",
+      "is_available": 1,
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06501011011",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 14,
+      "name": "Wu Chinese",
+      "code": "wuu",
+      "is_available": 1,
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06501011010",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 13,
+      "name": "Egyptian Arabic",
+      "code": "arz",
+      "is_available": 1,
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06501011001",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 12,
+      "name": "Turkish",
+      "code": "tr",
+      "is_available": 1,
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06501011000",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 11,
+      "name": "Yue Chinese (Cantonese)",
+      "code": "yue",
+      "is_available": 1,
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06501010111",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 10,
+      "name": "Vietnamese",
+      "code": "vi",
+      "is_available": 1,
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06501010110",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 9,
+      "name": "Western Punjabi",
+      "code": "pnb",
+      "is_available": 1,
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06501010101",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 8,
+      "name": "Japanese",
+      "code": "ja",
+      "is_available": 1,
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06501010100",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 7,
+      "name": "Russian",
+      "code": "ru",
+      "is_available": 1,
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06501010011",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 6,
+      "name": "Bengali",
+      "code": "bn",
+      "is_available": 1,
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06501010010",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 5,
+      "name": "Portuguese",
+      "code": "pt",
+      "is_available": 1,
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06501010001",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 4,
+      "name": "Hindi",
+      "code": "hi",
+      "is_available": 1,
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06501010000",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 3,
+      "name": "English",
+      "code": "en",
+      "is_available": 1,
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06501001111",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 2,
+      "name": "Spanish",
+      "code": "es",
+      "is_available": 1,
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06501001110",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 1,
+      "name": "Mandarin Chinese",
+      "code": "cmn",
+      "is_available": 1,
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06501001101",
+        "source_timestamp": 1763613257000
+      }
+    }
+  ]
+}

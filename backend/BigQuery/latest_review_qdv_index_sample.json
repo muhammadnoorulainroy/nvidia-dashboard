@@ -1,0 +1,1708 @@
+{
+  "table": "latest_review_qdv_index",
+  "row_count": 88743,
+  "sample_count": 100,
+  "fetched_at": "2026-01-28T23:23:57.524512",
+  "data": [
+    {
+      "created_at": "2026-01-28T22:09:43.807576",
+      "updated_at": "2026-01-28T22:09:43.807576",
+      "id": 88778,
+      "conversation_version_id": 42510,
+      "quality_dimension_id": 39,
+      "conversation_id": 64992,
+      "latest_manual_qdv_id": null,
+      "latest_manual_review_id": null,
+      "latest_auto_qdv_id": 139831,
+      "latest_auto_review_id": 26195,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "f307c62b-2dd7-456b-a9a8-60c93d0f358b",
+        "source_timestamp": 1769638183000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:09:43.794927",
+      "updated_at": "2026-01-28T22:09:43.794927",
+      "id": 88777,
+      "conversation_version_id": 42510,
+      "quality_dimension_id": 36,
+      "conversation_id": 64992,
+      "latest_manual_qdv_id": null,
+      "latest_manual_review_id": null,
+      "latest_auto_qdv_id": 139830,
+      "latest_auto_review_id": 26195,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "c176fdbc-acd9-4a40-93e2-de28395eb5a2",
+        "source_timestamp": 1769638183000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:09:43.782267",
+      "updated_at": "2026-01-28T22:09:43.782267",
+      "id": 88776,
+      "conversation_version_id": 42510,
+      "quality_dimension_id": 35,
+      "conversation_id": 64992,
+      "latest_manual_qdv_id": null,
+      "latest_manual_review_id": null,
+      "latest_auto_qdv_id": 139829,
+      "latest_auto_review_id": 26195,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "5deee61e-cafe-4649-aff0-bd59f6420f1d",
+        "source_timestamp": 1769638183000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:09:43.769306",
+      "updated_at": "2026-01-28T22:09:43.769306",
+      "id": 88775,
+      "conversation_version_id": 42510,
+      "quality_dimension_id": 34,
+      "conversation_id": 64992,
+      "latest_manual_qdv_id": null,
+      "latest_manual_review_id": null,
+      "latest_auto_qdv_id": 139828,
+      "latest_auto_review_id": 26195,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "06fad620-f3c5-4373-a1ee-0fc578d734d7",
+        "source_timestamp": 1769638183000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:09:43.756813",
+      "updated_at": "2026-01-28T22:09:43.756813",
+      "id": 88774,
+      "conversation_version_id": 42510,
+      "quality_dimension_id": 33,
+      "conversation_id": 64992,
+      "latest_manual_qdv_id": null,
+      "latest_manual_review_id": null,
+      "latest_auto_qdv_id": 139827,
+      "latest_auto_review_id": 26195,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "7067c2a9-c497-4cd0-9647-dddfc8ff3e17",
+        "source_timestamp": 1769638183000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:09:43.739277",
+      "updated_at": "2026-01-28T22:09:43.739277",
+      "id": 88773,
+      "conversation_version_id": 42510,
+      "quality_dimension_id": 32,
+      "conversation_id": 64992,
+      "latest_manual_qdv_id": null,
+      "latest_manual_review_id": null,
+      "latest_auto_qdv_id": 139826,
+      "latest_auto_review_id": 26195,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "bd90c8da-46c4-451a-a3f8-fdc9e48d113b",
+        "source_timestamp": 1769638183000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:08:54.858034",
+      "updated_at": "2026-01-28T22:08:54.858034",
+      "id": 88772,
+      "conversation_version_id": 42418,
+      "quality_dimension_id": 146,
+      "conversation_id": 69668,
+      "latest_manual_qdv_id": 139825,
+      "latest_manual_review_id": 26194,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "2622efd0-5e43-4864-8b1a-6ad3e49ceec4",
+        "source_timestamp": 1769638134000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:08:54.845782",
+      "updated_at": "2026-01-28T22:08:54.845782",
+      "id": 88771,
+      "conversation_version_id": 42418,
+      "quality_dimension_id": 145,
+      "conversation_id": 69668,
+      "latest_manual_qdv_id": 139824,
+      "latest_manual_review_id": 26194,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "182a3cc8-55a1-4214-a7cd-ecd8d5012479",
+        "source_timestamp": 1769638134000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:08:54.833773",
+      "updated_at": "2026-01-28T22:08:54.833773",
+      "id": 88770,
+      "conversation_version_id": 42418,
+      "quality_dimension_id": 143,
+      "conversation_id": 69668,
+      "latest_manual_qdv_id": 139823,
+      "latest_manual_review_id": 26194,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "bb250c12-e218-4c55-8cca-bca528b2a785",
+        "source_timestamp": 1769638134000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:08:54.822697",
+      "updated_at": "2026-01-28T22:08:54.822697",
+      "id": 88769,
+      "conversation_version_id": 42418,
+      "quality_dimension_id": 144,
+      "conversation_id": 69668,
+      "latest_manual_qdv_id": 139822,
+      "latest_manual_review_id": 26194,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "04c25b96-62be-4a55-80c1-fd8e3ceb9953",
+        "source_timestamp": 1769638134000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:08:54.810188",
+      "updated_at": "2026-01-28T22:08:54.810188",
+      "id": 88768,
+      "conversation_version_id": 42418,
+      "quality_dimension_id": 142,
+      "conversation_id": 69668,
+      "latest_manual_qdv_id": 139821,
+      "latest_manual_review_id": 26194,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "bfa01f1d-b24a-4f5e-bdfe-3a88b132e8ed",
+        "source_timestamp": 1769638134000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:08:54.797365",
+      "updated_at": "2026-01-28T22:08:54.797365",
+      "id": 88767,
+      "conversation_version_id": 42418,
+      "quality_dimension_id": 80,
+      "conversation_id": 69668,
+      "latest_manual_qdv_id": 139820,
+      "latest_manual_review_id": 26194,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "e89ff4bd-3e57-407d-93ac-b50b37cec104",
+        "source_timestamp": 1769638134000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:08:54.785576",
+      "updated_at": "2026-01-28T22:08:54.785576",
+      "id": 88766,
+      "conversation_version_id": 42418,
+      "quality_dimension_id": 55,
+      "conversation_id": 69668,
+      "latest_manual_qdv_id": 139819,
+      "latest_manual_review_id": 26194,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "40c9e168-e705-4a47-90ef-217223b0cca3",
+        "source_timestamp": 1769638134000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:08:54.774699",
+      "updated_at": "2026-01-28T22:08:54.774699",
+      "id": 88765,
+      "conversation_version_id": 42418,
+      "quality_dimension_id": 54,
+      "conversation_id": 69668,
+      "latest_manual_qdv_id": 139818,
+      "latest_manual_review_id": 26194,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "ef0ed127-50bd-45a8-af1a-ec46481f9ba3",
+        "source_timestamp": 1769638134000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:08:54.762075",
+      "updated_at": "2026-01-28T22:08:54.762075",
+      "id": 88764,
+      "conversation_version_id": 42418,
+      "quality_dimension_id": 79,
+      "conversation_id": 69668,
+      "latest_manual_qdv_id": 139817,
+      "latest_manual_review_id": 26194,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "fabfadaf-b300-45ae-a700-f1ceeec26cfb",
+        "source_timestamp": 1769638134000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:08:54.750964",
+      "updated_at": "2026-01-28T22:08:54.750964",
+      "id": 88763,
+      "conversation_version_id": 42418,
+      "quality_dimension_id": 48,
+      "conversation_id": 69668,
+      "latest_manual_qdv_id": 139816,
+      "latest_manual_review_id": 26194,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "5a603b5c-5198-47b1-8186-41b519555765",
+        "source_timestamp": 1769638134000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:08:54.738196",
+      "updated_at": "2026-01-28T22:08:54.738196",
+      "id": 88762,
+      "conversation_version_id": 42418,
+      "quality_dimension_id": 52,
+      "conversation_id": 69668,
+      "latest_manual_qdv_id": 139815,
+      "latest_manual_review_id": 26194,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "e04d723c-85bb-4327-ba86-f5569141e649",
+        "source_timestamp": 1769638134000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:08:54.726246",
+      "updated_at": "2026-01-28T22:08:54.726246",
+      "id": 88761,
+      "conversation_version_id": 42418,
+      "quality_dimension_id": 53,
+      "conversation_id": 69668,
+      "latest_manual_qdv_id": 139814,
+      "latest_manual_review_id": 26194,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "2182ce44-7207-4e0b-9413-6492ee81549e",
+        "source_timestamp": 1769638134000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:08:54.712552",
+      "updated_at": "2026-01-28T22:08:54.712552",
+      "id": 88760,
+      "conversation_version_id": 42418,
+      "quality_dimension_id": 51,
+      "conversation_id": 69668,
+      "latest_manual_qdv_id": 139813,
+      "latest_manual_review_id": 26194,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "df979b35-3665-4ae0-92f4-28001cf93887",
+        "source_timestamp": 1769638134000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:08:54.697216",
+      "updated_at": "2026-01-28T22:08:54.697216",
+      "id": 88759,
+      "conversation_version_id": 42418,
+      "quality_dimension_id": 81,
+      "conversation_id": 69668,
+      "latest_manual_qdv_id": 139812,
+      "latest_manual_review_id": 26194,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "54ef5c69-4f83-45b4-b4df-0b22390d847e",
+        "source_timestamp": 1769638134000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:08:54.681839",
+      "updated_at": "2026-01-28T22:08:54.681839",
+      "id": 88758,
+      "conversation_version_id": 42418,
+      "quality_dimension_id": 50,
+      "conversation_id": 69668,
+      "latest_manual_qdv_id": 139811,
+      "latest_manual_review_id": 26194,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "3d19ab5a-dacc-4599-a189-8d6f9f19cccc",
+        "source_timestamp": 1769638134000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:08:54.665458",
+      "updated_at": "2026-01-28T22:08:54.665458",
+      "id": 88757,
+      "conversation_version_id": 42418,
+      "quality_dimension_id": 49,
+      "conversation_id": 69668,
+      "latest_manual_qdv_id": 139810,
+      "latest_manual_review_id": 26194,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "dd2a62de-eb33-4dac-8cb2-5e2bc0a4d8fe",
+        "source_timestamp": 1769638134000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:06:00.386577",
+      "updated_at": "2026-01-28T22:06:00.386577",
+      "id": 88756,
+      "conversation_version_id": 42247,
+      "quality_dimension_id": 38,
+      "conversation_id": 64752,
+      "latest_manual_qdv_id": 139809,
+      "latest_manual_review_id": 26193,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "ce75cacb-73f6-4d60-a86f-2132a02c7d22",
+        "source_timestamp": 1769637960000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:06:00.373683",
+      "updated_at": "2026-01-28T22:06:00.373683",
+      "id": 88755,
+      "conversation_version_id": 42247,
+      "quality_dimension_id": 37,
+      "conversation_id": 64752,
+      "latest_manual_qdv_id": 139808,
+      "latest_manual_review_id": 26193,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "85873dee-e4c9-4e2a-915c-2eca4c7941ef",
+        "source_timestamp": 1769637960000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:03:23.717322",
+      "updated_at": "2026-01-28T22:03:23.717322",
+      "id": 88754,
+      "conversation_version_id": 42507,
+      "quality_dimension_id": 39,
+      "conversation_id": 64027,
+      "latest_manual_qdv_id": null,
+      "latest_manual_review_id": null,
+      "latest_auto_qdv_id": 139801,
+      "latest_auto_review_id": 26192,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "1f15b14e-0ca0-492e-a39d-07c64a2b4d50",
+        "source_timestamp": 1769637803000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:03:23.703944",
+      "updated_at": "2026-01-28T22:03:23.703944",
+      "id": 88753,
+      "conversation_version_id": 42507,
+      "quality_dimension_id": 36,
+      "conversation_id": 64027,
+      "latest_manual_qdv_id": null,
+      "latest_manual_review_id": null,
+      "latest_auto_qdv_id": 139800,
+      "latest_auto_review_id": 26192,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "f4e2d3d5-191d-401e-a915-08119f835285",
+        "source_timestamp": 1769637803000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:03:23.690251",
+      "updated_at": "2026-01-28T22:03:23.690251",
+      "id": 88752,
+      "conversation_version_id": 42507,
+      "quality_dimension_id": 35,
+      "conversation_id": 64027,
+      "latest_manual_qdv_id": null,
+      "latest_manual_review_id": null,
+      "latest_auto_qdv_id": 139799,
+      "latest_auto_review_id": 26192,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "0564a64d-2f7a-498f-b239-7f47007a60a9",
+        "source_timestamp": 1769637803000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:03:23.676957",
+      "updated_at": "2026-01-28T22:03:23.676957",
+      "id": 88751,
+      "conversation_version_id": 42507,
+      "quality_dimension_id": 34,
+      "conversation_id": 64027,
+      "latest_manual_qdv_id": null,
+      "latest_manual_review_id": null,
+      "latest_auto_qdv_id": 139798,
+      "latest_auto_review_id": 26192,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "977c60e3-9d53-48a6-8acb-e526006ed3d1",
+        "source_timestamp": 1769637803000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:03:23.663973",
+      "updated_at": "2026-01-28T22:03:23.663973",
+      "id": 88750,
+      "conversation_version_id": 42507,
+      "quality_dimension_id": 33,
+      "conversation_id": 64027,
+      "latest_manual_qdv_id": null,
+      "latest_manual_review_id": null,
+      "latest_auto_qdv_id": 139797,
+      "latest_auto_review_id": 26192,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "342c41f6-d25f-4ec2-b590-0ccc5b73d5fd",
+        "source_timestamp": 1769637803000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:03:23.643883",
+      "updated_at": "2026-01-28T22:03:23.643883",
+      "id": 88749,
+      "conversation_version_id": 42507,
+      "quality_dimension_id": 32,
+      "conversation_id": 64027,
+      "latest_manual_qdv_id": null,
+      "latest_manual_review_id": null,
+      "latest_auto_qdv_id": 139796,
+      "latest_auto_review_id": 26192,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "faca7c06-0c22-4904-bb1e-494e7a987c97",
+        "source_timestamp": 1769637803000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:03:04.294258",
+      "updated_at": "2026-01-28T22:03:04.294258",
+      "id": 88748,
+      "conversation_version_id": 42506,
+      "quality_dimension_id": 38,
+      "conversation_id": 62894,
+      "latest_manual_qdv_id": 139795,
+      "latest_manual_review_id": 26191,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "60657f6b-0592-44c6-bb50-6b3f5de5a0f1",
+        "source_timestamp": 1769637784000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:03:04.281571",
+      "updated_at": "2026-01-28T22:03:04.281571",
+      "id": 88747,
+      "conversation_version_id": 42506,
+      "quality_dimension_id": 37,
+      "conversation_id": 62894,
+      "latest_manual_qdv_id": 139794,
+      "latest_manual_review_id": 26191,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "f76e6ba7-9f3c-420e-ba1b-0f8e3cd342bc",
+        "source_timestamp": 1769637784000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:00:44.872472",
+      "updated_at": "2026-01-28T22:03:04",
+      "id": 88746,
+      "conversation_version_id": 42506,
+      "quality_dimension_id": 39,
+      "conversation_id": 62894,
+      "latest_manual_qdv_id": 139793,
+      "latest_manual_review_id": 26191,
+      "latest_auto_qdv_id": 139767,
+      "latest_auto_review_id": 26189,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "505caa14-6d39-429a-a58f-8c982ecd1467",
+        "source_timestamp": 1769637784000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:00:44.858526",
+      "updated_at": "2026-01-28T22:03:04",
+      "id": 88745,
+      "conversation_version_id": 42506,
+      "quality_dimension_id": 36,
+      "conversation_id": 62894,
+      "latest_manual_qdv_id": 139790,
+      "latest_manual_review_id": 26191,
+      "latest_auto_qdv_id": 139766,
+      "latest_auto_review_id": 26189,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "d244ef90-a1ef-458f-8cbe-a5798c790d68",
+        "source_timestamp": 1769637784000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:00:44.845236",
+      "updated_at": "2026-01-28T22:03:04",
+      "id": 88744,
+      "conversation_version_id": 42506,
+      "quality_dimension_id": 35,
+      "conversation_id": 62894,
+      "latest_manual_qdv_id": 139792,
+      "latest_manual_review_id": 26191,
+      "latest_auto_qdv_id": 139765,
+      "latest_auto_review_id": 26189,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "acfbdbea-1ea8-4702-bbe1-2b751a300df4",
+        "source_timestamp": 1769637784000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:00:44.829866",
+      "updated_at": "2026-01-28T22:03:04",
+      "id": 88743,
+      "conversation_version_id": 42506,
+      "quality_dimension_id": 34,
+      "conversation_id": 62894,
+      "latest_manual_qdv_id": 139791,
+      "latest_manual_review_id": 26191,
+      "latest_auto_qdv_id": 139764,
+      "latest_auto_review_id": 26189,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "08d9831d-37e5-4d67-86de-4e9b71dcc75a",
+        "source_timestamp": 1769637784000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:00:44.816426",
+      "updated_at": "2026-01-28T22:03:04",
+      "id": 88742,
+      "conversation_version_id": 42506,
+      "quality_dimension_id": 33,
+      "conversation_id": 62894,
+      "latest_manual_qdv_id": 139789,
+      "latest_manual_review_id": 26191,
+      "latest_auto_qdv_id": 139763,
+      "latest_auto_review_id": 26189,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "3ea5473a-e10e-40d0-b72d-2fee8bfe563c",
+        "source_timestamp": 1769637784000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:00:44.794251",
+      "updated_at": "2026-01-28T22:03:04",
+      "id": 88741,
+      "conversation_version_id": 42506,
+      "quality_dimension_id": 32,
+      "conversation_id": 62894,
+      "latest_manual_qdv_id": 139788,
+      "latest_manual_review_id": 26191,
+      "latest_auto_qdv_id": 139762,
+      "latest_auto_review_id": 26189,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "0bc6221a-d2f7-4c7d-b3b6-e95b277cebc2",
+        "source_timestamp": 1769637784000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:55:32.438103",
+      "updated_at": "2026-01-28T21:55:32.438103",
+      "id": 88740,
+      "conversation_version_id": 42358,
+      "quality_dimension_id": 38,
+      "conversation_id": 64698,
+      "latest_manual_qdv_id": 139752,
+      "latest_manual_review_id": 26187,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "203df534-66f5-4e07-abad-65ac05dfd05f",
+        "source_timestamp": 1769637332000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:55:32.424747",
+      "updated_at": "2026-01-28T21:55:32.424747",
+      "id": 88739,
+      "conversation_version_id": 42358,
+      "quality_dimension_id": 37,
+      "conversation_id": 64698,
+      "latest_manual_qdv_id": 139751,
+      "latest_manual_review_id": 26187,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "fd287779-81f6-418a-abcb-6f1a157e2a9b",
+        "source_timestamp": 1769637332000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:55:23.894689",
+      "updated_at": "2026-01-28T21:55:23.894689",
+      "id": 88738,
+      "conversation_version_id": 42489,
+      "quality_dimension_id": 38,
+      "conversation_id": 64932,
+      "latest_manual_qdv_id": 139744,
+      "latest_manual_review_id": 26186,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "19cd006f-ebdf-4fd6-8430-123ed9fabd16",
+        "source_timestamp": 1769637323000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:55:23.882227",
+      "updated_at": "2026-01-28T21:55:23.882227",
+      "id": 88737,
+      "conversation_version_id": 42489,
+      "quality_dimension_id": 37,
+      "conversation_id": 64932,
+      "latest_manual_qdv_id": 139743,
+      "latest_manual_review_id": 26186,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "cb32157e-0953-4829-8213-e2fd13cbef22",
+        "source_timestamp": 1769637323000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:49:24.937795",
+      "updated_at": "2026-01-28T21:49:24.937795",
+      "id": 88736,
+      "conversation_version_id": 41664,
+      "quality_dimension_id": 123,
+      "conversation_id": 70560,
+      "latest_manual_qdv_id": 139730,
+      "latest_manual_review_id": 26184,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "cfa08fb1-e1e5-4003-b7c4-f40591411eb7",
+        "source_timestamp": 1769636964000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:49:24.904820",
+      "updated_at": "2026-01-28T21:49:24.904820",
+      "id": 88735,
+      "conversation_version_id": 41664,
+      "quality_dimension_id": 120,
+      "conversation_id": 70560,
+      "latest_manual_qdv_id": 139729,
+      "latest_manual_review_id": 26184,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "f7d758a3-5c08-4b09-bcca-1eaa4ebe03a6",
+        "source_timestamp": 1769636964000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:49:24.886198",
+      "updated_at": "2026-01-28T21:49:24.886198",
+      "id": 88734,
+      "conversation_version_id": 41664,
+      "quality_dimension_id": 122,
+      "conversation_id": 70560,
+      "latest_manual_qdv_id": 139728,
+      "latest_manual_review_id": 26184,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "d8707ece-145b-42d6-871a-ace481f9b1e7",
+        "source_timestamp": 1769636964000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:49:24.871579",
+      "updated_at": "2026-01-28T21:49:24.871579",
+      "id": 88733,
+      "conversation_version_id": 41664,
+      "quality_dimension_id": 121,
+      "conversation_id": 70560,
+      "latest_manual_qdv_id": 139727,
+      "latest_manual_review_id": 26184,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "b35246b3-8d15-4e97-8e4e-bdca0be32a8e",
+        "source_timestamp": 1769636964000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:49:24.857138",
+      "updated_at": "2026-01-28T21:49:24.857138",
+      "id": 88732,
+      "conversation_version_id": 41664,
+      "quality_dimension_id": 119,
+      "conversation_id": 70560,
+      "latest_manual_qdv_id": 139726,
+      "latest_manual_review_id": 26184,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "125b477f-3015-4e2f-a9dd-6850a3bb64a6",
+        "source_timestamp": 1769636964000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:49:24.839988",
+      "updated_at": "2026-01-28T21:49:24.839988",
+      "id": 88731,
+      "conversation_version_id": 41664,
+      "quality_dimension_id": 79,
+      "conversation_id": 70560,
+      "latest_manual_qdv_id": 139725,
+      "latest_manual_review_id": 26184,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "b75067d3-9070-4dc9-a0c4-7dec7aa70786",
+        "source_timestamp": 1769636964000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:49:24.823720",
+      "updated_at": "2026-01-28T21:49:24.823720",
+      "id": 88730,
+      "conversation_version_id": 41664,
+      "quality_dimension_id": 81,
+      "conversation_id": 70560,
+      "latest_manual_qdv_id": 139724,
+      "latest_manual_review_id": 26184,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "c1f9848c-21f6-4fcb-a11d-0017c0154699",
+        "source_timestamp": 1769636964000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:49:24.810840",
+      "updated_at": "2026-01-28T21:49:24.810840",
+      "id": 88729,
+      "conversation_version_id": 41664,
+      "quality_dimension_id": 80,
+      "conversation_id": 70560,
+      "latest_manual_qdv_id": 139723,
+      "latest_manual_review_id": 26184,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "0e9169a4-650f-4695-9db9-83124c6af694",
+        "source_timestamp": 1769636964000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:49:24.795841",
+      "updated_at": "2026-01-28T21:49:24.795841",
+      "id": 88728,
+      "conversation_version_id": 41664,
+      "quality_dimension_id": 54,
+      "conversation_id": 70560,
+      "latest_manual_qdv_id": 139722,
+      "latest_manual_review_id": 26184,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "1699c531-ca2f-4fe4-a014-15ce8ae7775c",
+        "source_timestamp": 1769636964000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:49:24.780918",
+      "updated_at": "2026-01-28T21:49:24.780918",
+      "id": 88727,
+      "conversation_version_id": 41664,
+      "quality_dimension_id": 49,
+      "conversation_id": 70560,
+      "latest_manual_qdv_id": 139721,
+      "latest_manual_review_id": 26184,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "6dcf10ce-c36a-4d0c-8391-e7d5adae5174",
+        "source_timestamp": 1769636964000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:49:24.766854",
+      "updated_at": "2026-01-28T21:49:24.766854",
+      "id": 88726,
+      "conversation_version_id": 41664,
+      "quality_dimension_id": 55,
+      "conversation_id": 70560,
+      "latest_manual_qdv_id": 139720,
+      "latest_manual_review_id": 26184,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "f2dcd12a-787b-4578-ae8f-44725af4b997",
+        "source_timestamp": 1769636964000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:49:24.752152",
+      "updated_at": "2026-01-28T21:49:24.752152",
+      "id": 88725,
+      "conversation_version_id": 41664,
+      "quality_dimension_id": 53,
+      "conversation_id": 70560,
+      "latest_manual_qdv_id": 139719,
+      "latest_manual_review_id": 26184,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "5f55a6b8-b031-4d9b-8bfb-c606d24846d0",
+        "source_timestamp": 1769636964000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:49:24.727920",
+      "updated_at": "2026-01-28T21:49:24.727920",
+      "id": 88724,
+      "conversation_version_id": 41664,
+      "quality_dimension_id": 50,
+      "conversation_id": 70560,
+      "latest_manual_qdv_id": 139718,
+      "latest_manual_review_id": 26184,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "4573fdf5-46a0-4d2f-b568-95d5bead1702",
+        "source_timestamp": 1769636964000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:49:24.695461",
+      "updated_at": "2026-01-28T21:49:24.695461",
+      "id": 88723,
+      "conversation_version_id": 41664,
+      "quality_dimension_id": 52,
+      "conversation_id": 70560,
+      "latest_manual_qdv_id": 139717,
+      "latest_manual_review_id": 26184,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "13445691-e17c-4bc0-ae9f-7094d0466daa",
+        "source_timestamp": 1769636964000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:49:24.677466",
+      "updated_at": "2026-01-28T21:49:24.677466",
+      "id": 88722,
+      "conversation_version_id": 41664,
+      "quality_dimension_id": 51,
+      "conversation_id": 70560,
+      "latest_manual_qdv_id": 139716,
+      "latest_manual_review_id": 26184,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "8979f4f0-b20d-4b7b-b3ab-2f502f9c1971",
+        "source_timestamp": 1769636964000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:49:24.660454",
+      "updated_at": "2026-01-28T21:49:24.660454",
+      "id": 88721,
+      "conversation_version_id": 41664,
+      "quality_dimension_id": 48,
+      "conversation_id": 70560,
+      "latest_manual_qdv_id": 139715,
+      "latest_manual_review_id": 26184,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "154d7d38-dba0-4928-bd37-e0d1647334ca",
+        "source_timestamp": 1769636964000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:48:33.457502",
+      "updated_at": "2026-01-28T21:48:33.457502",
+      "id": 88720,
+      "conversation_version_id": 42500,
+      "quality_dimension_id": 39,
+      "conversation_id": 64785,
+      "latest_manual_qdv_id": null,
+      "latest_manual_review_id": null,
+      "latest_auto_qdv_id": 139736,
+      "latest_auto_review_id": 26185,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "7c08c630-db2e-4bb7-9aa4-7cd887b2833f",
+        "source_timestamp": 1769636913000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:48:33.446325",
+      "updated_at": "2026-01-28T21:48:33.446325",
+      "id": 88719,
+      "conversation_version_id": 42500,
+      "quality_dimension_id": 36,
+      "conversation_id": 64785,
+      "latest_manual_qdv_id": null,
+      "latest_manual_review_id": null,
+      "latest_auto_qdv_id": 139735,
+      "latest_auto_review_id": 26185,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "3e6a9978-8abf-4920-8945-0ecc9c8fdc4f",
+        "source_timestamp": 1769636913000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:48:33.434761",
+      "updated_at": "2026-01-28T21:48:33.434761",
+      "id": 88718,
+      "conversation_version_id": 42500,
+      "quality_dimension_id": 35,
+      "conversation_id": 64785,
+      "latest_manual_qdv_id": null,
+      "latest_manual_review_id": null,
+      "latest_auto_qdv_id": 139734,
+      "latest_auto_review_id": 26185,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "a49d6fdb-bd8f-4965-9d72-c9fab1dd8a72",
+        "source_timestamp": 1769636913000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:48:33.423827",
+      "updated_at": "2026-01-28T21:48:33.423827",
+      "id": 88717,
+      "conversation_version_id": 42500,
+      "quality_dimension_id": 34,
+      "conversation_id": 64785,
+      "latest_manual_qdv_id": null,
+      "latest_manual_review_id": null,
+      "latest_auto_qdv_id": 139733,
+      "latest_auto_review_id": 26185,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "0e7d9747-e8f6-47f5-82b7-ca126a929ffd",
+        "source_timestamp": 1769636913000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:48:33.412206",
+      "updated_at": "2026-01-28T21:48:33.412206",
+      "id": 88716,
+      "conversation_version_id": 42500,
+      "quality_dimension_id": 33,
+      "conversation_id": 64785,
+      "latest_manual_qdv_id": null,
+      "latest_manual_review_id": null,
+      "latest_auto_qdv_id": 139732,
+      "latest_auto_review_id": 26185,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "a91b1b6d-8e14-4214-8c1d-2f9d3b9358b4",
+        "source_timestamp": 1769636913000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:48:33.393394",
+      "updated_at": "2026-01-28T21:48:33.393394",
+      "id": 88715,
+      "conversation_version_id": 42500,
+      "quality_dimension_id": 32,
+      "conversation_id": 64785,
+      "latest_manual_qdv_id": null,
+      "latest_manual_review_id": null,
+      "latest_auto_qdv_id": 139731,
+      "latest_auto_review_id": 26185,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "46deaeb3-20de-461a-b179-4ec1775a0cac",
+        "source_timestamp": 1769636913000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:46:51.193159",
+      "updated_at": "2026-01-28T21:46:51.193159",
+      "id": 88714,
+      "conversation_version_id": 42156,
+      "quality_dimension_id": 123,
+      "conversation_id": 70605,
+      "latest_manual_qdv_id": 139651,
+      "latest_manual_review_id": 26175,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "f04f9e1f-4a69-4c0f-8442-727981012015",
+        "source_timestamp": 1769636811000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:46:51.172448",
+      "updated_at": "2026-01-28T21:46:51.172448",
+      "id": 88713,
+      "conversation_version_id": 42156,
+      "quality_dimension_id": 120,
+      "conversation_id": 70605,
+      "latest_manual_qdv_id": 139650,
+      "latest_manual_review_id": 26175,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "014b0bdb-2ea2-4891-a081-66fe9b6cee9e",
+        "source_timestamp": 1769636811000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:46:51.154854",
+      "updated_at": "2026-01-28T21:46:51.154854",
+      "id": 88712,
+      "conversation_version_id": 42156,
+      "quality_dimension_id": 122,
+      "conversation_id": 70605,
+      "latest_manual_qdv_id": 139649,
+      "latest_manual_review_id": 26175,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "d8e000ea-12d3-4789-8bde-31197ae3031d",
+        "source_timestamp": 1769636811000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:46:51.140680",
+      "updated_at": "2026-01-28T21:46:51.140680",
+      "id": 88711,
+      "conversation_version_id": 42156,
+      "quality_dimension_id": 121,
+      "conversation_id": 70605,
+      "latest_manual_qdv_id": 139648,
+      "latest_manual_review_id": 26175,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "e14fcf3b-b33f-4586-9910-fa10d3e84537",
+        "source_timestamp": 1769636811000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:46:51.127259",
+      "updated_at": "2026-01-28T21:46:51.127259",
+      "id": 88710,
+      "conversation_version_id": 42156,
+      "quality_dimension_id": 119,
+      "conversation_id": 70605,
+      "latest_manual_qdv_id": 139647,
+      "latest_manual_review_id": 26175,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "992ae88a-0a43-4dee-88e3-eab05f01270f",
+        "source_timestamp": 1769636811000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:46:51.110010",
+      "updated_at": "2026-01-28T21:46:51.110010",
+      "id": 88709,
+      "conversation_version_id": 42156,
+      "quality_dimension_id": 79,
+      "conversation_id": 70605,
+      "latest_manual_qdv_id": 139646,
+      "latest_manual_review_id": 26175,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "94c0bec7-c591-4415-bff4-ec8d62ceab82",
+        "source_timestamp": 1769636811000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:46:51.097329",
+      "updated_at": "2026-01-28T21:46:51.097329",
+      "id": 88708,
+      "conversation_version_id": 42156,
+      "quality_dimension_id": 81,
+      "conversation_id": 70605,
+      "latest_manual_qdv_id": 139645,
+      "latest_manual_review_id": 26175,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "1dfa7474-643f-4d69-9d2a-d3097ec783a0",
+        "source_timestamp": 1769636811000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:46:51.082163",
+      "updated_at": "2026-01-28T21:46:51.082163",
+      "id": 88707,
+      "conversation_version_id": 42156,
+      "quality_dimension_id": 80,
+      "conversation_id": 70605,
+      "latest_manual_qdv_id": 139644,
+      "latest_manual_review_id": 26175,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "56377cc9-3cf7-4864-8a5c-90d77f919783",
+        "source_timestamp": 1769636811000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:46:51.064252",
+      "updated_at": "2026-01-28T21:46:51.064252",
+      "id": 88706,
+      "conversation_version_id": 42156,
+      "quality_dimension_id": 54,
+      "conversation_id": 70605,
+      "latest_manual_qdv_id": 139643,
+      "latest_manual_review_id": 26175,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "338df822-c5b5-4b0c-88ab-05ee2050368d",
+        "source_timestamp": 1769636811000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:46:51.048565",
+      "updated_at": "2026-01-28T21:46:51.048565",
+      "id": 88705,
+      "conversation_version_id": 42156,
+      "quality_dimension_id": 49,
+      "conversation_id": 70605,
+      "latest_manual_qdv_id": 139642,
+      "latest_manual_review_id": 26175,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "c1a33721-9059-4f0f-8ad9-ca97c73ac1b9",
+        "source_timestamp": 1769636811000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:46:51.033614",
+      "updated_at": "2026-01-28T21:46:51.033614",
+      "id": 88704,
+      "conversation_version_id": 42156,
+      "quality_dimension_id": 55,
+      "conversation_id": 70605,
+      "latest_manual_qdv_id": 139641,
+      "latest_manual_review_id": 26175,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "3a3d84a4-edfa-4c24-b83f-9aec84adc991",
+        "source_timestamp": 1769636811000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:46:51.018621",
+      "updated_at": "2026-01-28T21:46:51.018621",
+      "id": 88703,
+      "conversation_version_id": 42156,
+      "quality_dimension_id": 53,
+      "conversation_id": 70605,
+      "latest_manual_qdv_id": 139640,
+      "latest_manual_review_id": 26175,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "4436c8dc-884a-4ce1-bbe4-26cace3fde1d",
+        "source_timestamp": 1769636811000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:46:50.991202",
+      "updated_at": "2026-01-28T21:46:50.991202",
+      "id": 88702,
+      "conversation_version_id": 42156,
+      "quality_dimension_id": 50,
+      "conversation_id": 70605,
+      "latest_manual_qdv_id": 139639,
+      "latest_manual_review_id": 26175,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "d49d1c3f-67c8-4793-a1d7-c15c5a548d28",
+        "source_timestamp": 1769636810000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:46:50.962976",
+      "updated_at": "2026-01-28T21:46:50.962976",
+      "id": 88701,
+      "conversation_version_id": 42156,
+      "quality_dimension_id": 52,
+      "conversation_id": 70605,
+      "latest_manual_qdv_id": 139638,
+      "latest_manual_review_id": 26175,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "f7617eaf-e80a-4e58-9bdf-c127cf334aaf",
+        "source_timestamp": 1769636810000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:46:50.947938",
+      "updated_at": "2026-01-28T21:46:50.947938",
+      "id": 88700,
+      "conversation_version_id": 42156,
+      "quality_dimension_id": 51,
+      "conversation_id": 70605,
+      "latest_manual_qdv_id": 139637,
+      "latest_manual_review_id": 26175,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "025d82ba-c7f5-44e2-9665-b139b1c44dba",
+        "source_timestamp": 1769636810000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:46:50.931940",
+      "updated_at": "2026-01-28T21:46:50.931940",
+      "id": 88699,
+      "conversation_version_id": 42156,
+      "quality_dimension_id": 48,
+      "conversation_id": 70605,
+      "latest_manual_qdv_id": 139636,
+      "latest_manual_review_id": 26175,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "b5036394-72dd-4530-a5d6-2d7f35780a5c",
+        "source_timestamp": 1769636810000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:41:32.821952",
+      "updated_at": "2026-01-28T21:41:32.821952",
+      "id": 88698,
+      "conversation_version_id": 42499,
+      "quality_dimension_id": 167,
+      "conversation_id": 55079,
+      "latest_manual_qdv_id": null,
+      "latest_manual_review_id": null,
+      "latest_auto_qdv_id": 139677,
+      "latest_auto_review_id": 26179,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "081354d0-f737-44dc-8e79-71c3efecbfad",
+        "source_timestamp": 1769636492000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:41:32.802776",
+      "updated_at": "2026-01-28T21:41:32.802776",
+      "id": 88697,
+      "conversation_version_id": 42499,
+      "quality_dimension_id": 166,
+      "conversation_id": 55079,
+      "latest_manual_qdv_id": null,
+      "latest_manual_review_id": null,
+      "latest_auto_qdv_id": 139676,
+      "latest_auto_review_id": 26179,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "68cff1cb-220b-4668-a3d3-25101a1ca98f",
+        "source_timestamp": 1769636492000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:40:07.696305",
+      "updated_at": "2026-01-28T21:40:07.696305",
+      "id": 88696,
+      "conversation_version_id": 41897,
+      "quality_dimension_id": 137,
+      "conversation_id": 69656,
+      "latest_manual_qdv_id": 139671,
+      "latest_manual_review_id": 26176,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "c252e8e5-31fd-4544-a10d-418c6cc95ca7",
+        "source_timestamp": 1769636407000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:40:07.681391",
+      "updated_at": "2026-01-28T21:40:07.681391",
+      "id": 88695,
+      "conversation_version_id": 41897,
+      "quality_dimension_id": 132,
+      "conversation_id": 69656,
+      "latest_manual_qdv_id": 139670,
+      "latest_manual_review_id": 26176,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "5630e33c-07dc-4dd1-9490-97c93dbbda1c",
+        "source_timestamp": 1769636407000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:40:07.666500",
+      "updated_at": "2026-01-28T21:40:07.666500",
+      "id": 88694,
+      "conversation_version_id": 41897,
+      "quality_dimension_id": 133,
+      "conversation_id": 69656,
+      "latest_manual_qdv_id": 139669,
+      "latest_manual_review_id": 26176,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "dd554455-6a1d-4bc3-94cd-6968f172df6f",
+        "source_timestamp": 1769636407000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:40:07.653450",
+      "updated_at": "2026-01-28T21:40:07.653450",
+      "id": 88693,
+      "conversation_version_id": 41897,
+      "quality_dimension_id": 134,
+      "conversation_id": 69656,
+      "latest_manual_qdv_id": 139668,
+      "latest_manual_review_id": 26176,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "ff8be7e4-0745-465e-9aa2-9f084a5b03c6",
+        "source_timestamp": 1769636407000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:40:07.640982",
+      "updated_at": "2026-01-28T21:40:07.640982",
+      "id": 88692,
+      "conversation_version_id": 41897,
+      "quality_dimension_id": 136,
+      "conversation_id": 69656,
+      "latest_manual_qdv_id": 139667,
+      "latest_manual_review_id": 26176,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "6908d073-fd92-403a-93c3-0cae5600e9ef",
+        "source_timestamp": 1769636407000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:40:07.627184",
+      "updated_at": "2026-01-28T21:40:07.627184",
+      "id": 88691,
+      "conversation_version_id": 41897,
+      "quality_dimension_id": 131,
+      "conversation_id": 69656,
+      "latest_manual_qdv_id": 139666,
+      "latest_manual_review_id": 26176,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "ec27110c-d292-4781-a977-8b60dadd76a8",
+        "source_timestamp": 1769636407000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:40:07.600757",
+      "updated_at": "2026-01-28T21:40:07.600757",
+      "id": 88690,
+      "conversation_version_id": 41897,
+      "quality_dimension_id": 135,
+      "conversation_id": 69656,
+      "latest_manual_qdv_id": 139665,
+      "latest_manual_review_id": 26176,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "b6b62479-39fd-4eeb-be50-79b9e8148f49",
+        "source_timestamp": 1769636407000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:40:07.585639",
+      "updated_at": "2026-01-28T21:40:07.585639",
+      "id": 88689,
+      "conversation_version_id": 41897,
+      "quality_dimension_id": 129,
+      "conversation_id": 69656,
+      "latest_manual_qdv_id": 139664,
+      "latest_manual_review_id": 26176,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "cf3a5905-2554-46cf-a917-51832f11521b",
+        "source_timestamp": 1769636407000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:40:07.571732",
+      "updated_at": "2026-01-28T21:40:07.571732",
+      "id": 88688,
+      "conversation_version_id": 41897,
+      "quality_dimension_id": 130,
+      "conversation_id": 69656,
+      "latest_manual_qdv_id": 139663,
+      "latest_manual_review_id": 26176,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "106be200-0d89-4ba9-9138-3be0db4f5e51",
+        "source_timestamp": 1769636407000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:40:07.554734",
+      "updated_at": "2026-01-28T21:40:07.554734",
+      "id": 88687,
+      "conversation_version_id": 41897,
+      "quality_dimension_id": 50,
+      "conversation_id": 69656,
+      "latest_manual_qdv_id": 139662,
+      "latest_manual_review_id": 26176,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "204952cc-3b77-48ec-b01d-6095476e6c46",
+        "source_timestamp": 1769636407000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:40:07.531528",
+      "updated_at": "2026-01-28T21:40:07.531528",
+      "id": 88686,
+      "conversation_version_id": 41897,
+      "quality_dimension_id": 51,
+      "conversation_id": 69656,
+      "latest_manual_qdv_id": 139661,
+      "latest_manual_review_id": 26176,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "b6fe7f54-ba60-4c09-ac17-c1d0f3daf95c",
+        "source_timestamp": 1769636407000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:40:07.515419",
+      "updated_at": "2026-01-28T21:40:07.515419",
+      "id": 88685,
+      "conversation_version_id": 41897,
+      "quality_dimension_id": 54,
+      "conversation_id": 69656,
+      "latest_manual_qdv_id": 139660,
+      "latest_manual_review_id": 26176,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "abcc6a3c-8aa2-4b69-877f-53848d41d189",
+        "source_timestamp": 1769636407000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:40:07.477511",
+      "updated_at": "2026-01-28T21:40:07.477511",
+      "id": 88684,
+      "conversation_version_id": 41897,
+      "quality_dimension_id": 80,
+      "conversation_id": 69656,
+      "latest_manual_qdv_id": 139659,
+      "latest_manual_review_id": 26176,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "03e07840-2cf7-4aae-bbb6-e9e1441fc9e6",
+        "source_timestamp": 1769636407000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:40:07.199470",
+      "updated_at": "2026-01-28T21:40:07",
+      "id": 88682,
+      "conversation_version_id": 41897,
+      "quality_dimension_id": 53,
+      "conversation_id": 69656,
+      "latest_manual_qdv_id": 139658,
+      "latest_manual_review_id": 26176,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "82462b0f-05b9-4d5f-816f-46c6720d12e1",
+        "source_timestamp": 1769636407000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:40:07.186877",
+      "updated_at": "2026-01-28T21:40:07",
+      "id": 88681,
+      "conversation_version_id": 41897,
+      "quality_dimension_id": 48,
+      "conversation_id": 69656,
+      "latest_manual_qdv_id": 139657,
+      "latest_manual_review_id": 26176,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "81594c7a-1b23-48bb-99c1-f0f12ac0339d",
+        "source_timestamp": 1769636407000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:40:07.173217",
+      "updated_at": "2026-01-28T21:40:07",
+      "id": 88680,
+      "conversation_version_id": 41897,
+      "quality_dimension_id": 79,
+      "conversation_id": 69656,
+      "latest_manual_qdv_id": 139656,
+      "latest_manual_review_id": 26176,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "d8d2fda8-542a-4374-9942-88e3dc69d186",
+        "source_timestamp": 1769636407000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:40:07.159897",
+      "updated_at": "2026-01-28T21:40:07",
+      "id": 88679,
+      "conversation_version_id": 41897,
+      "quality_dimension_id": 52,
+      "conversation_id": 69656,
+      "latest_manual_qdv_id": 139655,
+      "latest_manual_review_id": 26176,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "f653c364-09ac-4a09-8ce6-5401c3e8cd20",
+        "source_timestamp": 1769636407000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:40:07.146615",
+      "updated_at": "2026-01-28T21:40:07",
+      "id": 88678,
+      "conversation_version_id": 41897,
+      "quality_dimension_id": 55,
+      "conversation_id": 69656,
+      "latest_manual_qdv_id": 139654,
+      "latest_manual_review_id": 26176,
+      "latest_auto_qdv_id": null,
+      "latest_auto_review_id": null,
+      "is_reviewer_misaligned": 0,
+      "datastream_metadata": {
+        "uuid": "b28a8639-179e-494e-bdf8-333053c709e2",
+        "source_timestamp": 1769636407000
+      }
+    }
+  ]
+}

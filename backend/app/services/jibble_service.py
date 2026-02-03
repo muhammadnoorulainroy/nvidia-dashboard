@@ -220,20 +220,16 @@ class JibbleService:
             return {}
     
     def test_connection(self) -> Dict[str, Any]:
-        """Test the Jibble API connection"""
+        """Test the Jibble API connection by verifying OAuth token"""
         try:
+            # Just verify we can get a token - don't rely on People endpoint
+            # as it may have intermittent server issues
             token = self._get_access_token()
-            
-            # Try to fetch first page of people
-            params = {"$top": 1}
-            data = self._make_request("People", params=params)
-            people_count = len(data.get("value", []))
             
             return {
                 "success": True,
-                "message": "Successfully connected to Jibble API",
+                "message": "Successfully obtained Jibble API token",
                 "has_token": bool(token),
-                "sample_people": people_count,
             }
         except Exception as e:
             return {
@@ -241,6 +237,270 @@ class JibbleService:
                 "message": f"Failed to connect: {str(e)}",
                 "has_token": False,
             }
+    
+    def get_projects(self, page_size: int = 100, max_pages: int = 20) -> List[Dict]:
+        """Fetch all projects from Jibble with pagination"""
+        all_projects = []
+        skip = 0
+        
+        for page in range(max_pages):
+            params = {
+                "$top": page_size,
+                "$skip": skip,
+            }
+            
+            try:
+                data = self._make_request("Projects", params=params)
+                projects = data.get("value", [])
+                
+                if not projects:
+                    break
+                
+                all_projects.extend(projects)
+                logger.info(f"Fetched page {page + 1}: {len(projects)} projects (total: {len(all_projects)})")
+                
+                if len(projects) < page_size:
+                    break
+                
+                skip += page_size
+                
+            except Exception as e:
+                logger.error(f"Error fetching projects page {page + 1}: {e}")
+                break
+        
+        logger.info(f"Total projects fetched: {len(all_projects)}")
+        return all_projects
+    
+    def get_nvidia_project_ids(self) -> Dict[str, str]:
+        """
+        Get Nvidia project IDs by searching project names.
+        Returns: {project_name: project_id}
+        """
+        settings = get_settings()
+        nvidia_keywords = ["nvidia", "sysbench", "cfbench", "ifeval", "multichallenge", "icpc", "stem math"]
+        
+        projects = self.get_projects()
+        nvidia_projects = {}
+        
+        for proj in projects:
+            name = proj.get("name", "")
+            proj_id = proj.get("id", "")
+            status = proj.get("status", "")
+            
+            # Only include active projects
+            if status != "Active":
+                continue
+            
+            name_lower = name.lower()
+            if any(kw in name_lower for kw in nvidia_keywords):
+                # Check if it's really an Nvidia project (not Amazon, Google, etc.)
+                if "nvidia" in name_lower or ("nvidia" not in name_lower and 
+                    not any(x in name_lower for x in ["amazon", "google", "meta", "microsoft", "anthropic", "tencent"])):
+                    nvidia_projects[name] = proj_id
+                    logger.info(f"Found Nvidia project: {name} ({proj_id})")
+        
+        return nvidia_projects
+    
+    def get_time_entries_by_projects(
+        self, 
+        project_ids: List[str], 
+        start_date: datetime,
+        end_date: datetime,
+        page_size: int = 500,
+        max_entries: int = 100000
+    ) -> List[Dict]:
+        """
+        Fetch time entries filtered by project IDs and date range.
+        
+        Args:
+            project_ids: List of Jibble project UUIDs to filter by
+            start_date: Start of date range
+            end_date: End of date range
+            page_size: Entries per page
+            max_entries: Maximum total entries to fetch
+            
+        Returns:
+            List of time entry records with person_id, project info, and duration
+        """
+        all_entries = []
+        
+        # Format dates for OData filter
+        start_str = start_date.strftime('%Y-%m-%dT00:00:00Z')
+        end_str = end_date.strftime('%Y-%m-%dT23:59:59Z')
+        
+        for project_id in project_ids:
+            skip = 0
+            project_entries = 0
+            
+            while True:
+                # Build OData filter for this project and date range
+                # Filter by projectId and time range
+                filter_str = f"projectId eq '{project_id}' and time ge {start_str} and time le {end_str}"
+                
+                params = {
+                    "$top": page_size,
+                    "$skip": skip,
+                    "$filter": filter_str,
+                    "$select": "id,personId,projectId,time,belongsToDate,type,status",
+                }
+                
+                try:
+                    data = self._make_request(
+                        "TimeEntries", 
+                        params=params, 
+                        base_url=self.time_tracking_url
+                    )
+                    entries = data.get("value", [])
+                    
+                    if not entries:
+                        break
+                    
+                    all_entries.extend(entries)
+                    project_entries += len(entries)
+                    
+                    if len(all_entries) >= max_entries:
+                        logger.warning(f"Reached max entries limit ({max_entries})")
+                        break
+                    
+                    if len(entries) < page_size:
+                        break
+                    
+                    skip += page_size
+                    
+                except Exception as e:
+                    logger.error(f"Error fetching time entries for project {project_id}: {e}")
+                    break
+            
+            logger.info(f"Fetched {project_entries} entries for project {project_id}")
+        
+        logger.info(f"Total time entries fetched: {len(all_entries)}")
+        return all_entries
+    
+    def get_nvidia_daily_hours(
+        self, 
+        start_date: datetime, 
+        end_date: datetime
+    ) -> Dict[str, Dict[str, Any]]:
+        """
+        Get daily hours for Nvidia projects, aggregated per person.
+        
+        Uses TimesheetsSummary endpoint for pre-calculated daily hours,
+        but also builds a person_id -> email mapping.
+        
+        Returns: {
+            person_id: {
+                'email': personal_email,
+                'name': full_name,
+                'daily': {date_str: hours},
+                'total': total_hours
+            }
+        }
+        """
+        # First get the timesheets summary
+        daily_hours = self.get_timesheets_summary(start_date, end_date)
+        
+        # Enhance with email mapping from people
+        people = self.get_people()
+        person_email_map = {}
+        for person in people:
+            pid = person.get("id")
+            email = person.get("email", "").lower() if person.get("email") else None
+            name = person.get("fullName", "")
+            if pid:
+                person_email_map[pid] = {"email": email, "name": name}
+        
+        # Combine data
+        result = {}
+        for person_id, data in daily_hours.items():
+            person_info = person_email_map.get(person_id, {})
+            
+            # Extract daily breakdown (filter out metadata keys)
+            daily = {k: v for k, v in data.items() if not k.startswith("_")}
+            
+            result[person_id] = {
+                "email": person_info.get("email"),
+                "name": data.get("_name") or person_info.get("name", ""),
+                "daily": daily,
+                "total": data.get("_total", 0),
+            }
+        
+        logger.info(f"Got daily hours for {len(result)} people")
+        return result
+    
+    def get_project_specific_hours(
+        self, 
+        project_ids: List[str],
+        start_date: datetime,
+        end_date: datetime
+    ) -> Dict[str, Dict[str, float]]:
+        """
+        Calculate hours per person per day for specific projects.
+        
+        Uses TimeEntries endpoint to get project-specific data,
+        then calculates duration between clock-in and clock-out.
+        
+        Returns: {person_id: {date_str: hours}}
+        """
+        entries = self.get_time_entries_by_projects(project_ids, start_date, end_date)
+        
+        # Group entries by person and date
+        # Each entry has 'type' ('In' or 'Out') and we need to pair them
+        person_entries = {}
+        
+        for entry in entries:
+            person_id = entry.get("personId")
+            belongs_to_date = entry.get("belongsToDate")  # Date the entry belongs to
+            entry_type = entry.get("type")  # 'In' or 'Out'
+            time_str = entry.get("time")
+            
+            if not all([person_id, belongs_to_date, entry_type, time_str]):
+                continue
+            
+            if person_id not in person_entries:
+                person_entries[person_id] = {}
+            
+            if belongs_to_date not in person_entries[person_id]:
+                person_entries[person_id][belongs_to_date] = {"ins": [], "outs": []}
+            
+            try:
+                entry_time = datetime.fromisoformat(time_str.replace("Z", "+00:00"))
+                if entry_type == "In":
+                    person_entries[person_id][belongs_to_date]["ins"].append(entry_time)
+                elif entry_type == "Out":
+                    person_entries[person_id][belongs_to_date]["outs"].append(entry_time)
+            except Exception as e:
+                logger.warning(f"Error parsing time {time_str}: {e}")
+        
+        # Calculate hours for each person/date
+        result = {}
+        for person_id, dates in person_entries.items():
+            result[person_id] = {}
+            
+            for date_str, times in dates.items():
+                ins = sorted(times["ins"])
+                outs = sorted(times["outs"])
+                
+                total_seconds = 0
+                
+                # Pair in/out times
+                for i, clock_in in enumerate(ins):
+                    # Find the next clock-out after this clock-in
+                    clock_out = None
+                    for out_time in outs:
+                        if out_time > clock_in:
+                            clock_out = out_time
+                            break
+                    
+                    if clock_out:
+                        duration = (clock_out - clock_in).total_seconds()
+                        total_seconds += duration
+                
+                hours = round(total_seconds / 3600, 2)
+                if hours > 0:
+                    result[person_id][date_str] = hours
+        
+        logger.info(f"Calculated project-specific hours for {len(result)} people")
+        return result
 
 
 class JibbleSyncService:

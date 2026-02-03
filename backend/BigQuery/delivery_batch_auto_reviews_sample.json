@@ -1,0 +1,2651 @@
+{
+  "table": "delivery_batch_auto_reviews",
+  "row_count": 28,
+  "sample_count": 28,
+  "fetched_at": "2026-01-28T23:23:17.564604",
+  "data": [
+    {
+      "created_at": "2026-01-28T17:38:41.935903",
+      "updated_at": "2026-01-28T17:55:49",
+      "id": 29,
+      "status": "done",
+      "started_at": "2026-01-28T17:38:42",
+      "completed_at": "2026-01-28T17:55:50",
+      "success_count": 69,
+      "failure_count": 30,
+      "delivery_batch_id": 64,
+      "report": null,
+      "datastream_metadata": {
+        "uuid": "f473fa08-c290-4808-841e-24f3df4a7387",
+        "source_timestamp": 1769622949000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:34:13.023035",
+      "updated_at": "2026-01-28T17:50:36",
+      "id": 28,
+      "status": "done",
+      "started_at": "2026-01-28T17:34:13",
+      "completed_at": "2026-01-28T17:50:36",
+      "success_count": 38,
+      "failure_count": 1,
+      "delivery_batch_id": 97,
+      "report": null,
+      "datastream_metadata": {
+        "uuid": "d4244db4-0d50-4346-9d2d-c4c4abc8a9be",
+        "source_timestamp": 1769622636000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:34:06.520663",
+      "updated_at": "2026-01-28T17:51:30",
+      "id": 27,
+      "status": "done",
+      "started_at": "2026-01-28T17:34:07",
+      "completed_at": "2026-01-28T17:51:30",
+      "success_count": 103,
+      "failure_count": 1,
+      "delivery_batch_id": 113,
+      "report": null,
+      "datastream_metadata": {
+        "uuid": "0b75b496-e6e3-431f-894f-d83ba14d56e6",
+        "source_timestamp": 1769622690000
+      }
+    },
+    {
+      "created_at": "2026-01-28T10:31:41.250937",
+      "updated_at": "2026-01-28T10:50:22",
+      "id": 26,
+      "status": "done",
+      "started_at": "2026-01-28T10:31:41",
+      "completed_at": "2026-01-28T10:50:23",
+      "success_count": 241,
+      "failure_count": 6,
+      "delivery_batch_id": 227,
+      "report": null,
+      "datastream_metadata": {
+        "uuid": "1837bf98-1df3-4b97-ab4d-19156846582a",
+        "source_timestamp": 1769597422000
+      }
+    },
+    {
+      "created_at": "2026-01-28T10:09:42.709942",
+      "updated_at": "2026-01-28T10:27:58",
+      "id": 25,
+      "status": "done",
+      "started_at": "2026-01-28T10:09:43",
+      "completed_at": "2026-01-28T10:27:59",
+      "success_count": 241,
+      "failure_count": 6,
+      "delivery_batch_id": 227,
+      "report": null,
+      "datastream_metadata": {
+        "uuid": "febd16b4-ef4b-40b8-ad97-09d9b531d4a1",
+        "source_timestamp": 1769596078000
+      }
+    },
+    {
+      "created_at": "2026-01-28T09:43:22.843624",
+      "updated_at": "2026-01-28T10:03:30",
+      "id": 24,
+      "status": "done",
+      "started_at": "2026-01-28T09:43:23",
+      "completed_at": "2026-01-28T10:03:31",
+      "success_count": 194,
+      "failure_count": 54,
+      "delivery_batch_id": 227,
+      "report": null,
+      "datastream_metadata": {
+        "uuid": "9847d150-8978-433c-afb9-b4409eeaa179",
+        "source_timestamp": 1769594610000
+      }
+    },
+    {
+      "created_at": "2026-01-28T05:11:42.076403",
+      "updated_at": "2026-01-28T05:30:58",
+      "id": 23,
+      "status": "done",
+      "started_at": "2026-01-28T05:11:42",
+      "completed_at": "2026-01-28T05:30:59",
+      "success_count": 243,
+      "failure_count": 6,
+      "delivery_batch_id": 227,
+      "report": null,
+      "datastream_metadata": {
+        "uuid": "0c4e0486-be44-463d-b918-1827ab08a96d",
+        "source_timestamp": 1769578258000
+      }
+    },
+    {
+      "created_at": "2026-01-27T14:35:42.288744",
+      "updated_at": "2026-01-27T14:52:22",
+      "id": 22,
+      "status": "done",
+      "started_at": "2026-01-27T14:35:42",
+      "completed_at": "2026-01-27T14:52:22",
+      "success_count": 42,
+      "failure_count": 1,
+      "delivery_batch_id": 97,
+      "report": null,
+      "datastream_metadata": {
+        "uuid": "bf2aec67-f52e-4df3-9ea6-82a5940beb84",
+        "source_timestamp": 1769525542000
+      }
+    },
+    {
+      "created_at": "2026-01-27T14:35:34.710204",
+      "updated_at": "2026-01-27T14:53:28",
+      "id": 21,
+      "status": "done",
+      "started_at": "2026-01-27T14:35:35",
+      "completed_at": "2026-01-27T14:53:29",
+      "success_count": 120,
+      "failure_count": 1,
+      "delivery_batch_id": 113,
+      "report": null,
+      "datastream_metadata": {
+        "uuid": "185b1b26-924f-4b72-b984-9bb8ddd8a99b",
+        "source_timestamp": 1769525608000
+      }
+    },
+    {
+      "created_at": "2026-01-27T12:18:10.111691",
+      "updated_at": "2026-01-27T12:36:05",
+      "id": 20,
+      "status": "done",
+      "started_at": "2026-01-27T12:18:10",
+      "completed_at": "2026-01-27T12:36:06",
+      "success_count": 203,
+      "failure_count": 8,
+      "delivery_batch_id": 227,
+      "report": null,
+      "datastream_metadata": {
+        "uuid": "6af5f2e4-6c97-406e-a25c-b0e5779d2a95",
+        "source_timestamp": 1769517365000
+      }
+    },
+    {
+      "created_at": "2026-01-23T22:21:29.716779",
+      "updated_at": "2026-01-23T22:43:45",
+      "id": 19,
+      "status": "done",
+      "started_at": "2026-01-23T22:21:30",
+      "completed_at": "2026-01-23T22:40:13",
+      "success_count": 343,
+      "failure_count": 0,
+      "delivery_batch_id": 141,
+      "report": {
+        "commonIssues": [
+          {
+            "issue": "Requirement traceability failures: criteria add unauthorized specificity or constraints not present in the system prompt or user turn",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "high",
+            "taskIds": [
+              54317,
+              54355,
+              54469,
+              54509,
+              54580,
+              54615,
+              54662,
+              54841,
+              54931,
+              54941,
+              54989,
+              55000,
+              55039,
+              55210,
+              55226,
+              55269,
+              55373,
+              55394,
+              55469
+            ],
+            "tasksImpactedCount": 19
+          },
+          {
+            "issue": "Incorrect source labeling (system vs user) leading to precedence errors and failure to account for user overrides",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "medium",
+            "taskIds": [
+              54287,
+              54327,
+              54788,
+              54944,
+              55000,
+              55237,
+              55279,
+              55389,
+              55558
+            ],
+            "tasksImpactedCount": 9
+          },
+          {
+            "issue": "Use of disallowed instruction types/concepts (e.g., length_constraints:number_words/paragraph_length, detectable_content:numeric_inclusion, punctuation:question_exclaim, sentence/word-length limits)",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "medium",
+            "taskIds": [
+              54509,
+              55071,
+              55316,
+              55364,
+              55360,
+              55479,
+              55617,
+              55681,
+              55650
+            ],
+            "tasksImpactedCount": 9
+          },
+          {
+            "issue": "Misuse of misalignment flag (is_misalignment_check) on system-sourced criteria or when no user override exists",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "medium",
+            "taskIds": [
+              54287,
+              54874,
+              55063,
+              55145,
+              55163,
+              55389,
+              55558
+            ],
+            "tasksImpactedCount": 7
+          },
+          {
+            "issue": "Malformed turn_metadata JSON (structural/format errors causing invalid JSON)",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "high",
+            "taskIds": [
+              54573
+            ],
+            "tasksImpactedCount": 1
+          },
+          {
+            "issue": "System prompt internal contradictions in constraints (e.g., incompatible sentence/comma rules or long-form goals vs strict brevity limits)",
+            "qualityDimension": "System Prompt Quality",
+            "severity": "low",
+            "taskIds": [
+              55223,
+              55226
+            ],
+            "tasksImpactedCount": 2
+          },
+          {
+            "issue": "System prompt missing required sections (e.g., precedence/conflict resolution and background/context)",
+            "qualityDimension": "System Prompt Quality",
+            "severity": "low",
+            "taskIds": [
+              55223,
+              55352
+            ],
+            "tasksImpactedCount": 2
+          }
+        ],
+        "model": "gpt-5-2025-08-07"
+      },
+      "datastream_metadata": {
+        "uuid": "ddb27437-fcf5-4d0c-b1b8-46df941ecdf8",
+        "source_timestamp": 1769208225000
+      }
+    },
+    {
+      "created_at": "2026-01-23T18:51:55.178717",
+      "updated_at": "2026-01-23T19:11:06",
+      "id": 18,
+      "status": "done",
+      "started_at": "2026-01-23T18:51:55",
+      "completed_at": "2026-01-23T19:08:39",
+      "success_count": 72,
+      "failure_count": 5,
+      "delivery_batch_id": 97,
+      "report": {
+        "commonIssues": [
+          {
+            "issue": "Disallowed numeric inclusion checks used in instructions (instruction_id: \"detectable_content:numeric_inclusion\")",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "high",
+            "taskIds": [
+              54459,
+              54656,
+              55158,
+              55143,
+              55049,
+              55204,
+              55244,
+              55217,
+              55301,
+              55554,
+              55502,
+              55479,
+              55371
+            ],
+            "tasksImpactedCount": 13
+          },
+          {
+            "issue": "Disallowed word count constraints in instructions (instruction_id: \"length_constraints:number_words\")",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "high",
+            "taskIds": [
+              54628,
+              55204,
+              55244,
+              55217,
+              55277,
+              55282,
+              55364,
+              55357,
+              55371,
+              55382,
+              55479
+            ],
+            "tasksImpactedCount": 11
+          },
+          {
+            "issue": "Sentence-level word limits applied in instructions/llm_judge (e.g., \"length_constraints:sentence_length\" or sentence word-count checks) are disallowed",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "medium",
+            "taskIds": [
+              55277,
+              55304,
+              55316,
+              55502
+            ],
+            "tasksImpactedCount": 4
+          },
+          {
+            "issue": "Paragraph length constraints used in instructions (instruction_id: \"length_constraints:paragraph_length\") are disallowed",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "low",
+            "taskIds": [
+              55316,
+              55364,
+              55360
+            ],
+            "tasksImpactedCount": 3
+          },
+          {
+            "issue": "Disallowed punctuation checks in instructions (instruction_id: \"punctuation:question_exclaim\")",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "low",
+            "taskIds": [
+              55364,
+              55554,
+              55502
+            ],
+            "tasksImpactedCount": 3
+          },
+          {
+            "issue": "Disallowed palindrome keyword checks in instructions (instruction_id: \"keywords:palindrome_word\")",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "low",
+            "taskIds": [
+              55143,
+              55049,
+              55463
+            ],
+            "tasksImpactedCount": 3
+          },
+          {
+            "issue": "Misalignment checks incorrectly marked with source \"system\" (is_misalignment_check: true with source: \"system\")",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "low",
+            "taskIds": [
+              54489,
+              55063,
+              55299
+            ],
+            "tasksImpactedCount": 3
+          },
+          {
+            "issue": "Missing required \"source\" field for llm_judge criteria",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "low",
+            "taskIds": [
+              55273
+            ],
+            "tasksImpactedCount": 1
+          },
+          {
+            "issue": "Untraceable formatting constraints (e.g., exact bullet counts, numbered list requirement, JSON detection) not supported by SI/user turn",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "low",
+            "taskIds": [
+              54459,
+              55213,
+              55382
+            ],
+            "tasksImpactedCount": 3
+          },
+          {
+            "issue": "System prompt missing required sections (Style and/or Precedence)",
+            "qualityDimension": "System Prompt Quality",
+            "severity": "low",
+            "taskIds": [
+              54691
+            ],
+            "tasksImpactedCount": 1
+          },
+          {
+            "issue": "System prompt metadata alignment mismatch with prompt content/domain",
+            "qualityDimension": "System Prompt Quality",
+            "severity": "low",
+            "taskIds": [
+              55277
+            ],
+            "tasksImpactedCount": 1
+          },
+          {
+            "issue": "System prompt internal inconsistency and contradictory formatting/structure requirements",
+            "qualityDimension": "System Prompt Quality",
+            "severity": "low",
+            "taskIds": [
+              55299
+            ],
+            "tasksImpactedCount": 1
+          },
+          {
+            "issue": "Duplicate instruction entries present in the instructions array",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "low",
+            "taskIds": [
+              55360,
+              55479
+            ],
+            "tasksImpactedCount": 2
+          },
+          {
+            "issue": "llm_judge questions not fully answerable due to forbidden or ambiguous word/sentence/character count constraints",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "low",
+            "taskIds": [
+              55316
+            ],
+            "tasksImpactedCount": 1
+          }
+        ],
+        "model": "gpt-5-2025-08-07"
+      },
+      "datastream_metadata": {
+        "uuid": "fe5add12-9847-42b7-a7b7-5e4363cde8e0",
+        "source_timestamp": 1769195466000
+      }
+    },
+    {
+      "created_at": "2026-01-23T18:51:41.422374",
+      "updated_at": "2026-01-23T19:12:51",
+      "id": 17,
+      "status": "done",
+      "started_at": "2026-01-23T18:51:41",
+      "completed_at": "2026-01-23T19:09:03",
+      "success_count": 129,
+      "failure_count": 39,
+      "delivery_batch_id": 113,
+      "report": {
+        "commonIssues": [
+          {
+            "issue": "Use of disallowed length constraints (word/sentence/paragraph) in instructions or llm_judge",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "high",
+            "taskIds": [
+              54442,
+              54474,
+              54581,
+              54752,
+              54838,
+              54923,
+              55087,
+              55115,
+              55123,
+              55182,
+              55224,
+              55286,
+              55331,
+              55343,
+              55385,
+              55390,
+              55432,
+              55445,
+              55472
+            ],
+            "tasksImpactedCount": 19
+          },
+          {
+            "issue": "Criteria values/format do not match SI (unauthorized specificity, wrong thresholds, exact-phrase rigidity)",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "medium",
+            "taskIds": [
+              54442,
+              54483,
+              54577,
+              54633,
+              54863,
+              55087,
+              55302,
+              55648
+            ],
+            "tasksImpactedCount": 8
+          },
+          {
+            "issue": "Use of disallowed numeric inclusion check (detectable_content:numeric_inclusion)",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "medium",
+            "taskIds": [
+              54494,
+              54553,
+              54743,
+              54746,
+              55115,
+              55286,
+              55390,
+              55403
+            ],
+            "tasksImpactedCount": 8
+          },
+          {
+            "issue": "Use of disallowed punctuation checks (punctuation:question_exclaim)",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "low",
+            "taskIds": [
+              54601,
+              54743,
+              55419
+            ],
+            "tasksImpactedCount": 3
+          },
+          {
+            "issue": "Use of disallowed palindrome-related checks (keywords:palindrome_word or palindrome checks in llm_judge)",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "low",
+            "taskIds": [
+              54448,
+              55190
+            ],
+            "tasksImpactedCount": 2
+          },
+          {
+            "issue": "Source label misattribution (system vs user) or missing misalignment flags",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "low",
+            "taskIds": [
+              54483,
+              55302
+            ],
+            "tasksImpactedCount": 2
+          },
+          {
+            "issue": "System prompt missing required sections/content (e.g., style, background, precedence; empty prompts)",
+            "qualityDimension": "System Prompt Quality",
+            "severity": "low",
+            "taskIds": [
+              55390,
+              55447
+            ],
+            "tasksImpactedCount": 2
+          },
+          {
+            "issue": "Turn metadata missing evaluation criteria arrays (no 'instructions' or 'llm_judge')",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "low",
+            "taskIds": [
+              55447
+            ],
+            "tasksImpactedCount": 1
+          },
+          {
+            "issue": "Use of disallowed keyword positioning checks (keywords:positioning)",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "low",
+            "taskIds": [
+              54601
+            ],
+            "tasksImpactedCount": 1
+          }
+        ],
+        "model": "gpt-5-2025-08-07"
+      },
+      "datastream_metadata": {
+        "uuid": "362ac490-3457-4817-8e14-54e0915e2a39",
+        "source_timestamp": 1769195571000
+      }
+    },
+    {
+      "created_at": "2026-01-23T17:41:51.680312",
+      "updated_at": "2026-01-23T18:00:04",
+      "id": 16,
+      "status": "done",
+      "started_at": "2026-01-23T17:41:52",
+      "completed_at": "2026-01-23T17:58:33",
+      "success_count": 102,
+      "failure_count": 0,
+      "delivery_batch_id": 207,
+      "report": {
+        "commonIssues": [
+          {
+            "issue": "Counter-intuitive constraint not explicit or testable in the prompt (implicit constraint)",
+            "qualityDimension": "PROMPT QUALITY AND DOMAIN COMPLIANCE",
+            "severity": "high",
+            "taskIds": [
+              60370,
+              60712,
+              60794,
+              67730,
+              67732,
+              67772,
+              67809,
+              67832,
+              67904
+            ],
+            "tasksImpactedCount": 9
+          },
+          {
+            "issue": "Counter-intuitive constraint ambiguous due to conflicting or self-cancelling instructions",
+            "qualityDimension": "PROMPT QUALITY AND DOMAIN COMPLIANCE",
+            "severity": "medium",
+            "taskIds": [
+              60361,
+              67783,
+              67810
+            ],
+            "tasksImpactedCount": 3
+          },
+          {
+            "issue": "Prompt length exceeds specified word range (beyond tolerance)",
+            "qualityDimension": "PROMPT LENGTH COMPLIANCE",
+            "severity": "medium",
+            "taskIds": [
+              60712,
+              60798,
+              60931
+            ],
+            "tasksImpactedCount": 3
+          },
+          {
+            "issue": "Response reference format uses 'rule' field instead of required 'criteria' field",
+            "qualityDimension": "RESPONSE REFERENCE FORMAT",
+            "severity": "medium",
+            "taskIds": [
+              60324,
+              60861
+            ],
+            "tasksImpactedCount": 2
+          },
+          {
+            "issue": "Imaginary constraints and golden answer imposed in response reference (requirements not in prompt)",
+            "qualityDimension": "NO IMAGINARY CONSTRAINTS IN RESPONSE REFERENCE",
+            "severity": "low",
+            "taskIds": [
+              60212
+            ],
+            "tasksImpactedCount": 1
+          },
+          {
+            "issue": "Ideal response references superseded instructions instead of strictly following the final request",
+            "qualityDimension": "IDEAL RESPONSE QUALITY",
+            "severity": "low",
+            "taskIds": [
+              67904
+            ],
+            "tasksImpactedCount": 1
+          }
+        ],
+        "model": "gpt-5-2025-08-07"
+      },
+      "datastream_metadata": {
+        "uuid": "fee81eea-1b13-4b95-bb4d-65ee1c443c40",
+        "source_timestamp": 1769191204000
+      }
+    },
+    {
+      "created_at": "2026-01-23T16:48:06.215870",
+      "updated_at": "2026-01-23T17:10:29",
+      "id": 15,
+      "status": "done",
+      "started_at": "2026-01-23T16:48:06",
+      "completed_at": "2026-01-23T17:09:31",
+      "success_count": 342,
+      "failure_count": 1,
+      "delivery_batch_id": 141,
+      "report": {
+        "commonIssues": [
+          {
+            "issue": "Missing or unclear Precedence section for resolving rule/constraint conflicts",
+            "qualityDimension": "System Prompt Quality",
+            "severity": "high",
+            "taskIds": [
+              54375,
+              54880,
+              55110,
+              55318,
+              55342,
+              55452
+            ],
+            "tasksImpactedCount": 6
+          },
+          {
+            "issue": "Contradictory or impossible constraints causing internal inconsistency (e.g., incompatible length limits, forced phrases/content, or numeric thresholds)",
+            "qualityDimension": "System Prompt Quality",
+            "severity": "high",
+            "taskIds": [
+              54258,
+              55312,
+              55318,
+              55452
+            ],
+            "tasksImpactedCount": 4
+          },
+          {
+            "issue": "Missing or insufficient Background/context section detailing scope and limitations",
+            "qualityDimension": "System Prompt Quality",
+            "severity": "medium",
+            "taskIds": [
+              55110,
+              55342
+            ],
+            "tasksImpactedCount": 2
+          },
+          {
+            "issue": "Missing explicit Format section defining the required output structure",
+            "qualityDimension": "System Prompt Quality",
+            "severity": "medium",
+            "taskIds": [
+              55452
+            ],
+            "tasksImpactedCount": 1
+          },
+          {
+            "issue": "Insufficient Style guidance (overly vague tone/voice instructions)",
+            "qualityDimension": "System Prompt Quality",
+            "severity": "medium",
+            "taskIds": [
+              55342
+            ],
+            "tasksImpactedCount": 1
+          }
+        ],
+        "model": "gpt-5-2025-08-07"
+      },
+      "datastream_metadata": {
+        "uuid": "0bc32fb6-6906-4a8a-911c-d819cfbc0cab",
+        "source_timestamp": 1769188229000
+      }
+    },
+    {
+      "created_at": "2026-01-23T16:14:31.999484",
+      "updated_at": "2026-01-23T16:37:11",
+      "id": 14,
+      "status": "done",
+      "started_at": "2026-01-23T16:14:32",
+      "completed_at": "2026-01-23T16:33:40",
+      "success_count": 340,
+      "failure_count": 1,
+      "delivery_batch_id": 141,
+      "report": {
+        "commonIssues": [
+          {
+            "issue": "Required sections missing from system prompt (Role, Background, Action, Constraints, Style, Format, Precedence)",
+            "qualityDimension": "System Prompt Quality",
+            "severity": "high",
+            "taskIds": [
+              54411,
+              54551,
+              54573,
+              54611,
+              54646,
+              54725,
+              54805,
+              54810,
+              54832,
+              54850,
+              54867,
+              54870,
+              54918,
+              54947,
+              54949,
+              55146,
+              55170,
+              55172,
+              55194,
+              55200,
+              55218,
+              55233,
+              55249,
+              55287,
+              55291,
+              55319,
+              55344,
+              55347,
+              55373,
+              55388,
+              55397,
+              55402,
+              55406,
+              55418,
+              55421,
+              55423,
+              55444,
+              55450,
+              55452,
+              55454,
+              55455,
+              55483,
+              55505,
+              55540,
+              55553,
+              55574,
+              55611,
+              55626,
+              55651,
+              57185
+            ],
+            "tasksImpactedCount": 50
+          },
+          {
+            "issue": "Domain and Use Case metadata missing, blocking alignment checks",
+            "qualityDimension": "System Prompt Quality",
+            "severity": "high",
+            "taskIds": [
+              54411,
+              54551,
+              54573,
+              54646,
+              54725,
+              54805,
+              54832,
+              54850,
+              54867,
+              54870,
+              54947,
+              54949,
+              54992,
+              55047,
+              55146,
+              55170,
+              55172,
+              55194,
+              55200,
+              55218,
+              55233,
+              55249,
+              55266,
+              55287,
+              55291,
+              55319,
+              55354,
+              55358,
+              55373,
+              55388,
+              55397,
+              55406,
+              55421,
+              55423,
+              55444,
+              55454,
+              55455,
+              55483,
+              55505,
+              55540,
+              55553,
+              55574,
+              55578,
+              55611,
+              55626,
+              55651,
+              57185
+            ],
+            "tasksImpactedCount": 48
+          },
+          {
+            "issue": "System prompt content missing",
+            "qualityDimension": "System Prompt Quality",
+            "severity": "high",
+            "taskIds": [
+              54411,
+              54551,
+              54573,
+              54611,
+              54646,
+              54725,
+              54805,
+              54810,
+              54850,
+              54867,
+              54870,
+              54918,
+              55170,
+              55173,
+              55194,
+              55200,
+              55218,
+              55233,
+              55249,
+              55287,
+              55291,
+              55319,
+              55344,
+              55347,
+              55373,
+              55388,
+              55397,
+              55402,
+              55406,
+              55418,
+              55421,
+              55423,
+              55444,
+              55450,
+              55452,
+              55454,
+              55455,
+              55483,
+              55505,
+              55540,
+              55553,
+              55574,
+              55611,
+              55626,
+              55651,
+              57185
+            ],
+            "tasksImpactedCount": 46
+          },
+          {
+            "issue": "No testable, verifiable constraints present in the system prompt",
+            "qualityDimension": "System Prompt Quality",
+            "severity": "high",
+            "taskIds": [
+              54411,
+              54573,
+              54611,
+              54805,
+              54810,
+              54832,
+              54850,
+              54867,
+              54870,
+              54949,
+              55146,
+              55170,
+              55194,
+              55218,
+              55233,
+              55287,
+              55319,
+              55344,
+              55347,
+              55388,
+              55397,
+              55402,
+              55406,
+              55421,
+              55423,
+              55450,
+              55454,
+              55483,
+              55505,
+              55540,
+              55553,
+              55574,
+              55611
+            ],
+            "tasksImpactedCount": 33
+          },
+          {
+            "issue": "Prohibited topics safeguards absent or cannot be verified",
+            "qualityDimension": "System Prompt Quality",
+            "severity": "high",
+            "taskIds": [
+              54411,
+              54805,
+              54810,
+              54850,
+              54867,
+              54870,
+              55170,
+              55194,
+              55287,
+              55319,
+              55388,
+              55397,
+              55402,
+              55406,
+              55421,
+              55423,
+              55483,
+              55540,
+              55574
+            ],
+            "tasksImpactedCount": 19
+          },
+          {
+            "issue": "Internal consistency cannot be evaluated due to missing rules/content",
+            "qualityDimension": "System Prompt Quality",
+            "severity": "high",
+            "taskIds": [
+              54411,
+              54805,
+              54810,
+              54850,
+              54867,
+              54870,
+              55170,
+              55194,
+              55287,
+              55319,
+              55388,
+              55397,
+              55402,
+              55406,
+              55421,
+              55423,
+              55483,
+              55540,
+              55574
+            ],
+            "tasksImpactedCount": 19
+          },
+          {
+            "issue": "Malformed or placeholder-only input (evaluation rubric or headers instead of prompt)",
+            "qualityDimension": "System Prompt Quality",
+            "severity": "medium",
+            "taskIds": [
+              54411,
+              54611,
+              54805,
+              54870,
+              55194,
+              55200,
+              55233,
+              55249,
+              55291,
+              55344,
+              55388,
+              55397,
+              55406,
+              55574,
+              55651
+            ],
+            "tasksImpactedCount": 15
+          }
+        ],
+        "model": "gpt-5-2025-08-07"
+      },
+      "datastream_metadata": {
+        "uuid": "1e3c6544-1297-4228-95e6-41def5cbdd3c",
+        "source_timestamp": 1769186231000
+      }
+    },
+    {
+      "created_at": "2026-01-23T15:33:44.731383",
+      "updated_at": "2026-01-23T15:51:51",
+      "id": 13,
+      "status": "done",
+      "started_at": "2026-01-23T15:33:45",
+      "completed_at": "2026-01-23T15:50:26",
+      "success_count": 73,
+      "failure_count": 26,
+      "delivery_batch_id": 64,
+      "report": {
+        "commonIssues": [
+          {
+            "issue": "Use of disallowed instruction_id 'length_constraints:number_words' in instructions",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "high",
+            "taskIds": [
+              54187,
+              54212,
+              54222,
+              54226,
+              54232,
+              54234,
+              54286,
+              54331,
+              54333,
+              54338,
+              54349,
+              54356,
+              54405,
+              54709,
+              54835,
+              55680,
+              62738
+            ],
+            "tasksImpactedCount": 17
+          },
+          {
+            "issue": "Use of disallowed instruction_id 'detectable_content:numeric_inclusion' in instructions",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "medium",
+            "taskIds": [
+              54226,
+              54253,
+              54286,
+              54333,
+              54356,
+              54387,
+              54405,
+              54503,
+              54835
+            ],
+            "tasksImpactedCount": 9
+          },
+          {
+            "issue": "Use of disallowed instruction_id 'length_constraints:sentence_length' in instructions",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "medium",
+            "taskIds": [
+              54247,
+              54331,
+              54339,
+              54402,
+              54561,
+              62738
+            ],
+            "tasksImpactedCount": 6
+          },
+          {
+            "issue": "Use of disallowed instruction_id 'punctuation:question_exclaim' in instructions",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "medium",
+            "taskIds": [
+              54190,
+              54239,
+              54247,
+              54434,
+              54835
+            ],
+            "tasksImpactedCount": 5
+          },
+          {
+            "issue": "Use of other banned instruction types (length_constraints:number_characters, length_constraints:word_length, change_case:capital_word_frequency)",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "medium",
+            "taskIds": [
+              54212,
+              54222,
+              54331,
+              54336
+            ],
+            "tasksImpactedCount": 4
+          },
+          {
+            "issue": "Unauthorized specificity/value mismatches in detectable_format checks (e.g., table min_rows/min_cols, section/paragraph checks) causing traceability failures",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "medium",
+            "taskIds": [
+              54247,
+              54331,
+              54460,
+              54709
+            ],
+            "tasksImpactedCount": 4
+          },
+          {
+            "issue": "Overly specific keyword checks (keywords:frequency/existence) requiring exact terms not mandated by SI/user",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "low",
+            "taskIds": [
+              54196,
+              54561
+            ],
+            "tasksImpactedCount": 2
+          },
+          {
+            "issue": "Use of disallowed instruction_id 'keywords:letter_frequency' in instructions",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "low",
+            "taskIds": [
+              54338
+            ],
+            "tasksImpactedCount": 1
+          },
+          {
+            "issue": "Use of disallowed instruction_id 'length_constraints:paragraph_length' in instructions",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "low",
+            "taskIds": [
+              54192
+            ],
+            "tasksImpactedCount": 1
+          },
+          {
+            "issue": "llm_judge criteria add unauthorized specificity or misapply conditional requirements (e.g., enforcing explanation-only paragraph counts, unconditional math checks)",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "low",
+            "taskIds": [
+              54342
+            ],
+            "tasksImpactedCount": 1
+          },
+          {
+            "issue": "Incorrect source labeling in llm_judge criteria (requirements tagged as 'user' instead of 'system')",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "low",
+            "taskIds": [
+              54626
+            ],
+            "tasksImpactedCount": 1
+          },
+          {
+            "issue": "Instruction criteria contradict or are not traceable to the user request (e.g., forcing safety warnings, route examples, or tailoring explicitly excluded by user)",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "low",
+            "taskIds": [
+              55377
+            ],
+            "tasksImpactedCount": 1
+          }
+        ],
+        "model": "gpt-5-2025-08-07"
+      },
+      "datastream_metadata": {
+        "uuid": "1e982e37-1881-4c64-a44a-6a7a8fe580c6",
+        "source_timestamp": 1769183511000
+      }
+    },
+    {
+      "created_at": "2026-01-23T15:08:20.189341",
+      "updated_at": "2026-01-23T15:27:04",
+      "id": 12,
+      "status": "done",
+      "started_at": "2026-01-23T15:08:20",
+      "completed_at": "2026-01-23T15:25:21",
+      "success_count": 73,
+      "failure_count": 26,
+      "delivery_batch_id": 64,
+      "report": {
+        "commonIssues": [
+          {
+            "issue": "Use of disallowed instruction_id 'length_constraints:number_words'",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "high",
+            "taskIds": [
+              54187,
+              54212,
+              54222,
+              54226,
+              54232,
+              54286,
+              54331,
+              54333,
+              54336,
+              54338,
+              54349,
+              54356,
+              54405,
+              54709,
+              54835,
+              55675,
+              55680,
+              62738
+            ],
+            "tasksImpactedCount": 18
+          },
+          {
+            "issue": "Use of disallowed instruction_id 'detectable_content:numeric_inclusion' (numeric digit/number counts)",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "medium",
+            "taskIds": [
+              54226,
+              54253,
+              54286,
+              54333,
+              54356,
+              54387,
+              54405,
+              54503,
+              54835
+            ],
+            "tasksImpactedCount": 9
+          },
+          {
+            "issue": "Use of disallowed instruction_id 'length_constraints:sentence_length'",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "medium",
+            "taskIds": [
+              54247,
+              54331,
+              54339,
+              54402,
+              54561,
+              62738
+            ],
+            "tasksImpactedCount": 6
+          },
+          {
+            "issue": "Use of disallowed instruction_id 'punctuation:question_exclaim' (question/exclamation mark counts)",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "medium",
+            "taskIds": [
+              54190,
+              54239,
+              54247,
+              54434,
+              54835
+            ],
+            "tasksImpactedCount": 5
+          },
+          {
+            "issue": "Use of disallowed character/letter/word-level length or case constraints (e.g., number_characters, word_length, capital_word_frequency, letter_frequency)",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "medium",
+            "taskIds": [
+              54212,
+              54222,
+              54331,
+              54336,
+              54338
+            ],
+            "tasksImpactedCount": 5
+          },
+          {
+            "issue": "LLM judge criteria not traceable or mis-scoped relative to SI/user (e.g., misapplied paragraph counts, penalizing absence of math, sentence-length checks, numeric digit counts)",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "medium",
+            "taskIds": [
+              54323,
+              54342,
+              54387,
+              54424,
+              54650
+            ],
+            "tasksImpactedCount": 5
+          },
+          {
+            "issue": "Use of disallowed paragraph/format length constraints (e.g., detectable_format:max_paragraph_length, detectable_format:number_paragraphs, length_constraints:paragraph_length)",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "medium",
+            "taskIds": [
+              54192,
+              54212,
+              54331,
+              54835
+            ],
+            "tasksImpactedCount": 4
+          },
+          {
+            "issue": "Untraceable keyword presence/frequency checks (requiring specific words not mandated by SI/user)",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "medium",
+            "taskIds": [
+              54187,
+              54196,
+              54323,
+              54561
+            ],
+            "tasksImpactedCount": 4
+          },
+          {
+            "issue": "Criteria do not correctly handle system vs user instruction conflicts/overrides",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "low",
+            "taskIds": [
+              54650,
+              55377,
+              55675
+            ],
+            "tasksImpactedCount": 3
+          },
+          {
+            "issue": "Over-specific table constraints not aligned with SI (e.g., unnecessary min rows/cols)",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "low",
+            "taskIds": [
+              54460
+            ],
+            "tasksImpactedCount": 1
+          },
+          {
+            "issue": "Missing or incorrect 'source' fields on instructions causing source label accuracy failures",
+            "qualityDimension": "Turn_metadata Quality",
+            "severity": "low",
+            "taskIds": [
+              54323
+            ],
+            "tasksImpactedCount": 1
+          }
+        ],
+        "model": "gpt-5-2025-08-07"
+      },
+      "datastream_metadata": {
+        "uuid": "78c9e4aa-048f-435e-8f27-87233369ae9b",
+        "source_timestamp": 1769182024000
+      }
+    },
+    {
+      "created_at": "2026-01-23T15:01:10.701433",
+      "updated_at": "2026-01-23T15:22:43",
+      "id": 11,
+      "status": "done",
+      "started_at": "2026-01-23T15:01:11",
+      "completed_at": "2026-01-23T15:20:45",
+      "success_count": 334,
+      "failure_count": 1,
+      "delivery_batch_id": 141,
+      "report": {
+        "commonIssues": [
+          {
+            "issue": "Untraceable or unauthorized criteria not grounded in System Instructions or user turn (invented constraints, mandatory structures, specific phrases/sections not required)",
+            "qualityDimension": "Requirement Traceability",
+            "severity": "high",
+            "taskIds": [
+              54258,
+              54300,
+              54317,
+              54360,
+              54436,
+              54529,
+              54558,
+              54580,
+              54615,
+              54616,
+              54780,
+              54876,
+              54892,
+              54931,
+              54941,
+              54974,
+              54989,
+              55000,
+              55121,
+              55210,
+              55226,
+              55233,
+              55272,
+              55303,
+              55347,
+              55421,
+              55440,
+              55448,
+              55490,
+              55507,
+              55552,
+              55596,
+              55642
+            ],
+            "tasksImpactedCount": 33
+          },
+          {
+            "issue": "Use of disallowed evaluation criteria (e.g., word/character/sentence counts, alliteration chains, vowel ratios, punctuation counts, palindrome/ALL-CAPS counts, numeric-inclusion)",
+            "qualityDimension": "Instruction Type Compliance",
+            "severity": "high",
+            "taskIds": [
+              54509,
+              54701,
+              54749,
+              54780,
+              54881,
+              54943,
+              55141,
+              55191,
+              55196,
+              55200,
+              55241,
+              55246,
+              55312,
+              55369,
+              55387,
+              55398,
+              55477,
+              55583,
+              55651,
+              55669
+            ],
+            "tasksImpactedCount": 20
+          },
+          {
+            "issue": "Incorrect source attribution for criteria (source set to system vs user or vice versa)",
+            "qualityDimension": "Source Label Accuracy",
+            "severity": "medium",
+            "taskIds": [
+              54287,
+              54300,
+              54436,
+              54616,
+              54870,
+              54931,
+              54947,
+              55000,
+              55233,
+              55440,
+              55596
+            ],
+            "tasksImpactedCount": 11
+          },
+          {
+            "issue": "Misalignment checks incorrectly flagged or missing (is_misalignment_check misused or absent where user attempts to override SI)",
+            "qualityDimension": "Misalignment Flag Accuracy",
+            "severity": "medium",
+            "taskIds": [
+              54287,
+              54300,
+              54436,
+              54562,
+              54616,
+              54870,
+              55233,
+              55440,
+              62754
+            ],
+            "tasksImpactedCount": 9
+          },
+          {
+            "issue": "Failure to respect instruction precedence (System > User), leading to criteria enforcing user overrides or contradicting SI",
+            "qualityDimension": "Requirement Traceability",
+            "severity": "medium",
+            "taskIds": [
+              54436,
+              54876,
+              54947,
+              55000,
+              55440,
+              55552,
+              55596
+            ],
+            "tasksImpactedCount": 7
+          },
+          {
+            "issue": "Value mismatches with SI specifications (e.g., wrong min rows/cols for tables, incorrect allowed punctuation set)",
+            "qualityDimension": "Requirement Traceability",
+            "severity": "low",
+            "taskIds": [
+              54360,
+              54558,
+              55448,
+              55642
+            ],
+            "tasksImpactedCount": 4
+          },
+          {
+            "issue": "Duplicate testing of the same requirement across instructions and llm_judge",
+            "qualityDimension": "No Duplicate Criteria",
+            "severity": "low",
+            "taskIds": [
+              55071
+            ],
+            "tasksImpactedCount": 1
+          },
+          {
+            "issue": "Hardcoded expected results in llm_judge instead of verifying formula/process compliance",
+            "qualityDimension": "Requirement Traceability",
+            "severity": "low",
+            "taskIds": [
+              54992,
+              55421
+            ],
+            "tasksImpactedCount": 2
+          }
+        ],
+        "model": "gpt-5-2025-08-07"
+      },
+      "datastream_metadata": {
+        "uuid": "6e2a3d68-40e2-44a4-8037-4d94175f3ca0",
+        "source_timestamp": 1769181763000
+      }
+    },
+    {
+      "created_at": "2026-01-23T14:34:03.644503",
+      "updated_at": "2026-01-23T14:58:56",
+      "id": 10,
+      "status": "done",
+      "started_at": "2026-01-23T14:34:04",
+      "completed_at": "2026-01-23T14:53:09",
+      "success_count": 330,
+      "failure_count": 1,
+      "delivery_batch_id": 141,
+      "report": {
+        "commonIssues": [
+          {
+            "issue": "Untraceable or unauthorized specificity in evaluation criteria (checks not backed by SI or user requirements, or value mismatches)",
+            "qualityDimension": "Requirement Traceability",
+            "severity": "high",
+            "taskIds": [
+              54258,
+              54300,
+              54436,
+              54509,
+              54529,
+              54558,
+              54580,
+              54703,
+              54876,
+              54941,
+              54943,
+              54947,
+              54964,
+              54989,
+              54992,
+              55000,
+              55039,
+              55121,
+              55191,
+              55200,
+              55233,
+              55237,
+              55246,
+              55272,
+              55303,
+              55347,
+              55421,
+              55440,
+              55448,
+              55477,
+              55483,
+              55490,
+              55505,
+              55507,
+              55596,
+              55642
+            ],
+            "tasksImpactedCount": 36
+          },
+          {
+            "issue": "Use of disallowed evaluation concepts (e.g., word/sentence/paragraph counts, alliteration, punctuation counts, keyword positioning, vowel/letter/caps counts, numeric inclusion)",
+            "qualityDimension": "Instruction Type Compliance",
+            "severity": "high",
+            "taskIds": [
+              54509,
+              54749,
+              54780,
+              54881,
+              54892,
+              54943,
+              55141,
+              55191,
+              55196,
+              55200,
+              55241,
+              55246,
+              55312,
+              55330,
+              55354,
+              55369,
+              55387,
+              55398,
+              55477,
+              55583,
+              55651,
+              55669
+            ],
+            "tasksImpactedCount": 22
+          },
+          {
+            "issue": "Incorrect requirement source labeling (system vs user) leading to traceability errors",
+            "qualityDimension": "Source Label Accuracy",
+            "severity": "medium",
+            "taskIds": [
+              54300,
+              54436,
+              54616,
+              54637,
+              54947,
+              54964,
+              55121,
+              55145,
+              55237,
+              55303,
+              55505,
+              55642
+            ],
+            "tasksImpactedCount": 12
+          },
+          {
+            "issue": "Misalignment flag misuse (is_misalignment_check set true with source 'system' or used when no user override attempt exists)",
+            "qualityDimension": "Misalignment Flag Accuracy",
+            "severity": "medium",
+            "taskIds": [
+              54287,
+              54300,
+              54558,
+              54562,
+              54611,
+              54616,
+              54637,
+              54947,
+              54964,
+              55145,
+              55505,
+              55626
+            ],
+            "tasksImpactedCount": 12
+          },
+          {
+            "issue": "Failure to reflect user overrides/precedence in criteria (checks not updated when user instructions legitimately override SI)",
+            "qualityDimension": "Requirement Traceability",
+            "severity": "low",
+            "taskIds": [
+              54436,
+              54876,
+              55303,
+              55440,
+              55596
+            ],
+            "tasksImpactedCount": 5
+          },
+          {
+            "issue": "Evaluation questions not answerable due to disallowed metrics (e.g., explicit word/length checks)",
+            "qualityDimension": "Answerable Evaluation Questions",
+            "severity": "low",
+            "taskIds": [
+              54892,
+              55387
+            ],
+            "tasksImpactedCount": 2
+          },
+          {
+            "issue": "Missing misalignment checks when user explicitly challenges SI constraints",
+            "qualityDimension": "Misalignment Flag Accuracy",
+            "severity": "low",
+            "taskIds": [
+              54870
+            ],
+            "tasksImpactedCount": 1
+          },
+          {
+            "issue": "Malformed turn_metadata JSON (syntax errors that invalidate the metadata)",
+            "qualityDimension": "Instruction Type Compliance",
+            "severity": "low",
+            "taskIds": [
+              54573
+            ],
+            "tasksImpactedCount": 1
+          }
+        ],
+        "model": "gpt-5-2025-08-07"
+      },
+      "datastream_metadata": {
+        "uuid": "3f044756-54af-41e7-bfd9-9ae21c63bf0a",
+        "source_timestamp": 1769180336000
+      }
+    },
+    {
+      "created_at": "2026-01-21T10:09:52.247006",
+      "updated_at": "2026-01-21T10:27:26",
+      "id": 9,
+      "status": "done",
+      "started_at": "2026-01-21T10:09:52",
+      "completed_at": "2026-01-21T10:26:47",
+      "success_count": 98,
+      "failure_count": 3,
+      "delivery_batch_id": 166,
+      "report": {
+        "commonIssues": [
+          {
+            "issue": "Prompt lacks explicit, unambiguous, and testable counter-intuitive constraint (constraints are implicit or not quantifiable)",
+            "qualityDimension": "PROMPT QUALITY AND DOMAIN COMPLIANCE",
+            "severity": "high",
+            "taskIds": [
+              60576,
+              60623,
+              67736,
+              67892,
+              67868
+            ],
+            "tasksImpactedCount": 5
+          },
+          {
+            "issue": "Invalid response_reference structure: missing criteria array or incorrect criteria field naming",
+            "qualityDimension": "RESPONSE REFERENCE FORMAT",
+            "severity": "medium",
+            "taskIds": [
+              60392,
+              60442,
+              60574
+            ],
+            "tasksImpactedCount": 3
+          },
+          {
+            "issue": "Target model breaking rate below required threshold (>=75%)",
+            "qualityDimension": "TARGET MODEL BREAKING RATE",
+            "severity": "low",
+            "taskIds": [
+              60716
+            ],
+            "tasksImpactedCount": 1
+          },
+          {
+            "issue": "Ideal response contradicts core counter-intuitive requirement (affirms incorrect claims)",
+            "qualityDimension": "IDEAL RESPONSE QUALITY",
+            "severity": "low",
+            "taskIds": [
+              60838
+            ],
+            "tasksImpactedCount": 1
+          },
+          {
+            "issue": "Response reference includes imaginary constraints not stated in the prompt or inherent to the task",
+            "qualityDimension": "NO IMAGINARY CONSTRAINTS IN RESPONSE REFERENCE",
+            "severity": "low",
+            "taskIds": [
+              60544
+            ],
+            "tasksImpactedCount": 1
+          }
+        ],
+        "model": "gpt-5-2025-08-07"
+      },
+      "datastream_metadata": {
+        "uuid": "b8de97f7-7bd8-4b84-aa7c-551f3050a5b0",
+        "source_timestamp": 1768991246000
+      }
+    },
+    {
+      "created_at": "2026-01-20T14:20:50.692906",
+      "updated_at": "2026-01-20T14:39:19",
+      "id": 8,
+      "status": "done",
+      "started_at": "2026-01-20T14:20:51",
+      "completed_at": "2026-01-20T14:37:41",
+      "success_count": 100,
+      "failure_count": 1,
+      "delivery_batch_id": 166,
+      "report": {
+        "commonIssues": [
+          {
+            "issue": "Criteria objects use generic 'criteria' field instead of required 'criteriaN' matching their 'id' in response_reference",
+            "qualityDimension": "RESPONSE REFERENCE FORMAT",
+            "severity": "high",
+            "taskIds": [
+              60196,
+              60224,
+              60272,
+              60371,
+              60447,
+              60627,
+              60635,
+              60667,
+              60681,
+              60709,
+              60715,
+              60748,
+              60769,
+              60838,
+              60911,
+              60985,
+              61124,
+              61165,
+              67717,
+              67738,
+              67762,
+              67773,
+              67806,
+              67808,
+              67813,
+              67815,
+              67830,
+              67857,
+              67860,
+              67902,
+              67908,
+              67912
+            ],
+            "tasksImpactedCount": 32
+          },
+          {
+            "issue": "Missing or invalid criteria array structure in response_reference (criteria not enclosed in a proper JSON array)",
+            "qualityDimension": "RESPONSE REFERENCE FORMAT",
+            "severity": "medium",
+            "taskIds": [
+              60249,
+              60332,
+              60392,
+              60422,
+              60442,
+              60513,
+              60533,
+              60655,
+              60815,
+              61101,
+              67826,
+              67852,
+              67855,
+              67861,
+              67883,
+              67886
+            ],
+            "tasksImpactedCount": 16
+          },
+          {
+            "issue": "Prompt lacks an explicit, testable counter-intuitive constraint required by domain",
+            "qualityDimension": "PROMPT QUALITY AND DOMAIN COMPLIANCE",
+            "severity": "low",
+            "taskIds": [
+              60623,
+              60838,
+              67736,
+              67892
+            ],
+            "tasksImpactedCount": 4
+          },
+          {
+            "issue": "User prompt length exceeds specified 20–50 word range (even with tolerance)",
+            "qualityDimension": "PROMPT LENGTH COMPLIANCE",
+            "severity": "low",
+            "taskIds": [
+              60709,
+              60894,
+              60989
+            ],
+            "tasksImpactedCount": 3
+          },
+          {
+            "issue": "Evaluation criteria include golden answers or correctness requirements not provided in the prompt/task type (imaginary constraints)",
+            "qualityDimension": "NO IMAGINARY CONSTRAINTS IN RESPONSE REFERENCE",
+            "severity": "low",
+            "taskIds": [
+              60224,
+              61101
+            ],
+            "tasksImpactedCount": 2
+          },
+          {
+            "issue": "Target model breaking rate below required threshold",
+            "qualityDimension": "TARGET MODEL BREAKING RATE",
+            "severity": "low",
+            "taskIds": [
+              60716
+            ],
+            "tasksImpactedCount": 1
+          }
+        ],
+        "model": "gpt-5-2025-08-07"
+      },
+      "datastream_metadata": {
+        "uuid": "7e75527c-44da-4065-9e99-c737c637554d",
+        "source_timestamp": 1768919959000
+      }
+    },
+    {
+      "created_at": "2026-01-20T14:01:39.336433",
+      "updated_at": "2026-01-20T14:20:52",
+      "id": 7,
+      "status": "done",
+      "started_at": "2026-01-20T14:01:39",
+      "completed_at": "2026-01-20T14:18:36",
+      "success_count": 100,
+      "failure_count": 1,
+      "delivery_batch_id": 166,
+      "report": {
+        "commonIssues": [
+          {
+            "issue": "Criteria array objects use 'criteria'/'criterion' keys instead of required numbered 'criteriaN' matching ids (e.g., C1→criteria1)",
+            "qualityDimension": "RESPONSE REFERENCE FORMAT",
+            "severity": "high",
+            "taskIds": [
+              60196,
+              60224,
+              60249,
+              60272,
+              60371,
+              60442,
+              60508,
+              60511,
+              60557,
+              60559,
+              60627,
+              60635,
+              60655,
+              60667,
+              60681,
+              60709,
+              60715,
+              60769,
+              60792,
+              60838,
+              60911,
+              60985,
+              61076,
+              61124,
+              61165,
+              67717,
+              67738,
+              67800,
+              67806,
+              67813,
+              67826,
+              67830,
+              67860,
+              67861,
+              67883,
+              67902,
+              67912
+            ],
+            "tasksImpactedCount": 37
+          },
+          {
+            "issue": "Missing criteria array structure; criteria listed as plain text or standalone objects instead of a JSON array of objects with id and criteriaN",
+            "qualityDimension": "RESPONSE REFERENCE FORMAT",
+            "severity": "medium",
+            "taskIds": [
+              60233,
+              60332,
+              60447,
+              60513,
+              60533,
+              67773,
+              67815,
+              67852,
+              67886
+            ],
+            "tasksImpactedCount": 9
+          },
+          {
+            "issue": "Counter-intuitive or special constraint is implicit/ambiguous rather than explicit and testable in the prompt",
+            "qualityDimension": "PROMPT QUALITY AND DOMAIN COMPLIANCE",
+            "severity": "low",
+            "taskIds": [
+              60623,
+              60702,
+              67736,
+              67868,
+              67892
+            ],
+            "tasksImpactedCount": 5
+          },
+          {
+            "issue": "User prompt exceeds specified word-count range (even with tolerance)",
+            "qualityDimension": "PROMPT LENGTH COMPLIANCE",
+            "severity": "low",
+            "taskIds": [
+              60511,
+              60592,
+              60702,
+              67826
+            ],
+            "tasksImpactedCount": 4
+          },
+          {
+            "issue": "Rubric introduces imaginary constraints or golden answers not present in the prompt or inherent to the task type",
+            "qualityDimension": "NO IMAGINARY CONSTRAINTS IN RESPONSE REFERENCE",
+            "severity": "low",
+            "taskIds": [
+              60224,
+              61129,
+              67796
+            ],
+            "tasksImpactedCount": 3
+          },
+          {
+            "issue": "Target model breaking rate below required threshold (≥75%)",
+            "qualityDimension": "TARGET MODEL BREAKING RATE",
+            "severity": "low",
+            "taskIds": [
+              60716
+            ],
+            "tasksImpactedCount": 1
+          }
+        ],
+        "model": "gpt-5-2025-08-07"
+      },
+      "datastream_metadata": {
+        "uuid": "a6a59653-4b6b-4722-8e1e-1bea5ce48782",
+        "source_timestamp": 1768918852000
+      }
+    },
+    {
+      "created_at": "2026-01-20T13:10:59.754201",
+      "updated_at": "2026-01-20T13:30:35",
+      "id": 6,
+      "status": "done",
+      "started_at": "2026-01-20T13:11:00",
+      "completed_at": "2026-01-20T13:28:12",
+      "success_count": 100,
+      "failure_count": 1,
+      "delivery_batch_id": 166,
+      "report": {
+        "commonIssues": [
+          {
+            "issue": "Criteria array not compliant: uses generic 'criteria' (or 'criterion') fields instead of numbered 'criteriaN' fields and/or invalid criteria object structure",
+            "qualityDimension": "RESPONSE REFERENCE FORMAT",
+            "severity": "high",
+            "taskIds": [
+              60196,
+              60224,
+              60233,
+              60249,
+              60262,
+              60272,
+              60332,
+              60371,
+              60392,
+              60442,
+              60447,
+              60511,
+              60513,
+              60533,
+              60557,
+              60559,
+              60635,
+              60655,
+              60667,
+              60681,
+              60709,
+              60716,
+              60748,
+              60769,
+              60792,
+              60815,
+              60838,
+              60985,
+              61076,
+              61101,
+              61124,
+              61165,
+              67717,
+              67738,
+              67762,
+              67773,
+              67800,
+              67806,
+              67808,
+              67813,
+              67815,
+              67857,
+              67861,
+              67883,
+              67886,
+              67902,
+              67908
+            ],
+            "tasksImpactedCount": 47
+          },
+          {
+            "issue": "User prompt below minimum required word count",
+            "qualityDimension": "PROMPT LENGTH COMPLIANCE",
+            "severity": "medium",
+            "taskIds": [
+              60219,
+              60233,
+              60392,
+              60422,
+              60580,
+              60698,
+              60702,
+              60716,
+              60727,
+              60773,
+              60838,
+              60989,
+              61101,
+              61129,
+              61137,
+              61146,
+              67724,
+              67736,
+              67800,
+              67808,
+              67826,
+              67830,
+              67861,
+              67880,
+              67886
+            ],
+            "tasksImpactedCount": 25
+          },
+          {
+            "issue": "No criteria array present: criteria listed as plain text or unwrapped objects rather than a JSON array",
+            "qualityDimension": "RESPONSE REFERENCE FORMAT",
+            "severity": "medium",
+            "taskIds": [
+              60196,
+              60233,
+              60332,
+              60392,
+              60533,
+              60716,
+              60748,
+              60792,
+              60815,
+              61101,
+              67738,
+              67762,
+              67886,
+              67902
+            ],
+            "tasksImpactedCount": 14
+          },
+          {
+            "issue": "Inconsistent prompt extraction/word counting (e.g., counting non-prompt cells or recounting) leading to incorrect length evaluation",
+            "qualityDimension": "PROMPT LENGTH COMPLIANCE",
+            "severity": "medium",
+            "taskIds": [
+              60422,
+              60502,
+              60511,
+              60540,
+              60580,
+              60702,
+              60716,
+              60727,
+              60773,
+              67738,
+              67806,
+              67808,
+              67826
+            ],
+            "tasksImpactedCount": 13
+          },
+          {
+            "issue": "User prompt exceeds maximum allowed word count",
+            "qualityDimension": "PROMPT LENGTH COMPLIANCE",
+            "severity": "low",
+            "taskIds": [
+              60502,
+              60511,
+              60540,
+              60544,
+              60623,
+              60626,
+              60635,
+              67738,
+              67806
+            ],
+            "tasksImpactedCount": 9
+          },
+          {
+            "issue": "Counter-intuitive constraint is implicit/not explicitly stated in the prompt",
+            "qualityDimension": "PROMPT QUALITY AND DOMAIN COMPLIANCE",
+            "severity": "low",
+            "taskIds": [
+              60623,
+              67868,
+              67892
+            ],
+            "tasksImpactedCount": 3
+          },
+          {
+            "issue": "Imaginary constraints added in response_reference (requirements not in prompt and not inherent to task type)",
+            "qualityDimension": "NO IMAGINARY CONSTRAINTS IN RESPONSE REFERENCE",
+            "severity": "low",
+            "taskIds": [
+              60544,
+              60576,
+              60623
+            ],
+            "tasksImpactedCount": 3
+          },
+          {
+            "issue": "Golden answer/correctness requirements included where prohibited or over-specified for task type",
+            "qualityDimension": "NO IMAGINARY CONSTRAINTS IN RESPONSE REFERENCE",
+            "severity": "low",
+            "taskIds": [
+              61101,
+              67906
+            ],
+            "tasksImpactedCount": 2
+          },
+          {
+            "issue": "Target model breaking rate below required threshold",
+            "qualityDimension": "TARGET MODEL BREAKING RATE",
+            "severity": "low",
+            "taskIds": [
+              60716
+            ],
+            "tasksImpactedCount": 1
+          },
+          {
+            "issue": "Missing or non-numeric prompt length requirement in metadata prevents evaluation",
+            "qualityDimension": "PROMPT LENGTH COMPLIANCE",
+            "severity": "low",
+            "taskIds": [
+              67855
+            ],
+            "tasksImpactedCount": 1
+          }
+        ],
+        "model": "gpt-5-2025-08-07"
+      },
+      "datastream_metadata": {
+        "uuid": "2e252be2-7bcd-41de-affb-1b3e836d9e6e",
+        "source_timestamp": 1768915835000
+      }
+    },
+    {
+      "created_at": "2026-01-20T11:54:56.310682",
+      "updated_at": "2026-01-20T12:15:42",
+      "id": 5,
+      "status": "done",
+      "started_at": "2026-01-20T11:54:56",
+      "completed_at": "2026-01-20T12:11:38",
+      "success_count": 100,
+      "failure_count": 1,
+      "delivery_batch_id": 166,
+      "report": {
+        "commonIssues": [
+          {
+            "issue": "Response reference uses deprecated chat/message structure instead of a standalone JSON criteria array with id and criteriaX fields",
+            "qualityDimension": "RESPONSE REFERENCE FORMAT",
+            "severity": "medium",
+            "taskIds": [
+              60262,
+              60392,
+              60422,
+              60447,
+              60508,
+              60513,
+              60533,
+              60540,
+              60557,
+              60559,
+              60574,
+              60580,
+              60585,
+              60667,
+              60698,
+              60702,
+              60715,
+              60716,
+              60792,
+              60838,
+              60894,
+              61101,
+              61124,
+              61146,
+              67717,
+              67752,
+              67762,
+              67773,
+              67790,
+              67796,
+              67800,
+              67808,
+              67855,
+              67861,
+              67883,
+              67886,
+              67891,
+              67906,
+              67912
+            ],
+            "tasksImpactedCount": 39
+          },
+          {
+            "issue": "Criteria objects use wrong field names ('criteria', 'criterion', or 'criteria 1') instead of required sequential 'criteriaX' names",
+            "qualityDimension": "RESPONSE REFERENCE FORMAT",
+            "severity": "medium",
+            "taskIds": [
+              60196,
+              60224,
+              60233,
+              60249,
+              60272,
+              60332,
+              60371,
+              60442,
+              60511,
+              60627,
+              60635,
+              60655,
+              60681,
+              60709,
+              60727,
+              60748,
+              60769,
+              60815,
+              60911,
+              60985,
+              61076,
+              61165,
+              67738,
+              67806,
+              67813,
+              67826,
+              67830,
+              67857,
+              67860,
+              67892,
+              67902,
+              67908
+            ],
+            "tasksImpactedCount": 32
+          },
+          {
+            "issue": "Response reference is not a valid standalone JSON array (invalid JSON syntax, trailing commas, or embedded in text/markdown)",
+            "qualityDimension": "RESPONSE REFERENCE FORMAT",
+            "severity": "low",
+            "taskIds": [
+              60219,
+              60502,
+              60592,
+              60888,
+              61104,
+              61137,
+              67724,
+              67736,
+              67784,
+              67788,
+              67829
+            ],
+            "tasksImpactedCount": 11
+          },
+          {
+            "issue": "Ideal response fails task-type or counter-intuitive constraints (answers wrong sub-questions, adds meta-commentary/external info, or ignores the final instruction)",
+            "qualityDimension": "IDEAL RESPONSE QUALITY",
+            "severity": "medium",
+            "taskIds": [
+              60585,
+              60592,
+              60667,
+              60681,
+              60715,
+              60727,
+              60769,
+              60888,
+              60985,
+              60989,
+              61101,
+              61124,
+              61146,
+              61162,
+              67717,
+              67724,
+              67752,
+              67784,
+              67788,
+              67796,
+              67815,
+              67826,
+              67852,
+              67855,
+              67892,
+              67912
+            ],
+            "tasksImpactedCount": 26
+          },
+          {
+            "issue": "Ideal response misses exact quantity/word-count constraints (required counts of words, errors, answers, or distributions not met)",
+            "qualityDimension": "IDEAL RESPONSE QUALITY",
+            "severity": "medium",
+            "taskIds": [
+              60219,
+              60249,
+              60262,
+              60272,
+              60422,
+              60447,
+              60580,
+              60698,
+              60716,
+              60773,
+              61129,
+              67738,
+              67773,
+              67808,
+              67813,
+              67857,
+              67860,
+              67891
+            ],
+            "tasksImpactedCount": 18
+          },
+          {
+            "issue": "Prompt shorter than the minimum word-count requirement",
+            "qualityDimension": "PROMPT LENGTH COMPLIANCE",
+            "severity": "medium",
+            "taskIds": [
+              60224,
+              60233,
+              60371,
+              60392,
+              60574,
+              60702,
+              61101,
+              61129,
+              61137,
+              61146,
+              61162,
+              67724,
+              67736,
+              67800,
+              67813,
+              67826,
+              67830,
+              67860,
+              67861,
+              67880,
+              67886,
+              67902
+            ],
+            "tasksImpactedCount": 22
+          },
+          {
+            "issue": "Prompt exceeds the maximum word-count requirement",
+            "qualityDimension": "PROMPT LENGTH COMPLIANCE",
+            "severity": "low",
+            "taskIds": [
+              60272,
+              60376,
+              60540,
+              60544,
+              60592,
+              60623,
+              60627,
+              60698,
+              67738,
+              67796
+            ],
+            "tasksImpactedCount": 10
+          },
+          {
+            "issue": "Prompt length requirement is ambiguous or missing explicit numeric range",
+            "qualityDimension": "PROMPT LENGTH COMPLIANCE",
+            "severity": "low",
+            "taskIds": [
+              67717,
+              67747,
+              67857,
+              67906
+            ],
+            "tasksImpactedCount": 4
+          },
+          {
+            "issue": "Prompt lacks an explicit, unambiguous counter-intuitive constraint",
+            "qualityDimension": "PROMPT QUALITY AND DOMAIN COMPLIANCE",
+            "severity": "low",
+            "taskIds": [
+              60623,
+              67736,
+              67892
+            ],
+            "tasksImpactedCount": 3
+          },
+          {
+            "issue": "Criteria include imaginary constraints not present in the prompt or inherent to the task type",
+            "qualityDimension": "NO IMAGINARY CONSTRAINTS IN RESPONSE REFERENCE",
+            "severity": "low",
+            "taskIds": [
+              60623
+            ],
+            "tasksImpactedCount": 1
+          },
+          {
+            "issue": "Criteria specify golden answers/content that the prompt does not provide",
+            "qualityDimension": "NO IMAGINARY CONSTRAINTS IN RESPONSE REFERENCE",
+            "severity": "low",
+            "taskIds": [
+              60911
+            ],
+            "tasksImpactedCount": 1
+          },
+          {
+            "issue": "Target model breaking rate below required threshold",
+            "qualityDimension": "TARGET MODEL BREAKING RATE",
+            "severity": "low",
+            "taskIds": [
+              60716
+            ],
+            "tasksImpactedCount": 1
+          },
+          {
+            "issue": "Ideal response contains factual errors where factual accuracy is required",
+            "qualityDimension": "IDEAL RESPONSE QUALITY",
+            "severity": "low",
+            "taskIds": [
+              60838
+            ],
+            "tasksImpactedCount": 1
+          }
+        ],
+        "model": "gpt-5-2025-08-07"
+      },
+      "datastream_metadata": {
+        "uuid": "c9feeea0-b9bb-4345-b2db-fd8049381101",
+        "source_timestamp": 1768911342000
+      }
+    },
+    {
+      "created_at": "2026-01-20T11:36:48.072173",
+      "updated_at": "2026-01-20T11:53:30",
+      "id": 4,
+      "status": "done",
+      "started_at": "2026-01-20T11:36:48",
+      "completed_at": "2026-01-20T11:53:30",
+      "success_count": 98,
+      "failure_count": 3,
+      "delivery_batch_id": 166,
+      "report": null,
+      "datastream_metadata": {
+        "uuid": "c09e0324-dbc2-4708-87ca-8790220afaa8",
+        "source_timestamp": 1768910010000
+      }
+    },
+    {
+      "created_at": "2026-01-09T16:50:37.820561",
+      "updated_at": "2026-01-09T16:50:42",
+      "id": 2,
+      "status": "done",
+      "started_at": "2026-01-09T16:50:38",
+      "completed_at": "2026-01-09T16:50:40",
+      "success_count": 0,
+      "failure_count": 145,
+      "delivery_batch_id": 96,
+      "report": {
+        "commonIssues": [],
+        "model": "gpt-4o-2024-08-06"
+      },
+      "datastream_metadata": {
+        "uuid": "af23da13-ce41-4d37-80c0-829310000000",
+        "source_timestamp": 1767977442000
+      }
+    },
+    {
+      "created_at": "2026-01-09T16:45:57.989647",
+      "updated_at": "2026-01-09T16:46:01",
+      "id": 1,
+      "status": "done",
+      "started_at": "2026-01-09T16:45:58",
+      "completed_at": "2026-01-09T16:46:00",
+      "success_count": 0,
+      "failure_count": 145,
+      "delivery_batch_id": 96,
+      "report": {
+        "commonIssues": [],
+        "model": "gpt-4o-2024-08-06"
+      },
+      "datastream_metadata": {
+        "uuid": "98214fe6-0bb1-4b5c-8300-9a7310011100",
+        "source_timestamp": 1767977161000
+      }
+    }
+  ]
+}

@@ -318,9 +318,23 @@ async def startup_event():
             sync_type = 'initial' if task_count == 0 else 'scheduled'
             logger.info(f"Performing {sync_type} sync...")
             
+            # Sync BigQuery tables
             results = data_sync_service.sync_all_tables(sync_type=sync_type)
             success_count = sum(1 for v in results.values() if v)
-            logger.info(f"Sync completed: {success_count}/{len(results)} tables")
+            logger.info(f"BigQuery sync completed: {success_count}/{len(results)} tables")
+            
+            # DISABLED: Jibble API sync - using BigQuery for Jibble data instead
+            # logger.info("Performing Jibble sync (auto-detect first sync vs scheduled)...")
+            # try:
+            #     # Sync email mapping from Google Sheet
+            #     data_sync_service.sync_jibble_email_mapping(sync_type='initial')
+            #     # Sync Jibble hours (auto-detects: 90 days if first, 7 days otherwise)
+            #     data_sync_service.sync_jibble_hours_from_api(sync_type='auto')
+            #     logger.info("Jibble sync completed")
+            # except Exception as jibble_err:
+            #     logger.warning(f"Jibble sync failed (non-critical): {jibble_err}")
+            logger.info("Jibble API sync disabled - using BigQuery for Jibble data")
+            
             update_table_metrics(db_service)
         
         def run_resilient_sync():
@@ -369,6 +383,53 @@ async def startup_event():
             except Exception as e:
                 logger.error(f"Scheduled sync failed: {e}")
         
+        # DISABLED: Jibble API sync jobs - using BigQuery for Jibble data instead
+        # async def jibble_sync_job():
+        #     """Async job for Jibble API sync (runs hourly)."""
+        #     logger.info("Running scheduled Jibble sync...")
+        #     try:
+        #         def _run_jibble_sync():
+        #             data_sync_service = get_data_sync_service()
+        #             
+        #             # Step 1: Sync email mapping from Google Sheet (updates name->email mappings)
+        #             logger.info("Jibble sync: Updating email mapping from Google Sheet...")
+        #             mapping_result = data_sync_service.sync_jibble_email_mapping(sync_type='scheduled')
+        #             
+        #             # Step 2: Sync ALL hours from Jibble API (auto-detects days)
+        #             # Stores all data, filtering happens at query time
+        #             logger.info("Jibble sync: Fetching ALL hours from Jibble API...")
+        #             hours_result = data_sync_service.sync_jibble_hours_from_api(sync_type='auto')
+        #             
+        #             return {
+        #                 'email_mapping': mapping_result,
+        #                 'jibble_hours_api': hours_result
+        #             }
+        #         
+        #         results = await run_in_thread(_run_jibble_sync)
+        #         success_count = sum(1 for v in results.values() if v)
+        #         logger.info(f"Jibble sync completed: {success_count}/{len(results)} syncs")
+        #     except Exception as e:
+        #         logger.error(f"Scheduled Jibble sync failed: {e}")
+        # 
+        # async def jibble_project_sync_job():
+        #     """Async job for project-specific Jibble hours sync (runs every 4 hours).
+        #     
+        #     This uses the TimeEntries API to get project-specific hours.
+        #     It's slower due to API rate limits, so runs less frequently.
+        #     """
+        #     logger.info("Running scheduled Jibble project-specific sync...")
+        #     try:
+        #         def _run_project_sync():
+        #             data_sync_service = get_data_sync_service()
+        #             logger.info("Jibble project sync: Fetching project-specific hours from TimeEntries API...")
+        #             return data_sync_service.sync_jibble_hours_by_project(sync_type='scheduled')
+        #         
+        #         result = await run_in_thread(_run_project_sync)
+        #         logger.info(f"Jibble project sync completed: {'success' if result else 'failed'}")
+        #     except Exception as e:
+        #         logger.error(f"Scheduled Jibble project sync failed: {e}")
+        
+        # Main data sync job (every sync_interval_hours)
         scheduler.add_job(
             sync_job,
             trigger=IntervalTrigger(hours=settings.sync_interval_hours),
@@ -376,8 +437,27 @@ async def startup_event():
             name='Periodic Data Sync',
             replace_existing=True
         )
+        
+        # DISABLED: Jibble API sync jobs - using BigQuery for Jibble data instead
+        # scheduler.add_job(
+        #     jibble_sync_job,
+        #     trigger=IntervalTrigger(hours=1),
+        #     id='jibble_sync_job',
+        #     name='Jibble API Sync (Hourly)',
+        #     replace_existing=True
+        # )
+        # 
+        # scheduler.add_job(
+        #     jibble_project_sync_job,
+        #     trigger=IntervalTrigger(hours=4),
+        #     id='jibble_project_sync_job',
+        #     name='Jibble Project Sync (Every 4 Hours)',
+        #     replace_existing=True
+        # )
+        
         scheduler.start()
-        logger.info(f"Scheduled sync every {settings.sync_interval_hours} hour(s)")
+        logger.info(f"Scheduled data sync every {settings.sync_interval_hours} hour(s)")
+        logger.info("Jibble API sync disabled - using BigQuery for Jibble data")
         
         from app.core.resilience import StartupResult
         scheduler_result = StartupResult(name="Scheduler", success=True, critical=False)

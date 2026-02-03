@@ -1,0 +1,1980 @@
+{
+  "table": "contributor_history",
+  "row_count": 1814,
+  "sample_count": 100,
+  "fetched_at": "2026-01-28T23:22:45.866086",
+  "data": [
+    {
+      "created_at": "2026-01-28T19:49:17.386076",
+      "updated_at": "2026-01-28T19:49:17.386076",
+      "id": 1814,
+      "changed_fields": {
+        "name": {
+          "new": "Tanvi",
+          "old": ""
+        },
+        "roleId": {
+          "new": 2,
+          "old": null
+        },
+        "status": {
+          "new": "in-trial",
+          "old": "active"
+        },
+        "turingEmail": {
+          "new": "tanvi.n@turing.com",
+          "old": ""
+        }
+      },
+      "comment": "Contributor created",
+      "contributor_id": 1243,
+      "author_id": 1238,
+      "datastream_metadata": {
+        "uuid": "58904071-407a-4314-8962-7178327940f7",
+        "source_timestamp": 1769629757000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:23:57.708268",
+      "updated_at": "2026-01-28T18:23:57.708268",
+      "id": 1813,
+      "changed_fields": {
+        "roleId": {
+          "new": 3,
+          "old": 2
+        }
+      },
+      "comment": null,
+      "contributor_id": 1151,
+      "author_id": 1028,
+      "datastream_metadata": {
+        "uuid": "6504d750-fa44-4999-872f-2a12b0a91d3c",
+        "source_timestamp": 1769624637000
+      }
+    },
+    {
+      "created_at": "2026-01-27T17:58:22.623964",
+      "updated_at": "2026-01-27T17:58:22.623964",
+      "id": 1812,
+      "changed_fields": {
+        "teamLeadId": {
+          "new": 1242,
+          "old": null
+        }
+      },
+      "comment": null,
+      "contributor_id": 1241,
+      "author_id": 1241,
+      "datastream_metadata": {
+        "uuid": "15a0202d-a9b9-4eb9-9e9f-e918b1b15f31",
+        "source_timestamp": 1769536702000
+      }
+    },
+    {
+      "created_at": "2026-01-27T17:49:22.944226",
+      "updated_at": "2026-01-27T17:49:22.944226",
+      "id": 1811,
+      "changed_fields": {
+        "name": {
+          "new": "Muhammad Noor Ul Ain",
+          "old": "Muhammad Noor "
+        },
+        "personalEmail": {
+          "new": "",
+          "old": null
+        }
+      },
+      "comment": "User completes registration",
+      "contributor_id": 1242,
+      "author_id": 1242,
+      "datastream_metadata": {
+        "uuid": "0117d3d2-84cf-49dc-9712-86c94188f5aa",
+        "source_timestamp": 1769536162000
+      }
+    },
+    {
+      "created_at": "2026-01-27T17:48:47.308439",
+      "updated_at": "2026-01-27T17:48:47.308439",
+      "id": 1810,
+      "changed_fields": {
+        "name": {
+          "new": "Muhammad Noor ",
+          "old": ""
+        },
+        "roleId": {
+          "new": 1,
+          "old": null
+        },
+        "status": {
+          "new": "in-trial",
+          "old": "active"
+        },
+        "teamLeadId": {
+          "new": 1241,
+          "old": null
+        },
+        "turingEmail": {
+          "new": "ain.m@turing.com",
+          "old": ""
+        }
+      },
+      "comment": "Contributor created",
+      "contributor_id": 1242,
+      "author_id": 1241,
+      "datastream_metadata": {
+        "uuid": "d4e56905-e396-43d9-b01f-134543a21683",
+        "source_timestamp": 1769536127000
+      }
+    },
+    {
+      "created_at": "2026-01-27T17:26:10.576582",
+      "updated_at": "2026-01-27T17:26:10.576582",
+      "id": 1809,
+      "changed_fields": {
+        "name": {
+          "new": "Noman",
+          "old": ""
+        },
+        "roleId": {
+          "new": 1,
+          "old": null
+        },
+        "status": {
+          "new": "in-trial",
+          "old": "active"
+        },
+        "turingEmail": {
+          "new": "noman.s@turing.com",
+          "old": ""
+        }
+      },
+      "comment": "Contributor created",
+      "contributor_id": 1241,
+      "author_id": 1211,
+      "datastream_metadata": {
+        "uuid": "10cef090-e77b-44fa-8d02-210418af2b4c",
+        "source_timestamp": 1769534770000
+      }
+    },
+    {
+      "created_at": "2026-01-26T12:46:38.998569",
+      "updated_at": "2026-01-26T12:46:38.998569",
+      "id": 1808,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 1041,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "f2a9c666-193c-4fa2-832c-3e063d44833e",
+        "source_timestamp": 1769431598000
+      }
+    },
+    {
+      "created_at": "2026-01-26T12:42:43.864229",
+      "updated_at": "2026-01-26T12:42:43.864229",
+      "id": 1807,
+      "changed_fields": {
+        "isBlocked": {
+          "new": false,
+          "old": true
+        }
+      },
+      "comment": "Bulk unblocking of contributors",
+      "contributor_id": 1041,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "763a9feb-9678-4339-94d2-fb9891f8c0f9",
+        "source_timestamp": 1769431363000
+      }
+    },
+    {
+      "created_at": "2026-01-26T11:47:48.206271",
+      "updated_at": "2026-01-26T11:47:48.206271",
+      "id": 1806,
+      "changed_fields": {
+        "roleId": {
+          "new": 3,
+          "old": 2
+        }
+      },
+      "comment": null,
+      "contributor_id": 650,
+      "author_id": 524,
+      "datastream_metadata": {
+        "uuid": "77124261-2632-4722-8d08-46c165a9b465",
+        "source_timestamp": 1769428068000
+      }
+    },
+    {
+      "created_at": "2026-01-26T11:47:45.921871",
+      "updated_at": "2026-01-26T11:47:45.921871",
+      "id": 1805,
+      "changed_fields": {
+        "roleId": {
+          "new": 2,
+          "old": 3
+        }
+      },
+      "comment": null,
+      "contributor_id": 650,
+      "author_id": 524,
+      "datastream_metadata": {
+        "uuid": "6fdd3e7f-647a-467d-915a-c4fd2bb6b8b0",
+        "source_timestamp": 1769428065000
+      }
+    },
+    {
+      "created_at": "2026-01-26T11:47:37.991709",
+      "updated_at": "2026-01-26T11:47:37.991709",
+      "id": 1804,
+      "changed_fields": {
+        "roleId": {
+          "new": 3,
+          "old": 4
+        }
+      },
+      "comment": null,
+      "contributor_id": 1110,
+      "author_id": 524,
+      "datastream_metadata": {
+        "uuid": "f7def98e-6c72-4dfc-8e10-c2cee8873aaf",
+        "source_timestamp": 1769428057000
+      }
+    },
+    {
+      "created_at": "2026-01-26T11:47:36.413773",
+      "updated_at": "2026-01-26T11:47:36.413773",
+      "id": 1803,
+      "changed_fields": {
+        "roleId": {
+          "new": 4,
+          "old": 3
+        }
+      },
+      "comment": null,
+      "contributor_id": 1110,
+      "author_id": 524,
+      "datastream_metadata": {
+        "uuid": "131917f1-9c6e-41f7-acbc-3fab95806ef8",
+        "source_timestamp": 1769428056000
+      }
+    },
+    {
+      "created_at": "2026-01-26T11:47:24.335957",
+      "updated_at": "2026-01-26T11:47:24.335957",
+      "id": 1802,
+      "changed_fields": {
+        "roleId": {
+          "new": 3,
+          "old": 4
+        }
+      },
+      "comment": null,
+      "contributor_id": 639,
+      "author_id": 524,
+      "datastream_metadata": {
+        "uuid": "db8bcc3c-d697-4fea-bbe5-f385f86dcfde",
+        "source_timestamp": 1769428044000
+      }
+    },
+    {
+      "created_at": "2026-01-26T11:47:22.438783",
+      "updated_at": "2026-01-26T11:47:22.438783",
+      "id": 1801,
+      "changed_fields": {
+        "roleId": {
+          "new": 4,
+          "old": 3
+        }
+      },
+      "comment": null,
+      "contributor_id": 639,
+      "author_id": 524,
+      "datastream_metadata": {
+        "uuid": "0722667e-6ca7-4397-9f29-c95dba09d6c4",
+        "source_timestamp": 1769428042000
+      }
+    },
+    {
+      "created_at": "2026-01-26T11:47:01.194148",
+      "updated_at": "2026-01-26T11:47:01.194148",
+      "id": 1800,
+      "changed_fields": {
+        "roleId": {
+          "new": 3,
+          "old": 4
+        }
+      },
+      "comment": null,
+      "contributor_id": 670,
+      "author_id": 524,
+      "datastream_metadata": {
+        "uuid": "a3e52cef-8a3c-4a40-9889-3ed8916e6530",
+        "source_timestamp": 1769428021000
+      }
+    },
+    {
+      "created_at": "2026-01-26T11:46:58.980005",
+      "updated_at": "2026-01-26T11:46:58.980005",
+      "id": 1799,
+      "changed_fields": {
+        "roleId": {
+          "new": 4,
+          "old": 3
+        }
+      },
+      "comment": null,
+      "contributor_id": 670,
+      "author_id": 524,
+      "datastream_metadata": {
+        "uuid": "8b7a337f-2cd2-44b7-a500-21401fef79d4",
+        "source_timestamp": 1769428018000
+      }
+    },
+    {
+      "created_at": "2026-01-25T18:34:57.495525",
+      "updated_at": "2026-01-25T18:34:57.495525",
+      "id": 1798,
+      "changed_fields": {
+        "isBlocked": {
+          "new": false,
+          "old": true
+        }
+      },
+      "comment": "Bulk unblocking of contributors",
+      "contributor_id": 985,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "3678b323-ffd7-40a5-8d9b-63117de40143",
+        "source_timestamp": 1769366097000
+      }
+    },
+    {
+      "created_at": "2026-01-23T18:08:58.919735",
+      "updated_at": "2026-01-23T18:08:58.919735",
+      "id": 1797,
+      "changed_fields": {
+        "name": {
+          "new": "Aasish",
+          "old": ""
+        },
+        "roleId": {
+          "new": 1,
+          "old": null
+        },
+        "status": {
+          "new": "in-trial",
+          "old": "active"
+        },
+        "turingEmail": {
+          "new": "aasish.vuyyapu@turing.com",
+          "old": ""
+        }
+      },
+      "comment": "Contributor created",
+      "contributor_id": 1240,
+      "author_id": 1211,
+      "datastream_metadata": {
+        "uuid": "b5d02840-0164-40c4-9bf1-cba49723fa8d",
+        "source_timestamp": 1769191738000
+      }
+    },
+    {
+      "created_at": "2026-01-23T12:06:17.918503",
+      "updated_at": "2026-01-23T12:06:17.918503",
+      "id": 1796,
+      "changed_fields": {
+        "roleId": {
+          "new": 4,
+          "old": 2
+        }
+      },
+      "comment": null,
+      "contributor_id": 1022,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "90e00b14-191b-4e6d-990d-98a924400f5b",
+        "source_timestamp": 1769169977000
+      }
+    },
+    {
+      "created_at": "2026-01-23T00:12:35.135854",
+      "updated_at": "2026-01-23T00:12:35.135854",
+      "id": 1795,
+      "changed_fields": {
+        "name": {
+          "new": "Hussein",
+          "old": ""
+        },
+        "roleId": {
+          "new": 4,
+          "old": null
+        },
+        "status": {
+          "new": "in-trial",
+          "old": "active"
+        },
+        "turingEmail": {
+          "new": "hussein.k@turing.com",
+          "old": ""
+        }
+      },
+      "comment": "Contributor created",
+      "contributor_id": 1239,
+      "author_id": 1238,
+      "datastream_metadata": {
+        "uuid": "d398c2c2-731f-480b-a5c6-c93c65d7cb62",
+        "source_timestamp": 1769127155000
+      }
+    },
+    {
+      "created_at": "2026-01-23T00:05:10.373902",
+      "updated_at": "2026-01-23T00:05:10.373902",
+      "id": 1794,
+      "changed_fields": {
+        "roleId": {
+          "new": 1,
+          "old": 2
+        }
+      },
+      "comment": null,
+      "contributor_id": 1238,
+      "author_id": 1190,
+      "datastream_metadata": {
+        "uuid": "e6b06179-5c4f-4ac7-83e4-ec15a8047e7a",
+        "source_timestamp": 1769126710000
+      }
+    },
+    {
+      "created_at": "2026-01-22T22:46:29.881721",
+      "updated_at": "2026-01-22T22:46:29.881721",
+      "id": 1793,
+      "changed_fields": {
+        "name": {
+          "new": "Satheesh Palaninathan",
+          "old": ""
+        },
+        "roleId": {
+          "new": 2,
+          "old": null
+        },
+        "status": {
+          "new": "in-trial",
+          "old": "active"
+        },
+        "turingEmail": {
+          "new": "satheesh.palaninathan@turing.com",
+          "old": ""
+        }
+      },
+      "comment": "Contributor created",
+      "contributor_id": 1238,
+      "author_id": 1190,
+      "datastream_metadata": {
+        "uuid": "0594a548-cdca-43d8-943d-bbbaa44cd35f",
+        "source_timestamp": 1769121989000
+      }
+    },
+    {
+      "created_at": "2026-01-22T15:06:53.572399",
+      "updated_at": "2026-01-22T15:06:53.572399",
+      "id": 1792,
+      "changed_fields": {
+        "roleId": {
+          "new": 3,
+          "old": 2
+        }
+      },
+      "comment": null,
+      "contributor_id": 1107,
+      "author_id": 524,
+      "datastream_metadata": {
+        "uuid": "f1b553eb-32c4-49c3-9ba8-02e64feada00",
+        "source_timestamp": 1769094413000
+      }
+    },
+    {
+      "created_at": "2026-01-21T17:14:55.135273",
+      "updated_at": "2026-01-21T17:14:55.135273",
+      "id": 1791,
+      "changed_fields": {
+        "name": {
+          "new": "Muhammad Saud",
+          "old": "Saud M"
+        },
+        "personalEmail": {
+          "new": "",
+          "old": null
+        }
+      },
+      "comment": "User completes registration",
+      "contributor_id": 1237,
+      "author_id": 1237,
+      "datastream_metadata": {
+        "uuid": "00547b69-eff7-42c0-9c2e-87067cabb1e4",
+        "source_timestamp": 1769015695000
+      }
+    },
+    {
+      "created_at": "2026-01-21T17:12:50.028671",
+      "updated_at": "2026-01-21T17:12:50.028671",
+      "id": 1790,
+      "changed_fields": {
+        "name": {
+          "new": "Saud M",
+          "old": ""
+        },
+        "roleId": {
+          "new": 3,
+          "old": null
+        },
+        "teamLeadId": {
+          "new": 1194,
+          "old": null
+        },
+        "turingEmail": {
+          "new": "saud.m@turing.com",
+          "old": ""
+        }
+      },
+      "comment": "Contributor created",
+      "contributor_id": 1237,
+      "author_id": 1194,
+      "datastream_metadata": {
+        "uuid": "1887ef23-998d-4428-b49e-497db6f975b3",
+        "source_timestamp": 1769015570000
+      }
+    },
+    {
+      "created_at": "2026-01-21T15:03:38.506716",
+      "updated_at": "2026-01-21T15:03:38.506716",
+      "id": 1789,
+      "changed_fields": {
+        "name": {
+          "new": "Shaik Mohammed Naveed",
+          "old": "Naveed"
+        },
+        "personalEmail": {
+          "new": "",
+          "old": null
+        }
+      },
+      "comment": "User completes registration",
+      "contributor_id": 1236,
+      "author_id": 1236,
+      "datastream_metadata": {
+        "uuid": "b3f98cd4-f84e-4b7b-9962-316a52ad4452",
+        "source_timestamp": 1769007818000
+      }
+    },
+    {
+      "created_at": "2026-01-21T15:02:45.841857",
+      "updated_at": "2026-01-21T15:02:45.841857",
+      "id": 1788,
+      "changed_fields": {
+        "name": {
+          "new": "Naveed",
+          "old": ""
+        },
+        "roleId": {
+          "new": 1,
+          "old": null
+        },
+        "status": {
+          "new": "in-trial",
+          "old": "active"
+        },
+        "teamLeadId": {
+          "new": 805,
+          "old": null
+        },
+        "turingEmail": {
+          "new": "shaik.m@turing.com",
+          "old": ""
+        }
+      },
+      "comment": "Contributor created",
+      "contributor_id": 1236,
+      "author_id": 805,
+      "datastream_metadata": {
+        "uuid": "b383bfd1-43ab-4093-8271-f65501c8b1de",
+        "source_timestamp": 1769007765000
+      }
+    },
+    {
+      "created_at": "2026-01-21T13:11:36.943925",
+      "updated_at": "2026-01-21T13:11:36.943925",
+      "id": 1787,
+      "changed_fields": {
+        "name": {
+          "new": "Tushar Aggarwal",
+          "old": ""
+        },
+        "roleId": {
+          "new": 1,
+          "old": null
+        },
+        "status": {
+          "new": "in-trial",
+          "old": "active"
+        },
+        "teamLeadId": {
+          "new": 1179,
+          "old": null
+        },
+        "turingEmail": {
+          "new": "tushar.a@turing.com",
+          "old": ""
+        }
+      },
+      "comment": "Contributor created",
+      "contributor_id": 1235,
+      "author_id": 1179,
+      "datastream_metadata": {
+        "uuid": "0fbd0868-7d13-4a97-9384-d563a320d951",
+        "source_timestamp": 1769001096000
+      }
+    },
+    {
+      "created_at": "2026-01-21T09:26:18.754695",
+      "updated_at": "2026-01-21T09:26:18.754695",
+      "id": 1786,
+      "changed_fields": {
+        "isBlocked": {
+          "new": false,
+          "old": true
+        }
+      },
+      "comment": "Unblocked contributor Qing Yee",
+      "contributor_id": 1224,
+      "author_id": 1028,
+      "datastream_metadata": {
+        "uuid": "221423e1-abc9-4a41-bf30-b3282e7a0a62",
+        "source_timestamp": 1768987578000
+      }
+    },
+    {
+      "created_at": "2026-01-20T16:08:32.489934",
+      "updated_at": "2026-01-20T16:08:32.489934",
+      "id": 1785,
+      "changed_fields": {
+        "name": {
+          "new": "Amit kumar",
+          "old": ""
+        },
+        "roleId": {
+          "new": 4,
+          "old": null
+        },
+        "status": {
+          "new": "in-trial",
+          "old": "active"
+        },
+        "turingEmail": {
+          "new": "amit.k4@turing.com",
+          "old": ""
+        }
+      },
+      "comment": "Contributor created",
+      "contributor_id": 1233,
+      "author_id": 507,
+      "datastream_metadata": {
+        "uuid": "18e77ffc-1f32-42dd-82a7-680c691e5c3d",
+        "source_timestamp": 1768925312000
+      }
+    },
+    {
+      "created_at": "2026-01-19T19:45:08.984402",
+      "updated_at": "2026-01-19T19:45:08.984402",
+      "id": 1784,
+      "changed_fields": {
+        "roleId": {
+          "new": 1,
+          "old": 4
+        }
+      },
+      "comment": null,
+      "contributor_id": 1164,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "4ebeaf6a-84a1-48e1-8d74-20450a630d02",
+        "source_timestamp": 1768851908000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.688620",
+      "updated_at": "2026-01-19T11:07:34.688620",
+      "id": 1783,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 1230,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "875ee690-cbf3-4e2c-a852-a84a1c4b2438",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.688174",
+      "updated_at": "2026-01-19T11:07:34.688174",
+      "id": 1782,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 1224,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "9bb0e4a4-3b9b-461f-a256-34fb3f349d57",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.685484",
+      "updated_at": "2026-01-19T11:07:34.685484",
+      "id": 1781,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 1214,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "39ae4e12-5250-45c0-9fa8-1fae4b048edd",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.685215",
+      "updated_at": "2026-01-19T11:07:34.685215",
+      "id": 1780,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 1207,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "fdbef05f-cd88-4fb6-836c-7a1a0f99fa5b",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.684044",
+      "updated_at": "2026-01-19T11:07:34.684044",
+      "id": 1779,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 1175,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "691f4192-a1ef-4e69-99d8-4c14b7565d2e",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.683716",
+      "updated_at": "2026-01-19T11:07:34.683716",
+      "id": 1778,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 1205,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "b854e1d2-7533-46cd-87e2-cddc3784b091",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.683374",
+      "updated_at": "2026-01-19T11:07:34.683374",
+      "id": 1777,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 1192,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "55ef12c8-86a9-4c8b-9dff-46e370c62fe1",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.681300",
+      "updated_at": "2026-01-19T11:07:34.681300",
+      "id": 1776,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 1174,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "1a3fe150-56a4-437f-b4f0-5871f0221a19",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.680879",
+      "updated_at": "2026-01-19T11:07:34.680879",
+      "id": 1775,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 1168,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "2dd521a5-c8d6-4022-9b90-483da58ca481",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.674150",
+      "updated_at": "2026-01-19T11:07:34.674150",
+      "id": 1774,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 1159,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "cfd00f4d-df2e-48a5-8fd0-9465d66c8d17",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.670221",
+      "updated_at": "2026-01-19T11:07:34.670221",
+      "id": 1773,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 1157,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "43eb458f-8215-4fdd-89d0-d7cd41185ed0",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.667822",
+      "updated_at": "2026-01-19T11:07:34.667822",
+      "id": 1772,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 1152,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "bb66ebfc-2421-4db1-9659-a5ba89d63803",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.665697",
+      "updated_at": "2026-01-19T11:07:34.665697",
+      "id": 1771,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 1145,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "fc5c0c20-df61-4ffe-87e5-beba54b8c7b0",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.663274",
+      "updated_at": "2026-01-19T11:07:34.663274",
+      "id": 1770,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 1085,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "9445909a-ab49-4489-9b53-75fb15c20f70",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.662920",
+      "updated_at": "2026-01-19T11:07:34.662920",
+      "id": 1769,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 1143,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "f7d173e5-ee92-4828-b5a0-d3f8dc826197",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.661880",
+      "updated_at": "2026-01-19T11:07:34.661880",
+      "id": 1768,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 1091,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "424ff463-30f8-4ec1-83a5-025fd2aa8c83",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.661512",
+      "updated_at": "2026-01-19T11:07:34.661512",
+      "id": 1767,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 1090,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "86819fcf-9aa5-40f7-b69d-af32dde8c61c",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.660374",
+      "updated_at": "2026-01-19T11:07:34.660374",
+      "id": 1766,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 1084,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "680c30e5-8c0f-4630-a3c3-2ecb5c81e89d",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.659861",
+      "updated_at": "2026-01-19T11:07:34.659861",
+      "id": 1765,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 1083,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "337d91cd-bc28-4d57-9f10-a0c4b28c1c58",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.653717",
+      "updated_at": "2026-01-19T11:07:34.653717",
+      "id": 1764,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 1082,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "fe5ad939-5ceb-44d7-ad8a-d341fe3bab3f",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.653240",
+      "updated_at": "2026-01-19T11:07:34.653240",
+      "id": 1763,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 1081,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "dc76085f-3e30-45ed-8032-0165b0d03cb0",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.646183",
+      "updated_at": "2026-01-19T11:07:34.646183",
+      "id": 1762,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 1080,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "0fa7bfb6-d233-4673-a0c1-b4fb98eba0ed",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.644672",
+      "updated_at": "2026-01-19T11:07:34.644672",
+      "id": 1761,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 1079,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "0faddb6c-2eef-4d7b-bfc6-772a1b2d2d9b",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.643495",
+      "updated_at": "2026-01-19T11:07:34.643495",
+      "id": 1760,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 1072,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "38d8c980-30dd-4474-862c-bae38aaa05b5",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.643167",
+      "updated_at": "2026-01-19T11:07:34.643167",
+      "id": 1759,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 1077,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "1b30b083-9ae8-4b8a-8f36-12139b11565f",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.641393",
+      "updated_at": "2026-01-19T11:07:34.641393",
+      "id": 1758,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 1067,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "c8a7cba8-6da2-45dd-8bbf-b9a3043c7383",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.640959",
+      "updated_at": "2026-01-19T11:07:34.640959",
+      "id": 1757,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 1065,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "f4ad44b6-8435-4cbf-9a93-b16f9b99de20",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.640568",
+      "updated_at": "2026-01-19T11:07:34.640568",
+      "id": 1756,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 1064,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "40f00106-503b-4dd1-942b-cef1acaa0f99",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.634131",
+      "updated_at": "2026-01-19T11:07:34.634131",
+      "id": 1755,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 1055,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "3b2d9b1b-74de-4810-8600-2ff512504294",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.633732",
+      "updated_at": "2026-01-19T11:07:34.633732",
+      "id": 1754,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 1053,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "8927f89d-887f-4a56-b031-c2fca8f3a5fc",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.628199",
+      "updated_at": "2026-01-19T11:07:34.628199",
+      "id": 1753,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 1052,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "e23dc577-8cb0-4910-b8be-8d62d1dde965",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.627765",
+      "updated_at": "2026-01-19T11:07:34.627765",
+      "id": 1752,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 1035,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "f0099915-1a96-4e0a-9bda-58262901cf82",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.624481",
+      "updated_at": "2026-01-19T11:07:34.624481",
+      "id": 1751,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 1027,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "3823bc8e-f94d-463a-b428-4571bd6ab370",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.624077",
+      "updated_at": "2026-01-19T11:07:34.624077",
+      "id": 1750,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 1025,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "df46c569-f852-47e0-b6c1-4dbfc37879bf",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.623466",
+      "updated_at": "2026-01-19T11:07:34.623466",
+      "id": 1749,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 1020,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "3884e49b-39f2-46e7-b204-b23a3d5afd20",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.623031",
+      "updated_at": "2026-01-19T11:07:34.623031",
+      "id": 1748,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 1009,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "2a35b257-85bb-4e29-8a30-0a3ce9192a9f",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.621827",
+      "updated_at": "2026-01-19T11:07:34.621827",
+      "id": 1747,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 1006,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "032bb989-8a9e-4736-8c00-ee8badeb41cf",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.618555",
+      "updated_at": "2026-01-19T11:07:34.618555",
+      "id": 1746,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 1001,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "6a3be286-6efc-4f13-9f98-c17fcd095d99",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.616633",
+      "updated_at": "2026-01-19T11:07:34.616633",
+      "id": 1745,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 994,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "eba58307-ef9e-4a86-9b80-b43b3148f65f",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.611294",
+      "updated_at": "2026-01-19T11:07:34.611294",
+      "id": 1744,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 991,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "581386e0-116f-4889-98c8-25b97fe4a125",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.609846",
+      "updated_at": "2026-01-19T11:07:34.609846",
+      "id": 1743,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 992,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "4042ddcc-8e8f-427c-b54d-4df08659ee1e",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.607154",
+      "updated_at": "2026-01-19T11:07:34.607154",
+      "id": 1742,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 988,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "ffcbd95a-e7f3-4942-9a97-0ee17c0bfd47",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.602494",
+      "updated_at": "2026-01-19T11:07:34.602494",
+      "id": 1741,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 986,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "351d86e5-a79d-4983-892b-a08cebae85d3",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.602188",
+      "updated_at": "2026-01-19T11:07:34.602188",
+      "id": 1740,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 982,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "c2e0a52d-de78-4fab-8150-7043316347dd",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.601852",
+      "updated_at": "2026-01-19T11:07:34.601852",
+      "id": 1739,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 985,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "1eb36d43-53bf-4967-a706-78300e4af40a",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.601291",
+      "updated_at": "2026-01-19T11:07:34.601291",
+      "id": 1738,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 981,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "59b9004c-6c50-427c-8a92-98642862f0f0",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.600924",
+      "updated_at": "2026-01-19T11:07:34.600924",
+      "id": 1737,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 976,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "94ca4562-2554-4eab-ab4d-88556fce26c4",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.595069",
+      "updated_at": "2026-01-19T11:07:34.595069",
+      "id": 1736,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 968,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "b0bb7a8b-237e-4f39-a15d-5f9edc010869",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.579808",
+      "updated_at": "2026-01-19T11:07:34.579808",
+      "id": 1735,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 854,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "ec655a9f-b46d-45b5-970c-e42ef77813a9",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.579427",
+      "updated_at": "2026-01-19T11:07:34.579427",
+      "id": 1734,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 962,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "9e72a349-ed02-4c8d-8da3-c49c6789f851",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.579131",
+      "updated_at": "2026-01-19T11:07:34.579131",
+      "id": 1733,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 842,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "d25166dc-aede-4ef3-85cf-a8488633f265",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.578841",
+      "updated_at": "2026-01-19T11:07:34.578841",
+      "id": 1732,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 960,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "b7509f02-80a9-4e3d-a287-827916360f47",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.578502",
+      "updated_at": "2026-01-19T11:07:34.578502",
+      "id": 1731,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 841,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "bf6985b0-1177-4085-be50-e33885ab8d24",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.578113",
+      "updated_at": "2026-01-19T11:07:34.578113",
+      "id": 1730,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 964,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "5099fd55-ae3d-437b-9178-66ce4859a6c6",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.577705",
+      "updated_at": "2026-01-19T11:07:34.577705",
+      "id": 1728,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 844,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "5a9da315-350e-4dab-9b1a-9009c484ea0a",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.577376",
+      "updated_at": "2026-01-19T11:07:34.577376",
+      "id": 1729,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 959,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "3bb7e808-b69c-4f10-86bf-cbd9f029f8c8",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:07:34.576809",
+      "updated_at": "2026-01-19T11:07:34.576809",
+      "id": 1727,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 832,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "76b0c823-9262-46a7-ba59-cee4666a9748",
+        "source_timestamp": 1768820854000
+      }
+    },
+    {
+      "created_at": "2026-01-16T09:49:01.073631",
+      "updated_at": "2026-01-16T09:49:01.073631",
+      "id": 1726,
+      "changed_fields": {
+        "roleId": {
+          "new": 4,
+          "old": 2
+        }
+      },
+      "comment": null,
+      "contributor_id": 1164,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "b80a9ee5-5d6e-4187-9a86-c975883458f0",
+        "source_timestamp": 1768556941000
+      }
+    },
+    {
+      "created_at": "2026-01-16T06:31:28.129142",
+      "updated_at": "2026-01-16T06:31:28.129142",
+      "id": 1725,
+      "changed_fields": {
+        "roleId": {
+          "new": 2,
+          "old": 4
+        }
+      },
+      "comment": null,
+      "contributor_id": 1164,
+      "author_id": 1028,
+      "datastream_metadata": {
+        "uuid": "02e5ec6e-8545-4e6f-9c11-88223fff41a1",
+        "source_timestamp": 1768545088000
+      }
+    },
+    {
+      "created_at": "2026-01-13T15:47:04.481186",
+      "updated_at": "2026-01-13T15:47:04.481186",
+      "id": 1724,
+      "changed_fields": {
+        "name": {
+          "new": "Qasim Okuneye",
+          "old": "Qasim"
+        },
+        "personalEmail": {
+          "new": "",
+          "old": null
+        }
+      },
+      "comment": "User completes registration",
+      "contributor_id": 1232,
+      "author_id": 1232,
+      "datastream_metadata": {
+        "uuid": "40603c0d-583d-4126-835e-54d111010011",
+        "source_timestamp": 1768319224000
+      }
+    },
+    {
+      "created_at": "2026-01-13T13:07:41.030211",
+      "updated_at": "2026-01-13T13:07:41.030211",
+      "id": 1723,
+      "changed_fields": {
+        "name": {
+          "new": "Qasim",
+          "old": ""
+        },
+        "roleId": {
+          "new": 1,
+          "old": null
+        },
+        "status": {
+          "new": "in-trial",
+          "old": "active"
+        },
+        "turingEmail": {
+          "new": "qasim.o@turing.com",
+          "old": ""
+        }
+      },
+      "comment": "Contributor created",
+      "contributor_id": 1232,
+      "author_id": 659,
+      "datastream_metadata": {
+        "uuid": "cfab8909-760e-46f4-9b20-9ff801011001",
+        "source_timestamp": 1768309661000
+      }
+    },
+    {
+      "created_at": "2026-01-12T14:51:06.512490",
+      "updated_at": "2026-01-12T14:51:06.512490",
+      "id": 1722,
+      "changed_fields": {
+        "name": {
+          "new": "Harsh Agrawal",
+          "old": ""
+        },
+        "roleId": {
+          "new": 1,
+          "old": null
+        },
+        "status": {
+          "new": "in-trial",
+          "old": "active"
+        },
+        "turingEmail": {
+          "new": "harsh.a@turing.com",
+          "old": ""
+        }
+      },
+      "comment": "Contributor created",
+      "contributor_id": 1231,
+      "author_id": 1223,
+      "datastream_metadata": {
+        "uuid": "8e22f4e5-c2c9-4959-bbf0-5e1911101100",
+        "source_timestamp": 1768229466000
+      }
+    },
+    {
+      "created_at": "2026-01-12T14:19:08.612630",
+      "updated_at": "2026-01-12T14:19:08.612630",
+      "id": 1721,
+      "changed_fields": {
+        "roleId": {
+          "new": 3,
+          "old": 4
+        }
+      },
+      "comment": null,
+      "contributor_id": 1000,
+      "author_id": 1028,
+      "datastream_metadata": {
+        "uuid": "66eff90d-9dee-4141-bb21-65e100101101",
+        "source_timestamp": 1768227548000
+      }
+    },
+    {
+      "created_at": "2026-01-12T14:19:06.125266",
+      "updated_at": "2026-01-12T14:19:06.125266",
+      "id": 1720,
+      "changed_fields": {
+        "roleId": {
+          "new": 4,
+          "old": 2
+        }
+      },
+      "comment": null,
+      "contributor_id": 1000,
+      "author_id": 1028,
+      "datastream_metadata": {
+        "uuid": "66eff90d-9dee-4141-bb21-65e100010011",
+        "source_timestamp": 1768227546000
+      }
+    },
+    {
+      "created_at": "2026-01-09T14:18:50.081212",
+      "updated_at": "2026-01-09T14:18:50.081212",
+      "id": 1719,
+      "changed_fields": {
+        "isBlocked": {
+          "new": false,
+          "old": true
+        }
+      },
+      "comment": "Unblocked contributor tesfamichael.m1@turing.com",
+      "contributor_id": 1119,
+      "author_id": 524,
+      "datastream_metadata": {
+        "uuid": "e7cf3589-811d-4461-af3f-e6f210000001",
+        "source_timestamp": 1767968330000
+      }
+    },
+    {
+      "created_at": "2026-01-09T12:29:23.830273",
+      "updated_at": "2026-01-09T12:29:23.830273",
+      "id": 1718,
+      "changed_fields": {
+        "roleId": {
+          "new": 3,
+          "old": 2
+        }
+      },
+      "comment": null,
+      "contributor_id": 937,
+      "author_id": 1194,
+      "datastream_metadata": {
+        "uuid": "51945acb-094c-44d6-b1b1-642800010001",
+        "source_timestamp": 1767961763000
+      }
+    },
+    {
+      "created_at": "2026-01-09T12:28:16.226299",
+      "updated_at": "2026-01-09T12:28:16.226299",
+      "id": 1717,
+      "changed_fields": {
+        "roleId": {
+          "new": 4,
+          "old": 2
+        }
+      },
+      "comment": null,
+      "contributor_id": 1171,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "7a0c418b-90cd-4a1b-a861-769c11110101",
+        "source_timestamp": 1767961696000
+      }
+    },
+    {
+      "created_at": "2026-01-09T12:26:47.677692",
+      "updated_at": "2026-01-09T12:26:47.677692",
+      "id": 1716,
+      "changed_fields": {
+        "roleId": {
+          "new": 1,
+          "old": 3
+        }
+      },
+      "comment": null,
+      "contributor_id": 1194,
+      "author_id": 1190,
+      "datastream_metadata": {
+        "uuid": "915c7be8-d844-447d-9605-920500101111",
+        "source_timestamp": 1767961607000
+      }
+    },
+    {
+      "created_at": "2026-01-08T17:27:23.062647",
+      "updated_at": "2026-01-08T17:27:23.062647",
+      "id": 1715,
+      "changed_fields": {
+        "isBlocked": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": "Bulk blocking of contributors",
+      "contributor_id": 1227,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "61c8578b-d7cc-4db8-887d-869101001111",
+        "source_timestamp": 1767893243000
+      }
+    }
+  ]
+}

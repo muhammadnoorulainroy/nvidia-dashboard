@@ -36,6 +36,58 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import DownloadIcon from '@mui/icons-material/Download'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+
+// Column group definitions with professional colors (matching ProjectsTab)
+const COLUMN_GROUPS = {
+  overview: { 
+    label: 'Overview', 
+    bgHeader: '#F1F5F9', 
+    bgSubHeader: '#F8FAFC',
+    borderColor: '#CBD5E1',
+    textColor: '#475569'
+  },
+  tasks: { 
+    label: 'Reviews', 
+    bgHeader: '#EFF6FF', 
+    bgSubHeader: '#F0F9FF',
+    borderColor: '#93C5FD',
+    textColor: '#1E40AF'
+  },
+  quality: { 
+    label: 'Quality', 
+    bgHeader: '#F0FDF4', 
+    bgSubHeader: '#F0FDF4',
+    borderColor: '#86EFAC',
+    textColor: '#166534'
+  },
+  efficiency: { 
+    label: 'Time', 
+    bgHeader: '#FEF3C7', 
+    bgSubHeader: '#FFFBEB',
+    borderColor: '#FCD34D',
+    textColor: '#92400E'
+  },
+}
+
+// Compact header cell style
+const headerCellStyle = {
+  fontWeight: 600,
+  fontSize: '0.6rem',
+  textTransform: 'uppercase' as const,
+  letterSpacing: '0.02em',
+  lineHeight: 1.1,
+  py: 0.5,
+  px: 0.5,
+  whiteSpace: 'nowrap' as const,
+}
+
+// Compact data cell style
+const cellStyle = {
+  py: 0.5,
+  px: 0.5,
+  fontSize: '0.75rem',
+  borderBottom: '1px solid #E2E8F0',
+}
 import { getTooltipForHeader } from '../../utils/columnTooltips'
 import { exportReviewerWithTrainersToExcel } from '../../utils/exportToExcel'
 import { getReviewerDailyStats, getTrainersByReviewerDate, TrainerByReviewerDate } from '../../services/api'
@@ -51,12 +103,14 @@ import ColorSettingsPanel, {
   getTextColorForValue,
   useColorSettings 
 } from './ColorSettingsPanel'
+import { Timeframe, getDateRange } from '../../utils/dateUtils'
+import TimeframeSelector from '../common/TimeframeSelector'
 
 interface ReviewerWiseProps {
   isClientDelivery?: boolean
 }
 
-type TimeframeOption = 'daily' | 'd-1' | 'd-2' | 'd-3' | 'weekly' | 'custom' | 'overall'
+type TimeframeOption = Timeframe // Alias for backward compatibility
 
 // Extended type to include trainers
 interface ReviewerRowData extends Omit<AggregatedReviewerStats, 'sum_number_of_turns' | 'avg_rework' | 'rework_percent' | 'avg_rating'> {
@@ -84,89 +138,76 @@ function TrainerRow({
   const total = newTasks + rework
   const merged_exp_aht = total > 0 ? (newTasks * DEFAULT_NEW_TASK_AHT + rework * DEFAULT_REWORK_AHT) / total : null
 
+  // Color coding helpers
+  const getAvgReworkStyle = (avgR: number | null | undefined) => {
+    if (avgR === null || avgR === undefined) return { color: '#94A3B8', bgcolor: 'transparent' }
+    if (avgR < 1) return { color: '#065F46', bgcolor: '#D1FAE5' }
+    if (avgR <= 2.5) return { color: '#92400E', bgcolor: '#FEF3C7' }
+    return { color: '#991B1B', bgcolor: '#FEE2E2' }
+  }
+  const getReworkPctStyle = (rPct: number | null | undefined) => {
+    if (rPct === null || rPct === undefined) return { color: '#94A3B8', bgcolor: 'transparent' }
+    if (rPct <= 10) return { color: '#065F46', bgcolor: '#D1FAE5' }
+    if (rPct <= 30) return { color: '#92400E', bgcolor: '#FEF3C7' }
+    return { color: '#991B1B', bgcolor: '#FEE2E2' }
+  }
+  const getRatingStyle = (rating: number | null | undefined) => {
+    if (rating === null || rating === undefined) return { color: '#94A3B8', bgcolor: 'transparent' }
+    if (rating > 4.8) return { color: '#065F46', bgcolor: '#D1FAE5' }
+    if (rating >= 4) return { color: '#92400E', bgcolor: '#FEF3C7' }
+    return { color: '#991B1B', bgcolor: '#FEE2E2' }
+  }
+
   return (
-    <TableRow sx={{ backgroundColor: '#F0F4FF', '&:hover': { backgroundColor: '#E8EEFF' } }}>
+    <TableRow sx={{ backgroundColor: '#FAFBFC', '&:hover': { backgroundColor: '#F1F5F9' } }}>
+      {/* Overview Group */}
       <TableCell sx={{ 
+        ...cellStyle,
         position: 'sticky',
         left: 0,
         zIndex: 1,
-        bgcolor: '#F0F4FF',
-        borderRight: '2px solid #E2E8F0',
+        bgcolor: '#FAFBFC',
+        pl: 4,
       }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, pl: 4 }}>
-          <Typography variant="body2" sx={{ fontWeight: 500, color: '#374151' }}>
-            ↳ {trainer.trainer_name || 'Unknown'}
-          </Typography>
-          <Typography variant="caption" color="text.secondary">
-            (ID: {trainer.trainer_id})
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+          <Box sx={{ width: 4, height: 4, borderRadius: '50%', bgcolor: '#94A3B8', flexShrink: 0 }} />
+          <Typography sx={{ fontSize: '0.65rem', fontWeight: 500, color: '#475569' }}>
+            {trainer.trainer_name || 'Unknown'}
           </Typography>
         </Box>
       </TableCell>
-      <TableCell align="left">
-        <Typography variant="body2" sx={{ color: '#6B7280', fontSize: '0.8rem' }}>
-          {trainer.trainer_email || 'N/A'}
+      <TableCell align="center" sx={{ ...cellStyle, borderRight: showDate ? 'none' : `2px solid ${COLUMN_GROUPS.overview.borderColor}` }}>
+        <Typography sx={{ fontSize: '0.6rem', color: '#94A3B8' }}>
+          {trainer.trainer_email || '-'}
         </Typography>
       </TableCell>
       {showDate && (
-        <TableCell align="left">
-          <Typography variant="body2" sx={{ color: '#6B7280', fontSize: '0.8rem' }}>
-            -
-          </Typography>
-        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle, color: '#94A3B8', borderRight: `2px solid ${COLUMN_GROUPS.overview.borderColor}` }}>-</TableCell>
       )}
-      <TableCell 
-        align="left"
-        sx={{ backgroundColor: getBackgroundColorForValue(trainer.tasks_reviewed, colorSettings.tasks_reviewed) }}
-      >
-        <Typography variant="body2" sx={{ fontWeight: 600, color: getColorForValue(trainer.tasks_reviewed, colorSettings.tasks_reviewed) }}>
-          {trainer.tasks_reviewed || 0}
-        </Typography>
+      {/* Reviews Group */}
+      <TableCell align="center" sx={{ ...cellStyle }}>
+        <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#475569' }}>{trainer.tasks_reviewed || 0}</Typography>
       </TableCell>
-      <TableCell 
-        align="left"
-        sx={{ backgroundColor: getBackgroundColorForValue(trainer.new_tasks_reviewed, colorSettings.new_tasks_reviewed) }}
-      >
-        <Typography variant="body2" sx={{ fontWeight: 600, color: getColorForValue(trainer.new_tasks_reviewed, colorSettings.new_tasks_reviewed) }}>
-          {trainer.new_tasks_reviewed || 0}
-        </Typography>
+      <TableCell align="center" sx={{ ...cellStyle }}>
+        <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#475569' }}>{trainer.new_tasks_reviewed || 0}</Typography>
       </TableCell>
-      <TableCell 
-        align="left"
-        sx={{ backgroundColor: getBackgroundColorForValue(trainer.rework_reviewed, colorSettings.rework_reviewed) }}
-      >
-        <Typography variant="body2" sx={{ fontWeight: 600, color: getColorForValue(trainer.rework_reviewed, colorSettings.rework_reviewed) }}>
-          {trainer.rework_reviewed || 0}
-        </Typography>
+      <TableCell align="center" sx={{ ...cellStyle }}>
+        <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#475569' }}>{trainer.rework_reviewed || 0}</Typography>
       </TableCell>
-      <TableCell 
-        align="left"
-        sx={{ backgroundColor: getBackgroundColorForValue(trainer.total_reviews, colorSettings.total_reviews) }}
-      >
-        <Typography variant="body2" sx={{ fontWeight: 600, color: getColorForValue(trainer.total_reviews, colorSettings.total_reviews) }}>
-          {trainer.total_reviews || 0}
-        </Typography>
+      <TableCell align="center" sx={{ ...cellStyle }}>
+        <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#475569' }}>{trainer.total_reviews || 0}</Typography>
       </TableCell>
-      <TableCell 
-        align="left"
-        sx={{ backgroundColor: getBackgroundColorForValue(trainer.ready_for_delivery, colorSettings.ready_for_delivery) }}
-      >
-        <Typography variant="body2" sx={{ fontWeight: 600, color: getColorForValue(trainer.ready_for_delivery, colorSettings.ready_for_delivery) }}>
-          {trainer.ready_for_delivery || 0}
-        </Typography>
+      <TableCell align="center" sx={{ ...cellStyle, borderRight: `2px solid ${COLUMN_GROUPS.tasks.borderColor}` }}>
+        <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#64748B' }}>{trainer.ready_for_delivery || 0}</Typography>
       </TableCell>
-      <TableCell 
-        align="left"
-        sx={{ backgroundColor: getBackgroundColorForValue(trainer.avg_rework, colorSettings.avg_rework) }}
-      >
-        <Typography variant="body2" sx={{ fontWeight: 600, color: getColorForValue(trainer.avg_rework, colorSettings.avg_rework) }}>
+      {/* Quality Group */}
+      <TableCell align="center" sx={{ ...cellStyle, ...getAvgReworkStyle(trainer.avg_rework) }}>
+        <Typography sx={{ fontSize: '0.7rem', fontWeight: 600 }}>
           {trainer.avg_rework !== null && trainer.avg_rework !== undefined ? trainer.avg_rework.toFixed(2) : '-'}
         </Typography>
       </TableCell>
-      <TableCell 
-        align="left"
-        sx={{ backgroundColor: getBackgroundColorForValue(trainer.rework_percent, colorSettings.rework_percent) }}
-      >
-        <Typography variant="body2" sx={{ fontWeight: 600, color: getColorForValue(trainer.rework_percent, colorSettings.rework_percent) }}>
+      <TableCell align="center" sx={{ ...cellStyle, ...getReworkPctStyle(trainer.rework_percent) }}>
+        <Typography sx={{ fontSize: '0.7rem', fontWeight: 600 }}>
           {trainer.rework_percent !== null && trainer.rework_percent !== undefined ? `${Math.round(trainer.rework_percent)}%` : '-'}
         </Typography>
       </TableCell>
@@ -174,16 +215,16 @@ function TrainerRow({
         align="left"
         sx={{ backgroundColor: getBackgroundColorForValue(trainer.avg_rating, colorSettings.avg_rating) }}
       >
-        <Typography variant="body2" sx={{ fontWeight: 600, color: getColorForValue(trainer.avg_rating, colorSettings.avg_rating) }}>
+      </TableCell>
+      <TableCell align="center" sx={{ ...cellStyle, borderRight: `2px solid ${COLUMN_GROUPS.quality.borderColor}`, ...getRatingStyle(trainer.avg_rating) }}>
+        <Typography sx={{ fontSize: '0.7rem', fontWeight: 600 }}>
           {trainer.avg_rating !== null && trainer.avg_rating !== undefined ? trainer.avg_rating.toFixed(2) : '-'}
         </Typography>
       </TableCell>
-      <TableCell 
-        align="left"
-        sx={{ backgroundColor: getBackgroundColorForValue(merged_exp_aht, colorSettings.merged_exp_aht) }}
-      >
-        <Typography variant="body2" sx={{ fontWeight: 600, color: getColorForValue(merged_exp_aht, colorSettings.merged_exp_aht) }}>
-          {merged_exp_aht !== null ? merged_exp_aht.toFixed(2) : '-'}
+      {/* Time Group */}
+      <TableCell align="center" sx={{ ...cellStyle }}>
+        <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#475569' }}>
+          {merged_exp_aht !== null ? merged_exp_aht.toFixed(1) : '-'}
         </Typography>
       </TableCell>
     </TableRow>
@@ -209,125 +250,123 @@ function ReviewerRowComponent({
   const total = newTasks + rework
   const merged_exp_aht = total > 0 ? (newTasks * DEFAULT_NEW_TASK_AHT + rework * DEFAULT_REWORK_AHT) / total : null
 
+  // Color coding helpers
+  const getAvgReworkStyle = (avgR: number | null | undefined) => {
+    if (avgR === null || avgR === undefined) return { color: '#94A3B8', bgcolor: 'transparent' }
+    if (avgR < 1) return { color: '#065F46', bgcolor: '#D1FAE5' }
+    if (avgR <= 2.5) return { color: '#92400E', bgcolor: '#FEF3C7' }
+    return { color: '#991B1B', bgcolor: '#FEE2E2' }
+  }
+  const getReworkPctStyle = (rPct: number | null | undefined) => {
+    if (rPct === null || rPct === undefined) return { color: '#94A3B8', bgcolor: 'transparent' }
+    if (rPct <= 10) return { color: '#065F46', bgcolor: '#D1FAE5' }
+    if (rPct <= 30) return { color: '#92400E', bgcolor: '#FEF3C7' }
+    return { color: '#991B1B', bgcolor: '#FEE2E2' }
+  }
+  const getRatingStyle = (rating: number | null | undefined) => {
+    if (rating === null || rating === undefined) return { color: '#94A3B8', bgcolor: 'transparent' }
+    if (rating > 4.8) return { color: '#065F46', bgcolor: '#D1FAE5' }
+    if (rating >= 4) return { color: '#92400E', bgcolor: '#FEF3C7' }
+    return { color: '#991B1B', bgcolor: '#FEE2E2' }
+  }
+
   return (
     <>
       <TableRow
         sx={{
-          '&:hover': { backgroundColor: '#F9FAFB' },
+          '&:hover': { backgroundColor: '#F8FAFC' },
           cursor: hasTrainers ? 'pointer' : 'default',
+          borderLeft: open ? '3px solid #3B82F6' : '3px solid transparent',
         }}
         onClick={() => hasTrainers && setOpen(!open)}
       >
+        {/* Overview Group */}
         <TableCell sx={{ 
+          ...cellStyle,
           position: 'sticky',
           left: 0,
           zIndex: 1,
           bgcolor: '#FFFFFF',
-          borderRight: '2px solid #E2E8F0',
         }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
             {hasTrainers && (
-              <IconButton size="small" onClick={(e) => { e.stopPropagation(); setOpen(!open); }}>
-                {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+              <IconButton size="small" sx={{ p: 0.2, minWidth: 20 }} onClick={(e) => { e.stopPropagation(); setOpen(!open); }}>
+                {open ? <KeyboardArrowUpIcon sx={{ fontSize: 14 }} /> : <KeyboardArrowDownIcon sx={{ fontSize: 14 }} />}
               </IconButton>
             )}
-            {!hasTrainers && <Box sx={{ width: 28 }} />}
-            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-              <Typography variant="body2" sx={{ fontWeight: 600, color: '#1F2937' }}>
+            {!hasTrainers && <Box sx={{ width: 20 }} />}
+            <Box sx={{ minWidth: 0, flex: 1 }}>
+              <Typography sx={{ fontSize: '0.7rem', fontWeight: 700, color: '#1E293B', lineHeight: 1.2 }}>
                 {reviewer.reviewer_name || 'Unknown'}
               </Typography>
-              <Typography variant="caption" color="text.secondary">
-                ID: {reviewer.reviewer_id || 'N/A'} • {reviewer.trainers?.length || 0} trainers
+              <Typography sx={{ fontSize: '0.55rem', color: '#94A3B8' }}>
+                {reviewer.trainers?.length || 0} trainers
               </Typography>
             </Box>
           </Box>
         </TableCell>
-        <TableCell align="left">
-          <Typography variant="body2" sx={{ color: '#1F2937', fontSize: '0.875rem' }}>
-            {reviewer.reviewer_email || 'N/A'}
+        <TableCell align="center" sx={{ ...cellStyle, borderRight: showDate ? 'none' : `2px solid ${COLUMN_GROUPS.overview.borderColor}` }}>
+          <Typography sx={{ fontSize: '0.6rem', color: '#64748B' }}>
+            {reviewer.reviewer_email || '-'}
           </Typography>
         </TableCell>
         {showDate && (
-          <TableCell align="left">
+          <TableCell align="center" sx={{ ...cellStyle, borderRight: `2px solid ${COLUMN_GROUPS.overview.borderColor}` }}>
             {reviewer.review_date ? (
-              <Typography variant="body2" sx={{ fontWeight: 600, color: '#6366F1' }}>
-                {new Date(reviewer.review_date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+              <Typography sx={{ fontSize: '0.65rem', fontWeight: 600, color: '#6366F1' }}>
+                {new Date(reviewer.review_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
               </Typography>
             ) : (
-              <Typography variant="body2" sx={{ color: '#9CA3AF' }}>N/A</Typography>
+              <Typography sx={{ fontSize: '0.65rem', color: '#94A3B8' }}>-</Typography>
             )}
           </TableCell>
         )}
-        <TableCell 
-          align="left"
-          sx={{ backgroundColor: getBackgroundColorForValue(reviewer.unique_tasks_reviewed, colorSettings.tasks_reviewed) }}
-        >
-          <Typography variant="body2" sx={{ fontWeight: 600, color: getColorForValue(reviewer.unique_tasks_reviewed, colorSettings.tasks_reviewed) }}>
+        {/* Reviews Group */}
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: '#475569' }}>
             {reviewer.unique_tasks_reviewed ?? 0}
           </Typography>
         </TableCell>
-        <TableCell 
-          align="left"
-          sx={{ backgroundColor: getBackgroundColorForValue(reviewer.new_tasks_reviewed, colorSettings.new_tasks_reviewed) }}
-        >
-          <Typography variant="body2" sx={{ fontWeight: 600, color: getColorForValue(reviewer.new_tasks_reviewed, colorSettings.new_tasks_reviewed) }}>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: '#475569' }}>
             {reviewer.new_tasks_reviewed ?? 0}
           </Typography>
         </TableCell>
-        <TableCell 
-          align="left"
-          sx={{ backgroundColor: getBackgroundColorForValue(reviewer.rework_reviewed, colorSettings.rework_reviewed) }}
-        >
-          <Typography variant="body2" sx={{ fontWeight: 600, color: getColorForValue(reviewer.rework_reviewed, colorSettings.rework_reviewed) }}>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: '#475569' }}>
             {reviewer.rework_reviewed ?? 0}
           </Typography>
         </TableCell>
-        <TableCell 
-          align="left"
-          sx={{ backgroundColor: getBackgroundColorForValue(reviewer.total_reviews, colorSettings.total_reviews) }}
-        >
-          <Typography variant="body2" sx={{ fontWeight: 600, color: getColorForValue(reviewer.total_reviews, colorSettings.total_reviews) }}>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: '#475569' }}>
             {reviewer.total_reviews ?? 0}
           </Typography>
         </TableCell>
-        <TableCell 
-          align="left"
-          sx={{ backgroundColor: getBackgroundColorForValue(reviewer.tasks_ready_for_delivery, colorSettings.ready_for_delivery) }}
-        >
-          <Typography variant="body2" sx={{ fontWeight: 600, color: getColorForValue(reviewer.tasks_ready_for_delivery, colorSettings.ready_for_delivery) }}>
+        <TableCell align="center" sx={{ ...cellStyle, borderRight: `2px solid ${COLUMN_GROUPS.tasks.borderColor}` }}>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748B' }}>
             {reviewer.tasks_ready_for_delivery ?? 0}
           </Typography>
         </TableCell>
-        <TableCell 
-          align="left"
-          sx={{ backgroundColor: getBackgroundColorForValue(reviewer.avg_rework, colorSettings.avg_rework) }}
-        >
-          <Typography variant="body2" sx={{ fontWeight: 600, color: getColorForValue(reviewer.avg_rework, colorSettings.avg_rework) }}>
+        {/* Quality Group */}
+        <TableCell align="center" sx={{ ...cellStyle, ...getAvgReworkStyle(reviewer.avg_rework) }}>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 600 }}>
             {reviewer.avg_rework !== null && reviewer.avg_rework !== undefined ? reviewer.avg_rework.toFixed(2) : '-'}
           </Typography>
         </TableCell>
-        <TableCell 
-          align="left"
-          sx={{ backgroundColor: getBackgroundColorForValue(reviewer.rework_percent, colorSettings.rework_percent) }}
-        >
-          <Typography variant="body2" sx={{ fontWeight: 600, color: getColorForValue(reviewer.rework_percent, colorSettings.rework_percent) }}>
+        <TableCell align="center" sx={{ ...cellStyle, ...getReworkPctStyle(reviewer.rework_percent) }}>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 600 }}>
             {reviewer.rework_percent !== null && reviewer.rework_percent !== undefined ? `${Math.round(reviewer.rework_percent)}%` : '-'}
           </Typography>
         </TableCell>
-        <TableCell 
-          align="left"
-          sx={{ backgroundColor: getBackgroundColorForValue(reviewer.avg_rating, colorSettings.avg_rating) }}
-        >
-          <Typography variant="body2" sx={{ fontWeight: 600, color: getColorForValue(reviewer.avg_rating, colorSettings.avg_rating) }}>
+        <TableCell align="center" sx={{ ...cellStyle, borderRight: `2px solid ${COLUMN_GROUPS.quality.borderColor}`, ...getRatingStyle(reviewer.avg_rating) }}>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 600 }}>
             {reviewer.avg_rating !== null && reviewer.avg_rating !== undefined ? reviewer.avg_rating.toFixed(2) : '-'}
           </Typography>
         </TableCell>
-        <TableCell 
-          align="left"
-          sx={{ backgroundColor: getBackgroundColorForValue(merged_exp_aht, colorSettings.merged_exp_aht) }}
-        >
-          <Typography variant="body2" sx={{ fontWeight: 600, color: getColorForValue(merged_exp_aht, colorSettings.merged_exp_aht) }}>
-            {merged_exp_aht !== null ? merged_exp_aht.toFixed(2) : '-'}
+        {/* Time Group */}
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: '#475569' }}>
+            {merged_exp_aht !== null ? merged_exp_aht.toFixed(1) : '-'}
           </Typography>
         </TableCell>
       </TableRow>
@@ -346,22 +385,35 @@ export default function ReviewerWise({ isClientDelivery = false }: ReviewerWiseP
   const [error, setError] = useState<string | null>(null)
   const [selectedReviewers, setSelectedReviewers] = useState<string[]>([])
   const [timeframe, setTimeframe] = useState<TimeframeOption>('overall')
-  const [startDate, setStartDate] = useState<string>('')
-  const [endDate, setEndDate] = useState<string>('')
+  const [weekOffset, setWeekOffset] = useState<number>(0) // Default to current week (Mon-Sun)
+  const [customStartDate, setCustomStartDate] = useState<string>('')
+  const [customEndDate, setCustomEndDate] = useState<string>('')
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(20)
   const [orderBy, setOrderBy] = useState<string>('reviewer_name')
   const [order, setOrder] = useState<'asc' | 'desc'>('asc')
   const [colorSettings, setColorSettings] = useColorSettings('reviewerColorSettings')
 
+  // Get current date range from shared utility
+  const getCurrentDateRange = () => {
+    const { startDate, endDate } = getDateRange(timeframe, weekOffset, customStartDate, customEndDate)
+    return { start_date: startDate, end_date: endDate }
+  }
+
   const fetchData = async () => {
     try {
       setLoading(true)
       setError(null)
       
+      // Build filters with date range
+      const filters: any = {}
+      const dateRange = getCurrentDateRange()
+      if (dateRange.start_date) filters.start_date = dateRange.start_date
+      if (dateRange.end_date) filters.end_date = dateRange.end_date
+      
       const [dailyResult, trainersResult] = await Promise.all([
-        getReviewerDailyStats({}),
-        getTrainersByReviewerDate({})
+        getReviewerDailyStats(filters),
+        getTrainersByReviewerDate(filters)
       ])
       setData(dailyResult)
       setTrainerData(trainersResult)
@@ -374,7 +426,7 @@ export default function ReviewerWise({ isClientDelivery = false }: ReviewerWiseP
 
   useEffect(() => {
     fetchData()
-  }, [isClientDelivery])
+  }, [isClientDelivery, timeframe, weekOffset, customStartDate, customEndDate])
 
   // Helper function to get trainers for a specific reviewer and date
   const getTrainersForReviewer = (reviewerId: number | null, reviewDate: string | null): TrainerByReviewerDate[] => {
@@ -577,11 +629,11 @@ export default function ReviewerWise({ isClientDelivery = false }: ReviewerWiseP
         break
       }
       case 'custom': {
-        if (!startDate || !endDate) {
+        if (!customStartDate || !customEndDate) {
           filteredDaily = allData
         } else {
-          const start = new Date(startDate)
-          const end = new Date(endDate)
+          const start = new Date(customStartDate)
+          const end = new Date(customEndDate)
           filteredDaily = allData.filter(d => {
             if (!d.review_date) return false
             const reviewDate = new Date(d.review_date)
@@ -618,7 +670,7 @@ export default function ReviewerWise({ isClientDelivery = false }: ReviewerWiseP
 
     setFilteredData(filtered)
     setPage(0)
-  }, [selectedReviewers, data, trainerData, timeframe, startDate, endDate])
+  }, [selectedReviewers, data, trainerData, timeframe, weekOffset, customStartDate, customEndDate])
 
   // Sorting
   const handleSort = (property: string) => {
@@ -670,48 +722,16 @@ export default function ReviewerWise({ isClientDelivery = false }: ReviewerWiseP
       <Paper sx={{ width: '100%', overflow: 'hidden' }}>
         <Box sx={{ p: 2, backgroundColor: '#F7F7F7', display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
           {/* Timeframe Selector */}
-          <FormControl size="small" sx={{ minWidth: 140 }}>
-            <InputLabel id="timeframe-label">Timeframe</InputLabel>
-            <Select
-              labelId="timeframe-label"
-              value={timeframe}
-              label="Timeframe"
-              onChange={(e) => setTimeframe(e.target.value as TimeframeOption)}
-              sx={{ backgroundColor: 'white' }}
-            >
-              <MenuItem value="daily">Daily (Today)</MenuItem>
-              <MenuItem value="d-1">D-1 (Yesterday)</MenuItem>
-              <MenuItem value="d-2">D-2</MenuItem>
-              <MenuItem value="d-3">D-3</MenuItem>
-              <MenuItem value="weekly">Weekly (Last 7 days)</MenuItem>
-              <MenuItem value="custom">Custom Range</MenuItem>
-              <MenuItem value="overall">Overall (All time)</MenuItem>
-            </Select>
-          </FormControl>
-
-          {/* Date Range Picker */}
-          {timeframe === 'custom' && (
-            <>
-              <TextField
-                type="date"
-                size="small"
-                label="Start Date"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-                InputLabelProps={{ shrink: true }}
-                sx={{ width: 160, backgroundColor: 'white' }}
-              />
-              <TextField
-                type="date"
-                size="small"
-                label="End Date"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-                InputLabelProps={{ shrink: true }}
-                sx={{ width: 160, backgroundColor: 'white' }}
-              />
-            </>
-          )}
+          <TimeframeSelector
+            timeframe={timeframe}
+            onTimeframeChange={setTimeframe}
+            weekOffset={weekOffset}
+            onWeekOffsetChange={setWeekOffset}
+            customStartDate={customStartDate}
+            onCustomStartDateChange={setCustomStartDate}
+            customEndDate={customEndDate}
+            onCustomEndDateChange={setCustomEndDate}
+          />
 
           <Box sx={{ flex: 1, minWidth: 300 }}>
             <Autocomplete
@@ -808,156 +828,232 @@ export default function ReviewerWise({ isClientDelivery = false }: ReviewerWiseP
 
         {/* Table */}
         <TableContainer sx={{ maxHeight: 600, overflowX: 'auto' }}>
-          <Table stickyHeader size="small" sx={{ minWidth: 1600 }}>
+          <Table stickyHeader size="small" sx={{ minWidth: 1200 }}>
             <TableHead>
+              {/* Group Header Row */}
               <TableRow>
+                {/* Overview Group */}
+                <TableCell 
+                  colSpan={showDate ? 3 : 2}
+                  align="center"
+                  sx={{ 
+                    ...headerCellStyle,
+                    bgcolor: COLUMN_GROUPS.overview.bgHeader,
+                    color: COLUMN_GROUPS.overview.textColor,
+                    borderBottom: `2px solid ${COLUMN_GROUPS.overview.borderColor}`,
+                    borderRight: `2px solid ${COLUMN_GROUPS.overview.borderColor}`,
+                    fontSize: '0.7rem',
+                    fontWeight: 700,
+                    position: 'sticky',
+                    left: 0,
+                    zIndex: 4,
+                  }}
+                >
+                  OVERVIEW
+                </TableCell>
+                {/* Reviews Group */}
+                <TableCell 
+                  colSpan={5}
+                  align="center"
+                  sx={{ 
+                    ...headerCellStyle,
+                    bgcolor: COLUMN_GROUPS.tasks.bgHeader,
+                    color: COLUMN_GROUPS.tasks.textColor,
+                    borderBottom: `2px solid ${COLUMN_GROUPS.tasks.borderColor}`,
+                    borderRight: `2px solid ${COLUMN_GROUPS.tasks.borderColor}`,
+                    fontSize: '0.7rem',
+                    fontWeight: 700,
+                  }}
+                >
+                  REVIEWS
+                </TableCell>
+                {/* Quality Group */}
+                <TableCell 
+                  colSpan={3}
+                  align="center"
+                  sx={{ 
+                    ...headerCellStyle,
+                    bgcolor: COLUMN_GROUPS.quality.bgHeader,
+                    color: COLUMN_GROUPS.quality.textColor,
+                    borderBottom: `2px solid ${COLUMN_GROUPS.quality.borderColor}`,
+                    borderRight: `2px solid ${COLUMN_GROUPS.quality.borderColor}`,
+                    fontSize: '0.7rem',
+                    fontWeight: 700,
+                  }}
+                >
+                  QUALITY
+                </TableCell>
+                {/* Time Group */}
+                <TableCell 
+                  colSpan={1}
+                  align="center"
+                  sx={{ 
+                    ...headerCellStyle,
+                    bgcolor: COLUMN_GROUPS.efficiency.bgHeader,
+                    color: COLUMN_GROUPS.efficiency.textColor,
+                    borderBottom: `2px solid ${COLUMN_GROUPS.efficiency.borderColor}`,
+                    fontSize: '0.7rem',
+                    fontWeight: 700,
+                  }}
+                >
+                  TIME
+                </TableCell>
+              </TableRow>
+              {/* Sub-Header Row */}
+              <TableRow>
+                {/* Overview - Reviewer Name */}
                 <TableCell 
                   sx={{ 
-                    fontWeight: 700, 
-                    backgroundColor: '#F9FAFB', 
-                    minWidth: 200, 
+                    ...headerCellStyle,
+                    bgcolor: COLUMN_GROUPS.overview.bgSubHeader, 
+                    color: COLUMN_GROUPS.overview.textColor,
+                    minWidth: 160, 
                     cursor: 'pointer',
                     position: 'sticky',
                     left: 0,
                     zIndex: 3,
-                    borderRight: '2px solid #E2E8F0',
+                    borderBottom: `2px solid ${COLUMN_GROUPS.overview.borderColor}`,
                   }}
                   onClick={() => handleSort('reviewer_name')}
                 >
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                    Reviewer {orderBy === 'reviewer_name' && (order === 'asc' ? '↑' : '↓')}
+                    Name {orderBy === 'reviewer_name' && (order === 'asc' ? '↑' : '↓')}
                     <Tooltip title={getTooltipForHeader('Reviewer Name')} arrow placement="top" enterDelay={200} slotProps={{ tooltip: { sx: { bgcolor: '#1E293B', color: '#F8FAFC', fontSize: '0.75rem', maxWidth: 300, p: '8px 12px', borderRadius: 1 } } }}>
-                      <InfoOutlinedIcon sx={{ fontSize: 14, color: '#94A3B8', cursor: 'help', flexShrink: 0, visibility: 'visible !important', opacity: '1 !important', '&:hover': { color: '#64748B' } }} onClick={(e) => e.stopPropagation()} />
+                      <InfoOutlinedIcon sx={{ fontSize: 12, color: '#94A3B8', cursor: 'help', '&:hover': { color: '#64748B' } }} onClick={(e) => e.stopPropagation()} />
                     </Tooltip>
                   </Box>
                 </TableCell>
-                <TableCell sx={{ fontWeight: 700, backgroundColor: '#F9FAFB', minWidth: 180 }} align="left">
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                {/* Overview - Email */}
+                <TableCell sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.overview.bgSubHeader, color: COLUMN_GROUPS.overview.textColor, minWidth: 140, borderBottom: `2px solid ${COLUMN_GROUPS.overview.borderColor}`, borderRight: showDate ? 'none' : `2px solid ${COLUMN_GROUPS.overview.borderColor}` }} align="center">
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5 }}>
                     Email
-                    <Tooltip title={getTooltipForHeader('Reviewer Email')} arrow placement="top" enterDelay={200} slotProps={{ tooltip: { sx: { bgcolor: '#1E293B', color: '#F8FAFC', fontSize: '0.75rem', maxWidth: 300, p: '8px 12px', borderRadius: 1 } } }}>
-                      <InfoOutlinedIcon sx={{ fontSize: 14, color: '#94A3B8', cursor: 'help', flexShrink: 0, visibility: 'visible !important', opacity: '1 !important', '&:hover': { color: '#64748B' } }} />
+                    <Tooltip title={getTooltipForHeader('Email')} arrow placement="top" enterDelay={200} slotProps={{ tooltip: { sx: { bgcolor: '#1E293B', color: '#F8FAFC', fontSize: '0.75rem', maxWidth: 300, p: '8px 12px', borderRadius: 1 } } }}>
+                      <InfoOutlinedIcon sx={{ fontSize: 12, color: '#94A3B8', cursor: 'help', '&:hover': { color: '#64748B' } }} onClick={(e) => e.stopPropagation()} />
                     </Tooltip>
                   </Box>
                 </TableCell>
                 {showDate && (
                   <TableCell 
-                    sx={{ fontWeight: 700, backgroundColor: '#F9FAFB', cursor: 'pointer' }} 
-                    align="left"
+                    sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.overview.bgSubHeader, color: COLUMN_GROUPS.overview.textColor, cursor: 'pointer', borderBottom: `2px solid ${COLUMN_GROUPS.overview.borderColor}`, borderRight: `2px solid ${COLUMN_GROUPS.overview.borderColor}` }} 
+                    align="center"
                     onClick={() => handleSort('review_date')}
                   >
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5 }}>
                       Date {orderBy === 'review_date' && (order === 'asc' ? '↑' : '↓')}
                       <Tooltip title={getTooltipForHeader('Date')} arrow placement="top" enterDelay={200} slotProps={{ tooltip: { sx: { bgcolor: '#1E293B', color: '#F8FAFC', fontSize: '0.75rem', maxWidth: 300, p: '8px 12px', borderRadius: 1 } } }}>
-                        <InfoOutlinedIcon sx={{ fontSize: 14, color: '#94A3B8', cursor: 'help', flexShrink: 0, visibility: 'visible !important', opacity: '1 !important', '&:hover': { color: '#64748B' } }} onClick={(e) => e.stopPropagation()} />
+                        <InfoOutlinedIcon sx={{ fontSize: 12, color: '#94A3B8', cursor: 'help', '&:hover': { color: '#64748B' } }} onClick={(e) => e.stopPropagation()} />
                       </Tooltip>
                     </Box>
                   </TableCell>
                 )}
+                {/* Reviews Group Columns */}
                 <TableCell 
-                  sx={{ fontWeight: 700, backgroundColor: '#F9FAFB', cursor: 'pointer' }} 
-                  align="left"
+                  sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.tasks.bgSubHeader, color: COLUMN_GROUPS.tasks.textColor, cursor: 'pointer', minWidth: 50, borderBottom: `2px solid ${COLUMN_GROUPS.tasks.borderColor}` }} 
+                  align="center"
                   onClick={() => handleSort('unique_tasks_reviewed')}
                 >
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                    Unique Tasks {orderBy === 'unique_tasks_reviewed' && (order === 'asc' ? '↑' : '↓')}
-                    <Tooltip title={getTooltipForHeader('Unique Tasks')} arrow placement="top" enterDelay={200} slotProps={{ tooltip: { sx: { bgcolor: '#1E293B', color: '#F8FAFC', fontSize: '0.75rem', maxWidth: 300, p: '8px 12px', borderRadius: 1 } } }}>
-                      <InfoOutlinedIcon sx={{ fontSize: 14, color: '#94A3B8', cursor: 'help', flexShrink: 0, visibility: 'visible !important', opacity: '1 !important', '&:hover': { color: '#64748B' } }} onClick={(e) => e.stopPropagation()} />
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5 }}>
+                    Uniq {orderBy === 'unique_tasks_reviewed' && (order === 'asc' ? '↑' : '↓')}
+                    <Tooltip title={getTooltipForHeader('Uniq')} arrow placement="top" enterDelay={200} slotProps={{ tooltip: { sx: { bgcolor: '#1E293B', color: '#F8FAFC', fontSize: '0.75rem', maxWidth: 300, p: '8px 12px', borderRadius: 1 } } }}>
+                      <InfoOutlinedIcon sx={{ fontSize: 12, color: '#94A3B8', cursor: 'help', '&:hover': { color: '#64748B' } }} onClick={(e) => e.stopPropagation()} />
                     </Tooltip>
                   </Box>
                 </TableCell>
                 <TableCell 
-                  sx={{ fontWeight: 700, backgroundColor: '#F9FAFB', cursor: 'pointer' }} 
-                  align="left"
+                  sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.tasks.bgSubHeader, color: COLUMN_GROUPS.tasks.textColor, cursor: 'pointer', minWidth: 50, borderBottom: `2px solid ${COLUMN_GROUPS.tasks.borderColor}` }} 
+                  align="center"
                   onClick={() => handleSort('new_tasks_reviewed')}
                 >
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                    New Tasks {orderBy === 'new_tasks_reviewed' && (order === 'asc' ? '↑' : '↓')}
-                    <Tooltip title={getTooltipForHeader('New Tasks')} arrow placement="top" enterDelay={200} slotProps={{ tooltip: { sx: { bgcolor: '#1E293B', color: '#F8FAFC', fontSize: '0.75rem', maxWidth: 300, p: '8px 12px', borderRadius: 1 } } }}>
-                      <InfoOutlinedIcon sx={{ fontSize: 14, color: '#94A3B8', cursor: 'help', flexShrink: 0, visibility: 'visible !important', opacity: '1 !important', '&:hover': { color: '#64748B' } }} onClick={(e) => e.stopPropagation()} />
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5 }}>
+                    New {orderBy === 'new_tasks_reviewed' && (order === 'asc' ? '↑' : '↓')}
+                    <Tooltip title={getTooltipForHeader('New')} arrow placement="top" enterDelay={200} slotProps={{ tooltip: { sx: { bgcolor: '#1E293B', color: '#F8FAFC', fontSize: '0.75rem', maxWidth: 300, p: '8px 12px', borderRadius: 1 } } }}>
+                      <InfoOutlinedIcon sx={{ fontSize: 12, color: '#94A3B8', cursor: 'help', '&:hover': { color: '#64748B' } }} onClick={(e) => e.stopPropagation()} />
                     </Tooltip>
                   </Box>
                 </TableCell>
                 <TableCell 
-                  sx={{ fontWeight: 700, backgroundColor: '#F9FAFB', cursor: 'pointer' }} 
-                  align="left"
+                  sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.tasks.bgSubHeader, color: COLUMN_GROUPS.tasks.textColor, cursor: 'pointer', minWidth: 50, borderBottom: `2px solid ${COLUMN_GROUPS.tasks.borderColor}` }} 
+                  align="center"
                   onClick={() => handleSort('rework_reviewed')}
                 >
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                    Rework Reviewed {orderBy === 'rework_reviewed' && (order === 'asc' ? '↑' : '↓')}
-                    <Tooltip title={getTooltipForHeader('Rework Reviewed')} arrow placement="top" enterDelay={200} slotProps={{ tooltip: { sx: { bgcolor: '#1E293B', color: '#F8FAFC', fontSize: '0.75rem', maxWidth: 300, p: '8px 12px', borderRadius: 1 } } }}>
-                      <InfoOutlinedIcon sx={{ fontSize: 14, color: '#94A3B8', cursor: 'help', flexShrink: 0, visibility: 'visible !important', opacity: '1 !important', '&:hover': { color: '#64748B' } }} onClick={(e) => e.stopPropagation()} />
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5 }}>
+                    Rwk {orderBy === 'rework_reviewed' && (order === 'asc' ? '↑' : '↓')}
+                    <Tooltip title={getTooltipForHeader('Rwk')} arrow placement="top" enterDelay={200} slotProps={{ tooltip: { sx: { bgcolor: '#1E293B', color: '#F8FAFC', fontSize: '0.75rem', maxWidth: 300, p: '8px 12px', borderRadius: 1 } } }}>
+                      <InfoOutlinedIcon sx={{ fontSize: 12, color: '#94A3B8', cursor: 'help', '&:hover': { color: '#64748B' } }} onClick={(e) => e.stopPropagation()} />
                     </Tooltip>
                   </Box>
                 </TableCell>
                 <TableCell 
-                  sx={{ fontWeight: 700, backgroundColor: '#F9FAFB', cursor: 'pointer' }} 
-                  align="left"
+                  sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.tasks.bgSubHeader, color: COLUMN_GROUPS.tasks.textColor, cursor: 'pointer', minWidth: 50, borderBottom: `2px solid ${COLUMN_GROUPS.tasks.borderColor}` }} 
+                  align="center"
                   onClick={() => handleSort('total_reviews')}
                 >
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                    Total Reviews {orderBy === 'total_reviews' && (order === 'asc' ? '↑' : '↓')}
-                    <Tooltip title={getTooltipForHeader('Total Reviews')} arrow placement="top" enterDelay={200} slotProps={{ tooltip: { sx: { bgcolor: '#1E293B', color: '#F8FAFC', fontSize: '0.75rem', maxWidth: 300, p: '8px 12px', borderRadius: 1 } } }}>
-                      <InfoOutlinedIcon sx={{ fontSize: 14, color: '#94A3B8', cursor: 'help', flexShrink: 0, visibility: 'visible !important', opacity: '1 !important', '&:hover': { color: '#64748B' } }} onClick={(e) => e.stopPropagation()} />
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5 }}>
+                    Total {orderBy === 'total_reviews' && (order === 'asc' ? '↑' : '↓')}
+                    <Tooltip title={getTooltipForHeader('Total')} arrow placement="top" enterDelay={200} slotProps={{ tooltip: { sx: { bgcolor: '#1E293B', color: '#F8FAFC', fontSize: '0.75rem', maxWidth: 300, p: '8px 12px', borderRadius: 1 } } }}>
+                      <InfoOutlinedIcon sx={{ fontSize: 12, color: '#94A3B8', cursor: 'help', '&:hover': { color: '#64748B' } }} onClick={(e) => e.stopPropagation()} />
                     </Tooltip>
                   </Box>
                 </TableCell>
                 <TableCell 
-                  sx={{ fontWeight: 700, backgroundColor: '#F9FAFB', cursor: 'pointer' }} 
-                  align="left"
+                  sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.tasks.bgSubHeader, color: COLUMN_GROUPS.tasks.textColor, cursor: 'pointer', minWidth: 55, borderBottom: `2px solid ${COLUMN_GROUPS.tasks.borderColor}`, borderRight: `2px solid ${COLUMN_GROUPS.tasks.borderColor}` }} 
+                  align="center"
                   onClick={() => handleSort('tasks_ready_for_delivery')}
                 >
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                    Ready for Delivery {orderBy === 'tasks_ready_for_delivery' && (order === 'asc' ? '↑' : '↓')}
-                    <Tooltip title={getTooltipForHeader('Ready for Delivery')} arrow placement="top" enterDelay={200} slotProps={{ tooltip: { sx: { bgcolor: '#1E293B', color: '#F8FAFC', fontSize: '0.75rem', maxWidth: 300, p: '8px 12px', borderRadius: 1 } } }}>
-                      <InfoOutlinedIcon sx={{ fontSize: 14, color: '#94A3B8', cursor: 'help', flexShrink: 0, visibility: 'visible !important', opacity: '1 !important', '&:hover': { color: '#64748B' } }} onClick={(e) => e.stopPropagation()} />
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5 }}>
+                    Ready {orderBy === 'tasks_ready_for_delivery' && (order === 'asc' ? '↑' : '↓')}
+                    <Tooltip title={getTooltipForHeader('Ready')} arrow placement="top" enterDelay={200} slotProps={{ tooltip: { sx: { bgcolor: '#1E293B', color: '#F8FAFC', fontSize: '0.75rem', maxWidth: 300, p: '8px 12px', borderRadius: 1 } } }}>
+                      <InfoOutlinedIcon sx={{ fontSize: 12, color: '#94A3B8', cursor: 'help', '&:hover': { color: '#64748B' } }} onClick={(e) => e.stopPropagation()} />
                     </Tooltip>
                   </Box>
                 </TableCell>
+                {/* Quality Group Columns */}
                 <TableCell 
-                  sx={{ fontWeight: 700, backgroundColor: '#F9FAFB', cursor: 'pointer' }} 
-                  align="left"
+                  sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.quality.bgSubHeader, color: COLUMN_GROUPS.quality.textColor, cursor: 'pointer', minWidth: 55, borderBottom: `2px solid ${COLUMN_GROUPS.quality.borderColor}` }} 
+                  align="center"
                   onClick={() => handleSort('avg_rework')}
                 >
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                    Avg Rework {orderBy === 'avg_rework' && (order === 'asc' ? '↑' : '↓')}
-                    <Tooltip title={getTooltipForHeader('Avg Rework')} arrow placement="top" enterDelay={200} slotProps={{ tooltip: { sx: { bgcolor: '#1E293B', color: '#F8FAFC', fontSize: '0.75rem', maxWidth: 300, p: '8px 12px', borderRadius: 1 } } }}>
-                      <InfoOutlinedIcon sx={{ fontSize: 14, color: '#94A3B8', cursor: 'help', flexShrink: 0, visibility: 'visible !important', opacity: '1 !important', '&:hover': { color: '#64748B' } }} onClick={(e) => e.stopPropagation()} />
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5 }}>
+                    AvgR {orderBy === 'avg_rework' && (order === 'asc' ? '↑' : '↓')}
+                    <Tooltip title={getTooltipForHeader('AvgR')} arrow placement="top" enterDelay={200} slotProps={{ tooltip: { sx: { bgcolor: '#1E293B', color: '#F8FAFC', fontSize: '0.75rem', maxWidth: 300, p: '8px 12px', borderRadius: 1 } } }}>
+                      <InfoOutlinedIcon sx={{ fontSize: 12, color: '#94A3B8', cursor: 'help', '&:hover': { color: '#64748B' } }} onClick={(e) => e.stopPropagation()} />
                     </Tooltip>
                   </Box>
                 </TableCell>
                 <TableCell 
-                  sx={{ fontWeight: 700, backgroundColor: '#F9FAFB', cursor: 'pointer' }} 
-                  align="left"
+                  sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.quality.bgSubHeader, color: COLUMN_GROUPS.quality.textColor, cursor: 'pointer', minWidth: 50, borderBottom: `2px solid ${COLUMN_GROUPS.quality.borderColor}` }} 
+                  align="center"
                   onClick={() => handleSort('rework_percent')}
                 >
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                    Rework % {orderBy === 'rework_percent' && (order === 'asc' ? '↑' : '↓')}
-                    <Tooltip title={getTooltipForHeader('Rework %')} arrow placement="top" enterDelay={200} slotProps={{ tooltip: { sx: { bgcolor: '#1E293B', color: '#F8FAFC', fontSize: '0.75rem', maxWidth: 300, p: '8px 12px', borderRadius: 1 } } }}>
-                      <InfoOutlinedIcon sx={{ fontSize: 14, color: '#94A3B8', cursor: 'help', flexShrink: 0, visibility: 'visible !important', opacity: '1 !important', '&:hover': { color: '#64748B' } }} onClick={(e) => e.stopPropagation()} />
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5 }}>
+                    R% {orderBy === 'rework_percent' && (order === 'asc' ? '↑' : '↓')}
+                    <Tooltip title={getTooltipForHeader('R%')} arrow placement="top" enterDelay={200} slotProps={{ tooltip: { sx: { bgcolor: '#1E293B', color: '#F8FAFC', fontSize: '0.75rem', maxWidth: 300, p: '8px 12px', borderRadius: 1 } } }}>
+                      <InfoOutlinedIcon sx={{ fontSize: 12, color: '#94A3B8', cursor: 'help', '&:hover': { color: '#64748B' } }} onClick={(e) => e.stopPropagation()} />
                     </Tooltip>
                   </Box>
                 </TableCell>
                 <TableCell 
-                  sx={{ fontWeight: 700, backgroundColor: '#F9FAFB', cursor: 'pointer' }} 
-                  align="left"
+                  sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.quality.bgSubHeader, color: COLUMN_GROUPS.quality.textColor, cursor: 'pointer', minWidth: 50, borderBottom: `2px solid ${COLUMN_GROUPS.quality.borderColor}`, borderRight: `2px solid ${COLUMN_GROUPS.quality.borderColor}` }} 
+                  align="center"
                   onClick={() => handleSort('avg_rating')}
                 >
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                    Avg Rating {orderBy === 'avg_rating' && (order === 'asc' ? '↑' : '↓')}
-                    <Tooltip title={getTooltipForHeader('Avg Rating')} arrow placement="top" enterDelay={200} slotProps={{ tooltip: { sx: { bgcolor: '#1E293B', color: '#F8FAFC', fontSize: '0.75rem', maxWidth: 300, p: '8px 12px', borderRadius: 1 } } }}>
-                      <InfoOutlinedIcon sx={{ fontSize: 14, color: '#94A3B8', cursor: 'help', flexShrink: 0, visibility: 'visible !important', opacity: '1 !important', '&:hover': { color: '#64748B' } }} onClick={(e) => e.stopPropagation()} />
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5 }}>
+                    Rate {orderBy === 'avg_rating' && (order === 'asc' ? '↑' : '↓')}
+                    <Tooltip title={getTooltipForHeader('Rate')} arrow placement="top" enterDelay={200} slotProps={{ tooltip: { sx: { bgcolor: '#1E293B', color: '#F8FAFC', fontSize: '0.75rem', maxWidth: 300, p: '8px 12px', borderRadius: 1 } } }}>
+                      <InfoOutlinedIcon sx={{ fontSize: 12, color: '#94A3B8', cursor: 'help', '&:hover': { color: '#64748B' } }} onClick={(e) => e.stopPropagation()} />
                     </Tooltip>
                   </Box>
                 </TableCell>
+                {/* Time Group Columns */}
                 <TableCell 
-                  sx={{ fontWeight: 700, backgroundColor: '#F9FAFB', cursor: 'pointer' }} 
-                  align="left"
+                  sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.efficiency.bgSubHeader, color: COLUMN_GROUPS.efficiency.textColor, cursor: 'pointer', minWidth: 55, borderBottom: `2px solid ${COLUMN_GROUPS.efficiency.borderColor}` }} 
+                  align="center"
                   onClick={() => handleSort('merged_exp_aht')}
                 >
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                    Merged Exp. AHT {orderBy === 'merged_exp_aht' && (order === 'asc' ? '↑' : '↓')}
-                    <Tooltip title={getTooltipForHeader('Merged Exp. AHT')} arrow placement="top" enterDelay={200} slotProps={{ tooltip: { sx: { bgcolor: '#1E293B', color: '#F8FAFC', fontSize: '0.75rem', maxWidth: 300, p: '8px 12px', borderRadius: 1 } } }}>
-                      <InfoOutlinedIcon sx={{ fontSize: 14, color: '#94A3B8', cursor: 'help', flexShrink: 0, visibility: 'visible !important', opacity: '1 !important', '&:hover': { color: '#64748B' } }} onClick={(e) => e.stopPropagation()} />
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5 }}>
+                    AHT {orderBy === 'merged_exp_aht' && (order === 'asc' ? '↑' : '↓')}
+                    <Tooltip title={getTooltipForHeader('AHT')} arrow placement="top" enterDelay={200} slotProps={{ tooltip: { sx: { bgcolor: '#1E293B', color: '#F8FAFC', fontSize: '0.75rem', maxWidth: 300, p: '8px 12px', borderRadius: 1 } } }}>
+                      <InfoOutlinedIcon sx={{ fontSize: 12, color: '#94A3B8', cursor: 'help', '&:hover': { color: '#64748B' } }} onClick={(e) => e.stopPropagation()} />
                     </Tooltip>
                   </Box>
                 </TableCell>

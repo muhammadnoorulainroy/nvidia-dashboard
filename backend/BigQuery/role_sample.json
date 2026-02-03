@@ -1,0 +1,110 @@
+{
+  "table": "role",
+  "row_count": 6,
+  "sample_count": 6,
+  "fetched_at": "2026-01-28T23:24:35.276515",
+  "data": [
+    {
+      "created_at": "2025-09-25T04:34:17.587929",
+      "updated_at": "2025-09-25T04:34:17.587929",
+      "id": 6,
+      "name": "User Propagation Tool",
+      "description": "User Propagation Tool",
+      "is_active": 1,
+      "is_default": 0,
+      "datastream_metadata": {
+        "uuid": "e72d8727-cacf-4bdc-9837-f7c800110011",
+        "source_timestamp": 1758774857000
+      },
+      "home_route": null,
+      "parent_id": null,
+      "is_built_in": 0,
+      "login_route": "/login?callback={pathname}"
+    },
+    {
+      "created_at": "2025-09-25T04:34:17.559433",
+      "updated_at": "2025-09-25T04:34:17.559433",
+      "id": 5,
+      "name": "Flexible Talent",
+      "description": "Flexible talents working part time",
+      "is_active": 1,
+      "is_default": 0,
+      "datastream_metadata": {
+        "uuid": "e72d8727-cacf-4bdc-9837-f7c800101010",
+        "source_timestamp": 1758774857000
+      },
+      "home_route": "/flexibletalent/workspace",
+      "parent_id": 2,
+      "is_built_in": 0,
+      "login_route": "/login?callback={pathname}"
+    },
+    {
+      "created_at": "2025-07-17T15:21:57.538899",
+      "updated_at": "2025-07-17T15:21:57.538899",
+      "id": 4,
+      "name": "Reviewer",
+      "description": "Responsible for reviewing the tasks and managing the squad.",
+      "is_active": 1,
+      "is_default": 0,
+      "datastream_metadata": {
+        "uuid": "edb6b4f9-8a56-4c80-af6b-e6ac10100001",
+        "source_timestamp": 1752765717000
+      },
+      "home_route": "",
+      "parent_id": 3,
+      "is_built_in": 0,
+      "login_route": null
+    },
+    {
+      "created_at": "2024-06-28T06:53:11.580906",
+      "updated_at": "2025-05-26T04:34:00.982844",
+      "id": 3,
+      "name": "Squad Lead",
+      "description": "Conversation review",
+      "is_active": 1,
+      "is_default": 0,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042100101100",
+        "source_timestamp": 1748234040000
+      },
+      "home_route": null,
+      "parent_id": null,
+      "is_built_in": 1,
+      "login_route": null
+    },
+    {
+      "created_at": "2024-06-28T06:53:11.483242",
+      "updated_at": "2025-05-26T04:34:00.982844",
+      "id": 2,
+      "name": "Trainer",
+      "description": "Conversation labeling",
+      "is_active": 1,
+      "is_default": 1,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042100101101",
+        "source_timestamp": 1748234040000
+      },
+      "home_route": null,
+      "parent_id": null,
+      "is_built_in": 1,
+      "login_route": null
+    },
+    {
+      "created_at": "2024-06-28T06:53:11.398893",
+      "updated_at": "2025-05-26T04:34:00.982844",
+      "id": 1,
+      "name": "Admin",
+      "description": "Full access",
+      "is_active": 1,
+      "is_default": 0,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042100101011",
+        "source_timestamp": 1748234040000
+      },
+      "home_route": null,
+      "parent_id": null,
+      "is_built_in": 1,
+      "login_route": null
+    }
+  ]
+}

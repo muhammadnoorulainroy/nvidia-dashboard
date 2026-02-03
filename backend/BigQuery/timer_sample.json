@@ -1,0 +1,40 @@
+{
+  "table": "timer",
+  "row_count": 2,
+  "sample_count": 2,
+  "fetched_at": "2026-01-28T23:25:04.594582",
+  "data": [
+    {
+      "created_at": "2025-10-16T07:21:08.299562",
+      "updated_at": "2025-10-16T07:36:58",
+      "id": "158fc6a9-6665-448f-9a71-4473f27dd1cc",
+      "contributor_id": 1,
+      "conversation_id": 243,
+      "conversation_version_id": null,
+      "state": "idle",
+      "total_tracked_time_seconds": 903,
+      "current_session_id": null,
+      "synthetic_unique_key": "000000000100000002430000000000",
+      "datastream_metadata": {
+        "uuid": "41456030-c090-43c8-ad8e-b44c10111011",
+        "source_timestamp": 1760600218000
+      }
+    },
+    {
+      "created_at": "2025-09-04T13:38:38.725161",
+      "updated_at": "2025-09-04T14:35:54",
+      "id": "b250d3cf-bc0f-4b41-a30e-d413e18e9f86",
+      "contributor_id": 176,
+      "conversation_id": 52648,
+      "conversation_version_id": null,
+      "state": "idle",
+      "total_tracked_time_seconds": 1561,
+      "current_session_id": null,
+      "synthetic_unique_key": "000000017600000526480000000000",
+      "datastream_metadata": {
+        "uuid": "58b2fe1d-567d-4eb6-be66-09ce11111000",
+        "source_timestamp": 1756996554000
+      }
+    }
+  ]
+}

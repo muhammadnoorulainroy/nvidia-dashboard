@@ -4,7 +4,7 @@ PostgreSQL query service for nvidia dashboard statistics
 import logging
 from typing import List, Dict, Any, Optional, Set
 from collections import defaultdict
-from sqlalchemy import func, or_, and_
+from sqlalchemy import func, or_, and_, text
 from google.cloud import bigquery
 
 from app.config import get_settings
@@ -1335,76 +1335,82 @@ class QueryService:
                         email_to_id[info['email'].lower().strip()] = cid
                 
                 # ---------------------------------------------------------
-                # Get Jibble Hours for trainers (filtered by date range if provided)
+                # Get Jibble Hours for trainers (filtered by date range)
+                # Using BigQuery source for Jibble data - matches by full_name
+                # ---------------------------------------------------------
+                # CRITICAL: Filter Jibble hours by specific project(s)!
                 # ---------------------------------------------------------
                 trainer_jibble_map = {}
+                jibble_by_name = {}  # Primary matching by name
+                
+                # Map project IDs to Jibble project names
+                project_jibble_map = {
+                    36: 'Nvidia - SysBench',
+                    37: 'Nvidia - CFBench Multilingual',
+                    38: 'Nvidia - InverseIFEval',
+                    39: 'Nvidia - Multichallenge',  # Also includes Advanced
+                    40: 'Nvidia - Multichallenge Advanced',
+                    41: 'Nvidia - ICPC',
+                    42: 'NVIDIA_STEM Math_Eval',
+                }
+                
                 try:
-                    # Build mapping from jibble member_code to trainer email via pod_lead_mapping
-                    jibble_to_trainer = {}
-                    pod_mappings = session.query(PodLeadMapping).all()
-                    for pm in pod_mappings:
-                        if pm.jibble_id and pm.trainer_email:
-                            jibble_to_trainer[str(pm.jibble_id)] = pm.trainer_email.lower().strip()
+                    # Apply filters
+                    start_date = filters.get('start_date') if filters else None
+                    end_date = filters.get('end_date') if filters else None
                     
-                    logger.info(f"Built jibble_to_trainer mapping with {len(jibble_to_trainer)} entries")
+                    # Build list of Jibble project names to filter (no swap - use original)
+                    jibble_projects_to_filter = []
+                    if filter_project_ids:
+                        for pid in filter_project_ids:
+                            if pid == 39:  # Multichallenge includes both regular and Advanced
+                                jibble_projects_to_filter.append('Nvidia - Multichallenge')
+                                jibble_projects_to_filter.append('Nvidia - Multichallenge Advanced')
+                            else:
+                                jibble_name = project_jibble_map.get(pid)
+                                if jibble_name:
+                                    jibble_projects_to_filter.append(jibble_name)
                     
-                    # Query Jibble hours with optional date and project filtering
-                    # Also get full_name for fallback matching
+                    # Get Jibble hours - group by full_name (primary key for matching)
                     jibble_query = session.query(
-                        JibbleHours.member_code,
                         JibbleHours.full_name,
                         func.sum(JibbleHours.logged_hours).label('total_hours')
                     )
                     
-                    # Apply date range filter if provided
-                    start_date = filters.get('start_date') if filters else None
-                    end_date = filters.get('end_date') if filters else None
+                    # CRITICAL: Filter by specific Jibble project(s)!
+                    if jibble_projects_to_filter:
+                        jibble_query = jibble_query.filter(JibbleHours.project.in_(jibble_projects_to_filter))
                     
                     if start_date:
                         jibble_query = jibble_query.filter(JibbleHours.entry_date >= start_date)
                     if end_date:
                         jibble_query = jibble_query.filter(JibbleHours.entry_date <= end_date)
                     
-                    # Apply project filter if provided - map project_id to project name
-                    project_id = filters.get('project_id') if filters else None
-                    project_name_map = {
-                        36: 'SysBench',
-                        37: 'CFBench',
-                        38: 'InverseIFEval',
-                        39: 'Multichallenge',
-                    }
-                    if project_id and project_id in project_name_map:
-                        project_pattern = f"%{project_name_map[project_id]}%"
-                        jibble_query = jibble_query.filter(JibbleHours.project.ilike(project_pattern))
-                        logger.info(f"Filtering Jibble hours by project: {project_pattern}")
-                    
-                    jibble_query = jibble_query.group_by(JibbleHours.member_code, JibbleHours.full_name)
+                    jibble_query = jibble_query.group_by(JibbleHours.full_name)
                     jibble_results = jibble_query.all()
                     
-                    logger.info(f"Found {len(jibble_results)} unique Jibble member_codes")
+                    # Build name -> hours map
+                    for ar in jibble_results:
+                        if ar.full_name:
+                            name_key = ar.full_name.lower().strip()
+                            jibble_by_name[name_key] = float(ar.total_hours or 0)
                     
-                    # Map to trainer emails AND build name-based lookup for ALL records
-                    jibble_by_name = {}  # For fallback matching by name - populated for ALL records
-                    unmatched_count = 0
-                    for jr in jibble_results:
-                        # Always add to name-based lookup for fallback matching
-                        if jr.full_name:
-                            name_key = jr.full_name.lower().strip()
-                            # Accumulate hours for same name (might have multiple member_codes)
-                            jibble_by_name[name_key] = jibble_by_name.get(name_key, 0) + float(jr.total_hours or 0)
-                        
-                        # Also try email-based mapping
-                        if jr.member_code:
-                            trainer_email = jibble_to_trainer.get(str(jr.member_code))
-                            if trainer_email:
-                                trainer_jibble_map[trainer_email] = float(jr.total_hours or 0)
-                            else:
-                                unmatched_count += 1
+                    # Build email -> hours map using pod_lead_mapping (jibble_name -> trainer_email)
+                    mapping_results = session.execute(text("""
+                        SELECT DISTINCT trainer_email, jibble_name 
+                        FROM pod_lead_mapping 
+                        WHERE jibble_name IS NOT NULL AND trainer_email IS NOT NULL
+                    """)).fetchall()
+                    
+                    for m in mapping_results:
+                        if m.jibble_name and m.trainer_email:
+                            name_key = m.jibble_name.lower().strip()
+                            if name_key in jibble_by_name:
+                                trainer_jibble_map[m.trainer_email.lower().strip()] = jibble_by_name[name_key]
                     
                     date_range_msg = f" for {start_date} to {end_date}" if start_date or end_date else " (all time)"
-                    logger.info(f"Matched {len(trainer_jibble_map)} trainers to Jibble hours via email{date_range_msg}")
-                    logger.info(f"Unmatched Jibble records: {unmatched_count} (no email mapping)")
-                    logger.info(f"Built jibble_by_name with {len(jibble_by_name)} unique names for fallback matching")
+                    project_msg = f", projects: {jibble_projects_to_filter}" if jibble_projects_to_filter else " (all projects)"
+                    logger.info(f"Jibble (BigQuery): {len(jibble_by_name)} names, {len(trainer_jibble_map)} mapped to emails{date_range_msg}{project_msg}")
                     
                     # Store jibble_by_name for potential use in result building
                     self._jibble_by_name = jibble_by_name
@@ -2191,6 +2197,7 @@ class QueryService:
                 delivered_task_ids = [r.task_id for r in delivered_tasks_query.all()]
                 
                 # Get in-queue task IDs
+                # NOTE: Don't filter by date - "In Queue" is a CURRENT status, not historical
                 in_queue_tasks_query = session.query(
                     TaskRaw.task_id
                 ).filter(
@@ -2202,10 +2209,7 @@ class QueryService:
                     ),
                     TaskRaw.project_id.in_(filter_project_ids)
                 )
-                if start_date:
-                    in_queue_tasks_query = in_queue_tasks_query.filter(TaskRaw.last_completed_date >= start_date)
-                if end_date:
-                    in_queue_tasks_query = in_queue_tasks_query.filter(TaskRaw.last_completed_date <= end_date)
+                # No date filter - show current queue status regardless of timeframe
                 in_queue_task_ids = [r.task_id for r in in_queue_tasks_query.all()]
                 
                 logger.info(f"Found {len(delivered_task_ids)} delivered tasks, {len(in_queue_task_ids)} in-queue tasks")
@@ -2304,93 +2308,81 @@ class QueryService:
                 
                 # ---------------------------------------------------------
                 # STEP 6: Get Jibble hours for trainers AND POD Leads
-                # Trainers: Map via member_code (jibble_id) from pod_lead_mapping
-                # POD Leads: Match by name from contributor table to jibble_hours.full_name
+                # Using BigQuery source - matches by full_name via pod_lead_mapping
+                # CRITICAL: Filter by specific project to avoid cross-project counting!
                 # ---------------------------------------------------------
-                # Build jibble_id to email mapping from pod_lead_mapping
-                jibble_to_trainer = {}
-                for mapping in pod_mappings:
-                    if mapping.jibble_id and mapping.trainer_email:
-                        jibble_to_trainer[str(mapping.jibble_id)] = mapping.trainer_email.lower().strip()
+                trainer_jibble_hours = {}
+                pod_lead_jibble_hours = {}
                 
-                # Query Jibble hours for trainers (by member_code)
+                # Get all POD lead emails for classification
+                all_pod_emails = set(pod_trainers.keys())
+                
+                # Map project IDs to Jibble project names
+                project_jibble_map = {
+                    36: 'Nvidia - SysBench',
+                    37: 'Nvidia - CFBench Multilingual',
+                    38: 'Nvidia - InverseIFEval',
+                    39: 'Nvidia - Multichallenge',  # Also includes Advanced
+                    40: 'Nvidia - Multichallenge Advanced',
+                    41: 'Nvidia - ICPC',
+                    42: 'NVIDIA_STEM Math_Eval',
+                }
+                
+                # Build list of Jibble project names to filter (no swap - use original)
+                jibble_projects_to_filter = []
+                for pid in filter_project_ids:
+                    if pid == 39:  # Multichallenge includes both regular and Advanced
+                        jibble_projects_to_filter.append('Nvidia - Multichallenge')
+                        jibble_projects_to_filter.append('Nvidia - Multichallenge Advanced')
+                    else:
+                        jibble_name = project_jibble_map.get(pid)
+                        if jibble_name:
+                            jibble_projects_to_filter.append(jibble_name)
+                
+                # Get Jibble hours grouped by full_name, filtered by project
                 jibble_query = session.query(
-                    JibbleHours.member_code,
+                    JibbleHours.full_name,
                     func.sum(JibbleHours.logged_hours).label('total_hours')
                 )
+                
+                # CRITICAL: Filter by specific Jibble project(s)!
+                if jibble_projects_to_filter:
+                    jibble_query = jibble_query.filter(JibbleHours.project.in_(jibble_projects_to_filter))
                 
                 if start_date:
                     jibble_query = jibble_query.filter(JibbleHours.entry_date >= start_date)
                 if end_date:
                     jibble_query = jibble_query.filter(JibbleHours.entry_date <= end_date)
                 
-                # Apply project filter if provided - map project_id to project name
-                project_name_map = {
-                    36: 'SysBench',
-                    37: 'CFBench',
-                    38: 'InverseIFEval',
-                    39: 'Multichallenge',
-                }
-                if project_id and project_id in project_name_map:
-                    project_pattern = f"%{project_name_map[project_id]}%"
-                    jibble_query = jibble_query.filter(JibbleHours.project.ilike(project_pattern))
-                
-                jibble_query = jibble_query.group_by(JibbleHours.member_code)
+                jibble_query = jibble_query.group_by(JibbleHours.full_name)
                 jibble_results = jibble_query.all()
                 
-                # Map jibble hours to trainer email
-                trainer_jibble_hours = {}
-                for jr in jibble_results:
-                    if jr.member_code:
-                        trainer_email = jibble_to_trainer.get(str(jr.member_code))
-                        if trainer_email:
-                            trainer_jibble_hours[trainer_email] = float(jr.total_hours or 0)
+                # Build name -> hours map
+                jibble_by_name = {}
+                for ar in jibble_results:
+                    if ar.full_name:
+                        name_key = ar.full_name.lower().strip()
+                        jibble_by_name[name_key] = float(ar.total_hours or 0)
                 
-                # Query Jibble hours for POD Leads using member_code from pod_lead_mapping
-                # First, get POD Lead jibble_ids from their own trainer entries in pod_lead_mapping
-                pod_lead_jibble_ids = {}
-                for pod_email in pod_trainers.keys():
-                    # POD Leads have their own entry in pod_lead_mapping with trainer_email = pod_lead_email
-                    pod_mapping = session.query(PodLeadMapping).filter(
-                        func.lower(PodLeadMapping.trainer_email) == pod_email.lower()
-                    ).first()
-                    if pod_mapping and pod_mapping.jibble_id:
-                        pod_lead_jibble_ids[pod_email] = pod_mapping.jibble_id
+                # Map to emails using pod_lead_mapping (jibble_name -> trainer_email)
+                mapping_results = session.execute(text("""
+                    SELECT DISTINCT trainer_email, jibble_name 
+                    FROM pod_lead_mapping 
+                    WHERE jibble_name IS NOT NULL AND trainer_email IS NOT NULL
+                """)).fetchall()
                 
-                logger.info(f"Found jibble_ids for {len(pod_lead_jibble_ids)} POD Leads")
+                for m in mapping_results:
+                    if m.jibble_name and m.trainer_email:
+                        name_key = m.jibble_name.lower().strip()
+                        email = m.trainer_email.lower().strip()
+                        if name_key in jibble_by_name:
+                            hours = jibble_by_name[name_key]
+                            if email in all_pod_emails:
+                                pod_lead_jibble_hours[email] = hours
+                            else:
+                                trainer_jibble_hours[email] = hours
                 
-                # Now query jibble_hours using member_code for POD Leads
-                pod_lead_jibble_hours = {}
-                if pod_lead_jibble_ids:
-                    jibble_id_list = list(pod_lead_jibble_ids.values())
-                    
-                    pod_jibble_query = session.query(
-                        JibbleHours.member_code,
-                        func.sum(JibbleHours.logged_hours).label('total_hours')
-                    ).filter(JibbleHours.member_code.in_(jibble_id_list))
-                    
-                    if start_date:
-                        pod_jibble_query = pod_jibble_query.filter(JibbleHours.entry_date >= start_date)
-                    if end_date:
-                        pod_jibble_query = pod_jibble_query.filter(JibbleHours.entry_date <= end_date)
-                    
-                    # Apply project filter for POD leads too
-                    if project_id and project_id in project_name_map:
-                        project_pattern = f"%{project_name_map[project_id]}%"
-                        pod_jibble_query = pod_jibble_query.filter(JibbleHours.project.ilike(project_pattern))
-                    
-                    pod_jibble_query = pod_jibble_query.group_by(JibbleHours.member_code)
-                    pod_jibble_results = pod_jibble_query.all()
-                    
-                    # Build member_code -> hours mapping
-                    member_code_to_hours = {str(r.member_code): float(r.total_hours or 0) for r in pod_jibble_results}
-                    
-                    # Map back to pod_email
-                    for pod_email, jibble_id in pod_lead_jibble_ids.items():
-                        if str(jibble_id) in member_code_to_hours:
-                            pod_lead_jibble_hours[pod_email] = member_code_to_hours[str(jibble_id)]
-                
-                logger.info(f"Found Jibble hours for {len(trainer_jibble_hours)} trainers, {len(pod_lead_jibble_hours)} POD Leads")
+                logger.info(f"Jibble (BigQuery): {len(trainer_jibble_hours)} trainers, {len(pod_lead_jibble_hours)} POD leads")
                 
                 # ---------------------------------------------------------
                 # STEP 7: Build POD Lead results with trainers
@@ -2486,7 +2478,13 @@ class QueryService:
                         pod_totals['in_delivery_queue'] += in_queue
                         pod_totals['sum_turns'] += sum_turns
                         pod_totals['total_reviews_sum'] = pod_totals.get('total_reviews_sum', 0) + total_reviews
-                        pod_totals['trainer_jibble_hours'] = pod_totals.get('trainer_jibble_hours', 0) + jibble_hours
+                        
+                        # FIX: Only add Jibble hours if trainer is NOT the same as POD lead
+                        # This prevents double-counting when POD lead is listed as their own trainer
+                        if trainer_email.lower().strip() != pod_email.lower().strip():
+                            pod_totals['trainer_jibble_hours'] = pod_totals.get('trainer_jibble_hours', 0) + jibble_hours
+                        else:
+                            pod_totals['trainer_jibble_hours'] = pod_totals.get('trainer_jibble_hours', 0)
                         
                         # For avg_rating aggregation, use trainer_total_scores (from TrainerReviewStats)
                         pod_totals['total_score'] += trainer_total_scores.get(trainer_email, 0)
@@ -2621,50 +2619,159 @@ class QueryService:
                                 'rework': hs.rework or 0
                             }
                     
-                    # Get total_reviews from task_raw for this project
-                    # Get total_reviews - removed followup_required filter to include all reviews
+                    # ---------------------------------------------------------
+                    # Get total_reviews and avg_rating from TrainerReviewStats
+                    # FIX: Use TrainerReviewStats for proper attribution (same as POD Lead tab)
+                    # This ensures reviews are attributed to the trainer who did the work,
+                    # not the current task owner.
+                    #
+                    # Edge case handled:
+                    # - Trainer A completes task -> rejected (2.3) -> Trainer B reworks -> approved (5.0)
+                    #   Trainer A gets 1 review: 2.3
+                    #   Trainer B gets 1 review: 5.0
+                    # ---------------------------------------------------------
                     reviews_query = session.query(
-                        TaskRaw.trainer,
-                        func.sum(TaskRaw.count_reviews).label('total_reviews')
+                        TrainerReviewStats.trainer_email,
+                        func.count(TrainerReviewStats.review_id).label('total_reviews'),
+                        func.sum(TrainerReviewStats.score).label('total_score')
                     ).filter(
-                        TaskRaw.count_reviews > 0,  # Only tasks that have been reviewed
-                        TaskRaw.project_id == project_id
+                        TrainerReviewStats.project_id == project_id,
+                        TrainerReviewStats.score.isnot(None)
                     )
                     
                     if start_date:
-                        reviews_query = reviews_query.filter(TaskRaw.last_completed_date >= start_date)
+                        reviews_query = reviews_query.filter(TrainerReviewStats.review_date >= start_date)
                     if end_date:
-                        reviews_query = reviews_query.filter(TaskRaw.last_completed_date <= end_date)
+                        reviews_query = reviews_query.filter(TrainerReviewStats.review_date <= end_date)
                     
-                    reviews_query = reviews_query.group_by(TaskRaw.trainer)
+                    reviews_query = reviews_query.group_by(TrainerReviewStats.trainer_email)
                     reviews_results = reviews_query.all()
                     
                     trainer_reviews = {}
+                    trainer_avg_rating = {}
                     for rr in reviews_results:
-                        if rr.trainer:
-                            email = rr.trainer.lower().strip()
+                        if rr.trainer_email:
+                            email = rr.trainer_email.lower().strip()
                             trainer_reviews[email] = rr.total_reviews or 0
+                            if rr.total_reviews and rr.total_reviews > 0 and rr.total_score:
+                                trainer_avg_rating[email] = round(float(rr.total_score) / float(rr.total_reviews), 2)
+                            else:
+                                trainer_avg_rating[email] = None
                     
-                    # Get Jibble hours for all trainers
+                    # ---------------------------------------------------------
+                    # Get delivered and in_queue counts with proper attribution
+                    # FIX: Use LAST COMPLETER from TaskHistoryRaw (same as POD Lead tab)
+                    # Use delivery_status and delivery_batch_name (same as POD Lead tab)
+                    # ---------------------------------------------------------
+                    
+                    # Get delivered task IDs (delivery_status = 'delivered')
+                    delivered_tasks_q = session.query(TaskRaw.task_id).filter(
+                        func.lower(TaskRaw.delivery_status) == 'delivered',
+                        TaskRaw.project_id == project_id
+                    )
+                    if start_date:
+                        delivered_tasks_q = delivered_tasks_q.filter(TaskRaw.last_completed_date >= start_date)
+                    if end_date:
+                        delivered_tasks_q = delivered_tasks_q.filter(TaskRaw.last_completed_date <= end_date)
+                    delivered_task_ids = [r.task_id for r in delivered_tasks_q.all()]
+                    
+                    # Get in_queue task IDs (has delivery_batch_name but not yet delivered)
+                    # NOTE: Don't filter by date - "In Queue" is a CURRENT status, not historical
+                    queue_tasks_q = session.query(TaskRaw.task_id).filter(
+                        TaskRaw.delivery_batch_name.isnot(None),
+                        TaskRaw.delivery_batch_name != '',
+                        or_(
+                            func.lower(TaskRaw.delivery_status) != 'delivered',
+                            TaskRaw.delivery_status.is_(None)
+                        ),
+                        TaskRaw.project_id == project_id
+                    )
+                    # No date filter - show current queue status regardless of timeframe
+                    in_queue_task_ids = [r.task_id for r in queue_tasks_q.all()]
+                    
+                    # Attribute to LAST COMPLETER from TaskHistoryRaw
+                    trainer_delivered = {}
+                    trainer_in_queue = {}
+                    all_delivery_task_ids = list(set(delivered_task_ids + in_queue_task_ids))
+                    
+                    if all_delivery_task_ids:
+                        # Get completion events
+                        completion_events = session.query(
+                            TaskHistoryRaw.task_id,
+                            TaskHistoryRaw.author,
+                            TaskHistoryRaw.time_stamp
+                        ).filter(
+                            TaskHistoryRaw.task_id.in_(all_delivery_task_ids),
+                            TaskHistoryRaw.new_status == 'completed',
+                            TaskHistoryRaw.old_status != 'completed-approval',
+                            TaskHistoryRaw.author.isnot(None)
+                        ).all()
+                        
+                        # Group by task_id
+                        from collections import defaultdict as dd
+                        task_completions = dd(list)
+                        for event in completion_events:
+                            task_completions[event.task_id].append({
+                                'author': event.author.lower().strip() if event.author else None,
+                                'time_stamp': event.time_stamp
+                            })
+                        
+                        # Attribute to last completer
+                        delivered_set = set(delivered_task_ids)
+                        in_queue_set = set(in_queue_task_ids)
+                        
+                        for task_id, completions in task_completions.items():
+                            if not completions:
+                                continue
+                            # Find last completer
+                            completions_sorted = sorted(completions, key=lambda x: x['time_stamp'] or '')
+                            last_completer = completions_sorted[-1]['author']
+                            
+                            if not last_completer:
+                                continue
+                            
+                            if task_id in delivered_set:
+                                trainer_delivered[last_completer] = trainer_delivered.get(last_completer, 0) + 1
+                            if task_id in in_queue_set:
+                                trainer_in_queue[last_completer] = trainer_in_queue.get(last_completer, 0) + 1
+                    
+                    # Get Jibble hours for all trainers - use project-specific data only
+                    # Map project_id to exact Jibble project name (using Nvidia prefix)
+                    project_jibble_map = {
+                        36: 'Nvidia - SysBench',
+                        37: 'Nvidia - CFBench Multilingual',
+                        38: 'Nvidia - InverseIFEval',
+                        39: 'Nvidia - Multichallenge',
+                        40: 'Nvidia - Multichallenge Advanced',
+                        41: 'Nvidia - ICPC',
+                        42: 'NVIDIA_STEM Math_Eval',
+                    }
+                    
+                    jibble_project_name = project_jibble_map.get(project_id)
+                    
+                    # Query Jibble hours grouped by full_name
+                    # Filter by the specific Jibble project (no swap - use original BigQuery data)
                     jibble_query = session.query(
                         JibbleHours.full_name,
                         func.sum(JibbleHours.logged_hours).label('total_hours')
                     )
+                    
+                    # Filter by specific project - use original Jibble project names
+                    # Handle Multichallenge which has two Jibble projects (regular + Advanced)
+                    if project_id == 39:  # Multichallenge includes both regular and Advanced
+                        jibble_query = jibble_query.filter(
+                            or_(
+                                JibbleHours.project == 'Nvidia - Multichallenge',
+                                JibbleHours.project == 'Nvidia - Multichallenge Advanced'
+                            )
+                        )
+                    elif jibble_project_name:
+                        jibble_query = jibble_query.filter(JibbleHours.project == jibble_project_name)
+                    
                     if start_date:
                         jibble_query = jibble_query.filter(JibbleHours.entry_date >= start_date)
                     if end_date:
                         jibble_query = jibble_query.filter(JibbleHours.entry_date <= end_date)
-                    
-                    # Apply project filter - map project_id to project name
-                    project_name_map = {
-                        36: 'SysBench',
-                        37: 'CFBench',
-                        38: 'InverseIFEval',
-                        39: 'Multichallenge',
-                    }
-                    if project_id and project_id in project_name_map:
-                        project_pattern = f"%{project_name_map[project_id]}%"
-                        jibble_query = jibble_query.filter(JibbleHours.project.ilike(project_pattern))
                     
                     jibble_query = jibble_query.group_by(JibbleHours.full_name)
                     jibble_results = jibble_query.all()
@@ -2675,38 +2782,122 @@ class QueryService:
                         if jr.full_name:
                             name_to_jibble[jr.full_name.lower().strip()] = float(jr.total_hours or 0)
                     
-                    # Get contributor name by email for Jibble matching
+                    # Map to emails using pod_lead_mapping (jibble_name -> trainer_email)
+                    email_to_jibble = {}
+                    mapping_results = session.execute(text("""
+                        SELECT DISTINCT trainer_email, jibble_name 
+                        FROM pod_lead_mapping 
+                        WHERE jibble_name IS NOT NULL AND trainer_email IS NOT NULL
+                    """)).fetchall()
+                    
+                    for m in mapping_results:
+                        if m.jibble_name and m.trainer_email:
+                            name_key = m.jibble_name.lower().strip()
+                            if name_key in name_to_jibble:
+                                email_to_jibble[m.trainer_email.lower().strip()] = name_to_jibble[name_key]
+                    
+                    logger.info(f"Project {project_name}: Found {len(name_to_jibble)} names, {len(email_to_jibble)} mapped to emails")
+                    
+                    # Get contributor name by email for fallback matching
                     contributors = session.query(Contributor).all()
                     email_to_name = {}
                     for c in contributors:
                         if c.turing_email and c.name:
                             email_to_name[c.turing_email.lower().strip()] = c.name
                     
-                    # Aggregate by POD Lead
+                    # Aggregate by POD Lead - now includes trainer details
                     pod_aggregates = defaultdict(lambda: {
                         'unique_tasks': 0,
                         'new_tasks': 0,
                         'rework': 0,
                         'total_reviews': 0,
+                        'delivered': 0,
+                        'in_queue': 0,
                         'trainer_count': 0,
-                        'trainer_jibble_hours': 0.0
+                        'trainer_jibble_hours': 0.0,
+                        'accounted_hours': 0.0,
+                        'total_score': 0.0,  # For weighted avg rating
+                        'rated_reviews': 0,   # Count of reviews with ratings
+                        'trainers': []  # List of trainer details
                     })
                     
                     for trainer_email, hist in trainer_history.items():
                         pod_info = trainer_to_pod.get(trainer_email)
                         if pod_info:
                             pod_email = pod_info['pod_lead_email']
-                            pod_aggregates[pod_email]['unique_tasks'] += hist['unique_tasks']
-                            pod_aggregates[pod_email]['new_tasks'] += hist['new_tasks']
-                            pod_aggregates[pod_email]['rework'] += hist['rework']
-                            pod_aggregates[pod_email]['total_reviews'] += trainer_reviews.get(trainer_email, 0)
-                            pod_aggregates[pod_email]['trainer_count'] += 1
+                            trainer_name = pod_info.get('trainer_name', trainer_email.split('@')[0])
                             
-                            # Get trainer's Jibble hours by name
-                            trainer_name = email_to_name.get(trainer_email, '')
-                            if trainer_name:
-                                trainer_jibble = name_to_jibble.get(trainer_name.lower().strip(), 0)
+                            # Get trainer's Jibble hours - try email first, then name
+                            trainer_jibble = email_to_jibble.get(trainer_email.lower().strip(), 0)
+                            if trainer_jibble == 0:
+                                # Fallback to name matching
+                                full_name = email_to_name.get(trainer_email, trainer_name)
+                                trainer_jibble = name_to_jibble.get(full_name.lower().strip(), 0) if full_name else 0
+                            
+                            # Calculate trainer-level metrics
+                            t_unique = hist['unique_tasks']
+                            t_new = hist['new_tasks']
+                            t_rework = hist['rework']
+                            t_reviews = trainer_reviews.get(trainer_email, 0)
+                            t_rating = trainer_avg_rating.get(trainer_email)
+                            t_delivered = trainer_delivered.get(trainer_email, 0)
+                            t_in_queue = trainer_in_queue.get(trainer_email, 0)
+                            t_submissions = t_new + t_rework
+                            
+                            t_avg_rework = round((t_submissions / t_unique) - 1, 2) if t_unique > 0 else None
+                            t_rework_pct = round((t_rework / t_submissions) * 100, 1) if t_submissions > 0 else None
+                            t_merged_aht = round((t_new * 10 + t_rework * 4) / t_submissions, 2) if t_submissions > 0 else None
+                            
+                            # Calculate accounted hours (TOTAL expected hours based on work done)
+                            # Formula: (newTasks × 10) + (rework × 4) - same as TrainerWise tab
+                            t_accounted_hrs = (t_new * 10 + t_rework * 4) if t_submissions > 0 else 0
+                            
+                            # Calculate efficiency (accounted / jibble * 100)
+                            t_efficiency = None
+                            if trainer_jibble > 0 and t_accounted_hrs > 0:
+                                t_efficiency = round((t_accounted_hrs / trainer_jibble) * 100, 1)
+                            
+                            # Create trainer entry with all columns from Trainer wise tab
+                            trainer_entry = {
+                                'trainer_name': trainer_name,
+                                'trainer_email': trainer_email,
+                                'unique_tasks': t_unique,
+                                'new_tasks': t_new,
+                                'rework': t_rework,
+                                'total_reviews': t_reviews,
+                                'delivered': t_delivered,
+                                'in_queue': t_in_queue,
+                                'avg_rework': t_avg_rework,
+                                'rework_percent': t_rework_pct,
+                                'avg_rating': t_rating,
+                                'merged_exp_aht': t_merged_aht,
+                                'jibble_hours': round(trainer_jibble, 2),
+                                'accounted_hours': round(t_accounted_hrs, 2),
+                                'efficiency': t_efficiency,
+                                'status': pod_info.get('status', 'active')
+                            }
+                            
+                            # Aggregate to POD level
+                            pod_aggregates[pod_email]['unique_tasks'] += t_unique
+                            pod_aggregates[pod_email]['new_tasks'] += t_new
+                            pod_aggregates[pod_email]['rework'] += t_rework
+                            pod_aggregates[pod_email]['total_reviews'] += t_reviews
+                            pod_aggregates[pod_email]['delivered'] += t_delivered
+                            pod_aggregates[pod_email]['in_queue'] += t_in_queue
+                            pod_aggregates[pod_email]['trainer_count'] += 1
+                            pod_aggregates[pod_email]['accounted_hours'] += t_accounted_hrs
+                            
+                            # For weighted average rating
+                            if t_rating is not None and t_reviews > 0:
+                                pod_aggregates[pod_email]['total_score'] += t_rating * t_reviews
+                                pod_aggregates[pod_email]['rated_reviews'] += t_reviews
+                            
+                            # FIX: Only add Jibble hours if trainer is NOT the same as POD lead
+                            # This prevents double-counting when POD lead is listed as their own trainer
+                            if trainer_email.lower().strip() != pod_email.lower().strip():
                                 pod_aggregates[pod_email]['trainer_jibble_hours'] += trainer_jibble
+                            
+                            pod_aggregates[pod_email]['trainers'].append(trainer_entry)
                     
                     # Build POD Lead list for this project
                     pod_leads_list = []
@@ -2715,9 +2906,14 @@ class QueryService:
                         'new_tasks': 0,
                         'rework': 0,
                         'total_reviews': 0,
+                        'delivered': 0,
+                        'in_queue': 0,
                         'trainer_count': 0,
                         'trainer_jibble_hours': 0.0,
-                        'pod_jibble_hours': 0.0
+                        'pod_jibble_hours': 0.0,
+                        'accounted_hours': 0.0,
+                        'total_score': 0.0,
+                        'rated_reviews': 0
                     }
                     
                     for pod_email, agg in pod_aggregates.items():
@@ -2726,10 +2922,27 @@ class QueryService:
                         rework_pct = round((agg['rework'] / submissions) * 100, 1) if submissions > 0 else None
                         merged_aht = round((agg['new_tasks'] * 10 + agg['rework'] * 4) / submissions, 2) if submissions > 0 else None
                         
-                        # Get POD Lead's own Jibble hours
-                        pod_name = email_to_name.get(pod_email, '')
-                        pod_own_jibble = name_to_jibble.get(pod_name.lower().strip(), 0) if pod_name else 0
+                        # Get POD Lead's own Jibble hours - try email first, then name
+                        pod_own_jibble = email_to_jibble.get(pod_email.lower().strip(), 0)
+                        if pod_own_jibble == 0:
+                            pod_name = email_to_name.get(pod_email, '')
+                            pod_own_jibble = name_to_jibble.get(pod_name.lower().strip(), 0) if pod_name else 0
                         trainer_jibble = agg['trainer_jibble_hours']
+                        
+                        # Calculate aggregated rating (weighted average)
+                        pod_avg_rating = None
+                        if agg['rated_reviews'] > 0:
+                            pod_avg_rating = round(agg['total_score'] / agg['rated_reviews'], 2)
+                        
+                        # Calculate POD-level accounted hours and efficiency
+                        pod_accounted = round(agg['accounted_hours'], 2)
+                        total_pod_jibble = trainer_jibble + pod_own_jibble
+                        pod_efficiency = None
+                        if total_pod_jibble > 0 and pod_accounted > 0:
+                            pod_efficiency = round((pod_accounted / total_pod_jibble) * 100, 1)
+                        
+                        # Sort trainers by total_reviews within this POD lead
+                        trainers_sorted = sorted(agg['trainers'], key=lambda x: -(x['total_reviews'] or 0))
                         
                         pod_leads_list.append({
                             'pod_lead_name': pod_email.split('@')[0],
@@ -2739,11 +2952,17 @@ class QueryService:
                             'new_tasks': agg['new_tasks'],
                             'rework': agg['rework'],
                             'total_reviews': agg['total_reviews'],
+                            'delivered': agg['delivered'],
+                            'in_queue': agg['in_queue'],
                             'avg_rework': avg_rework,
                             'rework_percent': rework_pct,
+                            'avg_rating': pod_avg_rating,
                             'merged_exp_aht': merged_aht,
                             'pod_jibble_hours': round(pod_own_jibble, 2),
                             'trainer_jibble_hours': round(trainer_jibble, 2),
+                            'accounted_hours': pod_accounted,
+                            'efficiency': pod_efficiency,
+                            'trainers': trainers_sorted,  # Include trainer details
                         })
                         
                         # Accumulate project totals
@@ -2751,9 +2970,14 @@ class QueryService:
                         project_totals['new_tasks'] += agg['new_tasks']
                         project_totals['rework'] += agg['rework']
                         project_totals['total_reviews'] += agg['total_reviews']
+                        project_totals['delivered'] += agg['delivered']
+                        project_totals['in_queue'] += agg['in_queue']
                         project_totals['trainer_count'] += agg['trainer_count']
                         project_totals['trainer_jibble_hours'] += trainer_jibble
                         project_totals['pod_jibble_hours'] += pod_own_jibble
+                        project_totals['accounted_hours'] += agg['accounted_hours']
+                        project_totals['total_score'] += agg['total_score']
+                        project_totals['rated_reviews'] += agg['rated_reviews']
                     
                     # Sort POD leads by total_reviews
                     pod_leads_list.sort(key=lambda x: -(x['total_reviews'] or 0))
@@ -2767,6 +2991,17 @@ class QueryService:
                     # Calculate logged hours (trainers + POD leads)
                     total_logged_hours = project_totals['trainer_jibble_hours'] + project_totals['pod_jibble_hours']
                     
+                    # Calculate project-level rating (weighted average)
+                    proj_avg_rating = None
+                    if project_totals['rated_reviews'] > 0:
+                        proj_avg_rating = round(project_totals['total_score'] / project_totals['rated_reviews'], 2)
+                    
+                    # Calculate project-level accounted hours and efficiency
+                    proj_accounted = round(project_totals['accounted_hours'], 2)
+                    proj_efficiency = None
+                    if total_logged_hours > 0 and proj_accounted > 0:
+                        proj_efficiency = round((proj_accounted / total_logged_hours) * 100, 1)
+                    
                     project_results.append({
                         'project_id': project_id,
                         'project_name': project_name,
@@ -2776,11 +3011,16 @@ class QueryService:
                         'new_tasks': project_totals['new_tasks'],
                         'rework': project_totals['rework'],
                         'total_reviews': project_totals['total_reviews'],
+                        'delivered': project_totals['delivered'],
+                        'in_queue': project_totals['in_queue'],
                         'avg_rework': proj_avg_rework,
                         'rework_percent': proj_rework_pct,
+                        'avg_rating': proj_avg_rating,
                         'merged_exp_aht': proj_merged_aht,
                         'logged_hours': round(total_logged_hours, 2),
                         'total_pod_hours': round(project_totals['pod_jibble_hours'], 2),
+                        'accounted_hours': proj_accounted,
+                        'efficiency': proj_efficiency,
                         'pod_leads': pod_leads_list,
                     })
                 

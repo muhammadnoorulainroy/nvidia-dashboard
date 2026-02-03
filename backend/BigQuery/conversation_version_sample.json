@@ -1,0 +1,2008 @@
+{
+  "table": "conversation_version",
+  "row_count": 42512,
+  "sample_count": 100,
+  "fetched_at": "2026-01-28T23:23:10.222001",
+  "data": [
+    {
+      "created_at": "2026-01-28T22:13:03.189515",
+      "updated_at": "2026-01-28T22:13:03.189515",
+      "id": 42512,
+      "colab_revision_id": "0B0YltYw4uOMxM3pRQnNPb0tBc004aDNVSi9GM0Y3VVJ5ZnU0PQ",
+      "conversation_id": 70252,
+      "duration_minutes": 103,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "4a3826f2-ca10-40e7-a6aa-d3fa0c688442",
+        "source_timestamp": 1769638383000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 880,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T22:10:10.428903",
+      "updated_at": "2026-01-28T22:10:10.428903",
+      "id": 42511,
+      "colab_revision_id": "0BxFceWUXXxsAVERCZFVUc0Q3Q0xaQTBES3F5ZzhxVHA1QUlrPQ",
+      "conversation_id": 68754,
+      "duration_minutes": 120,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "ca14554d-e611-44eb-92f9-39e40524c936",
+        "source_timestamp": 1769638210000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 1147,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T22:09:17.830071",
+      "updated_at": "2026-01-28T22:11:05",
+      "id": 42510,
+      "colab_revision_id": "0BxSv9gGew3EORXNhaDZSeC9UMDJjQUI3UXJWTnVsVXZFTHZvPQ",
+      "conversation_id": 64992,
+      "duration_minutes": 60,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "1cc137b7-ff54-4fd9-bc0a-f5e2c49e98eb",
+        "source_timestamp": 1769638265000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 770,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T22:08:12.604691",
+      "updated_at": "2026-01-28T22:08:12.604691",
+      "id": 42509,
+      "colab_revision_id": "0B0YltYw4uOMxVVRqalk4Mzl4TU91Vnk5SGcyNE95ZmNSbytJPQ",
+      "conversation_id": 70755,
+      "duration_minutes": 80,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "6f35dab2-3840-4503-aac8-5e2d9c51b2ab",
+        "source_timestamp": 1769638092000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 923,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T22:06:09.782527",
+      "updated_at": "2026-01-28T22:06:09.782527",
+      "id": 42508,
+      "colab_revision_id": "0B0YltYw4uOMxK2Q4d0ZGZGlxbW1NRllDZjU2YXZEZXBaSW9zPQ",
+      "conversation_id": 70149,
+      "duration_minutes": 60,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "4ec8f261-76a5-4a50-8885-bd93e957d866",
+        "source_timestamp": 1769637969000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 951,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T22:02:55.136339",
+      "updated_at": "2026-01-28T22:04:26",
+      "id": 42507,
+      "colab_revision_id": "0BxSv9gGew3EOSXBIT3FEdit2YzFXaU5hSFkwd05CM0UyRFBJPQ",
+      "conversation_id": 64027,
+      "duration_minutes": 10,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "c48b28bf-c53a-4d79-9b2f-8a7749ed632f",
+        "source_timestamp": 1769637866000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 695,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T22:00:25.963504",
+      "updated_at": "2026-01-28T22:01:15",
+      "id": 42506,
+      "colab_revision_id": "0BxSv9gGew3EOTURjWjhjQjRNYkNTY2ZsR2lHS3AvdkFJNDhJPQ",
+      "conversation_id": 62894,
+      "duration_minutes": 60,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "9160565f-4203-4732-be36-47308a50c0bc",
+        "source_timestamp": 1769637675000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 710,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T21:59:46.298299",
+      "updated_at": "2026-01-28T21:59:46.298299",
+      "id": 42505,
+      "colab_revision_id": "0B0YltYw4uOMxbzMyU3ZyUHUxRDZPdHRMQmpsU05DUlBnOERBPQ",
+      "conversation_id": 70465,
+      "duration_minutes": 360,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "ea57a1df-20aa-4021-890b-73d521e6f1cb",
+        "source_timestamp": 1769637586000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 1170,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T21:58:08.375371",
+      "updated_at": "2026-01-28T21:58:08.375371",
+      "id": 42504,
+      "colab_revision_id": "0B0YltYw4uOMxbHl5YWRMVkMySUpPYlU0bFdzNjNCSlY0N2NNPQ",
+      "conversation_id": 70278,
+      "duration_minutes": 90,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "0f5e5102-02dc-4701-b180-5497ed1110bf",
+        "source_timestamp": 1769637488000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 880,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T21:57:06.316676",
+      "updated_at": "2026-01-28T21:57:06.316676",
+      "id": 42503,
+      "colab_revision_id": "0B0YltYw4uOMxdU4wOEFNVW85QjZWSmZITy8wUk1rbzh4K2RrPQ",
+      "conversation_id": 70018,
+      "duration_minutes": 180,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "adf16248-3891-4081-8c51-36a914444cee",
+        "source_timestamp": 1769637426000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 871,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T21:50:15.193252",
+      "updated_at": "2026-01-28T21:50:15.193252",
+      "id": 42502,
+      "colab_revision_id": "0B0YltYw4uOMxKzE1d2FtcWVYeCtLZkNNYTVwR2VFRXN2QXFnPQ",
+      "conversation_id": 70304,
+      "duration_minutes": 60,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "c0326958-c459-4a6a-a3ee-d87c371a1b54",
+        "source_timestamp": 1769637015000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 839,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T21:48:55.415138",
+      "updated_at": "2026-01-28T21:48:55.415138",
+      "id": 42501,
+      "colab_revision_id": "0B0YltYw4uOMxeU1temxFSnYzWUIwOG91V0hvRXp0SWhqcWVvPQ",
+      "conversation_id": 70724,
+      "duration_minutes": 39,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "00ead283-4ea1-4757-a588-df4f2aa8b361",
+        "source_timestamp": 1769636935000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 948,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T21:47:47.034246",
+      "updated_at": "2026-01-28T21:53:33",
+      "id": 42500,
+      "colab_revision_id": "0BxSv9gGew3EOSnN1WHozd1NybFJKV2JvajFDSVdFZ2R0MmxzPQ",
+      "conversation_id": 64785,
+      "duration_minutes": 30,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "cc1ef143-4af8-4ce8-b05e-e65eab2feab3",
+        "source_timestamp": 1769637213000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 789,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T21:41:20.737191",
+      "updated_at": "2026-01-28T21:46:51",
+      "id": 42499,
+      "colab_revision_id": "0B0k1VZNNbjJCZWUxblV4cHkzb1o5OXJCWkhGMmlPUHBQbmQwPQ",
+      "conversation_id": 55079,
+      "duration_minutes": 960,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "1374ab6a-d334-408b-89b5-6559e4f296b0",
+        "source_timestamp": 1769636811000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 537,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T21:39:42.436519",
+      "updated_at": "2026-01-28T21:40:10",
+      "id": 42498,
+      "colab_revision_id": "0B0k1VZNNbjJCaXVPN0JxTkp0cjM3L0RaSlZmcVQybk9sTVJvPQ",
+      "conversation_id": 54927,
+      "duration_minutes": 120,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "b32b5045-39c1-4dfb-a47e-916473e1ebaf",
+        "source_timestamp": 1769636410000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 1098,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T21:38:06.150862",
+      "updated_at": "2026-01-28T21:46:46",
+      "id": 42497,
+      "colab_revision_id": "0BxSv9gGew3EOc2RoWXNHengwdXlSV2pMWGtheU5xUytNUERRPQ",
+      "conversation_id": 62879,
+      "duration_minutes": 20,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "35f3728d-9bfe-43d3-9adb-de4c5268f0b0",
+        "source_timestamp": 1769636806000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 715,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T21:38:00.125146",
+      "updated_at": "2026-01-28T21:38:00.125146",
+      "id": 42496,
+      "colab_revision_id": "0B0YltYw4uOMxSGtGNC83NGV6Tnh2Ym9aL25oRnR5ZnFmVUVrPQ",
+      "conversation_id": 70830,
+      "duration_minutes": 120,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "b1208881-0ddb-40c7-8d1c-153bb2c36465",
+        "source_timestamp": 1769636280000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 940,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T21:32:26.689828",
+      "updated_at": "2026-01-28T21:32:26.689828",
+      "id": 42495,
+      "colab_revision_id": "0B0YltYw4uOMxRUJDMVdiSFEyWFRsMDNwdHVGQmxoODFjTVRRPQ",
+      "conversation_id": 70249,
+      "duration_minutes": 90,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "752a3c8a-3e44-4a46-ae71-7b396db2b4c9",
+        "source_timestamp": 1769635946000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 880,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T21:29:11.318609",
+      "updated_at": "2026-01-28T21:29:56",
+      "id": 42494,
+      "colab_revision_id": "0BxSv9gGew3EOWUxtdThhMmtRYTh0UDdGeU56RVpaRGVhYnIwPQ",
+      "conversation_id": 63841,
+      "duration_minutes": 60,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "b1d98d9c-0e40-493e-9a64-a5974aa419bb",
+        "source_timestamp": 1769635796000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 710,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T21:27:11.731062",
+      "updated_at": "2026-01-28T21:27:11.731062",
+      "id": 42493,
+      "colab_revision_id": "0B0YltYw4uOMxbE1OY2lqV0xpMGJmZC95a01IWXlBSTFzNUpzPQ",
+      "conversation_id": 70683,
+      "duration_minutes": 180,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "6f670c2a-a7a9-436e-8795-6577d9c2a9b9",
+        "source_timestamp": 1769635631000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 1224,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T21:24:38.604414",
+      "updated_at": "2026-01-28T21:24:38.604414",
+      "id": 42492,
+      "colab_revision_id": "0B0YltYw4uOMxNEZ2aThKZlAyQUtzYkdwR2Q3cHNSRmU1VDFjPQ",
+      "conversation_id": 70862,
+      "duration_minutes": 180,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "2ee3ab36-fdbf-4141-9885-fd551cfea166",
+        "source_timestamp": 1769635478000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 871,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T21:22:38.948743",
+      "updated_at": "2026-01-28T21:22:38.948743",
+      "id": 42491,
+      "colab_revision_id": "0B0YltYw4uOMxcmtkU0pqc0hwRXVhK2NnV1REZnBYWFBGZDlBPQ",
+      "conversation_id": 70343,
+      "duration_minutes": 300,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "53ceb744-32c2-4b37-a8e2-a3ae335342b0",
+        "source_timestamp": 1769635358000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 954,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T21:21:27.559633",
+      "updated_at": "2026-01-28T21:23:02",
+      "id": 42490,
+      "colab_revision_id": "0BxSv9gGew3EOUWF0RmduM2tEMjJ6SzlzT0dBdFVBbFdkR0lFPQ",
+      "conversation_id": 64212,
+      "duration_minutes": 60,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "695a23b0-a8ad-4cb1-9bf5-ddbe2d3a2e6b",
+        "source_timestamp": 1769635382000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 770,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T21:17:33.515039",
+      "updated_at": "2026-01-28T21:19:55",
+      "id": 42489,
+      "colab_revision_id": "0BxSv9gGew3EOL3VuOTJuSHF6aGx1bG9NcFpUdW5EblRCTlFnPQ",
+      "conversation_id": 64932,
+      "duration_minutes": 60,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "9a0ce7c5-d053-4f12-92a8-71f42af75860",
+        "source_timestamp": 1769635195000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 789,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T21:16:50.787784",
+      "updated_at": "2026-01-28T21:17:55",
+      "id": 42488,
+      "colab_revision_id": "0BxSv9gGew3EOTjZtRHRKVEVBL2U1NmZmUmxDNE1lNVlJOXJNPQ",
+      "conversation_id": 68029,
+      "duration_minutes": 60,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "b17ff7c6-dbcc-441d-9581-3a576ed8e795",
+        "source_timestamp": 1769635075000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 710,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T21:16:34.440600",
+      "updated_at": "2026-01-28T21:16:34.440600",
+      "id": 42487,
+      "colab_revision_id": "0BxFceWUXXxsAS0hjejRkeFdaaFllTGhubDRaaFdFc2ZyOXBFPQ",
+      "conversation_id": 69031,
+      "duration_minutes": 120,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "c59149dc-f85f-4f9f-9d20-6624ac387ac2",
+        "source_timestamp": 1769634994000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 1022,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T21:16:00.939086",
+      "updated_at": "2026-01-28T21:20:56",
+      "id": 42486,
+      "colab_revision_id": "0BxSv9gGew3EOWkk3aTh4dzRqOUlpUkFGaG1vVHBxdkR2TTZFPQ",
+      "conversation_id": 65202,
+      "duration_minutes": 60,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "be6d51a0-f9d1-4fbc-b3f8-c93aec8beb00",
+        "source_timestamp": 1769635256000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 749,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T21:14:13.276852",
+      "updated_at": "2026-01-28T21:14:13.276852",
+      "id": 42485,
+      "colab_revision_id": "0B0YltYw4uOMxQUg5Q2RDb2VyS0FsaENiVVhsaTVDd0tNdW04PQ",
+      "conversation_id": 70912,
+      "duration_minutes": 180,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "049ab20a-7734-4de9-919c-2d5ff40ef313",
+        "source_timestamp": 1769634853000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 859,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T21:12:31.852214",
+      "updated_at": "2026-01-28T21:16:39",
+      "id": 42484,
+      "colab_revision_id": "0BxSv9gGew3EOQXN1c0lYS0xGL283TWw1YWlhTzQvVWFKZ09VPQ",
+      "conversation_id": 64464,
+      "duration_minutes": 534,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "aa125921-e7ee-42e9-b8f6-bde0a319e19f",
+        "source_timestamp": 1769634999000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 769,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T21:09:26.995688",
+      "updated_at": "2026-01-28T21:09:26.995688",
+      "id": 42483,
+      "colab_revision_id": "0BxSv9gGew3EOU0QxN3FuVm83amEyN2hqLzg5VmhRVkY1VEtJPQ",
+      "conversation_id": 64927,
+      "duration_minutes": 0,
+      "status": "draft",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "9aab3390-51a3-4ccd-8249-cf838c946254",
+        "source_timestamp": 1769634566000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 744,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T21:03:28.451368",
+      "updated_at": "2026-01-28T21:03:28.451368",
+      "id": 42482,
+      "colab_revision_id": "0B0YltYw4uOMxWkRzdW1idWJOL3lHNWhmOXRMdjBkaVVXa2RrPQ",
+      "conversation_id": 70152,
+      "duration_minutes": 103,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "079b660a-8597-4c05-ab69-882894e57754",
+        "source_timestamp": 1769634208000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 880,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T21:01:55.621606",
+      "updated_at": "2026-01-28T21:02:42",
+      "id": 42481,
+      "colab_revision_id": "0B0k1VZNNbjJCRVREK1d4Q2VhenkxOCsxU0VlM2s4bG1MalFzPQ",
+      "conversation_id": 55260,
+      "duration_minutes": 360,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "d274bffd-8ecf-48ce-998a-e8d5a956cbb1",
+        "source_timestamp": 1769634162000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 631,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T20:58:19.046981",
+      "updated_at": "2026-01-28T20:58:19.046981",
+      "id": 42480,
+      "colab_revision_id": "0B0YltYw4uOMxdDhpZGVYbXJTcHlvSGR3d01XRlBTTVF4czdJPQ",
+      "conversation_id": 70548,
+      "duration_minutes": 240,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "f78684f9-cfb3-4983-b82e-7cdc35fa1fc9",
+        "source_timestamp": 1769633899000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 857,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T20:51:32.348888",
+      "updated_at": "2026-01-28T20:52:11",
+      "id": 42479,
+      "colab_revision_id": "0BxSv9gGew3EOdnV6V1FQNC91bjdnb2RpQWhKdXUwS1RoaEdzPQ",
+      "conversation_id": 67701,
+      "duration_minutes": 60,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "f717af89-8628-4810-ad1e-30c114613e71",
+        "source_timestamp": 1769633531000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 710,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T20:51:25.845212",
+      "updated_at": "2026-01-28T20:52:51",
+      "id": 42478,
+      "colab_revision_id": "0B0k1VZNNbjJCbnR6MWFqNzlkZWtqbWFpUjlHMFIxRGtjKzc0PQ",
+      "conversation_id": 54941,
+      "duration_minutes": 75,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "0f614653-77be-4cd0-b3d4-680860ad12d1",
+        "source_timestamp": 1769633571000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 1135,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T20:49:33.580365",
+      "updated_at": "2026-01-28T20:49:33.580365",
+      "id": 42477,
+      "colab_revision_id": "0B0YltYw4uOMxakVhTCs2d0lMRll2RUlVaFJwbi9aaXBmYmlRPQ",
+      "conversation_id": 70255,
+      "duration_minutes": 120,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "2fe52632-485b-4624-9bb5-5fa7cd452b5f",
+        "source_timestamp": 1769633373000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 900,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T20:48:21.157332",
+      "updated_at": "2026-01-28T20:48:21.157332",
+      "id": 42476,
+      "colab_revision_id": "0B0YltYw4uOMxTFRKc0dxT1VQTXdrN1ZjUnZ2MlcxT0RRSWVnPQ",
+      "conversation_id": 70466,
+      "duration_minutes": 170,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "1671abfd-3646-4694-80cb-5680bae19e2d",
+        "source_timestamp": 1769633301000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 974,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T20:47:32.199075",
+      "updated_at": "2026-01-28T20:47:32.199075",
+      "id": 42475,
+      "colab_revision_id": "0B0YltYw4uOMxb3IwWWl0NUR3Y3p6YXltNGtrYzFsaUhvam9zPQ",
+      "conversation_id": 70719,
+      "duration_minutes": 120,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "2807fdec-0fd2-4fdb-a73c-32188ff1eda0",
+        "source_timestamp": 1769633252000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 905,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T20:44:32.178630",
+      "updated_at": "2026-01-28T20:45:18",
+      "id": 42474,
+      "colab_revision_id": "0B0k1VZNNbjJCUllGaWdURUpPN1puSStsY3JlN2wyM2xHdldNPQ",
+      "conversation_id": 54806,
+      "duration_minutes": 180,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "0c17a5c9-de70-438e-a742-492053af16c0",
+        "source_timestamp": 1769633118000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 624,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T20:42:29.443346",
+      "updated_at": "2026-01-28T20:42:29.443346",
+      "id": 42473,
+      "colab_revision_id": "0BxFceWUXXxsAaE00RjdVcmliV2VJVDRBUXhBblFHRzltR3hNPQ",
+      "conversation_id": 69044,
+      "duration_minutes": 120,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "6c968bd4-b465-4738-8dc0-012b51f1f888",
+        "source_timestamp": 1769632949000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 1022,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T20:40:10.259601",
+      "updated_at": "2026-01-28T20:40:10.259601",
+      "id": 42472,
+      "colab_revision_id": "0B0YltYw4uOMxcHc2RkhTMHVyMFVrOTZFWFN5OVVpblhiL0lvPQ",
+      "conversation_id": 70148,
+      "duration_minutes": 90,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "f82b9f51-a8a0-4d79-8db6-5de09b8a2c2f",
+        "source_timestamp": 1769632810000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 880,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T20:38:39.993280",
+      "updated_at": "2026-01-28T20:46:26",
+      "id": 42471,
+      "colab_revision_id": "0BxSv9gGew3EOcFpoLzNVeXdIdGRwb0t2ZXdKVFpwVTVkRDVnPQ",
+      "conversation_id": 63134,
+      "duration_minutes": 120,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "55af85cc-bd6a-4912-a105-3d3c90dff081",
+        "source_timestamp": 1769633186000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 697,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T20:36:38.131174",
+      "updated_at": "2026-01-28T20:39:16",
+      "id": 42470,
+      "colab_revision_id": "0B0k1VZNNbjJCMlF4allaZFZnS0JnQ2kxcjVzMVdkVmhpeTN3PQ",
+      "conversation_id": 54228,
+      "duration_minutes": 60,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "cfbe6c20-3b53-4ed2-b866-f1466ce22b49",
+        "source_timestamp": 1769632756000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 1095,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T20:36:04.322408",
+      "updated_at": "2026-01-28T20:36:04.322408",
+      "id": 42469,
+      "colab_revision_id": "0B0YltYw4uOMxNU1hRGdmV2R5R3pvNmVGZzN3SzdJSkpGb3ZRPQ",
+      "conversation_id": 70732,
+      "duration_minutes": 120,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "b53e1488-e17d-44f1-a7ce-fe6dc0e1df07",
+        "source_timestamp": 1769632564000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 878,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T20:35:49.824571",
+      "updated_at": "2026-01-28T20:35:49.824571",
+      "id": 42468,
+      "colab_revision_id": "0B0YltYw4uOMxc3BmQmVBWG5PNnRvcjdLUnNwQXdpUDlManlZPQ",
+      "conversation_id": 70656,
+      "duration_minutes": 300,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "0af3d983-a98a-4e5a-97e1-5e0c5649c5a9",
+        "source_timestamp": 1769632549000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 1156,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T20:35:43.329780",
+      "updated_at": "2026-01-28T20:37:52",
+      "id": 42467,
+      "colab_revision_id": "0BxSv9gGew3EOSE4xdE9ZSzZ0YVNNSCs1ZEV1cjBJZjB6cVdnPQ",
+      "conversation_id": 64909,
+      "duration_minutes": 60,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "3b8b8036-dc71-40ea-bfab-cbcc4ff037bb",
+        "source_timestamp": 1769632672000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 745,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T20:33:28.399944",
+      "updated_at": "2026-01-28T20:33:28.399944",
+      "id": 42466,
+      "colab_revision_id": "0B0YltYw4uOMxNkJ6cWh0djRQR1NYc1VyN0RxZDFqWGcxTmw4PQ",
+      "conversation_id": 69643,
+      "duration_minutes": 300,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "8b5f1567-218c-4916-bef4-da6597bcb6e5",
+        "source_timestamp": 1769632408000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 1156,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T20:25:53.848181",
+      "updated_at": "2026-01-28T20:32:47",
+      "id": 42465,
+      "colab_revision_id": "0B0k1VZNNbjJCUUF1ZFlYQThpRFhqMXMxSnoyMzR4UVcxSUI0PQ",
+      "conversation_id": 54661,
+      "duration_minutes": 300,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "7ffe8577-0cca-45f7-9a04-2d89f8d2ecbd",
+        "source_timestamp": 1769632367000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 584,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T20:24:31.744957",
+      "updated_at": "2026-01-28T20:26:34",
+      "id": 42464,
+      "colab_revision_id": "0BxSv9gGew3EOeW1NZDJkdy9lbmZyb0VNZVNtdHFSNCtYUWRnPQ",
+      "conversation_id": 67709,
+      "duration_minutes": 2,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "1440f38c-6b6c-4e1f-bbe1-932cce7d91a3",
+        "source_timestamp": 1769631994000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 695,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T20:21:55.489944",
+      "updated_at": "2026-01-28T20:33:22",
+      "id": 42463,
+      "colab_revision_id": "0B0k1VZNNbjJCTTVOdkZMbmlrUURGQ3lZK2pUTHFDNXpvUHlNPQ",
+      "conversation_id": 55659,
+      "duration_minutes": 0,
+      "status": "draft",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "86762ce1-c694-4f5d-bc64-1a5e1d07d65e",
+        "source_timestamp": 1769632402000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 1101,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T20:20:13.419669",
+      "updated_at": "2026-01-28T20:20:13.419669",
+      "id": 42462,
+      "colab_revision_id": "0B0k1VZNNbjJCS3RneGV1ZVBQYzJMQWZzQXh6RzVUc053Y3pVPQ",
+      "conversation_id": 54571,
+      "duration_minutes": 0,
+      "status": "draft",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "2d4e332c-aefe-4a13-9162-cd58f055b4fe",
+        "source_timestamp": 1769631613000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 1101,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T20:16:19.473609",
+      "updated_at": "2026-01-28T20:17:32",
+      "id": 42461,
+      "colab_revision_id": "0B0k1VZNNbjJCNHVvMEFnQ0ZmeFBXT0NjRE4rYzA3VzB6dDlZPQ",
+      "conversation_id": 54705,
+      "duration_minutes": 180,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "26a078bf-1e30-401c-8bc7-410a393a4dc8",
+        "source_timestamp": 1769631452000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 1116,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T20:15:04.221706",
+      "updated_at": "2026-01-28T20:15:40",
+      "id": 42460,
+      "colab_revision_id": "0BxmKQQ91GHhcVlBqVENoRjhoZXo1T2U2emUyUjFMalRCTmZJPQ",
+      "conversation_id": 62751,
+      "duration_minutes": 60,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "8d95a61e-b3d0-4839-95c7-ae5a8007cb1c",
+        "source_timestamp": 1769631340000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 1101,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T20:14:25.777477",
+      "updated_at": "2026-01-28T20:16:38",
+      "id": 42459,
+      "colab_revision_id": "0BxSv9gGew3EOaWtlVDN5cnNoVDBtenNhaFJWRmVGOTMyeE8wPQ",
+      "conversation_id": 68300,
+      "duration_minutes": 15,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "c44be84a-30dd-4ca4-a092-fc9ba24d7ed2",
+        "source_timestamp": 1769631398000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 759,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T20:12:44.970372",
+      "updated_at": "2026-01-28T20:12:44.970372",
+      "id": 42458,
+      "colab_revision_id": "0B0YltYw4uOMxOTFKSWJaUmJIbzFQOVUrUFBwbTJjMldEcEdzPQ",
+      "conversation_id": 70133,
+      "duration_minutes": 120,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "1ba8aff7-b3ed-4caf-8395-83a7e3b9d3dd",
+        "source_timestamp": 1769631164000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 880,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T20:10:07.283301",
+      "updated_at": "2026-01-28T20:10:07.283301",
+      "id": 42457,
+      "colab_revision_id": "0B0YltYw4uOMxdnJ3TUt2c0xmVlpIODkrTVJVMnlGYnZReXdJPQ",
+      "conversation_id": 70818,
+      "duration_minutes": 60,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "b3bf04e9-3ea7-4d85-bed5-c096724434e3",
+        "source_timestamp": 1769631007000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 894,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T20:06:50.103867",
+      "updated_at": "2026-01-28T20:09:16",
+      "id": 42456,
+      "colab_revision_id": "0BxSv9gGew3EONytUMzgzQ0xqSi91L05CQlA0V3JCL2xTRTI0PQ",
+      "conversation_id": 64766,
+      "duration_minutes": 50,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "bd9c87f4-59f7-458e-ad2a-2486974973db",
+        "source_timestamp": 1769630956000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 740,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T20:02:23.221193",
+      "updated_at": "2026-01-28T20:02:23.221193",
+      "id": 42455,
+      "colab_revision_id": "0B0YltYw4uOMxOU9UZm1zVUw1T1hCYTdSTzVuVG9RVXJmSGV3PQ",
+      "conversation_id": 69741,
+      "duration_minutes": 240,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "94e6e80e-f7d1-44d0-a2f2-28def79c3bf9",
+        "source_timestamp": 1769630543000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 1150,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T20:00:50.016214",
+      "updated_at": "2026-01-28T20:02:00",
+      "id": 42454,
+      "colab_revision_id": "0BxSv9gGew3EOaGUwSUhhVDl4TXk3aTFNZFkxSXEveHRHUFpzPQ",
+      "conversation_id": 64359,
+      "duration_minutes": 5,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "861d6345-7ef9-45b7-b50a-31c95436dae8",
+        "source_timestamp": 1769630520000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 790,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T19:59:58.024366",
+      "updated_at": "2026-01-28T20:01:57",
+      "id": 42453,
+      "colab_revision_id": "0BxSv9gGew3EOK052a3cwZHNnWGdaa0dVcGtremE3WGthNTg0PQ",
+      "conversation_id": 65101,
+      "duration_minutes": 60,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "d85861a2-a5c2-4914-8713-626126f02ee9",
+        "source_timestamp": 1769630517000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 745,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T19:59:35.988489",
+      "updated_at": "2026-01-28T19:59:35.988489",
+      "id": 42452,
+      "colab_revision_id": "0B0YltYw4uOMxcWZ6RHFOTUxDeVY2VnhaWUU3a3BlSExhOEw4PQ",
+      "conversation_id": 70762,
+      "duration_minutes": 120,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "1ae89c33-0747-4b1e-b18e-8fe8769c65e4",
+        "source_timestamp": 1769630375000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 874,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T19:59:28.128724",
+      "updated_at": "2026-01-28T20:00:38",
+      "id": 42451,
+      "colab_revision_id": "0BxSv9gGew3EOZEkvVmRJOURjYTBwOWU5c0NWSVlqVHVBVGZ3PQ",
+      "conversation_id": 67552,
+      "duration_minutes": 1,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "1b13d8e9-fea8-4279-ac44-be5f00bbfd9e",
+        "source_timestamp": 1769630438000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 695,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T19:58:43.023211",
+      "updated_at": "2026-01-28T19:58:43.023211",
+      "id": 42450,
+      "colab_revision_id": "0B0YltYw4uOMxQU5pZmhUcHI4TXY1UDlsYlFncU9MSFJHYk5VPQ",
+      "conversation_id": 70728,
+      "duration_minutes": 90,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "0d7aa820-7208-43e9-89ce-d541e07dbdd3",
+        "source_timestamp": 1769630323000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 940,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T19:58:17.584579",
+      "updated_at": "2026-01-28T20:02:29",
+      "id": 42449,
+      "colab_revision_id": "0BxSv9gGew3EOY05kS0VrclUrUS9oWHZXVEkwc1BpaWJmblA4PQ",
+      "conversation_id": 68332,
+      "duration_minutes": 160,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "345afdc8-8f4a-4142-a7be-af7ea58d91c8",
+        "source_timestamp": 1769630549000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 747,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T19:53:57.476153",
+      "updated_at": "2026-01-28T20:42:20",
+      "id": 42448,
+      "colab_revision_id": "0BxSv9gGew3EOUjVWOGlQY2ZDWXBYV3RLZS9BajlDUXdBblFZPQ",
+      "conversation_id": 64549,
+      "duration_minutes": 60,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "819eca5f-72bf-40b0-9266-ecba1558cd7d",
+        "source_timestamp": 1769632940000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 758,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T19:49:28.453570",
+      "updated_at": "2026-01-28T19:49:28.453570",
+      "id": 42447,
+      "colab_revision_id": "0BxSv9gGew3EOZFhkaUdVMW1ld01PMGJ1bGt5NW12Tmh2bHMwPQ",
+      "conversation_id": 64942,
+      "duration_minutes": 0,
+      "status": "draft",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "aadcb4f5-5258-46e2-9800-f0e7ef04d06d",
+        "source_timestamp": 1769629768000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 739,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T19:48:30.848637",
+      "updated_at": "2026-01-28T19:48:30.848637",
+      "id": 42446,
+      "colab_revision_id": "0B0YltYw4uOMxYk11TnAzMVYreDc5UHpJK21JTTdRSUhYdzJFPQ",
+      "conversation_id": 70829,
+      "duration_minutes": 120,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "f297a6d9-d24e-42eb-af83-23036ff0c03a",
+        "source_timestamp": 1769629710000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 938,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T19:47:42.348415",
+      "updated_at": "2026-01-28T19:48:56",
+      "id": 42445,
+      "colab_revision_id": "0BxSv9gGew3EOWmRwUTdSeVJkeE4zSTFxVnNRamhRQUZ2MmpvPQ",
+      "conversation_id": 65117,
+      "duration_minutes": 50,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "d1fed62f-59b7-4beb-9731-9be282f87786",
+        "source_timestamp": 1769629736000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 813,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T19:36:46.398213",
+      "updated_at": "2026-01-28T19:39:30",
+      "id": 42444,
+      "colab_revision_id": "0B0k1VZNNbjJCbnl5YTRqKzhDTnZQa0s1Tlpkdm9HdXNFNUtrPQ",
+      "conversation_id": 54442,
+      "duration_minutes": 180,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "38c56ffa-00c6-43ba-b58b-e2680fecf87b",
+        "source_timestamp": 1769629170000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 638,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T19:34:06.133895",
+      "updated_at": "2026-01-28T19:34:06.133895",
+      "id": 42443,
+      "colab_revision_id": "0B0YltYw4uOMxZXdQOUgweWR5aWxmSXMyTVRyRllDa3FuODFJPQ",
+      "conversation_id": 70279,
+      "duration_minutes": 180,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "463698bf-4077-4634-bb04-eb266625d3cb",
+        "source_timestamp": 1769628846000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 871,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T19:32:33.423436",
+      "updated_at": "2026-01-28T19:36:43",
+      "id": 42442,
+      "colab_revision_id": "0BxSv9gGew3EOT2NYUTlJdGJzelRLWTQvNmVONnFwdVNSdUFnPQ",
+      "conversation_id": 65591,
+      "duration_minutes": 60,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "2642ab4d-3be9-44f8-8cf8-b30ce4e90c7a",
+        "source_timestamp": 1769629003000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 762,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T19:27:37.989384",
+      "updated_at": "2026-01-28T19:30:14",
+      "id": 42441,
+      "colab_revision_id": "0BxSv9gGew3EONGJDbVZTMGo3WEduaFJlN3VRQzlUdmI4UW5vPQ",
+      "conversation_id": 67682,
+      "duration_minutes": 300,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "fdd9ff9c-58db-4b76-828b-5fda30ab9bbf",
+        "source_timestamp": 1769628614000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 744,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T19:27:27.886560",
+      "updated_at": "2026-01-28T19:27:27.886560",
+      "id": 42440,
+      "colab_revision_id": "0B0YltYw4uOMxcm81NlVLaGdZNld6d3NZQzhmdjlGckYrQjVRPQ",
+      "conversation_id": 70855,
+      "duration_minutes": 80,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "4d73d24c-d345-4e5a-8d86-a1f690cc1e85",
+        "source_timestamp": 1769628447000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 938,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T19:24:50.511819",
+      "updated_at": "2026-01-28T19:24:50.511819",
+      "id": 42439,
+      "colab_revision_id": "0B0YltYw4uOMxV04zZEZhTUc2eDNoWWo4YnNPYmZYTzdDMXFrPQ",
+      "conversation_id": 70555,
+      "duration_minutes": 300,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "ea45bf4b-789b-4234-9759-8a2b04eff666",
+        "source_timestamp": 1769628290000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 1206,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T19:19:09.720597",
+      "updated_at": "2026-01-28T19:19:09.720597",
+      "id": 42438,
+      "colab_revision_id": "0B0YltYw4uOMxdmJ1cm02enVrZzJ0ZzVZNldTeE5LM1FzdENRPQ",
+      "conversation_id": 70764,
+      "duration_minutes": 60,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "7f1a69d0-5421-4626-a937-ea0d686514b4",
+        "source_timestamp": 1769627949000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 894,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T19:13:58.778617",
+      "updated_at": "2026-01-28T19:13:58.778617",
+      "id": 42437,
+      "colab_revision_id": "0B0YltYw4uOMxMCtXRys5VTNSSnBhQmxaeE1BQ1QzRlhkWVJNPQ",
+      "conversation_id": 68432,
+      "duration_minutes": 60,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "638c7332-6ace-4696-b982-95736e75ffed",
+        "source_timestamp": 1769627638000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 891,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T19:11:55.776850",
+      "updated_at": "2026-01-28T19:11:55.776850",
+      "id": 42436,
+      "colab_revision_id": "0B0YltYw4uOMxRFZRWVF1bWh4cTl1M2NpRk02UHEraHo0RXpNPQ",
+      "conversation_id": 70273,
+      "duration_minutes": 90,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "724a88da-de45-4218-b6be-5ae4f167ff31",
+        "source_timestamp": 1769627515000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 903,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T19:10:35.978176",
+      "updated_at": "2026-01-28T19:11:56",
+      "id": 42435,
+      "colab_revision_id": "0BxSv9gGew3EOME4rZ0l1SDF4RjVPUmNVZGN0OVRpQ3N2bGpFPQ",
+      "conversation_id": 64359,
+      "duration_minutes": 10,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "226d2a86-e02f-483a-91ef-917fd7cb824a",
+        "source_timestamp": 1769627516000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 790,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T19:09:41.414216",
+      "updated_at": "2026-01-28T19:09:41.414216",
+      "id": 42434,
+      "colab_revision_id": "0BxFceWUXXxsAeGtWRkZNamFpTjMzNGRsZlhYQ3JGbGZsSTNnPQ",
+      "conversation_id": 69015,
+      "duration_minutes": 120,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "4742d652-1e90-4160-9190-63532ba53610",
+        "source_timestamp": 1769627381000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 1022,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T19:09:04.070235",
+      "updated_at": "2026-01-28T20:25:08",
+      "id": 42433,
+      "colab_revision_id": "0B0k1VZNNbjJCOWhDRDZOR1ZhNndGak5VNGVIaW9PNHhhNTE4PQ",
+      "conversation_id": 54472,
+      "duration_minutes": 300,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "7847f563-e09b-400d-a86f-75defe85a21f",
+        "source_timestamp": 1769631908000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 561,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T19:08:35.031001",
+      "updated_at": "2026-01-28T19:08:35.031001",
+      "id": 42432,
+      "colab_revision_id": "0B0YltYw4uOMxckY2UTlYOVllMEFHcU9Eakpyb2lWT0YrMVRzPQ",
+      "conversation_id": 70800,
+      "duration_minutes": 40,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "2f220290-f471-4354-890a-4b018e36efc8",
+        "source_timestamp": 1769627315000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 878,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T19:07:25.698296",
+      "updated_at": "2026-01-28T19:08:20",
+      "id": 42431,
+      "colab_revision_id": "0B0k1VZNNbjJCODlQNTZqYXMzWkdDSmV4RG8rbUcyL3VJU3M0PQ",
+      "conversation_id": 55005,
+      "duration_minutes": 240,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "f4aa4ab8-99ff-4fc5-96fc-a61c2b261d1b",
+        "source_timestamp": 1769627300000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 584,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T19:06:21.153489",
+      "updated_at": "2026-01-28T19:07:00",
+      "id": 42430,
+      "colab_revision_id": "0B0k1VZNNbjJCQ0JKb29CTnBXRmUzSi9NUzFFcThiUVEwaS9zPQ",
+      "conversation_id": 54982,
+      "duration_minutes": 180,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "8f1dc458-41a2-4502-904c-54cddb1fb9f7",
+        "source_timestamp": 1769627220000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 584,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T19:05:44.087322",
+      "updated_at": "2026-01-28T19:23:16",
+      "id": 42429,
+      "colab_revision_id": "0BxSv9gGew3EOdi9iQ0d4TkVHRTA2eDJKMjVuL3BUeDZ0aFdRPQ",
+      "conversation_id": 67440,
+      "duration_minutes": 60,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "ea0dd9b0-57c5-4791-b264-c1aecc692357",
+        "source_timestamp": 1769628196000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 784,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T19:03:07.119274",
+      "updated_at": "2026-01-28T19:04:14",
+      "id": 42428,
+      "colab_revision_id": "0B0k1VZNNbjJCREpoWk9NRXFTTG9sbVB6VVAyc2o1TnU0STZ3PQ",
+      "conversation_id": 55646,
+      "duration_minutes": 180,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "185c1d43-a69e-4f04-a74e-7a91102cf074",
+        "source_timestamp": 1769627054000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 1132,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T19:00:07.252290",
+      "updated_at": "2026-01-28T19:00:49",
+      "id": 42427,
+      "colab_revision_id": "0B0k1VZNNbjJCNDJlK3FTNjNwQ2tKMlNGZ1BFODFrQXBtZm1VPQ",
+      "conversation_id": 54279,
+      "duration_minutes": 420,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "5f09740c-5c85-4db9-ad23-41304b485c6b",
+        "source_timestamp": 1769626849000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 657,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T18:57:15.205525",
+      "updated_at": "2026-01-28T18:59:15",
+      "id": 42426,
+      "colab_revision_id": "0BxSv9gGew3EOTXQ5QzJXTkh6S1E5bjZGUHVLcE9kcEdOcFBRPQ",
+      "conversation_id": 63696,
+      "duration_minutes": 60,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "bf8af449-03c1-45e8-bc73-ae3205645575",
+        "source_timestamp": 1769626755000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 710,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T18:54:31.913050",
+      "updated_at": "2026-01-28T18:55:01",
+      "id": 42425,
+      "colab_revision_id": "0B0k1VZNNbjJCNTZLbFVtUTJTcDR6S2JrSSsybkJIOTdqeElBPQ",
+      "conversation_id": 54927,
+      "duration_minutes": 180,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "cb75499f-21d4-4d5c-beaa-307172520a85",
+        "source_timestamp": 1769626501000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 1098,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T18:53:02.050830",
+      "updated_at": "2026-01-28T18:54:19",
+      "id": 42424,
+      "colab_revision_id": "0BxSv9gGew3EOTlNHVk5KVjRIc25BUWkxOEp0UHVEbXUwVk9FPQ",
+      "conversation_id": 65273,
+      "duration_minutes": 5,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "8d67f775-e331-480b-aa47-4c31f7bbd157",
+        "source_timestamp": 1769626459000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 748,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T18:52:19.182560",
+      "updated_at": "2026-01-28T18:53:25",
+      "id": 42423,
+      "colab_revision_id": "0BxSv9gGew3EOVWd1RWRZUHNaeUU1UUxJcDVZY0g3d3p6THcwPQ",
+      "conversation_id": 63373,
+      "duration_minutes": 25,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "2916ff2b-39f9-4b7b-9292-9d83b5663880",
+        "source_timestamp": 1769626405000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 684,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T18:51:40.897911",
+      "updated_at": "2026-01-28T18:51:40.897911",
+      "id": 42422,
+      "colab_revision_id": "0B0YltYw4uOMxdWFvZ210aVphbW1ER041ZlFvemdkUm1nODNrPQ",
+      "conversation_id": 69551,
+      "duration_minutes": 120,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "78dfa811-c746-4f37-9af9-c843831cab43",
+        "source_timestamp": 1769626300000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 989,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T18:50:16.136891",
+      "updated_at": "2026-01-28T18:50:16.136891",
+      "id": 42421,
+      "colab_revision_id": "0B0YltYw4uOMxZUw4TURUb0xCWUhaTmxGSFlXR1I5aGtMaWc4PQ",
+      "conversation_id": 70298,
+      "duration_minutes": 80,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "e31da00a-6b7f-4417-8710-6486b6f4b85d",
+        "source_timestamp": 1769626216000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 923,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T18:49:08.746496",
+      "updated_at": "2026-01-28T18:49:08.746496",
+      "id": 42420,
+      "colab_revision_id": "0BxFceWUXXxsAQzlwY1dWVk92a3owT2xUb1BnVWoySUJ6bnljPQ",
+      "conversation_id": 68811,
+      "duration_minutes": 20,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "85581360-df64-4b9a-9326-48530540623f",
+        "source_timestamp": 1769626148000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 1173,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T18:43:59.588260",
+      "updated_at": "2026-01-28T18:46:01",
+      "id": 42419,
+      "colab_revision_id": "0BxSv9gGew3EONzlzR1RIYi9oTUU2dGNGTUtUaUcvdkVqYnc0PQ",
+      "conversation_id": 64992,
+      "duration_minutes": 180,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "f884dcd9-48cb-4311-bf8e-15188567a787",
+        "source_timestamp": 1769625961000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 786,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T18:43:08.787880",
+      "updated_at": "2026-01-28T18:43:08.787880",
+      "id": 42418,
+      "colab_revision_id": "0B0YltYw4uOMxbU5WaHZIOFRJSHlUMjhWd3QxaDZjMFRkazU0PQ",
+      "conversation_id": 69668,
+      "duration_minutes": 300,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "4d883dc0-604a-4e79-b07c-9c246d882a0f",
+        "source_timestamp": 1769625788000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 839,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T18:41:11.573124",
+      "updated_at": "2026-01-28T18:41:11.573124",
+      "id": 42417,
+      "colab_revision_id": "0BxFceWUXXxsAa2oxb0R3ZUZYbWtIN1k2N1NkVHhuYzFkQlJRPQ",
+      "conversation_id": 68749,
+      "duration_minutes": 240,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "81dd22b5-ce38-422e-a946-148f88f58cdc",
+        "source_timestamp": 1769625671000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 1204,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T18:39:14.629472",
+      "updated_at": "2026-01-28T18:40:39",
+      "id": 42416,
+      "colab_revision_id": "0B0k1VZNNbjJCeFhnU1ExK3AyckxDSnRaaGNKS0lvU05hbm9jPQ",
+      "conversation_id": 55297,
+      "duration_minutes": 480,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "df1a5f0a-ee8d-478a-af3c-5c9bdad931bf",
+        "source_timestamp": 1769625639000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 1120,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T18:38:58.126502",
+      "updated_at": "2026-01-28T18:38:58.126502",
+      "id": 42415,
+      "colab_revision_id": "0B0YltYw4uOMxSk5aQjlyT2k5WVAxVDAxSXRKM1JwNU5CbEh3PQ",
+      "conversation_id": 70381,
+      "duration_minutes": 12,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "ccacf2fa-c334-4536-90db-5cc15b9bde9e",
+        "source_timestamp": 1769625538000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 1173,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T18:38:23.402054",
+      "updated_at": "2026-01-28T18:38:23.402054",
+      "id": 42414,
+      "colab_revision_id": "0B0YltYw4uOMxWEdQRHE2VkRaWXNoa2NRaGZrQXdweWFkc1VRPQ",
+      "conversation_id": 70171,
+      "duration_minutes": 60,
+      "status": "published",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "34f53a2f-86fb-4e04-9e83-3ced00f9622f",
+        "source_timestamp": 1769625503000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 933,
+      "non_billable": 0,
+      "automatic_duration_minutes": 0,
+      "is_public": 0
+    },
+    {
+      "created_at": "2026-01-28T18:37:51.158798",
+      "updated_at": "2026-01-28T18:37:51.158798",
+      "id": 42413,
+      "colab_revision_id": "0BxSv9gGew3EOT0dCNEFVMllubm9HS1ZlSFZCWkkrdXpHdW8wPQ",
+      "conversation_id": 68255,
+      "duration_minutes": 0,
+      "status": "draft",
+      "labeling": null,
+      "datastream_metadata": {
+        "uuid": "81899fdd-21ef-4841-94e4-a939270c1278",
+        "source_timestamp": 1769625471000
+      },
+      "conversation_version_name": null,
+      "form_stage": null,
+      "author_id": 750,
+      "non_billable": 0,
+      "automatic_duration_minutes": null,
+      "is_public": 0
+    }
+  ]
+}

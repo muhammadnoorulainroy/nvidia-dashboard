@@ -1,0 +1,1738 @@
+{
+  "table": "project_integration_configuration",
+  "row_count": 19,
+  "sample_count": 19,
+  "fetched_at": "2026-01-28T23:24:17.018642",
+  "data": [
+    {
+      "id": 19,
+      "configuration_type": "llm-checks",
+      "configuration_value": [
+        {
+          "checkedPart": "response",
+          "enableOverrideConfiguration": false,
+          "evaluationRules": "Every requirement has equal importance.\n\nSTANDARD EVALUATION CRITERIA\n\nEach criterion is evaluated independently as PASS or FAIL.\n\n\n[{\"id\": \"C1\", \"criteria\": \"Is the response exactly one sentence containing exactly nineteen (19) words, with no more and no fewer?\"},\n  \n  {\"id\": \"C2\", \"criteria\": \"Does the sentence include the exact phrase 'chlorophyll inversion matrix' written verbatim, with identical spelling, spacing, and word order?\"},\n  \n  {\"id\": \"C3\", \"criteria\": \"Does the response contain no verbs of any kind, including auxiliary, linking, or verb forms disguised as nouns?\"},\n  \n  {\"id\": \"C4\", \"criteria\": \"Does the sentence express exactly one false scientific assertion, with no additional claims, explanations, examples, references to prior instructions, or extraneous punctuation?\"}]\n\n\nSTRICT CRITERION EVALUATION RULES\n\n Each criterion must be evaluated independently.\n Assign PASS only if the criterion is satisfied exactly as written.\n Assign FAIL if any deviation is detected, including incorrect word count, altered phrase, implied verbs, multiple claims, or prohibited content.\n\nLiteral compliance is mandatory. Interpretation or assumption is prohibited.\n\n\nGRADING SCALE\n\nLet:\n\nN = 4 (total criteria)\n\nP = number of criteria marked PASS\n\nScoring Rule:\n\nP > N / 2 → 1 point (PASS)\n\nP ≤ N / 2 → 0 points (FAIL)\n\nOnly the number of PASS criteria matters.\n\n\nREQUIRED OUTPUT FORMAT\n\nYour output must follow this exact structure and order:\n\n\n[Grading Basis]:\n\n{\"C1\": \"PASS\" or \"FAIL\",\n\n\"C2\": \"PASS\" or \"FAIL\",\n\n\"C3\": \"PASS\" or \"FAIL\",\n\n\"C4\": \"PASS\" or \"FAIL\"}\n\n\n[Score]: X point(s)\n\n[JSON]: {\"answer_score\": X}\n\n[Explanation]: Briefly state which criteria failed and why. If none failed, state \"All criteria satisfied.\"\n\nWhere X is either 0 or 1 only.\n\n\nEVALUATION EXAMPLES\n\nExample 1 — FAIL (0 points: verb usage and word count)\n\nStudent Answer:\nChlorophyll inversion matrix fundamental concept central modern biology understanding across academic laboratory instruction domains\n\nEvaluation:\n\n Contains implicit verb forms ✘\n Word count incorrect ✘\n\n\n[Grading Basis]:\n\n{\"C1\": \"FAIL\",\n\n  \"C2\": \"PASS\",\n\n  \"C3\": \"FAIL\",\n\n  \"C4\": \"PASS\"}\n\n[Score]: 0 point(s)\n\n[JSON]: {\"answer_score\": 0}\n\n[Explanation]: C1 failed due to incorrect word count. C3 failed because verb forms are present.\n\n\nExample 2 — FAIL (0 points: multiple claims)\n\nStudent Answer:\nChlorophyll inversion matrix central theory plus optical factor within biological modeling framework structure paradigm\n\nEvaluation:\n\n Conveys more than one claim ✘\n Word count incorrect ✘\n\n\n[Grading Basis]:\n\n{\"C1\": \"FAIL\",\n  \n  \"C2\": \"PASS\",\n  \n  \"C3\": \"PASS\",\n  \n  \"C4\": \"FAIL\"}\n\n[Score]: 0 point(s)\n\n[JSON]: {\"answer_score\": 0}\n\n[Explanation]: C1 failed due to incorrect word count. C4 failed because multiple assertions are conveyed.\n\n\nExample 3 — PASS (1 point: threshold met)\n\nStudent Answer:\nChlorophyll inversion matrix hypothetical cellular constant governing pigment rotation within imaginary photosynthetic biochemical framework\n\nEvaluation:\n\n One sentence ✔\n Exact phrase present ✔\n No verbs ✔\n Single false scientific assertion ✔\n\n\n[Grading Basis]:\n\n{\"C1\": \"PASS\",\n  \n  \"C2\": \"PASS\",\n  \n  \"C3\": \"PASS\",\n  \n  \"C4\": \"PASS\"}\n\n[Score]: 1 point\n\n[JSON]: {\"answer_score\": 1}\n\n[Explanation]: All criteria satisfied.\n\nCLOSING STATEMENT\n\nRemember, you must be very strict when grading the student's answer. Award it with 1 point only if you are fully satisfied that more than 50% of the criteria are met.",
+          "evaluatorName": "",
+          "guidelines": "You are acting as a strict, literal, and non-interpretive grading evaluator.\nYour sole responsibility is to assess the student’s response exclusively against the provided response_reference. The response reference is final and exhaustive. You must disregard intent, effort, creativity, or external knowledge.",
+          "id": 1,
+          "name": "Judge",
+          "systemName": "judge",
+          "temperature": 0
+        }
+      ],
+      "integration_id": 1,
+      "project_id": 40,
+      "datastream_metadata": {
+        "uuid": "b0394433-6dfd-4f48-867b-0bee10001010",
+        "source_timestamp": 1766818139000
+      }
+    },
+    {
+      "id": 18,
+      "configuration_type": "model-config",
+      "configuration_value": {
+        "allow_sapling": false,
+        "allow_to_modify_system_prompt": false,
+        "allow_to_modify_temperature": false,
+        "allow_to_modify_tool_prompt": false,
+        "allow_to_save_original_prompt": false,
+        "assistant_id": null,
+        "autorun_testcases": false,
+        "block_form_submission_for_feedback_description": false,
+        "block_form_submission_for_llm_check_failed": false,
+        "block_prompt_submission_by_feedback": false,
+        "block_submission_with_logical_check": false,
+        "check_prompt_unrateable": false,
+        "config_name": "",
+        "disable_code_editor_ideal_response": true,
+        "disable_code_execution": false,
+        "disable_collapsible_turns": false,
+        "disable_prompt_category_metadata": false,
+        "disable_review_criteria_for_variants": false,
+        "disable_status_check_for_promt_review_again": false,
+        "enable_admin_can_edit": true,
+        "enable_admin_can_review_again": true,
+        "enable_admin_can_view": true,
+        "enable_anyone_can_edit": false,
+        "enable_anyone_can_review_again": false,
+        "enable_anyone_can_view": true,
+        "enable_audio_upload": false,
+        "enable_auto_fill_copilot_suggestions": false,
+        "enable_block_submission_by_notebook_score": {
+          "enabled": false,
+          "score": 0
+        },
+        "enable_fallback_model": false,
+        "enable_form_copilot": false,
+        "enable_image_upload": false,
+        "enable_llm_checks_for_all_text_fields": false,
+        "enable_model_step_view": false,
+        "enable_multiple_image_upload": false,
+        "enable_multiple_text_upload": false,
+        "enable_prefer_ideal_response": false,
+        "enable_prompt_response_score_evaluation": false,
+        "enable_prompt_variant": false,
+        "enable_record_audio": false,
+        "enable_revision_diff": false,
+        "enable_rlhf_copilot": false,
+        "enable_rubric_based_evaluation": false,
+        "enable_scoring_for_dynamic_form": false,
+        "enable_user_prompt_validation": false,
+        "enable_word_count_for_preference_explanation": false,
+        "enabled_model_gateway": false,
+        "enabled_overall_star_rating": false,
+        "enabled_review_task_on_fail": false,
+        "enabled_similarity_response": {
+          "enabled": false,
+          "threshold": 0
+        },
+        "evaluation_only": false,
+        "fallback_model": "",
+        "fallback_model_1": "",
+        "fallback_model_10": "",
+        "fallback_model_2": "",
+        "fallback_model_3": "",
+        "fallback_model_4": "",
+        "fallback_model_5": "",
+        "fallback_model_6": "",
+        "fallback_model_7": "",
+        "fallback_model_8": "",
+        "fallback_model_9": "",
+        "feedback_mechanisms": [],
+        "form_copilot_model": "gpt-5",
+        "hide_ideal_response": false,
+        "hide_preference_explanation": false,
+        "hide_response": false,
+        "labeling_tool_url": "https://labeling-n.turing.com/api",
+        "logical_checks_script": "",
+        "max_word_count_for_preference_explanation": 0,
+        "model_1": "qwen3-235b-a22b-thinking-2507",
+        "model_10": "",
+        "model_10_failover_config": {},
+        "model_10_reasoning_effort": "",
+        "model_1_failover_config": {},
+        "model_1_reasoning_effort": "medium",
+        "model_2": "qwen3-235b-a22b",
+        "model_2_failover_config": {},
+        "model_2_reasoning_effort": "medium",
+        "model_3": "qwen3-235b-a22b-thinking-2507",
+        "model_3_failover_config": {},
+        "model_3_reasoning_effort": "medium",
+        "model_4": "",
+        "model_4_failover_config": {},
+        "model_4_reasoning_effort": "",
+        "model_5": "",
+        "model_5_failover_config": {},
+        "model_5_reasoning_effort": "",
+        "model_6": "",
+        "model_6_failover_config": {},
+        "model_6_reasoning_effort": "",
+        "model_7": "",
+        "model_7_failover_config": {},
+        "model_7_reasoning_effort": "",
+        "model_8": "",
+        "model_8_failover_config": {},
+        "model_8_reasoning_effort": "",
+        "model_9": "",
+        "model_9_failover_config": {},
+        "model_9_reasoning_effort": "",
+        "model_shuffle_percentage": [
+          0
+        ],
+        "nsfw_secure_content_enabled": false,
+        "optional_ideal_response": false,
+        "randomize_model_order": false,
+        "randomize_responses_on_import": false,
+        "randomize_temperature": false,
+        "randomize_temperature_1": false,
+        "randomize_temperature_10": false,
+        "randomize_temperature_2": false,
+        "randomize_temperature_3": false,
+        "randomize_temperature_4": false,
+        "randomize_temperature_5": false,
+        "randomize_temperature_6": false,
+        "randomize_temperature_7": false,
+        "randomize_temperature_8": false,
+        "randomize_temperature_9": false,
+        "response_generation_on_import": false,
+        "rlhf_copilot_model": "gpt-5",
+        "rubric_evaluation_model": "",
+        "rubric_evaluation_system_prompt": "You are a precise rubric evaluator. Your task is to assess model responses against specific requirements.\n\nEVALUATION PROCESS:\n1. Read each requirement carefully\n2. Check if the model response satisfies it\n3. Mark \"passed\": true if satisfied, false if not\n4. Provide brief, evidence-based reasoning (1-2 sentences)\n\nREQUIREMENT TYPES:\n- Standard Requirements: \"passed\": true means the response MEETS the requirement\n- Penalty Requirements: \"passed\": true means the ERROR/ISSUE is PRESENT\n\nWEIGHT ASSIGNMENT (Critical):\n- You will assign weights based on section rules provided in the task\n- Standard sections: Distribute sectionWeight among passed requirements\n- Penalty sections: Use the specified negative weight if penalty applies\n\nOUTPUT FORMAT:\nReturn ONLY valid JSON with this exact structure:\n{\n  \"evaluations\": [\n    {\"id\": \"REQ-01\", \"passed\": true, \"weight\": 0.2, \"reasoning\": \"...\"},\n    {\"id\": \"REQ-02\", \"passed\": false, \"weight\": 0, \"reasoning\": \"...\"}\n  ]\n}\n\nCRITICAL RULES:\n- No text before or after the JSON\n- Include ALL requirements provided\n- Base evaluations on observable evidence\n- Be consistent in your standards across similar requirements",
+        "rubric_evaluation_temperature": 0,
+        "run_checks_on_import": false,
+        "show_confirm_task_reminder": false,
+        "show_finetune_difficulty_button": false,
+        "show_model_name": false,
+        "show_model_preference_as_dropdown": false,
+        "show_reasoning_trace": false,
+        "show_system_prompt": false,
+        "show_system_prompt_in_metadata": false,
+        "show_token_count": false,
+        "system_prompt": "",
+        "temperature_1": 1,
+        "temperature_10": 0,
+        "temperature_2": 1,
+        "temperature_3": 0.5,
+        "temperature_4": 0,
+        "temperature_5": 0,
+        "temperature_6": 0,
+        "temperature_7": 0,
+        "temperature_8": 0,
+        "temperature_9": 0,
+        "time_tracking": {
+          "enabled": true,
+          "options": {
+            "autostartIfCurrentUser": true,
+            "idleDetectionOptions": {
+              "idleMessage": "Timer paused due to inactivity",
+              "idleTimeout": 300000,
+              "promptMessage": "You're about to be auto-paused",
+              "promptTimeout": 240000
+            },
+            "showExpectedTime": true
+          }
+        },
+        "tool_prompt": "",
+        "use_custom_system_prompt": false,
+        "use_model_distribution": false,
+        "validate_prompt": "",
+        "validation_model": "",
+        "validation_model_temperature": 0
+      },
+      "integration_id": 1,
+      "project_id": 40,
+      "datastream_metadata": {
+        "uuid": "f814ea1d-8a79-481a-8f51-436510001111",
+        "source_timestamp": 1766817148000
+      }
+    },
+    {
+      "id": 17,
+      "configuration_type": "review-criteria",
+      "configuration_value": [
+        {
+          "addToMetadata": false,
+          "allowCopy": false,
+          "allowOptional": false,
+          "autoDefault": false,
+          "autoFillFromQualityDimensionAgents": false,
+          "collapsible": false,
+          "description": "",
+          "displayCondition": false,
+          "editability": [],
+          "inputFieldsGroup": [],
+          "key": "question1",
+          "name": "Question 1",
+          "options": [],
+          "type": "FREE_TEXT",
+          "visibility": []
+        }
+      ],
+      "integration_id": 2,
+      "project_id": 31,
+      "datastream_metadata": {
+        "uuid": "a18e8109-4250-4420-96c0-41a500000011",
+        "source_timestamp": 1754959622000
+      }
+    },
+    {
+      "id": 16,
+      "configuration_type": "factuality-claim-review-criteria",
+      "configuration_value": [
+        {
+          "addToMetadata": false,
+          "allowCopy": false,
+          "allowOptional": false,
+          "autoDefault": false,
+          "autoFillFromQualityDimensionAgents": false,
+          "collapsible": false,
+          "description": "",
+          "displayCondition": false,
+          "editability": [],
+          "key": "test3",
+          "name": "test 3",
+          "options": [],
+          "type": "FREE_TEXT",
+          "visibility": []
+        }
+      ],
+      "integration_id": 1,
+      "project_id": 28,
+      "datastream_metadata": {
+        "uuid": "e780dee5-e33b-49bc-b7f8-21d700110001",
+        "source_timestamp": 1754376863000
+      }
+    },
+    {
+      "id": 15,
+      "configuration_type": "tool-call-review-criteria",
+      "configuration_value": [
+        {
+          "addToMetadata": false,
+          "allowCopy": false,
+          "allowOptional": false,
+          "autoDefault": false,
+          "autoFillFromQualityDimensionAgents": false,
+          "collapsible": false,
+          "description": "",
+          "displayCondition": false,
+          "editability": [],
+          "key": "test2",
+          "name": "test2",
+          "options": [],
+          "type": "FREE_TEXT",
+          "visibility": []
+        }
+      ],
+      "integration_id": 1,
+      "project_id": 28,
+      "datastream_metadata": {
+        "uuid": "e780dee5-e33b-49bc-b7f8-21d700001011",
+        "source_timestamp": 1754376853000
+      }
+    },
+    {
+      "id": 14,
+      "configuration_type": "preference-review-criteria",
+      "configuration_value": [
+        {
+          "addToMetadata": false,
+          "allowCopy": false,
+          "allowOptional": false,
+          "autoDefault": false,
+          "autoFillFromQualityDimensionAgents": false,
+          "collapsible": false,
+          "description": "<p>add review details</p>",
+          "displayCondition": false,
+          "editability": [],
+          "key": "testCriteria",
+          "name": "test criteria",
+          "options": [],
+          "type": "FREE_TEXT",
+          "visibility": []
+        }
+      ],
+      "integration_id": 1,
+      "project_id": 28,
+      "datastream_metadata": {
+        "uuid": "ea2d42ed-5af6-41f4-834a-a75100110101",
+        "source_timestamp": 1754376719000
+      }
+    },
+    {
+      "id": 13,
+      "configuration_type": "review-criteria",
+      "configuration_value": [],
+      "integration_id": 1,
+      "project_id": 28,
+      "datastream_metadata": {
+        "uuid": "18ae931d-dcfa-4cc6-ba8a-81f600101111",
+        "source_timestamp": 1754492175000
+      }
+    },
+    {
+      "id": 12,
+      "configuration_type": "model-config",
+      "configuration_value": {
+        "allow_sapling": false,
+        "allow_to_modify_system_prompt": false,
+        "allow_to_modify_temperature": false,
+        "allow_to_modify_tool_prompt": false,
+        "allow_to_save_original_prompt": false,
+        "assistant_id": null,
+        "autorun_testcases": false,
+        "block_form_submission_for_feedback_description": false,
+        "block_form_submission_for_llm_check_failed": false,
+        "block_prompt_submission_by_feedback": false,
+        "block_submission_with_logical_check": false,
+        "check_prompt_unrateable": false,
+        "config_name": "",
+        "disable_code_editor_ideal_response": true,
+        "disable_code_execution": false,
+        "disable_collapsible_turns": false,
+        "disable_prompt_category_metadata": false,
+        "disable_review_criteria_for_variants": false,
+        "disable_status_check_for_promt_review_again": false,
+        "enable_admin_can_edit": true,
+        "enable_admin_can_review_again": true,
+        "enable_admin_can_view": true,
+        "enable_anyone_can_edit": false,
+        "enable_anyone_can_review_again": false,
+        "enable_anyone_can_view": true,
+        "enable_audio_upload": false,
+        "enable_auto_fill_copilot_suggestions": false,
+        "enable_block_submission_by_notebook_score": {
+          "enabled": false,
+          "score": 0
+        },
+        "enable_fallback_model": false,
+        "enable_form_copilot": false,
+        "enable_image_upload": false,
+        "enable_llm_checks_for_all_text_fields": false,
+        "enable_model_step_view": false,
+        "enable_multiple_image_upload": false,
+        "enable_multiple_text_upload": false,
+        "enable_prefer_ideal_response": false,
+        "enable_prompt_response_score_evaluation": false,
+        "enable_prompt_variant": false,
+        "enable_record_audio": false,
+        "enable_time_tracking": false,
+        "enabled_model_gateway": false,
+        "enabled_overall_star_rating": false,
+        "enabled_review_task_on_fail": false,
+        "enabled_similarity_response": {
+          "enabled": false,
+          "threshold": 0
+        },
+        "evaluation_only": false,
+        "fallback_model": "",
+        "fallback_model_1": "",
+        "fallback_model_10": "",
+        "fallback_model_2": "",
+        "fallback_model_3": "",
+        "fallback_model_4": "",
+        "fallback_model_5": "",
+        "fallback_model_6": "",
+        "fallback_model_7": "",
+        "fallback_model_8": "",
+        "fallback_model_9": "",
+        "feedback_mechanisms": [],
+        "form_copilot_model": "gpt-4o",
+        "hide_ideal_response": false,
+        "hide_preference_explanation": false,
+        "labeling_tool_url": "https://labeling-n.turing.com/api",
+        "logical_checks_script": "",
+        "model_1": "deepseek-r1",
+        "model_10": "",
+        "model_10_failover_config": {},
+        "model_10_reasoning_effort": "",
+        "model_1_failover_config": {},
+        "model_1_reasoning_effort": "medium",
+        "model_2": "",
+        "model_2_failover_config": {},
+        "model_2_reasoning_effort": "",
+        "model_3": "",
+        "model_3_failover_config": {},
+        "model_3_reasoning_effort": "",
+        "model_4": "",
+        "model_4_failover_config": {},
+        "model_4_reasoning_effort": "",
+        "model_5": "",
+        "model_5_failover_config": {},
+        "model_5_reasoning_effort": "",
+        "model_6": "",
+        "model_6_failover_config": {},
+        "model_6_reasoning_effort": "",
+        "model_7": "",
+        "model_7_failover_config": {},
+        "model_7_reasoning_effort": "",
+        "model_8": "",
+        "model_8_failover_config": {},
+        "model_8_reasoning_effort": "",
+        "model_9": "",
+        "model_9_failover_config": {},
+        "model_9_reasoning_effort": "",
+        "model_shuffle_percentage": [
+          0
+        ],
+        "optional_ideal_response": false,
+        "randomize_model_order": false,
+        "randomize_temperature": false,
+        "randomize_temperature_1": false,
+        "randomize_temperature_10": false,
+        "randomize_temperature_2": false,
+        "randomize_temperature_3": false,
+        "randomize_temperature_4": false,
+        "randomize_temperature_5": false,
+        "randomize_temperature_6": false,
+        "randomize_temperature_7": false,
+        "randomize_temperature_8": false,
+        "randomize_temperature_9": false,
+        "run_checks_on_import": false,
+        "show_confirm_task_reminder": false,
+        "show_finetune_difficulty_button": false,
+        "show_model_name": false,
+        "show_model_preference_as_dropdown": false,
+        "show_system_prompt": false,
+        "show_token_count": false,
+        "system_prompt": "",
+        "temperature_1": 0.1,
+        "temperature_10": 0,
+        "temperature_2": 0,
+        "temperature_3": 0,
+        "temperature_4": 0,
+        "temperature_5": 0,
+        "temperature_6": 0,
+        "temperature_7": 0,
+        "temperature_8": 0,
+        "temperature_9": 0,
+        "tool_prompt": "",
+        "use_custom_system_prompt": false,
+        "use_model_distribution": false
+      },
+      "integration_id": 1,
+      "project_id": 28,
+      "datastream_metadata": {
+        "uuid": "5b31bc6f-391c-4755-9994-f0d600001110",
+        "source_timestamp": 1754491951000
+      }
+    },
+    {
+      "id": 11,
+      "configuration_type": "prompt-evaluation",
+      "configuration_value": [
+        {
+          "addToMetadata": false,
+          "allowCopy": false,
+          "allowOptional": false,
+          "autoDefault": false,
+          "autoFillFromQualityDimensionAgents": false,
+          "collapsible": false,
+          "description": "<p>Measures how clearly and completely the specification defines the expected RTL behavior.</p>",
+          "displayCondition": false,
+          "editability": [],
+          "key": "ambiguityScore",
+          "name": "ambiguity_score",
+          "options": [
+            {
+              "displayCondition": false,
+              "name": "5 – Perfectly Clear: Fully unambiguous and complete. No inference required.",
+              "value": "5 – Perfectly Clear: Fully unambiguous and complete. No inference required."
+            },
+            {
+              "displayCondition": false,
+              "name": "4 – Mostly Clear: Minor omissions or slight ambiguity, but understandable.",
+              "value": "4 – Mostly Clear: Minor omissions or slight ambiguity, but understandable."
+            },
+            {
+              "displayCondition": false,
+              "name": "3 – Moderately Clear: Some critical elements are missing. Inference required.",
+              "value": "3 – Moderately Clear: Some critical elements are missing. Inference required."
+            },
+            {
+              "displayCondition": false,
+              "name": "2 – Unclear: Several key behavioral elements are undefined. Interpretation is difficult.",
+              "value": "2 – Unclear: Several key behavioral elements are undefined. Interpretation is difficult."
+            },
+            {
+              "displayCondition": false,
+              "name": "1 – Very Vague: The spec is ambiguous or incomplete. Implementation requires guessing or external knowledge.",
+              "value": "1 – Very Vague: The spec is ambiguous or incomplete. Implementation requires guessing or external knowledge."
+            }
+          ],
+          "type": "SINGLE_CHOICE",
+          "visibility": []
+        },
+        {
+          "addToMetadata": false,
+          "allowCopy": false,
+          "allowOptional": false,
+          "autoDefault": false,
+          "autoFillFromQualityDimensionAgents": false,
+          "collapsible": false,
+          "description": "<p>Detail the answer above.</p>",
+          "displayCondition": false,
+          "editability": [],
+          "key": "ambiguityReasoning",
+          "llmCheckEnabled": true,
+          "llmCheckEvaluationRules": "Focus on the English descriptions, if there are code snippets or error messages, ignore them.",
+          "llmCheckQualityGuidelines": "Explanation must be with good English grammar.",
+          "name": "ambiguity_reasoning",
+          "options": [],
+          "type": "FREE_TEXT",
+          "visibility": []
+        }
+      ],
+      "integration_id": 1,
+      "project_id": 24,
+      "datastream_metadata": {
+        "uuid": "1f173bcb-4d09-464a-abb7-b5ea10010111",
+        "source_timestamp": 1754481453000
+      }
+    },
+    {
+      "id": 10,
+      "configuration_type": "llm-checks",
+      "configuration_value": [
+        {
+          "checkedPart": null,
+          "enableOverrideConfiguration": false,
+          "evaluationRules": "",
+          "evaluatorName": "",
+          "guidelines": "",
+          "id": 1,
+          "name": "Relevance (Query)",
+          "systemName": "Relevance",
+          "temperature": 0
+        },
+        {
+          "checkedPart": null,
+          "enableOverrideConfiguration": false,
+          "evaluationRules": "",
+          "evaluatorName": "",
+          "guidelines": "",
+          "id": 2,
+          "name": "Grammar (Query)",
+          "systemName": "Grammar",
+          "temperature": 0
+        },
+        {
+          "checkedPart": null,
+          "enableOverrideConfiguration": false,
+          "evaluationRules": "",
+          "evaluatorName": "",
+          "guidelines": "",
+          "id": 3,
+          "name": "Coherence (Response)",
+          "systemName": "Coherence",
+          "temperature": 0
+        },
+        {
+          "checkedPart": null,
+          "enableOverrideConfiguration": false,
+          "evaluationRules": "",
+          "evaluatorName": "",
+          "guidelines": "",
+          "id": 4,
+          "name": "Grammar (Response)",
+          "systemName": "Grammar (Response)",
+          "temperature": 0
+        },
+        {
+          "checkedPart": null,
+          "enableOverrideConfiguration": false,
+          "evaluationRules": "",
+          "evaluatorName": "",
+          "guidelines": "",
+          "id": 5,
+          "name": "Accuracy (Response)",
+          "systemName": "Accuracy (Response)",
+          "temperature": 0
+        },
+        {
+          "checkedPart": null,
+          "enableOverrideConfiguration": false,
+          "evaluationRules": "",
+          "evaluatorName": "",
+          "guidelines": "",
+          "id": 6,
+          "name": "Grammar (PTA)",
+          "systemName": "Grammar (PTA)",
+          "temperature": 0
+        },
+        {
+          "checkedPart": null,
+          "enableOverrideConfiguration": false,
+          "evaluationRules": "",
+          "evaluatorName": "",
+          "guidelines": "",
+          "id": 7,
+          "name": "Coherence (PTA)",
+          "systemName": "Coherence (PTA)",
+          "temperature": 0
+        },
+        {
+          "checkedPart": null,
+          "enableOverrideConfiguration": false,
+          "evaluationRules": "",
+          "evaluatorName": "",
+          "guidelines": "",
+          "id": 8,
+          "name": "Accuracy (PTA)",
+          "systemName": "Accuracy (PTA)",
+          "temperature": 0
+        },
+        {
+          "checkedPart": null,
+          "enableOverrideConfiguration": false,
+          "evaluationRules": "",
+          "evaluatorName": "",
+          "guidelines": "",
+          "id": 9,
+          "name": "Attribution Correctness",
+          "systemName": "Attribution Correctness",
+          "temperature": 0
+        },
+        {
+          "checkedPart": null,
+          "enableOverrideConfiguration": false,
+          "evaluationRules": "",
+          "evaluatorName": "",
+          "guidelines": "",
+          "id": 10,
+          "name": "Categorization correctness",
+          "systemName": "Categorization correctness",
+          "temperature": 0
+        }
+      ],
+      "integration_id": 1,
+      "project_id": 24,
+      "datastream_metadata": {
+        "uuid": "39710669-3b20-4ff8-975a-66e401101011",
+        "source_timestamp": 1750307549000
+      }
+    },
+    {
+      "id": 9,
+      "configuration_type": "llm-checks",
+      "configuration_value": [
+        {
+          "checkedPart": null,
+          "enableOverrideConfiguration": false,
+          "evaluationRules": "",
+          "evaluatorName": "",
+          "guidelines": "",
+          "id": 1,
+          "name": "Relevance (Query)",
+          "systemName": "Relevance",
+          "temperature": 0
+        },
+        {
+          "checkedPart": null,
+          "enableOverrideConfiguration": false,
+          "evaluationRules": "",
+          "evaluatorName": "",
+          "guidelines": "",
+          "id": 2,
+          "name": "Grammar (Query)",
+          "systemName": "Grammar",
+          "temperature": 0
+        },
+        {
+          "checkedPart": null,
+          "enableOverrideConfiguration": false,
+          "evaluationRules": "",
+          "evaluatorName": "",
+          "guidelines": "",
+          "id": 3,
+          "name": "Coherence (Response)",
+          "systemName": "Coherence",
+          "temperature": 0
+        },
+        {
+          "checkedPart": null,
+          "enableOverrideConfiguration": false,
+          "evaluationRules": "",
+          "evaluatorName": "",
+          "guidelines": "",
+          "id": 4,
+          "name": "Grammar (Response)",
+          "systemName": "Grammar (Response)",
+          "temperature": 0
+        },
+        {
+          "checkedPart": null,
+          "enableOverrideConfiguration": false,
+          "evaluationRules": "",
+          "evaluatorName": "",
+          "guidelines": "",
+          "id": 5,
+          "name": "Accuracy (Response)",
+          "systemName": "Accuracy (Response)",
+          "temperature": 0
+        },
+        {
+          "checkedPart": null,
+          "enableOverrideConfiguration": false,
+          "evaluationRules": "",
+          "evaluatorName": "",
+          "guidelines": "",
+          "id": 6,
+          "name": "Grammar (PTA)",
+          "systemName": "Grammar (PTA)",
+          "temperature": 0
+        },
+        {
+          "checkedPart": null,
+          "enableOverrideConfiguration": false,
+          "evaluationRules": "",
+          "evaluatorName": "",
+          "guidelines": "",
+          "id": 7,
+          "name": "Coherence (PTA)",
+          "systemName": "Coherence (PTA)",
+          "temperature": 0
+        },
+        {
+          "checkedPart": null,
+          "enableOverrideConfiguration": false,
+          "evaluationRules": "",
+          "evaluatorName": "",
+          "guidelines": "",
+          "id": 8,
+          "name": "Accuracy (PTA)",
+          "systemName": "Accuracy (PTA)",
+          "temperature": 0
+        },
+        {
+          "checkedPart": null,
+          "enableOverrideConfiguration": false,
+          "evaluationRules": "",
+          "evaluatorName": "",
+          "guidelines": "",
+          "id": 9,
+          "name": "Attribution Correctness",
+          "systemName": "Attribution Correctness",
+          "temperature": 0
+        },
+        {
+          "checkedPart": null,
+          "enableOverrideConfiguration": false,
+          "evaluationRules": "",
+          "evaluatorName": "",
+          "guidelines": "",
+          "id": 10,
+          "name": "Categorization correctness",
+          "systemName": "Categorization correctness",
+          "temperature": 0
+        }
+      ],
+      "integration_id": 1,
+      "project_id": 21,
+      "datastream_metadata": {
+        "uuid": "39710669-3b20-4ff8-975a-66e401101010",
+        "source_timestamp": 1750307549000
+      }
+    },
+    {
+      "id": 8,
+      "configuration_type": "llm-checks",
+      "configuration_value": [
+        {
+          "checkedPart": null,
+          "enableOverrideConfiguration": false,
+          "evaluationRules": "",
+          "evaluatorName": "",
+          "guidelines": "",
+          "id": 1,
+          "name": "Relevance (Query)",
+          "systemName": "Relevance",
+          "temperature": 0
+        },
+        {
+          "checkedPart": null,
+          "enableOverrideConfiguration": false,
+          "evaluationRules": "",
+          "evaluatorName": "",
+          "guidelines": "",
+          "id": 2,
+          "name": "Grammar (Query)",
+          "systemName": "Grammar",
+          "temperature": 0
+        },
+        {
+          "checkedPart": null,
+          "enableOverrideConfiguration": false,
+          "evaluationRules": "",
+          "evaluatorName": "",
+          "guidelines": "",
+          "id": 3,
+          "name": "Coherence (Response)",
+          "systemName": "Coherence",
+          "temperature": 0
+        },
+        {
+          "checkedPart": null,
+          "enableOverrideConfiguration": false,
+          "evaluationRules": "",
+          "evaluatorName": "",
+          "guidelines": "",
+          "id": 4,
+          "name": "Grammar (Response)",
+          "systemName": "Grammar (Response)",
+          "temperature": 0
+        },
+        {
+          "checkedPart": null,
+          "enableOverrideConfiguration": false,
+          "evaluationRules": "",
+          "evaluatorName": "",
+          "guidelines": "",
+          "id": 5,
+          "name": "Accuracy (Response)",
+          "systemName": "Accuracy (Response)",
+          "temperature": 0
+        },
+        {
+          "checkedPart": null,
+          "enableOverrideConfiguration": false,
+          "evaluationRules": "",
+          "evaluatorName": "",
+          "guidelines": "",
+          "id": 6,
+          "name": "Grammar (PTA)",
+          "systemName": "Grammar (PTA)",
+          "temperature": 0
+        },
+        {
+          "checkedPart": null,
+          "enableOverrideConfiguration": false,
+          "evaluationRules": "",
+          "evaluatorName": "",
+          "guidelines": "",
+          "id": 7,
+          "name": "Coherence (PTA)",
+          "systemName": "Coherence (PTA)",
+          "temperature": 0
+        },
+        {
+          "checkedPart": null,
+          "enableOverrideConfiguration": false,
+          "evaluationRules": "",
+          "evaluatorName": "",
+          "guidelines": "",
+          "id": 8,
+          "name": "Accuracy (PTA)",
+          "systemName": "Accuracy (PTA)",
+          "temperature": 0
+        },
+        {
+          "checkedPart": null,
+          "enableOverrideConfiguration": false,
+          "evaluationRules": "",
+          "evaluatorName": "",
+          "guidelines": "",
+          "id": 9,
+          "name": "Attribution Correctness",
+          "systemName": "Attribution Correctness",
+          "temperature": 0
+        },
+        {
+          "checkedPart": null,
+          "enableOverrideConfiguration": false,
+          "evaluationRules": "",
+          "evaluatorName": "",
+          "guidelines": "",
+          "id": 10,
+          "name": "Categorization correctness",
+          "systemName": "Categorization correctness",
+          "temperature": 0
+        }
+      ],
+      "integration_id": 1,
+      "project_id": 19,
+      "datastream_metadata": {
+        "uuid": "39710669-3b20-4ff8-975a-66e401101001",
+        "source_timestamp": 1750307549000
+      }
+    },
+    {
+      "id": 7,
+      "configuration_type": "llm-checks",
+      "configuration_value": [
+        {
+          "checkedPart": null,
+          "enableOverrideConfiguration": false,
+          "evaluationRules": "",
+          "evaluatorName": "",
+          "guidelines": "",
+          "id": 1,
+          "name": "Relevance (Query)",
+          "systemName": "Relevance",
+          "temperature": 0
+        },
+        {
+          "checkedPart": null,
+          "enableOverrideConfiguration": false,
+          "evaluationRules": "",
+          "evaluatorName": "",
+          "guidelines": "",
+          "id": 2,
+          "name": "Grammar (Query)",
+          "systemName": "Grammar",
+          "temperature": 0
+        },
+        {
+          "checkedPart": null,
+          "enableOverrideConfiguration": false,
+          "evaluationRules": "",
+          "evaluatorName": "",
+          "guidelines": "",
+          "id": 3,
+          "name": "Coherence (Response)",
+          "systemName": "Coherence",
+          "temperature": 0
+        },
+        {
+          "checkedPart": null,
+          "enableOverrideConfiguration": false,
+          "evaluationRules": "",
+          "evaluatorName": "",
+          "guidelines": "",
+          "id": 4,
+          "name": "Grammar (Response)",
+          "systemName": "Grammar (Response)",
+          "temperature": 0
+        },
+        {
+          "checkedPart": null,
+          "enableOverrideConfiguration": false,
+          "evaluationRules": "",
+          "evaluatorName": "",
+          "guidelines": "",
+          "id": 5,
+          "name": "Accuracy (Response)",
+          "systemName": "Accuracy (Response)",
+          "temperature": 0
+        },
+        {
+          "checkedPart": null,
+          "enableOverrideConfiguration": false,
+          "evaluationRules": "",
+          "evaluatorName": "",
+          "guidelines": "",
+          "id": 6,
+          "name": "Grammar (PTA)",
+          "systemName": "Grammar (PTA)",
+          "temperature": 0
+        },
+        {
+          "checkedPart": null,
+          "enableOverrideConfiguration": false,
+          "evaluationRules": "",
+          "evaluatorName": "",
+          "guidelines": "",
+          "id": 7,
+          "name": "Coherence (PTA)",
+          "systemName": "Coherence (PTA)",
+          "temperature": 0
+        },
+        {
+          "checkedPart": null,
+          "enableOverrideConfiguration": false,
+          "evaluationRules": "",
+          "evaluatorName": "",
+          "guidelines": "",
+          "id": 8,
+          "name": "Accuracy (PTA)",
+          "systemName": "Accuracy (PTA)",
+          "temperature": 0
+        },
+        {
+          "checkedPart": null,
+          "enableOverrideConfiguration": false,
+          "evaluationRules": "",
+          "evaluatorName": "",
+          "guidelines": "",
+          "id": 9,
+          "name": "Attribution Correctness",
+          "systemName": "Attribution Correctness",
+          "temperature": 0
+        },
+        {
+          "checkedPart": null,
+          "enableOverrideConfiguration": false,
+          "evaluationRules": "",
+          "evaluatorName": "",
+          "guidelines": "",
+          "id": 10,
+          "name": "Categorization correctness",
+          "systemName": "Categorization correctness",
+          "temperature": 0
+        }
+      ],
+      "integration_id": 1,
+      "project_id": 3,
+      "datastream_metadata": {
+        "uuid": "39710669-3b20-4ff8-975a-66e401101000",
+        "source_timestamp": 1750307549000
+      }
+    },
+    {
+      "id": 6,
+      "configuration_type": "review-criteria",
+      "configuration_value": [
+        {
+          "addToMetadata": false,
+          "allowCopy": false,
+          "allowOptional": false,
+          "autoDefault": false,
+          "autoFillFromQualityDimensionAgents": false,
+          "collapsible": false,
+          "description": "<p>Evaluates how well the RTL implementation matches the behavior described in the specification.</p>",
+          "displayCondition": false,
+          "editability": [],
+          "key": "behavioralMatchScore",
+          "name": "behavioral_match_score",
+          "options": [
+            {
+              "displayCondition": false,
+              "name": "5 – Perfect Match: RTL fully implements all intended behavior.",
+              "value": "5 – Perfect Match: RTL fully implements all intended behavior."
+            },
+            {
+              "displayCondition": false,
+              "name": "4 – Minor Issues: Small deviations or incomplete edge cases.",
+              "value": "4 – Minor Issues: Small deviations or incomplete edge cases."
+            },
+            {
+              "displayCondition": false,
+              "name": "3 – Partial Match: Some key logic is missing or incorrect.",
+              "value": "3 – Partial Match: Some key logic is missing or incorrect."
+            },
+            {
+              "displayCondition": false,
+              "name": "2 – Major Mismatch: Only loosely related to the specification.",
+              "value": "2 – Major Mismatch: Only loosely related to the specification."
+            },
+            {
+              "displayCondition": false,
+              "name": "1 – Completely Incorrect: RTL behavior does not follow the spec.",
+              "value": "1 – Completely Incorrect: RTL behavior does not follow the spec."
+            }
+          ],
+          "type": "SINGLE_CHOICE",
+          "visibility": []
+        },
+        {
+          "addToMetadata": false,
+          "allowCopy": false,
+          "allowOptional": false,
+          "autoDefault": false,
+          "autoFillFromQualityDimensionAgents": false,
+          "collapsible": false,
+          "description": "<p>Detail the answer above.</p>",
+          "displayCondition": false,
+          "editability": [],
+          "key": "behaviorReasoning",
+          "llmCheckEnabled": true,
+          "llmCheckEvaluationRules": "Focus on the english descriptions, if there are code snippets or error messages, ignore them.",
+          "llmCheckQualityGuidelines": "Explanation must be with good English grammar.",
+          "name": "behavior_reasoning",
+          "options": [],
+          "type": "FREE_TEXT",
+          "visibility": []
+        },
+        {
+          "addToMetadata": false,
+          "allowCopy": false,
+          "allowOptional": false,
+          "autoDefault": false,
+          "autoFillFromQualityDimensionAgents": false,
+          "collapsible": false,
+          "description": "<p>Assesses the quality of the LLM-generated reasoning trace.</p>",
+          "displayCondition": false,
+          "editability": [],
+          "key": "reasoningScore",
+          "name": "reasoning_score",
+          "options": [
+            {
+              "displayCondition": false,
+              "name": "3 – Correct: Reasoning is technically accurate, complete, and logically coherent.",
+              "value": "3 – Correct: Reasoning is technically accurate, complete, and logically coherent."
+            },
+            {
+              "displayCondition": false,
+              "name": "2 – Partially Correct: Contains some valid steps but also gaps, unclear logic, or incorrect assumptions.",
+              "value": "2 – Partially Correct: Contains some valid steps but also gaps, unclear logic, or incorrect assumptions."
+            },
+            {
+              "displayCondition": false,
+              "name": "1 – Incorrect: Fundamentally flawed, misleading, or incoherent reasoning.",
+              "value": "1 – Incorrect: Fundamentally flawed, misleading, or incoherent reasoning."
+            }
+          ],
+          "type": "SINGLE_CHOICE",
+          "visibility": []
+        },
+        {
+          "addToMetadata": false,
+          "allowCopy": false,
+          "allowOptional": false,
+          "autoDefault": false,
+          "autoFillFromQualityDimensionAgents": false,
+          "collapsible": false,
+          "description": "<p>Detail the answer above.</p>",
+          "displayCondition": false,
+          "editability": [],
+          "key": "reasoningJustification",
+          "llmCheckEnabled": true,
+          "llmCheckEvaluationRules": "Focus on the english descriptions, if there are code snippets or error messages, ignore them.",
+          "llmCheckQualityGuidelines": "Explanation must be with good English grammar.",
+          "name": "reasoning_justification",
+          "options": [],
+          "type": "FREE_TEXT",
+          "visibility": []
+        },
+        {
+          "addToMetadata": false,
+          "allowCopy": false,
+          "allowOptional": false,
+          "autoDefault": false,
+          "autoFillFromQualityDimensionAgents": false,
+          "collapsible": false,
+          "description": "<p>Share a link with the environment.</p>",
+          "displayCondition": false,
+          "editability": [],
+          "key": "environmentLink",
+          "name": "environment_link",
+          "options": [],
+          "type": "FREE_TEXT",
+          "visibility": []
+        }
+      ],
+      "integration_id": 1,
+      "project_id": 24,
+      "datastream_metadata": {
+        "uuid": "1f173bcb-4d09-464a-abb7-b5ea00111101",
+        "source_timestamp": 1754481427000
+      }
+    },
+    {
+      "id": 5,
+      "configuration_type": "model-config",
+      "configuration_value": {
+        "allow_sapling": false,
+        "allow_to_modify_system_prompt": false,
+        "allow_to_modify_temperature": false,
+        "allow_to_modify_tool_prompt": false,
+        "allow_to_save_original_prompt": false,
+        "assistant_id": null,
+        "autorun_testcases": false,
+        "block_form_submission_for_feedback_description": false,
+        "block_form_submission_for_llm_check_failed": false,
+        "block_prompt_submission_by_feedback": false,
+        "block_submission_with_logical_check": false,
+        "check_prompt_unrateable": false,
+        "config_name": "",
+        "disable_code_editor_ideal_response": true,
+        "disable_code_execution": false,
+        "disable_collapsible_turns": false,
+        "disable_prompt_category_metadata": false,
+        "disable_review_criteria_for_variants": false,
+        "disable_status_check_for_promt_review_again": false,
+        "enable_admin_can_edit": true,
+        "enable_admin_can_review_again": true,
+        "enable_admin_can_view": true,
+        "enable_anyone_can_edit": false,
+        "enable_anyone_can_review_again": false,
+        "enable_anyone_can_view": true,
+        "enable_audio_upload": false,
+        "enable_block_submission_by_notebook_score": {
+          "enabled": false,
+          "score": 0
+        },
+        "enable_fallback_model": false,
+        "enable_image_upload": false,
+        "enable_llm_checks_for_all_text_fields": false,
+        "enable_model_step_view": false,
+        "enable_multiple_image_upload": false,
+        "enable_prefer_ideal_response": false,
+        "enable_prompt_response_score_evaluation": false,
+        "enable_prompt_variant": false,
+        "enable_record_audio": false,
+        "enable_time_tracking": false,
+        "enabled_model_gateway": false,
+        "enabled_overall_star_rating": false,
+        "enabled_similarity_response": {
+          "enabled": false,
+          "threshold": 0
+        },
+        "evaluation_only": false,
+        "fallback_model": "",
+        "fallback_model_1": "",
+        "fallback_model_10": "",
+        "fallback_model_2": "",
+        "fallback_model_3": "",
+        "fallback_model_4": "",
+        "fallback_model_5": "",
+        "fallback_model_6": "",
+        "fallback_model_7": "",
+        "fallback_model_8": "",
+        "fallback_model_9": "",
+        "feedback_mechanisms": [],
+        "hide_ideal_response": false,
+        "hide_preference_explanation": true,
+        "labeling_tool_url": "https://labeling-n.turing.com/api",
+        "logical_checks_script": "",
+        "model_1": "deepseek-r1",
+        "model_10": "",
+        "model_10_failover_config": {},
+        "model_10_reasoning_effort": "",
+        "model_1_failover_config": {},
+        "model_1_reasoning_effort": "medium",
+        "model_2": "",
+        "model_2_failover_config": {},
+        "model_2_reasoning_effort": "",
+        "model_3": "",
+        "model_3_failover_config": {},
+        "model_3_reasoning_effort": "",
+        "model_4": "",
+        "model_4_failover_config": {},
+        "model_4_reasoning_effort": "",
+        "model_5": "",
+        "model_5_failover_config": {},
+        "model_5_reasoning_effort": "",
+        "model_6": "",
+        "model_6_failover_config": {},
+        "model_6_reasoning_effort": "",
+        "model_7": "",
+        "model_7_failover_config": {},
+        "model_7_reasoning_effort": "",
+        "model_8": "",
+        "model_8_failover_config": {},
+        "model_8_reasoning_effort": "",
+        "model_9": "",
+        "model_9_failover_config": {},
+        "model_9_reasoning_effort": "",
+        "model_shuffle_percentage": [
+          0
+        ],
+        "optional_ideal_response": true,
+        "randomize_model_order": false,
+        "randomize_temperature": false,
+        "randomize_temperature_1": false,
+        "randomize_temperature_10": false,
+        "randomize_temperature_2": false,
+        "randomize_temperature_3": false,
+        "randomize_temperature_4": false,
+        "randomize_temperature_5": false,
+        "randomize_temperature_6": false,
+        "randomize_temperature_7": false,
+        "randomize_temperature_8": false,
+        "randomize_temperature_9": false,
+        "run_checks_on_import": false,
+        "show_confirm_task_reminder": false,
+        "show_finetune_difficulty_button": false,
+        "show_model_name": false,
+        "show_model_preference_as_dropdown": false,
+        "show_system_prompt": false,
+        "show_token_count": false,
+        "system_prompt": "",
+        "temperature_1": 0.5,
+        "temperature_10": 0,
+        "temperature_2": 0,
+        "temperature_3": 0,
+        "temperature_4": 0,
+        "temperature_5": 0,
+        "temperature_6": 0,
+        "temperature_7": 0,
+        "temperature_8": 0,
+        "temperature_9": 0,
+        "tool_prompt": "",
+        "use_custom_system_prompt": false,
+        "use_model_distribution": false
+      },
+      "integration_id": 1,
+      "project_id": 24,
+      "datastream_metadata": {
+        "uuid": "e5f19269-981a-4329-a4d6-842b01111011",
+        "source_timestamp": 1747931859000
+      }
+    },
+    {
+      "id": 4,
+      "configuration_type": "preference-review-criteria",
+      "configuration_value": [
+        {
+          "addToMetadata": false,
+          "allowCopy": false,
+          "collapsible": false,
+          "description": "",
+          "displayCondition": false,
+          "editability": [],
+          "key": "respose",
+          "name": "Respose",
+          "options": [],
+          "type": "FREE_TEXT",
+          "visibility": []
+        },
+        {
+          "addToMetadata": false,
+          "allowCopy": false,
+          "collapsible": false,
+          "description": "",
+          "displayCondition": false,
+          "editability": [],
+          "key": "ahtForResponse",
+          "name": "AHT For Response",
+          "options": [],
+          "type": "FREE_TEXT",
+          "visibility": []
+        },
+        {
+          "addToMetadata": false,
+          "allowCopy": false,
+          "collapsible": false,
+          "description": "",
+          "displayCondition": false,
+          "editability": [],
+          "key": "planThoughtAction",
+          "name": "PLan Thought Action",
+          "options": [],
+          "type": "FREE_TEXT",
+          "visibility": []
+        },
+        {
+          "addToMetadata": false,
+          "allowCopy": false,
+          "collapsible": false,
+          "description": "",
+          "displayCondition": false,
+          "editability": [],
+          "key": "ahtForPta",
+          "name": "AHT for PTA",
+          "options": [],
+          "type": "FREE_TEXT",
+          "visibility": []
+        },
+        {
+          "addToMetadata": false,
+          "allowCopy": false,
+          "collapsible": false,
+          "description": "",
+          "displayCondition": false,
+          "editability": [],
+          "key": "attribution",
+          "name": "Attribution",
+          "options": [],
+          "type": "FREE_TEXT",
+          "visibility": []
+        }
+      ],
+      "integration_id": 1,
+      "project_id": 21,
+      "datastream_metadata": {
+        "uuid": "a7b7d7be-9fef-4508-8eed-aef901100000",
+        "source_timestamp": 1738343899000
+      }
+    },
+    {
+      "id": 3,
+      "configuration_type": "model-config",
+      "configuration_value": {
+        "allow_sapling": false,
+        "allow_to_modify_system_prompt": false,
+        "allow_to_modify_temperature": false,
+        "allow_to_modify_tool_prompt": false,
+        "allow_to_save_original_prompt": false,
+        "block_form_submission_for_feedback_description": false,
+        "block_form_submission_for_llm_check_failed": false,
+        "block_prompt_submission_by_feedback": false,
+        "block_submission_with_logical_check": false,
+        "check_prompt_unrateable": false,
+        "config_name": "",
+        "disable_code_editor_ideal_response": true,
+        "disable_code_execution": false,
+        "disable_collapsible_turns": false,
+        "disable_prompt_category_metadata": false,
+        "disable_review_criteria_for_variants": false,
+        "disable_status_check_for_promt_review_again": false,
+        "enable_audio_upload": false,
+        "enable_block_submission_by_notebook_score": {
+          "enabled": false,
+          "score": 0
+        },
+        "enable_fallback_model": false,
+        "enable_image_upload": false,
+        "enable_llm_checks_for_all_text_fields": false,
+        "enable_model_step_view": false,
+        "enable_multiple_image_upload": false,
+        "enable_prefer_ideal_response": false,
+        "enable_prompt_variant": false,
+        "enable_record_audio": false,
+        "evaluation_only": false,
+        "fallback_model": "",
+        "fallback_model_1": "",
+        "fallback_model_10": "",
+        "fallback_model_2": "",
+        "fallback_model_3": "",
+        "fallback_model_4": "",
+        "fallback_model_5": "",
+        "fallback_model_6": "",
+        "fallback_model_7": "",
+        "fallback_model_8": "",
+        "fallback_model_9": "",
+        "feedback_mechanisms": [],
+        "hide_ideal_response": true,
+        "hide_preference_explanation": true,
+        "labeling_tool_url": "https://labeling-n.turing.com/api",
+        "logical_checks_script": "",
+        "model_1": "grok-0626.research-models",
+        "model_10": "",
+        "model_2": "",
+        "model_3": "",
+        "model_4": "",
+        "model_5": "",
+        "model_6": "",
+        "model_7": "",
+        "model_8": "",
+        "model_9": "",
+        "optional_ideal_response": false,
+        "randomize_model_order": false,
+        "randomize_temperature": false,
+        "randomize_temperature_1": false,
+        "randomize_temperature_10": false,
+        "randomize_temperature_2": false,
+        "randomize_temperature_3": false,
+        "randomize_temperature_4": false,
+        "randomize_temperature_5": false,
+        "randomize_temperature_6": false,
+        "randomize_temperature_7": false,
+        "randomize_temperature_8": false,
+        "randomize_temperature_9": false,
+        "run_checks_on_import": false,
+        "show_finetune_difficulty_button": false,
+        "show_model_name": false,
+        "show_model_preference_as_dropdown": false,
+        "show_token_count": false,
+        "system_prompt": "",
+        "temperature_1": 0.5,
+        "temperature_10": 0,
+        "temperature_2": 0,
+        "temperature_3": 0,
+        "temperature_4": 0,
+        "temperature_5": 0,
+        "temperature_6": 0,
+        "temperature_7": 0,
+        "temperature_8": 0,
+        "temperature_9": 0,
+        "tool_prompt": "",
+        "use_custom_system_prompt": false,
+        "use_model_distribution": false
+      },
+      "integration_id": 1,
+      "project_id": 21,
+      "datastream_metadata": {
+        "uuid": "d7d09531-1a8a-473b-8de9-009f11001110",
+        "source_timestamp": 1738334376000
+      }
+    },
+    {
+      "id": 2,
+      "configuration_type": "review-criteria",
+      "configuration_value": [],
+      "integration_id": 1,
+      "project_id": 21,
+      "datastream_metadata": {
+        "uuid": "627b2167-5f06-4fe2-b61b-de8701101100",
+        "source_timestamp": 1738335046000
+      }
+    },
+    {
+      "id": 1,
+      "configuration_type": "prompt-evaluation",
+      "configuration_value": [
+        {
+          "addToMetadata": false,
+          "allowCopy": false,
+          "collapsible": false,
+          "description": "",
+          "displayCondition": false,
+          "editability": [],
+          "key": "query",
+          "name": "Query",
+          "options": [],
+          "type": "FREE_TEXT",
+          "visibility": []
+        },
+        {
+          "addToMetadata": false,
+          "allowCopy": false,
+          "collapsible": false,
+          "description": "",
+          "displayCondition": false,
+          "editability": [],
+          "key": "aht",
+          "name": "AHT For Query",
+          "options": [],
+          "type": "FREE_TEXT",
+          "visibility": []
+        },
+        {
+          "addToMetadata": false,
+          "allowCopy": false,
+          "collapsible": false,
+          "description": "",
+          "displayCondition": false,
+          "editability": [],
+          "key": "ahtForDocumentReview",
+          "name": "AHT for Document Review",
+          "options": [],
+          "type": "FREE_TEXT",
+          "visibility": []
+        },
+        {
+          "addToMetadata": false,
+          "allowCopy": false,
+          "collapsible": false,
+          "description": "",
+          "displayCondition": false,
+          "editability": [],
+          "key": "difficulty",
+          "name": "Difficulty",
+          "options": [
+            {
+              "name": "L1 (Easy)",
+              "value": "L1 (Easy)"
+            },
+            {
+              "name": "L2 (Medium)",
+              "value": "L2 (Medium)"
+            },
+            {
+              "name": "L3 (Hard)",
+              "value": "L3 (Hard)"
+            }
+          ],
+          "type": "SINGLE_CHOICE",
+          "visibility": []
+        },
+        {
+          "addToMetadata": false,
+          "allowCopy": false,
+          "collapsible": false,
+          "description": "",
+          "displayCondition": false,
+          "editability": [],
+          "key": "source",
+          "name": "Source",
+          "options": [
+            {
+              "name": "External Link",
+              "value": "External Link"
+            },
+            {
+              "name": "Single PDF",
+              "value": "Single PDF"
+            },
+            {
+              "name": "Multiple PDF",
+              "value": "Multiple PDF"
+            }
+          ],
+          "type": "SINGLE_CHOICE",
+          "visibility": []
+        },
+        {
+          "addToMetadata": false,
+          "allowCopy": false,
+          "collapsible": false,
+          "description": "",
+          "displayCondition": {
+            "and": [
+              {
+                "==": [
+                  {
+                    "var": "source"
+                  },
+                  "External Link"
+                ]
+              }
+            ]
+          },
+          "editability": [],
+          "key": "externalLink",
+          "name": "External Link",
+          "options": [],
+          "type": "FREE_TEXT",
+          "visibility": []
+        },
+        {
+          "addToMetadata": false,
+          "allowCopy": false,
+          "collapsible": false,
+          "description": "",
+          "displayCondition": false,
+          "editability": [],
+          "key": "section",
+          "name": "Section",
+          "options": [
+            {
+              "name": "Chart/Diagram",
+              "value": "Chart/Diagram"
+            },
+            {
+              "name": "Table",
+              "value": "Table"
+            },
+            {
+              "name": "Text",
+              "value": "Text"
+            },
+            {
+              "name": "Infographic",
+              "value": "Infographic"
+            }
+          ],
+          "type": "MULTIPLE_CHOICE",
+          "visibility": []
+        },
+        {
+          "addToMetadata": false,
+          "allowCopy": false,
+          "collapsible": false,
+          "description": "",
+          "displayCondition": false,
+          "editability": [],
+          "key": "nature",
+          "name": "Nature",
+          "options": [
+            {
+              "name": "Numerical/Quantitative",
+              "value": "Numerical/Quantitative"
+            },
+            {
+              "name": "Non-Numerical/Qualitative",
+              "value": "Non-Numerical/Qualitative"
+            },
+            {
+              "name": "Contextually Ambiguous",
+              "value": "Contextually Ambiguous"
+            },
+            {
+              "name": "Multi-Turn",
+              "value": "Multi-Turn"
+            }
+          ],
+          "type": "SINGLE_CHOICE",
+          "visibility": []
+        },
+        {
+          "addToMetadata": false,
+          "allowCopy": false,
+          "collapsible": false,
+          "description": "",
+          "displayCondition": false,
+          "editability": [],
+          "key": "type",
+          "name": "Type",
+          "options": [
+            {
+              "name": "Simple Data Extraction",
+              "value": "Simple Data Extraction"
+            },
+            {
+              "name": "Single Step Data Processing ",
+              "value": "Single Step Data Processing "
+            },
+            {
+              "name": "Multi Step Data Processing",
+              "value": "Multi Step Data Processing"
+            },
+            {
+              "name": "Information Retrieval",
+              "value": "Information Retrieval"
+            },
+            {
+              "name": "Summarisation",
+              "value": "Summarisation"
+            },
+            {
+              "name": "Recommendation",
+              "value": "Recommendation"
+            }
+          ],
+          "type": "SINGLE_CHOICE",
+          "visibility": []
+        }
+      ],
+      "integration_id": 1,
+      "project_id": 21,
+      "datastream_metadata": {
+        "uuid": "ab250b69-a43c-44af-be27-82d900010110",
+        "source_timestamp": 1738343744000
+      }
+    }
+  ]
+}

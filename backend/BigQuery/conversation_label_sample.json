@@ -1,0 +1,68 @@
+{
+  "table": "conversation_label",
+  "row_count": 5,
+  "sample_count": 5,
+  "fetched_at": "2026-01-28T23:22:53.055007",
+  "data": [
+    {
+      "created_at": "2024-11-27T10:15:13.069941",
+      "updated_at": "2024-11-27T10:15:13.069941",
+      "id": 5,
+      "conversation_id": 1710,
+      "label_id": 3,
+      "author_id": 69,
+      "datastream_metadata": {
+        "uuid": "f5cbac2d-f4a1-463a-8423-dec601111111",
+        "source_timestamp": 1732702513000
+      }
+    },
+    {
+      "created_at": "2024-11-27T09:34:32.647215",
+      "updated_at": "2024-11-27T09:34:32.647215",
+      "id": 4,
+      "conversation_id": 6,
+      "label_id": 2,
+      "author_id": 1,
+      "datastream_metadata": {
+        "uuid": "30350c2b-5c60-431f-9fe4-c61a01011010",
+        "source_timestamp": 1732700072000
+      }
+    },
+    {
+      "created_at": "2024-11-27T09:34:31.806551",
+      "updated_at": "2024-11-27T09:34:31.806551",
+      "id": 3,
+      "conversation_id": 6,
+      "label_id": 1,
+      "author_id": 1,
+      "datastream_metadata": {
+        "uuid": "30350c2b-5c60-431f-9fe4-c61a01011001",
+        "source_timestamp": 1732700071000
+      }
+    },
+    {
+      "created_at": "2024-11-27T09:34:05.853626",
+      "updated_at": "2024-11-27T09:34:05.853626",
+      "id": 2,
+      "conversation_id": 3,
+      "label_id": 2,
+      "author_id": 1,
+      "datastream_metadata": {
+        "uuid": "30350c2b-5c60-431f-9fe4-c61a00010011",
+        "source_timestamp": 1732700045000
+      }
+    },
+    {
+      "created_at": "2024-11-27T09:34:01.607928",
+      "updated_at": "2024-11-27T09:34:01.607928",
+      "id": 1,
+      "conversation_id": 2,
+      "label_id": 1,
+      "author_id": 1,
+      "datastream_metadata": {
+        "uuid": "27410b75-595f-4595-8058-cfa400010010",
+        "source_timestamp": 1732700041000
+      }
+    }
+  ]
+}

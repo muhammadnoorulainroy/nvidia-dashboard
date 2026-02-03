@@ -1,0 +1,1243 @@
+{
+  "table": "project_config_history",
+  "row_count": 31,
+  "sample_count": 31,
+  "fetched_at": "2026-01-28T23:24:08.540874",
+  "data": [
+    {
+      "created_at": "2026-01-22T14:44:35.603934",
+      "updated_at": "2026-01-22T14:44:35.603934",
+      "id": 31,
+      "old_value": {
+        "value": 3
+      },
+      "new_value": {
+        "value": 1
+      },
+      "project_id": 42,
+      "app_config_id": 1,
+      "author_id": 1223,
+      "datastream_metadata": {
+        "uuid": "57c75f42-1a00-452d-910c-6c03f35e2a22",
+        "source_timestamp": 1769093075000
+      }
+    },
+    {
+      "created_at": "2026-01-22T14:43:57.309981",
+      "updated_at": "2026-01-22T14:43:57.309981",
+      "id": 30,
+      "old_value": {
+        "value": false
+      },
+      "new_value": {
+        "value": true
+      },
+      "project_id": 42,
+      "app_config_id": 124,
+      "author_id": 1223,
+      "datastream_metadata": {
+        "uuid": "767a9f3c-979e-443a-88c4-c5bac35f41e2",
+        "source_timestamp": 1769093037000
+      }
+    },
+    {
+      "created_at": "2026-01-16T15:51:58.316133",
+      "updated_at": "2026-01-16T15:51:58.316133",
+      "id": 29,
+      "old_value": {
+        "value": false
+      },
+      "new_value": {
+        "value": true
+      },
+      "project_id": 39,
+      "app_config_id": 124,
+      "author_id": 1231,
+      "datastream_metadata": {
+        "uuid": "8a22cd2e-c3db-4225-9489-e86e4f09a6aa",
+        "source_timestamp": 1768578718000
+      }
+    },
+    {
+      "created_at": "2026-01-16T15:51:31.966084",
+      "updated_at": "2026-01-16T15:51:31.966084",
+      "id": 28,
+      "old_value": {
+        "value": false
+      },
+      "new_value": {
+        "value": true
+      },
+      "project_id": 38,
+      "app_config_id": 124,
+      "author_id": 1231,
+      "datastream_metadata": {
+        "uuid": "bd7d1678-1198-4846-bb03-813805497c4c",
+        "source_timestamp": 1768578691000
+      }
+    },
+    {
+      "created_at": "2026-01-16T15:50:47.022052",
+      "updated_at": "2026-01-16T15:50:47.022052",
+      "id": 27,
+      "old_value": {
+        "value": false
+      },
+      "new_value": {
+        "value": true
+      },
+      "project_id": 36,
+      "app_config_id": 124,
+      "author_id": 1231,
+      "datastream_metadata": {
+        "uuid": "bdcaf994-e05f-4281-b402-32f40ec7fbb8",
+        "source_timestamp": 1768578647000
+      }
+    },
+    {
+      "created_at": "2026-01-16T15:50:03.212223",
+      "updated_at": "2026-01-16T15:50:03.212223",
+      "id": 26,
+      "old_value": {
+        "value": false
+      },
+      "new_value": {
+        "value": true
+      },
+      "project_id": 37,
+      "app_config_id": 124,
+      "author_id": 1231,
+      "datastream_metadata": {
+        "uuid": "92967f47-4500-4007-89dc-e67fedeb4a45",
+        "source_timestamp": 1768578603000
+      }
+    },
+    {
+      "created_at": "2025-10-16T07:21:03.997203",
+      "updated_at": "2025-10-16T07:21:03.997203",
+      "id": 25,
+      "old_value": {
+        "value": {
+          "enabled": false,
+          "options": {
+            "autostartIfCurrentUser": false,
+            "idleDetectionOptions": {
+              "idleMessage": "Timer paused due to inactivity",
+              "idleTimeout": 300000,
+              "promptMessage": "Timer is about to be auto-paused",
+              "promptTimeout": 240000
+            },
+            "showExpectedTime": true
+          }
+        }
+      },
+      "new_value": {
+        "value": {
+          "enabled": true,
+          "options": {
+            "autostartIfCurrentUser": false,
+            "idleDetectionOptions": {
+              "idleMessage": "Timer paused due to inactivity",
+              "idleTimeout": 300000,
+              "promptMessage": "Timer is about to be auto-paused",
+              "promptTimeout": 240000
+            },
+            "showExpectedTime": true
+          }
+        }
+      },
+      "project_id": 1,
+      "app_config_id": 126,
+      "author_id": 1,
+      "datastream_metadata": {
+        "uuid": "9c834956-2abe-41d8-8098-b66b11110110",
+        "source_timestamp": 1760599263000
+      }
+    },
+    {
+      "created_at": "2025-08-18T19:34:18.459100",
+      "updated_at": "2025-08-18T19:34:18.459100",
+      "id": 24,
+      "old_value": {
+        "value": 8
+      },
+      "new_value": {
+        "value": 10
+      },
+      "project_id": 24,
+      "app_config_id": 6,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "75d47fb1-d9f2-43e3-9878-704f00000001",
+        "source_timestamp": 1755545658000
+      }
+    },
+    {
+      "created_at": "2025-08-18T16:25:42.185853",
+      "updated_at": "2025-08-18T16:25:42.185853",
+      "id": 23,
+      "old_value": {
+        "value": 7
+      },
+      "new_value": {
+        "value": 8
+      },
+      "project_id": 24,
+      "app_config_id": 6,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "71dc8a76-2575-4ecc-8e9f-1db601011000",
+        "source_timestamp": 1755534342000
+      }
+    },
+    {
+      "created_at": "2025-08-04T18:33:31.271388",
+      "updated_at": "2025-08-04T18:33:31.271388",
+      "id": 22,
+      "old_value": {
+        "value": 3
+      },
+      "new_value": {
+        "value": 7
+      },
+      "project_id": 24,
+      "app_config_id": 6,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "fb4da861-205c-4656-9405-b53c00110110",
+        "source_timestamp": 1754332411000
+      }
+    },
+    {
+      "created_at": "2025-07-29T14:11:40.511664",
+      "updated_at": "2025-07-29T14:11:40.511664",
+      "id": 21,
+      "old_value": {
+        "value": "{\n  \"schema\": {\n    \"type\": \"object\",\n    \"properties\": {\n      \"failureType\": {\n        \"type\": \"string\",\n        \"enum\": [\n          \"Syntax or Compilation Error\", \n          \"Performance Issue\",\n          \"Wrong Implementation\",\n          \"Variables and functions name not meaningful\",\n          \"Wrong Signature\",\n          \"Test cases not covering major data types or variable shapes not tested\"\n        ]\n      }\n    },\n    \"required\": [\"failureType\"]\n  },\n  \"enabled\": true,\n  \"uiSchema\": {\n    \"failureType\": {\n      \"ui:options\": {\n        \"title\": \"Feedback category\",\n        \"placeholder\": \"Choose feedback category\"\n      }\n    }\n  },\n  \"prepareInitialData\": \"\"\n}"
+      },
+      "new_value": {
+        "value": "{\n  \"schema\": {\n    \"type\": \"object\",\n    \"properties\": {\n      \"failureType\": {\n        \"type\": \"string\",\n        \"enum\": [\n          \"Syntax or Compilation Error\", \n          \"Performance Issue\",\n          \"Wrong Implementation\",\n          \"Variables and functions name not meaningful\",\n          \"Wrong Signature\",\n          \"Test cases not covering major data types or variable shapes not tested\",\n          \"Looks Good No Issues\"\n        ]\n      }\n    },\n    \"required\": [\"failureType\"]\n  },\n  \"enabled\": true,\n  \"uiSchema\": {\n    \"failureType\": {\n      \"ui:options\": {\n        \"title\": \"Feedback category\",\n        \"placeholder\": \"Choose feedback category\"\n      }\n    }\n  },\n  \"prepareInitialData\": \"\"\n}"
+      },
+      "project_id": 27,
+      "app_config_id": 62,
+      "author_id": 432,
+      "datastream_metadata": {
+        "uuid": "926eab69-83f3-4af4-b19b-279310111010",
+        "source_timestamp": 1753798300000
+      }
+    },
+    {
+      "created_at": "2025-07-28T14:49:36.852429",
+      "updated_at": "2025-07-28T14:49:36.852429",
+      "id": 20,
+      "old_value": {
+        "value": "{\n  \"schema\": {\n    \"type\": \"object\",\n    \"properties\": {\n      \"failureType\": {\n        \"type\": \"string\",\n        \"enum\": [\n          \"Syntax or Compilation Error\", \n          \"Performance Issue\",\n          \"Security Vulnerability\",\n          \"Incoherent Output\",\n          \"Incomplete Response\",\n          \"Major Code Accuracy Failure\"\n        ]\n      }\n    },\n    \"required\": [\"failureType\"]\n  },\n  \"enabled\": true,\n  \"uiSchema\": {\n    \"failureType\": {\n      \"ui:options\": {\n        \"title\": \"Feedback category\",\n        \"placeholder\": \"Choose feedback category\"\n      }\n    }\n  },\n  \"prepareInitialData\": \"\"\n}"
+      },
+      "new_value": {
+        "value": "{\n  \"schema\": {\n    \"type\": \"object\",\n    \"properties\": {\n      \"failureType\": {\n        \"type\": \"string\",\n        \"enum\": [\n          \"Syntax or Compilation Error\", \n          \"Performance Issue\",\n          \"Wrong Implementation\",\n          \"Variables and functions name not meaningful\",\n          \"Wrong Signature\",\n          \"Test cases not covering major data types or variable shapes not tested\"\n        ]\n      }\n    },\n    \"required\": [\"failureType\"]\n  },\n  \"enabled\": true,\n  \"uiSchema\": {\n    \"failureType\": {\n      \"ui:options\": {\n        \"title\": \"Feedback category\",\n        \"placeholder\": \"Choose feedback category\"\n      }\n    }\n  },\n  \"prepareInitialData\": \"\"\n}"
+      },
+      "project_id": 27,
+      "app_config_id": 62,
+      "author_id": 432,
+      "datastream_metadata": {
+        "uuid": "10329447-f63e-4650-a06b-0d2b10110110",
+        "source_timestamp": 1753714176000
+      }
+    },
+    {
+      "created_at": "2025-07-28T14:29:20.605475",
+      "updated_at": "2025-07-28T14:29:20.605475",
+      "id": 19,
+      "old_value": {
+        "value": {
+          "enabled": false,
+          "prepareInitialData": "",
+          "schema": {},
+          "uiSchema": {}
+        }
+      },
+      "new_value": {
+        "value": "{\n  \"schema\": {\n    \"type\": \"object\",\n    \"properties\": {\n      \"failureType\": {\n        \"type\": \"string\",\n        \"enum\": [\n          \"Syntax or Compilation Error\", \n          \"Performance Issue\",\n          \"Security Vulnerability\",\n          \"Incoherent Output\",\n          \"Incomplete Response\",\n          \"Major Code Accuracy Failure\"\n        ]\n      }\n    },\n    \"required\": [\"failureType\"]\n  },\n  \"enabled\": true,\n  \"uiSchema\": {\n    \"failureType\": {\n      \"ui:options\": {\n        \"title\": \"Feedback category\",\n        \"placeholder\": \"Choose feedback category\"\n      }\n    }\n  },\n  \"prepareInitialData\": \"\"\n}"
+      },
+      "project_id": 27,
+      "app_config_id": 62,
+      "author_id": 4,
+      "datastream_metadata": {
+        "uuid": "e8c950ba-cf31-4d59-9863-144b01111111",
+        "source_timestamp": 1753712960000
+      }
+    },
+    {
+      "created_at": "2025-07-18T19:23:23.574983",
+      "updated_at": "2025-07-18T19:23:23.574983",
+      "id": 18,
+      "old_value": {
+        "value": {
+          "keys": [
+            "Project / Action",
+            "File Name"
+          ]
+        }
+      },
+      "new_value": {
+        "value": {
+          "keys": [
+            "Project / Action",
+            "File Name",
+            "library"
+          ]
+        }
+      },
+      "project_id": 27,
+      "app_config_id": 33,
+      "author_id": 4,
+      "datastream_metadata": {
+        "uuid": "1fa40553-689f-4751-a24d-609b00000101",
+        "source_timestamp": 1752866603000
+      }
+    },
+    {
+      "created_at": "2024-09-26T20:49:52.448218",
+      "updated_at": "2024-09-26T20:49:52.448218",
+      "id": 17,
+      "old_value": {
+        "value": {
+          "categories": [
+            {
+              "name": "CID001 - Concept to Spec",
+              "value": "CID001 - Concept to Spec"
+            },
+            {
+              "name": "CID002 - RTL: Code Completion",
+              "value": "CID002 - RTL: Code Completion"
+            },
+            {
+              "name": "CID004 - RTL: Modify Code",
+              "value": "CID004 - RTL: Modify Code"
+            },
+            {
+              "name": "CID005 - RTL: Component Integration",
+              "value": "CID005 - RTL: Component Integration"
+            },
+            {
+              "name": "CID006 - From RTL to Spec",
+              "value": "CID006 - From RTL to Spec"
+            },
+            {
+              "name": "CID007 - RTL: Code Review",
+              "value": "CID007 - RTL: Code Review"
+            },
+            {
+              "name": "CID008 - TB: Summarization",
+              "value": "CID008 - TB: Summarization"
+            },
+            {
+              "name": "CID009 - RTL: Question",
+              "value": "CID009 - RTL: Question"
+            },
+            {
+              "name": "CID010 - TB: Question",
+              "value": "CID010 - TB: Question"
+            },
+            {
+              "name": "CID011 - TB: Testplan Documentation",
+              "value": "CID011 - TB: Testplan Documentation"
+            },
+            {
+              "name": "CID012 - TB: Stimulus Generation",
+              "value": "CID012 - TB: Stimulus Generation"
+            },
+            {
+              "name": "CID013 - TB: Checker Generation",
+              "value": "CID013 - TB: Checker Generation"
+            },
+            {
+              "name": "CID014 - RTL: Assertion Generation",
+              "value": "CID014 - RTL: Assertion Generation"
+            },
+            {
+              "name": "CID015 - Bug Identification",
+              "value": "CID015 - Bug Identification"
+            },
+            {
+              "name": "CID016 - RTL: Bug Fixing",
+              "value": "CID016 - RTL: Bug Fixing"
+            }
+          ],
+          "required": true
+        }
+      },
+      "new_value": {
+        "value": {
+          "categories": [
+            {
+              "name": "CID001 - Concept to Spec",
+              "value": "CID001 - Concept to Spec"
+            },
+            {
+              "name": "CID002 - RTL: Code Completion",
+              "value": "CID002 - RTL: Code Completion"
+            },
+            {
+              "name": "CID003 - RTL: Single Module",
+              "value": "CID003 - RTL: Single Module"
+            },
+            {
+              "name": "CID004 - RTL: Modify Code",
+              "value": "CID004 - RTL: Modify Code"
+            },
+            {
+              "name": "CID005 - RTL: Component Integration",
+              "value": "CID005 - RTL: Component Integration"
+            },
+            {
+              "name": "CID006 - From RTL to Spec",
+              "value": "CID006 - From RTL to Spec"
+            },
+            {
+              "name": "CID007 - RTL: Code Review",
+              "value": "CID007 - RTL: Code Review"
+            },
+            {
+              "name": "CID008 - TB: Summarization",
+              "value": "CID008 - TB: Summarization"
+            },
+            {
+              "name": "CID009 - RTL: Question",
+              "value": "CID009 - RTL: Question"
+            },
+            {
+              "name": "CID010 - TB: Question",
+              "value": "CID010 - TB: Question"
+            },
+            {
+              "name": "CID011 - TB: Testplan Documentation",
+              "value": "CID011 - TB: Testplan Documentation"
+            },
+            {
+              "name": "CID012 - TB: Stimulus Generation",
+              "value": "CID012 - TB: Stimulus Generation"
+            },
+            {
+              "name": "CID013 - TB: Checker Generation",
+              "value": "CID013 - TB: Checker Generation"
+            },
+            {
+              "name": "CID014 - RTL: Assertion Generation",
+              "value": "CID014 - RTL: Assertion Generation"
+            },
+            {
+              "name": "CID015 - Bug Identification",
+              "value": "CID015 - Bug Identification"
+            },
+            {
+              "name": "CID016 - RTL: Bug Fixing",
+              "value": "CID016 - RTL: Bug Fixing"
+            }
+          ],
+          "required": true
+        }
+      },
+      "project_id": 16,
+      "app_config_id": 50,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "90885f83-79ad-4161-ad4a-bae900110000",
+        "source_timestamp": 1727383792000
+      }
+    },
+    {
+      "created_at": "2024-09-26T20:48:39.213936",
+      "updated_at": "2024-09-26T20:48:39.213936",
+      "id": 16,
+      "old_value": {
+        "value": {
+          "categories": [
+            {
+              "name": "CID001 - Concept to Spec",
+              "value": "CID001 - Concept to Spec"
+            },
+            {
+              "name": "CID002 - RTL: Code Completion",
+              "value": "CID002 - RTL: Code Completion"
+            },
+            {
+              "name": "CID004 - RTL: Modify Code",
+              "value": "CID004 - RTL: Modify Code"
+            },
+            {
+              "name": "CID005 - RTL: Component Integration",
+              "value": "CID005 - RTL: Component Integration"
+            },
+            {
+              "name": "CID006 - From RTL to Spec",
+              "value": "CID006 - From RTL to Spec"
+            },
+            {
+              "name": "CID007 - RTL: Code Review",
+              "value": "CID007 - RTL: Code Review"
+            },
+            {
+              "name": "CID008 - TB: Summarization",
+              "value": "CID008 - TB: Summarization"
+            },
+            {
+              "name": "CID009 - RTL: Question",
+              "value": "CID009 - RTL: Question"
+            },
+            {
+              "name": "CID010 - TB: Question",
+              "value": "CID010 - TB: Question"
+            },
+            {
+              "name": "CID011 - TB: Testplan Documentation",
+              "value": "CID011 - TB: Testplan Documentation"
+            },
+            {
+              "name": "CID012 - TB: Stimulus Generation",
+              "value": "CID012 - TB: Stimulus Generation"
+            },
+            {
+              "name": "CID013 - TB: Checker Generation",
+              "value": "CID013 - TB: Checker Generation"
+            },
+            {
+              "name": "CID014 - RTL: Assertion Generation",
+              "value": "CID014 - RTL: Assertion Generation"
+            },
+            {
+              "name": "CID015 - Bug Identification",
+              "value": "CID015 - Bug Identification"
+            },
+            {
+              "name": "CID016 - RTL: Bug Fixing",
+              "value": "CID016 - RTL: Bug Fixing"
+            }
+          ],
+          "required": true
+        }
+      },
+      "new_value": {
+        "value": {
+          "categories": [
+            {
+              "name": "CID001 - Concept to Spec",
+              "value": "CID001 - Concept to Spec"
+            },
+            {
+              "name": "CID002 - RTL: Code Completion",
+              "value": "CID002 - RTL: Code Completion"
+            },
+            {
+              "name": "CID004 - RTL: Modify Code",
+              "value": "CID004 - RTL: Modify Code"
+            },
+            {
+              "name": "CID005 - RTL: Component Integration",
+              "value": "CID005 - RTL: Component Integration"
+            },
+            {
+              "name": "CID006 - From RTL to Spec",
+              "value": "CID006 - From RTL to Spec"
+            },
+            {
+              "name": "CID007 - RTL: Code Review",
+              "value": "CID007 - RTL: Code Review"
+            },
+            {
+              "name": "CID008 - TB: Summarization",
+              "value": "CID008 - TB: Summarization"
+            },
+            {
+              "name": "CID009 - RTL: Question",
+              "value": "CID009 - RTL: Question"
+            },
+            {
+              "name": "CID010 - TB: Question",
+              "value": "CID010 - TB: Question"
+            },
+            {
+              "name": "CID011 - TB: Testplan Documentation",
+              "value": "CID011 - TB: Testplan Documentation"
+            },
+            {
+              "name": "CID012 - TB: Stimulus Generation",
+              "value": "CID012 - TB: Stimulus Generation"
+            },
+            {
+              "name": "CID013 - TB: Checker Generation",
+              "value": "CID013 - TB: Checker Generation"
+            },
+            {
+              "name": "CID014 - RTL: Assertion Generation",
+              "value": "CID014 - RTL: Assertion Generation"
+            },
+            {
+              "name": "CID015 - Bug Identification",
+              "value": "CID015 - Bug Identification"
+            },
+            {
+              "name": "CID016 - RTL: Bug Fixing",
+              "value": "CID016 - RTL: Bug Fixing"
+            }
+          ],
+          "required": true
+        }
+      },
+      "project_id": 16,
+      "app_config_id": 50,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "f7b17b62-cf20-44d2-bb7a-8fd601110010",
+        "source_timestamp": 1727383719000
+      }
+    },
+    {
+      "created_at": "2024-09-24T16:34:48.082826",
+      "updated_at": "2024-09-24T16:34:48.082826",
+      "id": 15,
+      "old_value": {
+        "value": true
+      },
+      "new_value": {
+        "value": false
+      },
+      "project_id": 16,
+      "app_config_id": 7,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "692a1c34-f715-4a95-88a9-f2c701000000",
+        "source_timestamp": 1727195688000
+      }
+    },
+    {
+      "created_at": "2024-09-24T16:34:07.714723",
+      "updated_at": "2024-09-24T16:34:07.714723",
+      "id": 14,
+      "old_value": {
+        "value": false
+      },
+      "new_value": {
+        "value": true
+      },
+      "project_id": 16,
+      "app_config_id": 51,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "3a4a3066-be7e-488e-9cb2-9f0f10001001",
+        "source_timestamp": 1727195647000
+      }
+    },
+    {
+      "created_at": "2024-09-24T16:34:01.608609",
+      "updated_at": "2024-09-24T16:34:01.608609",
+      "id": 13,
+      "old_value": {
+        "value": {
+          "categories": [
+            {
+              "name": "",
+              "value": ""
+            }
+          ],
+          "required": true
+        }
+      },
+      "new_value": {
+        "value": {
+          "categories": [
+            {
+              "name": "CID001 - Concept to Spec",
+              "value": "CID001 - Concept to Spec"
+            },
+            {
+              "name": "CID002 - RTL: Code Completion",
+              "value": "CID002 - RTL: Code Completion"
+            },
+            {
+              "name": "CID004 - RTL: Modify Code",
+              "value": "CID004 - RTL: Modify Code"
+            },
+            {
+              "name": "CID005 - RTL: Component Integration",
+              "value": "CID005 - RTL: Component Integration"
+            },
+            {
+              "name": "CID006 - From RTL to Spec",
+              "value": "CID006 - From RTL to Spec"
+            },
+            {
+              "name": "CID007 - RTL: Code Review",
+              "value": "CID007 - RTL: Code Review"
+            },
+            {
+              "name": "CID008 - TB: Summarization",
+              "value": "CID008 - TB: Summarization"
+            },
+            {
+              "name": "CID009 - RTL: Question",
+              "value": "CID009 - RTL: Question"
+            },
+            {
+              "name": "CID010 - TB: Question",
+              "value": "CID010 - TB: Question"
+            },
+            {
+              "name": "CID011 - TB: Testplan Documentation",
+              "value": "CID011 - TB: Testplan Documentation"
+            },
+            {
+              "name": "CID012 - TB: Stimulus Generation",
+              "value": "CID012 - TB: Stimulus Generation"
+            },
+            {
+              "name": "CID013 - TB: Checker Generation",
+              "value": "CID013 - TB: Checker Generation"
+            },
+            {
+              "name": "CID014 - RTL: Assertion Generation",
+              "value": "CID014 - RTL: Assertion Generation"
+            },
+            {
+              "name": "CID015 - Bug Identification",
+              "value": "CID015 - Bug Identification"
+            },
+            {
+              "name": "CID016 - RTL: Bug Fixing",
+              "value": "CID016 - RTL: Bug Fixing"
+            }
+          ],
+          "required": true
+        }
+      },
+      "project_id": 16,
+      "app_config_id": 50,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "3a4a3066-be7e-488e-9cb2-9f0f10000000",
+        "source_timestamp": 1727195641000
+      }
+    },
+    {
+      "created_at": "2024-09-23T22:55:40.966519",
+      "updated_at": "2024-09-23T22:55:40.966519",
+      "id": 12,
+      "old_value": {
+        "value": {
+          "categories": [
+            {
+              "name": "CID002 - RTL: Code Completion",
+              "value": "CID002 - RTL: Code Completion"
+            },
+            {
+              "name": "CID003 - RTL: Single Module",
+              "value": "CID003 - RTL: Single Module"
+            },
+            {
+              "name": "CID004 - RTL: Modify Code",
+              "value": "CID004 - RTL: Modify Code"
+            },
+            {
+              "name": "CID016 - RTL: Bug Fixing",
+              "value": "CID016 - RTL: Bug Fixing"
+            }
+          ],
+          "required": true
+        }
+      },
+      "new_value": {
+        "value": {
+          "categories": [
+            {
+              "name": "CID001 - Concept to Spec",
+              "value": "CID001 - Concept to Spec"
+            },
+            {
+              "name": "CID002 - RTL: Code Completion",
+              "value": "CID002 - RTL: Code Completion"
+            },
+            {
+              "name": "CID003 - RTL: Single Module",
+              "value": "CID003 - RTL: Single Module"
+            },
+            {
+              "name": "CID004 - RTL: Modify Code",
+              "value": "CID004 - RTL: Modify Code"
+            },
+            {
+              "name": "CID005 - RTL: Component Integration",
+              "value": "CID005 - RTL: Component Integration"
+            },
+            {
+              "name": "CID006 - From RTL to Spec",
+              "value": "CID006 - From RTL to Spec"
+            },
+            {
+              "name": "CID007 - RTL: Code Review",
+              "value": "CID007 - RTL: Code Review"
+            },
+            {
+              "name": "CID008 - TB: Summarization",
+              "value": "CID008 - TB: Summarization"
+            },
+            {
+              "name": "CID009 - RTL: Question",
+              "value": "CID009 - RTL: Question"
+            },
+            {
+              "name": "CID010 - TB: Question",
+              "value": "CID010 - TB: Question"
+            },
+            {
+              "name": "CID011 - TB: Testplan Documentation",
+              "value": "CID011 - TB: Testplan Documentation"
+            },
+            {
+              "name": "CID012 - TB: Stimulus Generation",
+              "value": "CID012 - TB: Stimulus Generation"
+            },
+            {
+              "name": "CID013 - TB: Checker Generation",
+              "value": "CID013 - TB: Checker Generation"
+            },
+            {
+              "name": "CID014 - RTL: Assertion Generation",
+              "value": "CID014 - RTL: Assertion Generation"
+            },
+            {
+              "name": "CID015 - Bug Identification",
+              "value": "CID015 - Bug Identification"
+            },
+            {
+              "name": "CID016 - RTL: Bug Fixing",
+              "value": "CID016 - RTL: Bug Fixing"
+            }
+          ],
+          "required": true
+        }
+      },
+      "project_id": 15,
+      "app_config_id": 50,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "aa704cb6-6ad6-46c6-9c76-c49501000001",
+        "source_timestamp": 1727132140000
+      }
+    },
+    {
+      "created_at": "2024-09-23T22:48:32.285833",
+      "updated_at": "2024-09-23T22:48:32.285833",
+      "id": 11,
+      "old_value": {
+        "value": {
+          "categories": [
+            {
+              "name": "CID002 - RTL: Code Completion",
+              "value": 2
+            },
+            {
+              "name": "CID003 - RTL: Single Module",
+              "value": 3
+            },
+            {
+              "name": "CID004 - RTL: Modify Code",
+              "value": 4
+            },
+            {
+              "name": "CID016 - RTL: Bug Fixing",
+              "value": 16
+            }
+          ],
+          "required": true
+        }
+      },
+      "new_value": {
+        "value": {
+          "categories": [
+            {
+              "name": "CID002 - RTL: Code Completion",
+              "value": "CID002 - RTL: Code Completion"
+            },
+            {
+              "name": "CID003 - RTL: Single Module",
+              "value": "CID003 - RTL: Single Module"
+            },
+            {
+              "name": "CID004 - RTL: Modify Code",
+              "value": "CID004 - RTL: Modify Code"
+            },
+            {
+              "name": "CID016 - RTL: Bug Fixing",
+              "value": "CID016 - RTL: Bug Fixing"
+            }
+          ],
+          "required": true
+        }
+      },
+      "project_id": 15,
+      "app_config_id": 50,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "087be897-27ab-415b-9eb5-8d6e00011101",
+        "source_timestamp": 1727131712000
+      }
+    },
+    {
+      "created_at": "2024-09-23T22:46:34.023703",
+      "updated_at": "2024-09-23T22:46:34.023703",
+      "id": 10,
+      "old_value": {
+        "value": {
+          "categories": [
+            {
+              "name": "Category A",
+              "value": "Category A"
+            },
+            {
+              "name": "Category B",
+              "value": "Category B"
+            }
+          ],
+          "required": true
+        }
+      },
+      "new_value": {
+        "value": {
+          "categories": [
+            {
+              "name": "CID002 - RTL: Code Completion",
+              "value": 2
+            },
+            {
+              "name": "CID003 - RTL: Single Module",
+              "value": 3
+            },
+            {
+              "name": "CID004 - RTL: Modify Code",
+              "value": 4
+            },
+            {
+              "name": "CID016 - RTL: Bug Fixing",
+              "value": 16
+            }
+          ],
+          "required": true
+        }
+      },
+      "project_id": 15,
+      "app_config_id": 50,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "5357d128-b949-4d6f-acd8-f57300001000",
+        "source_timestamp": 1727131594000
+      }
+    },
+    {
+      "created_at": "2024-09-19T20:40:09.491172",
+      "updated_at": "2024-09-19T20:40:09.491172",
+      "id": 9,
+      "old_value": {
+        "value": {
+          "categories": [
+            {
+              "name": "Category A",
+              "value": "Category A"
+            },
+            {
+              "name": "Category A",
+              "value": "Category A"
+            }
+          ],
+          "required": true
+        }
+      },
+      "new_value": {
+        "value": {
+          "categories": [
+            {
+              "name": "Category A",
+              "value": "Category A"
+            },
+            {
+              "name": "Category B",
+              "value": "Category B"
+            }
+          ],
+          "required": true
+        }
+      },
+      "project_id": 15,
+      "app_config_id": 50,
+      "author_id": 64,
+      "datastream_metadata": {
+        "uuid": "58444cfa-4a9b-4a12-9098-26ca00001100",
+        "source_timestamp": 1726778409000
+      }
+    },
+    {
+      "created_at": "2024-09-19T19:22:22.276541",
+      "updated_at": "2024-09-19T19:22:22.276541",
+      "id": 8,
+      "old_value": {
+        "value": true
+      },
+      "new_value": {
+        "value": false
+      },
+      "project_id": 15,
+      "app_config_id": 7,
+      "author_id": 64,
+      "datastream_metadata": {
+        "uuid": "f9e9d1c8-7e60-49d7-b124-105c10111010",
+        "source_timestamp": 1726773742000
+      }
+    },
+    {
+      "created_at": "2024-09-19T19:22:11.007657",
+      "updated_at": "2024-09-19T19:22:11.007657",
+      "id": 7,
+      "old_value": {
+        "value": {
+          "categories": [
+            {
+              "name": "Category A",
+              "value": "Category A"
+            },
+            {
+              "name": "Category A",
+              "value": "Category A"
+            }
+          ],
+          "required": true
+        }
+      },
+      "new_value": {
+        "value": {
+          "categories": [
+            {
+              "name": "Category A",
+              "value": "Category A"
+            },
+            {
+              "name": "Category A",
+              "value": "Category A"
+            }
+          ],
+          "required": true
+        }
+      },
+      "project_id": 15,
+      "app_config_id": 50,
+      "author_id": 64,
+      "datastream_metadata": {
+        "uuid": "f9e9d1c8-7e60-49d7-b124-105c01111010",
+        "source_timestamp": 1726773731000
+      }
+    },
+    {
+      "created_at": "2024-09-19T19:22:01.158007",
+      "updated_at": "2024-09-19T19:22:01.158007",
+      "id": 6,
+      "old_value": {
+        "value": {
+          "categories": [
+            {
+              "name": "",
+              "value": ""
+            }
+          ],
+          "required": true
+        }
+      },
+      "new_value": {
+        "value": {
+          "categories": [
+            {
+              "name": "Category A",
+              "value": "Category A"
+            },
+            {
+              "name": "Category A",
+              "value": "Category A"
+            }
+          ],
+          "required": true
+        }
+      },
+      "project_id": 15,
+      "app_config_id": 50,
+      "author_id": 64,
+      "datastream_metadata": {
+        "uuid": "f9e9d1c8-7e60-49d7-b124-105c01000100",
+        "source_timestamp": 1726773721000
+      }
+    },
+    {
+      "created_at": "2024-09-19T19:20:56.523789",
+      "updated_at": "2024-09-19T19:20:56.523789",
+      "id": 5,
+      "old_value": {
+        "value": false
+      },
+      "new_value": {
+        "value": true
+      },
+      "project_id": 15,
+      "app_config_id": 51,
+      "author_id": 64,
+      "datastream_metadata": {
+        "uuid": "eeaa7e47-babe-42c9-8d74-43bf11111000",
+        "source_timestamp": 1726773656000
+      }
+    },
+    {
+      "created_at": "2024-09-11T21:01:38.791952",
+      "updated_at": "2024-09-11T21:01:38.791952",
+      "id": 4,
+      "old_value": {
+        "value": true
+      },
+      "new_value": {
+        "value": false
+      },
+      "project_id": 2,
+      "app_config_id": 7,
+      "author_id": 16,
+      "datastream_metadata": {
+        "uuid": "66481505-fa62-4d3b-83f0-e8ff00000101",
+        "source_timestamp": 1726088498000
+      }
+    },
+    {
+      "created_at": "2024-09-11T21:01:18.016716",
+      "updated_at": "2024-09-11T21:01:18.016716",
+      "id": 3,
+      "old_value": {
+        "value": true
+      },
+      "new_value": {
+        "value": false
+      },
+      "project_id": 2,
+      "app_config_id": 35,
+      "author_id": 16,
+      "datastream_metadata": {
+        "uuid": "66f673d8-15ac-42f0-a94d-15c610010000",
+        "source_timestamp": 1726088478000
+      }
+    },
+    {
+      "created_at": "2024-09-11T20:58:23.622724",
+      "updated_at": "2024-09-11T20:58:23.622724",
+      "id": 2,
+      "old_value": {
+        "value": {
+          "runAll": true
+        }
+      },
+      "new_value": {
+        "value": "{\n  \"runAll\": false\n}"
+      },
+      "project_id": 2,
+      "app_config_id": 34,
+      "author_id": 16,
+      "datastream_metadata": {
+        "uuid": "8e912e3a-5903-4274-8e59-0ea000010110",
+        "source_timestamp": 1726088303000
+      }
+    },
+    {
+      "created_at": "2024-09-09T11:09:48.122232",
+      "updated_at": "2024-09-09T11:09:48.122232",
+      "id": 1,
+      "old_value": {
+        "value": {}
+      },
+      "new_value": {
+        "value": {
+          "collaboratorsType": {
+            "prompt-team": {
+              "headerName": "Prompt Team",
+              "role": "prompt-team"
+            },
+            "qa-team": {
+              "headerName": "QA",
+              "role": "qa-team"
+            },
+            "response-and-explanation-team": {
+              "headerName": "Response Team",
+              "role": "response-and-explanation-team"
+            }
+          },
+          "labelingType": {
+            "finalAnswer": {
+              "headerName": "Final Answer",
+              "type": "number"
+            },
+            "prompt": {
+              "headerName": "Prompt Text",
+              "type": "string"
+            },
+            "promptCategory": {
+              "headerName": "Prompt Category",
+              "type": "string"
+            },
+            "promptQA": {
+              "prompt": {
+                "creativity": {
+                  "headerName": "Creativity Score",
+                  "type": "number"
+                },
+                "isCorrect": {
+                  "headerName": "Is Prompt Correct",
+                  "type": "boolean"
+                }
+              }
+            },
+            "response": {
+              "headerName": "Response Text",
+              "type": "string"
+            },
+            "responseQA": {
+              "feedback": {
+                "headerName": "Response QA Feedback",
+                "type": "string"
+              },
+              "resolution": {
+                "reason": {
+                  "headerName": "Resolution Reason",
+                  "type": "string"
+                },
+                "result": {
+                  "headerName": "Resolution Result",
+                  "type": "string"
+                }
+              },
+              "response": {
+                "coherence": {
+                  "headerName": "Coherence Score",
+                  "type": "number"
+                },
+                "compareWithLLM": {
+                  "headerName": "Compare with LLM",
+                  "type": "string"
+                },
+                "helpfulness": {
+                  "headerName": "Helpfulness Score",
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      },
+      "project_id": 13,
+      "app_config_id": 41,
+      "author_id": 78,
+      "datastream_metadata": {
+        "uuid": "981e1143-9cce-48cf-a32b-dc9d01101101",
+        "source_timestamp": 1725880188000
+      }
+    }
+  ]
+}

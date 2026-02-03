@@ -13,18 +13,13 @@ import {
   CircularProgress,
   Alert,
   IconButton,
-  Collapse,
-  Chip,
   Button,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Popover,
-  Slider,
+  Menu,
   Divider,
+  MenuItem,
   ListItemIcon,
   ListItemText,
+  Tooltip,
 } from '@mui/material'
 import {
   KeyboardArrowDown,
@@ -33,220 +28,412 @@ import {
   ArrowDropDown as ArrowDropDownIcon,
   ArrowUpward as ArrowUpwardIcon,
   ArrowDownward as ArrowDownwardIcon,
-  FilterList as FilterListIcon,
   Folder as FolderIcon,
-  InfoOutlined as InfoOutlinedIcon,
   Sort as SortIcon,
 } from '@mui/icons-material'
-import Tooltip from '@mui/material/Tooltip'
 import { getTooltipForHeader } from '../../utils/columnTooltips'
-import { getProjectStats, ProjectStats, PodLeadUnderProject } from '../../services/api'
-import { exportReviewerWithTrainersToExcel } from '../../utils/exportToExcel'
+import { getProjectStats, ProjectStats, PodLeadUnderProject, TrainerUnderPodLead } from '../../services/api'
+import { Timeframe, getDateRange as getDateRangeUtil } from '../../utils/dateUtils'
+import TimeframeSelector from '../common/TimeframeSelector'
 import ColorSettingsPanel, { 
   ColorSettings, 
   defaultColorSettings, 
-  getBackgroundColorForValue,
-  getTextColorForValue,
-  getRatingColor,
-  getReworkPercentColor,
-  getAvgReworkPercentColor,
   useColorSettings,
   ColorApplyLevel
 } from './ColorSettingsPanel'
 
-type Timeframe = 'daily' | 'd-1' | 'd-2' | 'd-3' | 'weekly' | 'overall' | 'custom'
+// Column group definitions with professional colors
+const COLUMN_GROUPS = {
+  overview: { 
+    label: 'Overview', 
+    bgHeader: '#F1F5F9', 
+    bgSubHeader: '#F8FAFC',
+    borderColor: '#CBD5E1',
+    textColor: '#475569'
+  },
+  tasks: { 
+    label: 'Tasks', 
+    bgHeader: '#EFF6FF', 
+    bgSubHeader: '#F0F9FF',
+    borderColor: '#93C5FD',
+    textColor: '#1E40AF'
+  },
+  quality: { 
+    label: 'Quality', 
+    bgHeader: '#F0FDF4', 
+    bgSubHeader: '#F0FDF4',
+    borderColor: '#86EFAC',
+    textColor: '#166534'
+  },
+  time: { 
+    label: 'Time & Efficiency', 
+    bgHeader: '#FFFBEB', 
+    bgSubHeader: '#FFFBEB',
+    borderColor: '#FCD34D',
+    textColor: '#92400E'
+  },
+}
 
-// Get date range based on timeframe
-function getDateRange(timeframe: Timeframe, customStart?: string, customEnd?: string) {
-  const today = new Date()
-  let startDate: string | undefined
-  let endDate: string | undefined
+// Common cell styles
+const cellStyle = {
+  py: 0.4,
+  px: 0.75,
+  fontSize: '0.72rem',
+  borderBottom: '1px solid #E2E8F0',
+}
 
-  switch (timeframe) {
-    case 'daily':
-      startDate = today.toISOString().split('T')[0]
-      endDate = startDate
-      break
-    case 'd-1':
-      const d1 = new Date(today)
-      d1.setDate(today.getDate() - 1)
-      startDate = d1.toISOString().split('T')[0]
-      endDate = startDate
-      break
-    case 'd-2':
-      const d2 = new Date(today)
-      d2.setDate(today.getDate() - 2)
-      startDate = d2.toISOString().split('T')[0]
-      endDate = startDate
-      break
-    case 'd-3':
-      const d3 = new Date(today)
-      d3.setDate(today.getDate() - 3)
-      startDate = d3.toISOString().split('T')[0]
-      endDate = startDate
-      break
-    case 'weekly':
-      const weekAgo = new Date(today)
-      weekAgo.setDate(today.getDate() - 7)
-      startDate = weekAgo.toISOString().split('T')[0]
-      endDate = today.toISOString().split('T')[0]
-      break
-    case 'custom':
-      startDate = customStart
-      endDate = customEnd
-      break
-    case 'overall':
-    default:
-      startDate = undefined
-      endDate = undefined
-  }
+const headerCellStyle = {
+  py: 0.5,
+  px: 0.5,
+  fontWeight: 600,
+  fontSize: '0.62rem',
+  textTransform: 'uppercase' as const,
+  letterSpacing: '0.02em',
+  lineHeight: 1.1,
+  borderBottom: '1px solid #E2E8F0',
+}
 
+function getDateRange(timeframe: Timeframe, weekOffset: number, customStart?: string, customEnd?: string) {
+  const { startDate, endDate } = getDateRangeUtil(timeframe, weekOffset, customStart, customEnd)
   return { startDate, endDate }
 }
 
-// POD Lead Row Component
-function PodLeadRow({ 
-  podLead, 
+// ============================================================================
+// COLOR CODING BASED ON PMO REQUIREMENTS
+// These metrics should be color-coded:
+// 1. Efficiency (EFF%): >=90% Green, 70-90% Yellow, <70% Red
+// 2. Ratings (RATE): >4.8 Green, 4-4.8 Yellow, <4 Red  
+// 3. Rework % (R%): <=10% Green, 10-30% Yellow, >30% Red (LOWER IS BETTER)
+// 4. Avg Rework (AVGR): <1 Green, 1-2.5 Yellow, >2.5 Red (LOWER IS BETTER)
+// ============================================================================
+
+// Ratings color coding (PMO Requirement)
+// >4.8 - green, >4 - 4.8 - Yellow, <4 - red
+const getRatingStyle = (rating: number | null) => {
+  if (rating === null) return { color: '#94A3B8', bgcolor: 'transparent' }
+  if (rating > 4.8) return { color: '#065F46', bgcolor: '#D1FAE5' }  // Green
+  if (rating >= 4) return { color: '#92400E', bgcolor: '#FEF3C7' }   // Yellow (4.0 - 4.8)
+  return { color: '#991B1B', bgcolor: '#FEE2E2' }                     // Red (<4)
+}
+
+// Efficiency color coding (PMO Requirement)
+// >=90% Green, 70-90% Yellow, <70% Red
+const getEfficiencyStyle = (eff: number | null) => {
+  if (eff === null) return { color: '#94A3B8', bgcolor: 'transparent' }
+  if (eff >= 90) return { color: '#065F46', bgcolor: '#D1FAE5' }      // Green
+  if (eff >= 70) return { color: '#92400E', bgcolor: '#FEF3C7' }      // Yellow
+  return { color: '#991B1B', bgcolor: '#FEE2E2' }                      // Red
+}
+
+// Rework% (R%) color coding - INVERTED (lower is better)
+// <=10% Green (good), 10-30% Yellow, >30% Red (bad)
+const getReworkPercentStyle = (rPct: number | null) => {
+  if (rPct === null) return { color: '#94A3B8', bgcolor: 'transparent' }
+  if (rPct <= 10) return { color: '#065F46', bgcolor: '#D1FAE5' }      // Green - low rework is good
+  if (rPct <= 30) return { color: '#92400E', bgcolor: '#FEF3C7' }      // Yellow
+  return { color: '#991B1B', bgcolor: '#FEE2E2' }                       // Red - high rework is bad
+}
+
+// Average Rework (AVGR) color coding
+// <1 Green, 1-2.5 Yellow, >2.5 Red
+const getAvgReworkStyle = (avgR: number | null) => {
+  if (avgR === null) return { color: '#94A3B8', bgcolor: 'transparent' }
+  if (avgR < 1) return { color: '#065F46', bgcolor: '#D1FAE5' }        // Green
+  if (avgR <= 2.5) return { color: '#92400E', bgcolor: '#FEF3C7' }     // Yellow
+  return { color: '#991B1B', bgcolor: '#FEE2E2' }                       // Red
+}
+
+// Trainer Row Component
+// COLOR CODING: Only RATE, R%, and EFF% should be color-coded per PMO requirements
+function TrainerRow({ 
+  trainer, 
   colorSettings,
   applyColors = true
 }: { 
-  podLead: PodLeadUnderProject
+  trainer: TrainerUnderPodLead
   colorSettings: ColorSettings
   applyColors?: boolean
 }) {
-  const getColor = (metric: string, value: number | null) => {
-    if (!applyColors || value === null || value === undefined) return 'transparent'
-    const config = colorSettings[metric]
-    if (!config) return 'transparent'
-    return getBackgroundColorForValue(value, config)
-  }
-
-  const getTextColor = (metric: string, value: number | null) => {
-    if (!applyColors || value === null || value === undefined) return '#475569'
-    const config = colorSettings[metric]
-    if (!config) return '#475569'
-    return getTextColorForValue(value, config)
-  }
-
   return (
     <TableRow sx={{ 
       bgcolor: '#FAFBFC',
       '&:hover': { bgcolor: '#F1F5F9' },
-      borderLeft: '3px solid #E2E8F0',
     }}>
+      {/* Overview Group */}
       <TableCell sx={{ 
-        pl: 6, 
-        borderBottom: '1px solid #F1F5F9',
+        ...cellStyle,
+        pl: 6,
         position: 'sticky',
         left: 0,
-        zIndex: 1,
         bgcolor: '#FAFBFC',
-        borderRight: '2px solid #E2E8F0',
+        zIndex: 1,
+        borderRight: `1px solid ${COLUMN_GROUPS.overview.borderColor}`,
+        maxWidth: 220,
       }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Box sx={{ 
-            width: 6, 
-            height: 6, 
-            borderRadius: '50%', 
-            bgcolor: '#94A3B8',
-            flexShrink: 0,
-          }} />
-          <Box>
-            <Typography variant="body2" sx={{ fontWeight: 500, color: '#475569', fontSize: '0.8125rem' }}>
-              {podLead.pod_lead_name}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+          <Box sx={{ width: 3, height: 3, borderRadius: '50%', bgcolor: '#CBD5E1', flexShrink: 0 }} />
+          <Box sx={{ minWidth: 0, flex: 1 }}>
+            <Typography sx={{ fontSize: '0.65rem', color: '#64748B', fontWeight: 500, lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              {trainer.trainer_name}
             </Typography>
-            <Typography variant="caption" sx={{ color: '#94A3B8', fontSize: '0.7rem' }}>
-              {podLead.pod_lead_email}
+            <Typography sx={{ fontSize: '0.5rem', color: '#94A3B8', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              {trainer.trainer_email}
             </Typography>
           </Box>
         </Box>
       </TableCell>
-      <TableCell align="left" sx={{ borderBottom: '1px solid #F1F5F9' }}>
-        <Typography variant="caption" sx={{ 
-          color: '#64748B', 
-          fontSize: '0.75rem',
-          fontWeight: 500,
-        }}>
-          {podLead.trainer_count} trainers
+      <TableCell align="center" sx={{ ...cellStyle, color: '#94A3B8', borderRight: `2px solid ${COLUMN_GROUPS.overview.borderColor}` }}>-</TableCell>
+
+      {/* Tasks Group - NO COLOR CODING (not in PMO requirements) */}
+      <TableCell align="center" sx={{ ...cellStyle }}>
+        <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#475569' }}>
+          {trainer.unique_tasks}
         </Typography>
       </TableCell>
-      <TableCell align="left" sx={{ bgcolor: getColor('tasks_reviewed', podLead.unique_tasks), borderBottom: '1px solid #F1F5F9' }}>
-        <Typography variant="body2" sx={{ fontWeight: 600, color: getTextColor('tasks_reviewed', podLead.unique_tasks), fontSize: '0.8125rem' }}>
-          {podLead.unique_tasks}
+      <TableCell align="center" sx={{ ...cellStyle }}>
+        <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#475569' }}>
+          {trainer.new_tasks}
         </Typography>
       </TableCell>
-      <TableCell align="left" sx={{ bgcolor: getColor('new_tasks_reviewed', podLead.new_tasks), borderBottom: '1px solid #F1F5F9' }}>
-        <Typography variant="body2" sx={{ fontWeight: 600, color: getTextColor('new_tasks_reviewed', podLead.new_tasks), fontSize: '0.8125rem' }}>
-          {podLead.new_tasks}
+      <TableCell align="center" sx={{ ...cellStyle }}>
+        <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#475569' }}>
+          {trainer.rework}
         </Typography>
       </TableCell>
-      <TableCell align="left" sx={{ bgcolor: getColor('rework_reviewed', podLead.rework), borderBottom: '1px solid #F1F5F9' }}>
-        <Typography variant="body2" sx={{ fontWeight: 600, color: getTextColor('rework_reviewed', podLead.rework), fontSize: '0.8125rem' }}>
-          {podLead.rework}
+      <TableCell align="center" sx={{ ...cellStyle }}>
+        <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#64748B' }}>
+          {trainer.delivered ?? '-'}
         </Typography>
       </TableCell>
-      <TableCell align="left" sx={{ bgcolor: getColor('total_reviews', podLead.total_reviews), borderBottom: '1px solid #F1F5F9' }}>
-        <Typography variant="body2" sx={{ fontWeight: 600, color: getTextColor('total_reviews', podLead.total_reviews), fontSize: '0.8125rem' }}>
-          {podLead.total_reviews}
+      <TableCell align="center" sx={{ ...cellStyle, borderRight: `1px solid ${COLUMN_GROUPS.tasks.borderColor}` }}>
+        <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#64748B' }}>
+          {trainer.in_queue ?? '-'}
         </Typography>
       </TableCell>
-      <TableCell align="left" sx={{ bgcolor: getColor('avg_rework', podLead.avg_rework), borderBottom: '1px solid #F1F5F9' }}>
-        <Typography variant="body2" sx={{ fontWeight: 600, color: getTextColor('avg_rework', podLead.avg_rework), fontSize: '0.8125rem' }}>
-          {podLead.avg_rework !== null ? podLead.avg_rework.toFixed(2) : '-'}
+
+      {/* Quality Group */}
+      {/* REV - NO COLOR CODING (not in PMO requirements) */}
+      <TableCell align="center" sx={{ ...cellStyle }}>
+        <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#475569' }}>
+          {trainer.total_reviews}
         </Typography>
       </TableCell>
-      <TableCell align="left" sx={{ bgcolor: getColor('rework_percent', podLead.rework_percent), borderBottom: '1px solid #F1F5F9' }}>
-        <Typography variant="body2" sx={{ fontWeight: 600, color: getTextColor('rework_percent', podLead.rework_percent), fontSize: '0.8125rem' }}>
-          {podLead.rework_percent !== null ? `${podLead.rework_percent}%` : '-'}
+      {/* AVGR - COLOR CODED: <1 Green, 1-2.5 Yellow, >2.5 Red */}
+      <TableCell align="center" sx={{ ...cellStyle, ...getAvgReworkStyle(trainer.avg_rework) }}>
+        <Typography sx={{ fontSize: '0.7rem', fontWeight: 600 }}>
+          {trainer.avg_rework !== null ? trainer.avg_rework.toFixed(2) : '-'}
         </Typography>
       </TableCell>
-      <TableCell align="left" sx={{ bgcolor: getColor('merged_exp_aht', podLead.merged_exp_aht), borderBottom: '1px solid #F1F5F9' }}>
-        <Typography variant="body2" sx={{ fontWeight: 600, color: getTextColor('merged_exp_aht', podLead.merged_exp_aht), fontSize: '0.8125rem' }}>
-          {podLead.merged_exp_aht !== null ? podLead.merged_exp_aht.toFixed(2) : '-'}
+      {/* R% - COLOR CODED: <=10% Green, 10-30% Yellow, >30% Red (lower is better) */}
+      <TableCell align="center" sx={{ ...cellStyle, ...getReworkPercentStyle(trainer.rework_percent) }}>
+        <Typography sx={{ fontSize: '0.7rem', fontWeight: 600 }}>
+          {trainer.rework_percent !== null ? `${trainer.rework_percent}%` : '-'}
         </Typography>
       </TableCell>
-      <TableCell align="left" sx={{ borderBottom: '1px solid #F1F5F9' }}>
-        <Typography variant="body2" sx={{ fontWeight: 600, color: '#475569', fontSize: '0.8125rem' }}>
-          {(podLead.trainer_jibble_hours + podLead.pod_jibble_hours).toFixed(1)}
+      {/* RATE - COLOR CODED: >4.8 Green, 4-4.8 Yellow, <4 Red */}
+      <TableCell align="center" sx={{ ...cellStyle, borderRight: `1px solid ${COLUMN_GROUPS.quality.borderColor}`, ...getRatingStyle(trainer.avg_rating) }}>
+        <Typography sx={{ fontSize: '0.7rem', fontWeight: 600 }}>
+          {trainer.avg_rating !== null ? trainer.avg_rating.toFixed(2) : '-'}
         </Typography>
       </TableCell>
-      <TableCell align="left" sx={{ borderBottom: '1px solid #F1F5F9' }}>
-        <Typography variant="body2" sx={{ fontWeight: 600, color: '#475569', fontSize: '0.8125rem' }}>
-          {podLead.pod_jibble_hours !== null && podLead.pod_jibble_hours !== undefined ? podLead.pod_jibble_hours.toFixed(1) : '-'}
+
+      {/* Time & Efficiency Group */}
+      {/* AHT - NO COLOR CODING (not in PMO requirements) */}
+      <TableCell align="center" sx={{ ...cellStyle }}>
+        <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#475569' }}>
+          {trainer.merged_exp_aht !== null ? trainer.merged_exp_aht.toFixed(1) : '-'}
         </Typography>
       </TableCell>
+      {/* JIB - NO COLOR CODING (not in PMO requirements) */}
+      <TableCell align="center" sx={{ ...cellStyle }}>
+        <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#64748B' }}>
+          {trainer.jibble_hours > 0 ? trainer.jibble_hours.toFixed(1) : '-'}
+        </Typography>
+      </TableCell>
+      {/* ACCT - NO COLOR CODING (not in PMO requirements) */}
+      <TableCell align="center" sx={{ ...cellStyle }}>
+        <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#64748B' }}>
+          {trainer.accounted_hours > 0 ? trainer.accounted_hours.toFixed(1) : '-'}
+        </Typography>
+      </TableCell>
+      {/* EFF% - COLOR CODED: >=90% Green, 70-90% Yellow, <70% Red */}
+      <TableCell align="center" sx={{ ...cellStyle, ...getEfficiencyStyle(trainer.efficiency) }}>
+        <Typography sx={{ fontSize: '0.7rem', fontWeight: 700 }}>
+          {trainer.efficiency !== null ? `${trainer.efficiency.toFixed(0)}%` : '-'}
+        </Typography>
+      </TableCell>
+      <TableCell align="center" sx={{ ...cellStyle, color: '#94A3B8' }}>-</TableCell>
     </TableRow>
   )
 }
 
+// POD Lead Row Component
+// COLOR CODING: Only RATE, R%, and EFF% should be color-coded per PMO requirements
+function PodLeadRow({ 
+  podLead, 
+  colorSettings,
+  applyColors = true,
+  applyColorsToTrainers = true
+}: { 
+  podLead: PodLeadUnderProject
+  colorSettings: ColorSettings
+  applyColors?: boolean
+  applyColorsToTrainers?: boolean
+}) {
+  const [open, setOpen] = useState(false)
+  const hasTrainers = podLead.trainers && podLead.trainers.length > 0
+
+  return (
+    <>
+      <TableRow 
+        sx={{ 
+          bgcolor: open ? '#F1F5F9' : '#F8FAFC',
+          '&:hover': { bgcolor: '#F1F5F9' },
+          cursor: hasTrainers ? 'pointer' : 'default',
+        }}
+        onClick={() => hasTrainers && setOpen(!open)}
+      >
+        {/* Overview Group */}
+        <TableCell sx={{ 
+          ...cellStyle,
+          pl: 4,
+          position: 'sticky',
+          left: 0,
+          bgcolor: open ? '#F1F5F9' : '#F8FAFC',
+          zIndex: 1,
+          borderRight: `1px solid ${COLUMN_GROUPS.overview.borderColor}`,
+          maxWidth: 220,
+        }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+            {hasTrainers ? (
+              <IconButton size="small" sx={{ p: 0.2, minWidth: 18 }} onClick={(e) => { e.stopPropagation(); setOpen(!open) }}>
+                {open ? <KeyboardArrowUp sx={{ fontSize: 12 }} /> : <KeyboardArrowDown sx={{ fontSize: 12 }} />}
+              </IconButton>
+            ) : <Box sx={{ width: 18 }} />}
+            <Box sx={{ width: 5, height: 5, borderRadius: '50%', bgcolor: '#8B5CF6', flexShrink: 0 }} />
+            <Box sx={{ minWidth: 0, flex: 1 }}>
+              <Typography sx={{ fontSize: '0.7rem', color: '#475569', fontWeight: 600, lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                {podLead.pod_lead_name}
+              </Typography>
+              <Typography sx={{ fontSize: '0.55rem', color: '#94A3B8', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                {podLead.pod_lead_email}
+              </Typography>
+            </Box>
+          </Box>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle, borderRight: `2px solid ${COLUMN_GROUPS.overview.borderColor}` }}>
+          <Typography sx={{ fontSize: '0.65rem', fontWeight: 600, color: '#64748B' }}>{podLead.trainer_count}</Typography>
+        </TableCell>
+
+        {/* Tasks Group - NO COLOR CODING (not in PMO requirements) */}
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: '#475569' }}>
+            {podLead.unique_tasks}
+          </Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: '#475569' }}>
+            {podLead.new_tasks}
+          </Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: '#475569' }}>
+            {podLead.rework}
+          </Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748B' }}>
+            {podLead.delivered ?? '-'}
+          </Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle, borderRight: `1px solid ${COLUMN_GROUPS.tasks.borderColor}` }}>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748B' }}>
+            {podLead.in_queue ?? '-'}
+          </Typography>
+        </TableCell>
+
+        {/* Quality Group */}
+        {/* REV - NO COLOR CODING (not in PMO requirements) */}
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: '#475569' }}>
+            {podLead.total_reviews}
+          </Typography>
+        </TableCell>
+        {/* AVGR - COLOR CODED: <1 Green, 1-2.5 Yellow, >2.5 Red */}
+        <TableCell align="center" sx={{ ...cellStyle, ...getAvgReworkStyle(podLead.avg_rework) }}>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 600 }}>
+            {podLead.avg_rework !== null ? podLead.avg_rework.toFixed(2) : '-'}
+          </Typography>
+        </TableCell>
+        {/* R% - COLOR CODED: <=10% Green, 10-30% Yellow, >30% Red (lower is better) */}
+        <TableCell align="center" sx={{ ...cellStyle, ...getReworkPercentStyle(podLead.rework_percent) }}>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 600 }}>
+            {podLead.rework_percent !== null ? `${podLead.rework_percent}%` : '-'}
+          </Typography>
+        </TableCell>
+        {/* RATE - COLOR CODED: >4.8 Green, 4-4.8 Yellow, <4 Red */}
+        <TableCell align="center" sx={{ ...cellStyle, borderRight: `1px solid ${COLUMN_GROUPS.quality.borderColor}`, ...getRatingStyle(podLead.avg_rating) }}>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 600 }}>
+            {podLead.avg_rating !== null ? podLead.avg_rating.toFixed(2) : '-'}
+          </Typography>
+        </TableCell>
+
+        {/* Time & Efficiency Group */}
+        {/* AHT - NO COLOR CODING (not in PMO requirements) */}
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: '#475569' }}>
+            {podLead.merged_exp_aht !== null ? podLead.merged_exp_aht.toFixed(1) : '-'}
+          </Typography>
+        </TableCell>
+        {/* JIB - NO COLOR CODING (not in PMO requirements) */}
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748B' }}>
+            {(podLead.trainer_jibble_hours + podLead.pod_jibble_hours).toFixed(1)}
+          </Typography>
+        </TableCell>
+        {/* ACCT - NO COLOR CODING (not in PMO requirements) */}
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748B' }}>
+            {podLead.accounted_hours > 0 ? podLead.accounted_hours.toFixed(1) : '-'}
+          </Typography>
+        </TableCell>
+        {/* EFF% - COLOR CODED: >=90% Green, 70-90% Yellow, <70% Red */}
+        <TableCell align="center" sx={{ ...cellStyle, ...getEfficiencyStyle(podLead.efficiency) }}>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 700 }}>
+            {podLead.efficiency !== null ? `${podLead.efficiency.toFixed(0)}%` : '-'}
+          </Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: '#475569' }}>
+            {podLead.pod_jibble_hours?.toFixed(1) ?? '-'}
+          </Typography>
+        </TableCell>
+      </TableRow>
+      
+      {hasTrainers && open && podLead.trainers.map((trainer, idx) => (
+        <TrainerRow key={idx} trainer={trainer} colorSettings={colorSettings} applyColors={applyColorsToTrainers} />
+      ))}
+    </>
+  )
+}
+
 // Project Row Component
+// COLOR CODING: Only RATE, R%, and EFF% should be color-coded per PMO requirements
 function ProjectRow({ 
   project, 
   colorSettings, 
   applyColors = true,
-  applyColorsToPodLeads = true
+  applyColorsToPodLeads = true,
+  applyColorsToTrainers = true
 }: { 
   project: ProjectStats
   colorSettings: ColorSettings
   applyColors?: boolean
   applyColorsToPodLeads?: boolean
+  applyColorsToTrainers?: boolean
 }) {
   const [open, setOpen] = useState(false)
   const hasPodLeads = project.pod_leads && project.pod_leads.length > 0
-
-  const getColor = (metric: string, value: number | null) => {
-    if (!applyColors || value === null || value === undefined) return 'transparent'
-    const config = colorSettings[metric]
-    if (!config) return 'transparent'
-    return getBackgroundColorForValue(value, config)
-  }
-
-  const getTextColor = (metric: string, value: number | null) => {
-    if (!applyColors || value === null || value === undefined) return '#1E293B'
-    const config = colorSettings[metric]
-    if (!config) return '#1E293B'
-    return getTextColorForValue(value, config)
-  }
 
   return (
     <>
@@ -256,163 +443,210 @@ function ProjectRow({
           bgcolor: open ? '#F1F5F9' : '#FFFFFF',
           cursor: hasPodLeads ? 'pointer' : 'default',
           borderLeft: open ? '3px solid #3B82F6' : '3px solid transparent',
-          transition: 'all 0.15s ease',
         }}
         onClick={() => hasPodLeads && setOpen(!open)}
       >
+        {/* Overview Group */}
         <TableCell sx={{ 
-          borderBottom: '1px solid #E2E8F0',
+          ...cellStyle,
           position: 'sticky',
           left: 0,
-          zIndex: 1,
           bgcolor: open ? '#F1F5F9' : '#FFFFFF',
-          borderRight: '2px solid #E2E8F0',
+          zIndex: 1,
+          borderRight: `1px solid ${COLUMN_GROUPS.overview.borderColor}`,
+          maxWidth: 220,
         }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            {hasPodLeads && (
-              <IconButton 
-                size="small" 
-                onClick={(e) => { e.stopPropagation(); setOpen(!open) }}
-                sx={{ 
-                  bgcolor: open ? '#E0E7FF' : '#F1F5F9',
-                  width: 28,
-                  height: 28,
-                  '&:hover': { bgcolor: '#E0E7FF' },
-                }}
-              >
-                {open ? <KeyboardArrowUp sx={{ fontSize: 18 }} /> : <KeyboardArrowDown sx={{ fontSize: 18 }} />}
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+            {hasPodLeads ? (
+              <IconButton size="small" sx={{ p: 0.2, minWidth: 20 }} onClick={(e) => { e.stopPropagation(); setOpen(!open) }}>
+                {open ? <KeyboardArrowUp sx={{ fontSize: 14 }} /> : <KeyboardArrowDown sx={{ fontSize: 14 }} />}
               </IconButton>
-            )}
-            {!hasPodLeads && <Box sx={{ width: 28 }} />}
+            ) : <Box sx={{ width: 20 }} />}
             <Box sx={{ 
-              width: 36, 
-              height: 36, 
-              borderRadius: 1.5,
-              bgcolor: '#F0FDF4',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              border: '1px solid #D1FAE5',
+              width: 22, height: 22, borderRadius: 0.5, flexShrink: 0,
+              bgcolor: '#F0FDF4', display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}>
-              <FolderIcon sx={{ color: '#10B981', fontSize: 20 }} />
+              <FolderIcon sx={{ color: '#10B981', fontSize: 14 }} />
             </Box>
-            <Box>
-              <Typography variant="body2" sx={{ fontWeight: 600, color: '#1E293B', fontSize: '0.875rem' }}>
+            <Box sx={{ minWidth: 0, flex: 1 }}>
+              <Typography sx={{ fontSize: '0.75rem', fontWeight: 700, color: '#1E293B', lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                 {project.project_name}
               </Typography>
-              <Typography variant="caption" sx={{ color: '#94A3B8', fontSize: '0.7rem' }}>
+              <Typography sx={{ fontSize: '0.55rem', color: '#94A3B8' }}>
                 ID: {project.project_id}
               </Typography>
             </Box>
           </Box>
         </TableCell>
-        <TableCell align="center" sx={{ borderBottom: '1px solid #E2E8F0' }}>
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0.25 }}>
-            <Typography variant="body2" sx={{ fontWeight: 700, color: '#4F46E5', fontSize: '0.8125rem' }}>
-              {project.pod_lead_count}
-            </Typography>
-            <Typography variant="caption" sx={{ color: '#64748B', fontSize: '0.65rem', lineHeight: 1 }}>
-              {project.trainer_count} trainers
-            </Typography>
-          </Box>
+        <TableCell align="center" sx={{ ...cellStyle, borderRight: `2px solid ${COLUMN_GROUPS.overview.borderColor}` }}>
+          <Typography sx={{ fontSize: '0.72rem', fontWeight: 700, color: '#4F46E5' }}>{project.pod_lead_count}</Typography>
+          <Typography sx={{ fontSize: '0.5rem', color: '#64748B' }}>{project.trainer_count}t</Typography>
         </TableCell>
-        <TableCell align="left" sx={{ bgcolor: getColor('tasks_reviewed', project.unique_tasks), borderBottom: '1px solid #E2E8F0' }}>
-          <Typography variant="body2" sx={{ fontWeight: 700, color: getTextColor('tasks_reviewed', project.unique_tasks), fontSize: '0.875rem' }}>
+
+        {/* Tasks Group - NO COLOR CODING (not in PMO requirements) */}
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: '0.8rem', fontWeight: 700, color: '#1E293B' }}>
             {project.unique_tasks}
           </Typography>
         </TableCell>
-        <TableCell align="left" sx={{ bgcolor: getColor('new_tasks_reviewed', project.new_tasks), borderBottom: '1px solid #E2E8F0' }}>
-          <Typography variant="body2" sx={{ fontWeight: 700, color: getTextColor('new_tasks_reviewed', project.new_tasks), fontSize: '0.875rem' }}>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: '0.8rem', fontWeight: 700, color: '#1E293B' }}>
             {project.new_tasks}
           </Typography>
         </TableCell>
-        <TableCell align="left" sx={{ bgcolor: getColor('rework_reviewed', project.rework), borderBottom: '1px solid #E2E8F0' }}>
-          <Typography variant="body2" sx={{ fontWeight: 700, color: getTextColor('rework_reviewed', project.rework), fontSize: '0.875rem' }}>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: '0.8rem', fontWeight: 700, color: '#1E293B' }}>
             {project.rework}
           </Typography>
         </TableCell>
-        <TableCell align="left" sx={{ bgcolor: getColor('total_reviews', project.total_reviews), borderBottom: '1px solid #E2E8F0' }}>
-          <Typography variant="body2" sx={{ fontWeight: 700, color: getTextColor('total_reviews', project.total_reviews), fontSize: '0.875rem' }}>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: '0.8rem', fontWeight: 700, color: '#64748B' }}>
+            {project.delivered ?? '-'}
+          </Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle, borderRight: `1px solid ${COLUMN_GROUPS.tasks.borderColor}` }}>
+          <Typography sx={{ fontSize: '0.8rem', fontWeight: 700, color: '#64748B' }}>
+            {project.in_queue ?? '-'}
+          </Typography>
+        </TableCell>
+
+        {/* Quality Group */}
+        {/* REV - NO COLOR CODING (not in PMO requirements) */}
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: '0.8rem', fontWeight: 700, color: '#1E293B' }}>
             {project.total_reviews}
           </Typography>
         </TableCell>
-        <TableCell align="left" sx={{ bgcolor: getColor('avg_rework', project.avg_rework), borderBottom: '1px solid #E2E8F0' }}>
-          <Typography variant="body2" sx={{ fontWeight: 700, color: getTextColor('avg_rework', project.avg_rework), fontSize: '0.875rem' }}>
+        {/* AVGR - COLOR CODED: <1 Green, 1-2.5 Yellow, >2.5 Red */}
+        <TableCell align="center" sx={{ ...cellStyle, ...getAvgReworkStyle(project.avg_rework) }}>
+          <Typography sx={{ fontSize: '0.8rem', fontWeight: 700 }}>
             {project.avg_rework !== null ? project.avg_rework.toFixed(2) : '-'}
           </Typography>
         </TableCell>
-        <TableCell align="left" sx={{ bgcolor: getColor('rework_percent', project.rework_percent), borderBottom: '1px solid #E2E8F0' }}>
-          <Typography variant="body2" sx={{ fontWeight: 700, color: getTextColor('rework_percent', project.rework_percent), fontSize: '0.875rem' }}>
+        {/* R% - COLOR CODED: <=10% Green, 10-30% Yellow, >30% Red (lower is better) */}
+        <TableCell align="center" sx={{ ...cellStyle, ...getReworkPercentStyle(project.rework_percent) }}>
+          <Typography sx={{ fontSize: '0.8rem', fontWeight: 700 }}>
             {project.rework_percent !== null ? `${project.rework_percent}%` : '-'}
           </Typography>
         </TableCell>
-        <TableCell align="left" sx={{ bgcolor: getColor('merged_exp_aht', project.merged_exp_aht), borderBottom: '1px solid #E2E8F0' }}>
-          <Typography variant="body2" sx={{ fontWeight: 700, color: getTextColor('merged_exp_aht', project.merged_exp_aht), fontSize: '0.875rem' }}>
-            {project.merged_exp_aht !== null ? project.merged_exp_aht.toFixed(2) : '-'}
+        {/* RATE - COLOR CODED: >4.8 Green, 4-4.8 Yellow, <4 Red */}
+        <TableCell align="center" sx={{ ...cellStyle, borderRight: `1px solid ${COLUMN_GROUPS.quality.borderColor}`, ...getRatingStyle(project.avg_rating) }}>
+          <Typography sx={{ fontSize: '0.8rem', fontWeight: 700 }}>
+            {project.avg_rating !== null ? project.avg_rating.toFixed(2) : '-'}
           </Typography>
         </TableCell>
-        <TableCell align="left" sx={{ borderBottom: '1px solid #E2E8F0' }}>
-          <Typography variant="body2" sx={{ fontWeight: 700, color: '#1E293B', fontSize: '0.875rem' }}>
-            {project.logged_hours !== null && project.logged_hours !== undefined ? project.logged_hours.toFixed(1) : '-'}
+
+        {/* Time & Efficiency Group */}
+        {/* AHT - NO COLOR CODING (not in PMO requirements) */}
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: '0.8rem', fontWeight: 700, color: '#1E293B' }}>
+            {project.merged_exp_aht !== null ? project.merged_exp_aht.toFixed(1) : '-'}
           </Typography>
         </TableCell>
-        <TableCell align="left" sx={{ borderBottom: '1px solid #E2E8F0' }}>
-          <Typography variant="body2" sx={{ fontWeight: 700, color: '#1E293B', fontSize: '0.875rem' }}>
-            {project.total_pod_hours !== null && project.total_pod_hours !== undefined ? project.total_pod_hours.toFixed(1) : '-'}
+        {/* JIB - NO COLOR CODING (not in PMO requirements) */}
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: '0.8rem', fontWeight: 700, color: '#64748B' }}>
+            {project.logged_hours?.toFixed(1) ?? '-'}
+          </Typography>
+        </TableCell>
+        {/* ACCT - NO COLOR CODING (not in PMO requirements) */}
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: '0.8rem', fontWeight: 700, color: '#64748B' }}>
+            {project.accounted_hours > 0 ? project.accounted_hours.toFixed(1) : '-'}
+          </Typography>
+        </TableCell>
+        {/* EFF% - COLOR CODED: >=90% Green, 70-90% Yellow, <70% Red */}
+        <TableCell align="center" sx={{ ...cellStyle, ...getEfficiencyStyle(project.efficiency) }}>
+          <Typography sx={{ fontSize: '0.8rem', fontWeight: 700 }}>
+            {project.efficiency !== null ? `${project.efficiency.toFixed(0)}%` : '-'}
+          </Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: '0.8rem', fontWeight: 700, color: '#1E293B' }}>
+            {project.total_pod_hours?.toFixed(1) ?? '-'}
           </Typography>
         </TableCell>
       </TableRow>
       
-      {/* POD Leads under this Project */}
       {hasPodLeads && open && project.pod_leads.map((podLead, idx) => (
         <PodLeadRow 
           key={idx} 
           podLead={podLead} 
           colorSettings={colorSettings} 
-          applyColors={applyColorsToPodLeads} 
+          applyColors={applyColorsToPodLeads}
+          applyColorsToTrainers={applyColorsToTrainers}
         />
       ))}
     </>
   )
 }
 
-export function ProjectsTab() {
+// Import TabSummaryStats type from PreDelivery
+import type { TabSummaryStats } from '../../pages/PreDelivery'
+
+interface ProjectsTabProps {
+  onSummaryUpdate?: (stats: TabSummaryStats) => void
+  onSummaryLoading?: () => void
+}
+
+export function ProjectsTab({ onSummaryUpdate, onSummaryLoading }: ProjectsTabProps) {
   const [data, setData] = useState<ProjectStats[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [timeframe, setTimeframe] = useState<Timeframe>('overall')
+  const [weekOffset, setWeekOffset] = useState<number>(0)
   const [customStartDate, setCustomStartDate] = useState('')
   const [customEndDate, setCustomEndDate] = useState('')
   const [sortColumn, setSortColumn] = useState<string>('')
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc')
-  const [filterAnchorEl, setFilterAnchorEl] = useState<HTMLElement | null>(null)
+  const [menuPosition, setMenuPosition] = useState<{ top: number; left: number } | null>(null)
   const [activeFilterColumn, setActiveFilterColumn] = useState<string>('')
   
   const [colorSettings, setColorSettings] = useColorSettings('projectsColorSettings')
   const [colorApplyLevel, setColorApplyLevel] = useState<ColorApplyLevel>('both')
   
   const effectiveColorSettings: ColorSettings = colorSettings && Object.keys(colorSettings).length > 0 
-    ? colorSettings 
-    : defaultColorSettings
+    ? colorSettings : defaultColorSettings
   
   const applyColorsToProject = colorApplyLevel === 'both' || colorApplyLevel === 'parent'
   const applyColorsToPodLeads = colorApplyLevel === 'both' || colorApplyLevel === 'child'
 
+  useEffect(() => { fetchData() }, [timeframe, weekOffset, customStartDate, customEndDate])
+
+  // Report summary stats to parent when data changes
   useEffect(() => {
-    fetchData()
-  }, [timeframe, customStartDate, customEndDate])
+    if (data.length > 0 && onSummaryUpdate) {
+      const totalTasks = data.reduce((sum, p) => sum + (p.unique_tasks || 0), 0)
+      const totalTrainers = data.reduce((sum, p) => sum + p.pod_leads.reduce((s, pl) => s + (pl.trainers?.length || 0), 0), 0)
+      const totalPodLeads = data.reduce((sum, p) => sum + (p.pod_leads?.length || 0), 0)
+      const totalProjects = data.length
+      const totalReviews = data.reduce((sum, p) => sum + (p.total_reviews || 0), 0)
+      const newTasks = data.reduce((sum, p) => sum + (p.new_tasks || 0), 0)
+      const rework = data.reduce((sum, p) => sum + (p.rework || 0), 0)
+      
+      onSummaryUpdate({
+        totalTasks,
+        totalTrainers,
+        totalPodLeads,
+        totalProjects,
+        totalReviews,
+        newTasks,
+        rework
+      })
+    }
+  }, [data, onSummaryUpdate])
 
   const fetchData = async () => {
     setLoading(true)
     setError(null)
+    onSummaryLoading?.()
     try {
-      const { startDate, endDate } = getDateRange(timeframe, customStartDate, customEndDate)
+      const { startDate, endDate } = getDateRange(timeframe, weekOffset, customStartDate, customEndDate)
       const result = await getProjectStats(startDate, endDate)
       setData(result)
     } catch (err) {
       setError('Failed to fetch Project stats')
-      console.error(err)
     } finally {
       setLoading(false)
     }
@@ -426,180 +660,57 @@ export function ProjectsTab() {
     )
   )
 
-  // Sort the filtered data
   const sortedData = [...filteredData].sort((a, b) => {
     if (!sortColumn) return 0
-    
-    let aVal: any
-    let bVal: any
-    
+    let aVal: any, bVal: any
     switch (sortColumn) {
-      case 'project_name':
-        aVal = a.project_name || ''
-        bVal = b.project_name || ''
-        break
-      case 'count':
-        aVal = a.pod_lead_count
-        bVal = b.pod_lead_count
-        break
-      case 'unique_tasks':
-        aVal = a.unique_tasks ?? 0
-        bVal = b.unique_tasks ?? 0
-        break
-      case 'new_tasks':
-        aVal = a.new_tasks ?? 0
-        bVal = b.new_tasks ?? 0
-        break
-      case 'rework':
-        aVal = a.rework ?? 0
-        bVal = b.rework ?? 0
-        break
-      case 'total_reviews':
-        aVal = a.total_reviews ?? 0
-        bVal = b.total_reviews ?? 0
-        break
-      case 'avg_rework':
-        aVal = a.avg_rework ?? -Infinity
-        bVal = b.avg_rework ?? -Infinity
-        break
-      case 'rework_percent':
-        aVal = a.rework_percent ?? -Infinity
-        bVal = b.rework_percent ?? -Infinity
-        break
-      case 'merged_exp_aht':
-        aVal = a.merged_exp_aht ?? -Infinity
-        bVal = b.merged_exp_aht ?? -Infinity
-        break
-      case 'logged_hours':
-        aVal = a.logged_hours ?? 0
-        bVal = b.logged_hours ?? 0
-        break
-      case 'total_pod_hours':
-        aVal = a.total_pod_hours ?? 0
-        bVal = b.total_pod_hours ?? 0
-        break
-      default:
-        return 0
+      case 'project_name': aVal = a.project_name || ''; bVal = b.project_name || ''; break
+      case 'unique_tasks': aVal = a.unique_tasks ?? 0; bVal = b.unique_tasks ?? 0; break
+      case 'new_tasks': aVal = a.new_tasks ?? 0; bVal = b.new_tasks ?? 0; break
+      case 'rework': aVal = a.rework ?? 0; bVal = b.rework ?? 0; break
+      case 'total_reviews': aVal = a.total_reviews ?? 0; bVal = b.total_reviews ?? 0; break
+      case 'rework_percent': aVal = a.rework_percent ?? -Infinity; bVal = b.rework_percent ?? -Infinity; break
+      case 'logged_hours': aVal = a.logged_hours ?? 0; bVal = b.logged_hours ?? 0; break
+      default: return 0
     }
-    
-    // String comparison
-    if (typeof aVal === 'string' && typeof bVal === 'string') {
-      return sortDirection === 'asc' 
-        ? aVal.localeCompare(bVal)
-        : bVal.localeCompare(aVal)
-    }
-    
-    // Numeric comparison
+    if (typeof aVal === 'string') return sortDirection === 'asc' ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal)
     return sortDirection === 'asc' ? aVal - bVal : bVal - aVal
   })
 
-  // Render column header with dropdown and tooltip
-  const renderHeaderWithFilter = (label: string, columnKey: string) => (
-    <Box
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: 0.5,
-        cursor: 'pointer',
-        overflow: 'visible',
-        '&:hover': { opacity: 0.8 }
-      }}
-      onClick={(e) => {
-        setFilterAnchorEl(e.currentTarget as HTMLElement)
-        setActiveFilterColumn(columnKey)
-      }}
-    >
-      <ArrowDropDownIcon sx={{ fontSize: 18, color: '#64748B', flexShrink: 0 }} />
-      <span style={{ whiteSpace: 'nowrap' }}>{label}</span>
-      {sortColumn === columnKey && (
-        sortDirection === 'asc' ? 
-          <ArrowUpwardIcon sx={{ fontSize: 14, flexShrink: 0 }} /> : 
-          <ArrowDownwardIcon sx={{ fontSize: 14, flexShrink: 0 }} />
-      )}
-      <Tooltip 
-        title={getTooltipForHeader(label)}
-        arrow
-        placement="top"
-        enterDelay={200}
-        slotProps={{
-          tooltip: {
-            sx: {
-              bgcolor: '#1E293B',
-              color: '#F8FAFC',
-              fontSize: '0.75rem',
-              maxWidth: 300,
-              p: '8px 12px',
-              borderRadius: 1,
-              zIndex: 9999,
-            },
-          },
-          popper: {
-            sx: {
-              zIndex: 9999,
-            },
-          },
-        }}
-      >
-        <InfoOutlinedIcon 
+  // Sub-header cell renderer with tooltip
+  const SubHeader = ({ label, columnKey, group, tooltipKey }: { label: string; columnKey: string; group: keyof typeof COLUMN_GROUPS; tooltipKey?: string }) => {
+    const tooltipText = getTooltipForHeader(tooltipKey || label)
+    
+    return (
+      <Tooltip title={tooltipText} arrow placement="top">
+        <TableCell 
+          align="center"
           sx={{ 
-            fontSize: 14, 
-            color: '#94A3B8', 
-            cursor: 'help', 
-            ml: 0.25, 
-            flexShrink: 0,
-            '&:hover': { color: '#64748B' } 
-          }} 
-          onClick={(e) => e.stopPropagation()}
-        />
+            ...headerCellStyle,
+            bgcolor: COLUMN_GROUPS[group].bgSubHeader,
+            color: COLUMN_GROUPS[group].textColor,
+            borderBottom: `2px solid ${COLUMN_GROUPS[group].borderColor}`,
+            cursor: 'pointer',
+            width: 50,
+            '&:hover': { opacity: 0.8 },
+          }}
+          onClick={(e) => { 
+            e.stopPropagation()
+            setMenuPosition({ top: e.clientY, left: e.clientX })
+            setActiveFilterColumn(columnKey) 
+          }}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.25 }}>
+            <ArrowDropDownIcon sx={{ fontSize: 10, opacity: 0.5 }} />
+            <Typography sx={{ fontSize: '0.6rem', fontWeight: 600 }}>{label}</Typography>
+            {sortColumn === columnKey && (sortDirection === 'asc' ? 
+              <ArrowUpwardIcon sx={{ fontSize: 8 }} /> : <ArrowDownwardIcon sx={{ fontSize: 8 }} />)}
+          </Box>
+        </TableCell>
       </Tooltip>
-    </Box>
-  )
-
-  const handleExport = () => {
-    // Flatten data for export
-    const exportData: any[] = []
-    
-    filteredData.forEach(project => {
-      // Add project row
-      exportData.push({
-        type: 'Project',
-        name: project.project_name,
-        unique_tasks: project.unique_tasks,
-        new_tasks: project.new_tasks,
-        rework: project.rework,
-        total_reviews: project.total_reviews,
-        avg_rework: project.avg_rework,
-        rework_percent: project.rework_percent,
-        merged_exp_aht: project.merged_exp_aht,
-      })
-      
-      // Add POD Lead rows
-      project.pod_leads.forEach(pl => {
-        exportData.push({
-          type: 'POD Lead',
-          name: pl.pod_lead_name,
-          unique_tasks: pl.unique_tasks,
-          new_tasks: pl.new_tasks,
-          rework: pl.rework,
-          total_reviews: pl.total_reviews,
-          avg_rework: pl.avg_rework,
-          rework_percent: pl.rework_percent,
-          merged_exp_aht: pl.merged_exp_aht,
-        })
-      })
-    })
-    
-    const timestamp = new Date().toISOString().split('T')[0]
-    // Simple excel export
-    import('xlsx').then(XLSX => {
-      const ws = XLSX.utils.json_to_sheet(exportData)
-      const wb = XLSX.utils.book_new()
-      XLSX.utils.book_append_sheet(wb, ws, 'Projects')
-      XLSX.writeFile(wb, `Project_Stats_${timeframe}_${timestamp}.xlsx`)
-    })
+    )
   }
 
-  // Calculate totals
   const totals = {
     projects: sortedData.length,
     podLeads: sortedData.reduce((sum, p) => sum + p.pod_lead_count, 0),
@@ -610,314 +721,222 @@ export function ProjectsTab() {
     totalReviews: sortedData.reduce((sum, p) => sum + p.total_reviews, 0),
   }
 
-  if (loading) {
-    return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
-        <CircularProgress />
-      </Box>
-    )
+  const handleExport = () => {
+    const exportData: any[] = []
+    filteredData.forEach(project => {
+      exportData.push({ level: 'Project', project: project.project_name, unique_tasks: project.unique_tasks, new_tasks: project.new_tasks, rework: project.rework, total_reviews: project.total_reviews, rework_percent: project.rework_percent, logged_hours: project.logged_hours })
+      project.pod_leads.forEach(pl => {
+        exportData.push({ level: 'POD Lead', project: project.project_name, pod_lead: pl.pod_lead_name, email: pl.pod_lead_email, unique_tasks: pl.unique_tasks, new_tasks: pl.new_tasks, rework: pl.rework, total_reviews: pl.total_reviews, rework_percent: pl.rework_percent })
+        pl.trainers?.forEach(t => {
+          exportData.push({ level: 'Trainer', project: project.project_name, pod_lead: pl.pod_lead_name, trainer: t.trainer_name, email: t.trainer_email, unique_tasks: t.unique_tasks, new_tasks: t.new_tasks, rework: t.rework, total_reviews: t.total_reviews, jibble_hours: t.jibble_hours, efficiency: t.efficiency })
+        })
+      })
+    })
+    import('xlsx').then(XLSX => {
+      const ws = XLSX.utils.json_to_sheet(exportData)
+      const wb = XLSX.utils.book_new()
+      XLSX.utils.book_append_sheet(wb, ws, 'Projects')
+      XLSX.writeFile(wb, `Project_Stats_${new Date().toISOString().split('T')[0]}.xlsx`)
+    })
   }
 
-  if (error) {
-    return <Alert severity="error">{error}</Alert>
-  }
+  if (loading) return <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}><CircularProgress /></Box>
+  if (error) return <Alert severity="error">{error}</Alert>
 
   return (
     <Box>
-      <Paper sx={{ p: 2.5, mb: 2, borderRadius: 2, border: '1px solid #E2E8F0', boxShadow: 'none' }}>
-        {/* Filters */}
-        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', flexWrap: 'wrap', mb: 2.5 }}>
-          <FormControl size="small" sx={{ minWidth: 120 }}>
-            <InputLabel sx={{ fontSize: '0.8125rem' }}>Timeframe</InputLabel>
-            <Select
-              value={timeframe}
-              label="Timeframe"
-              onChange={(e) => setTimeframe(e.target.value as Timeframe)}
-              sx={{ 
-                fontSize: '0.8125rem',
-                '& .MuiOutlinedInput-notchedOutline': { borderColor: '#E2E8F0' },
-                '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#CBD5E1' },
-              }}
-            >
-              <MenuItem value="daily">Today</MenuItem>
-              <MenuItem value="d-1">D-1</MenuItem>
-              <MenuItem value="d-2">D-2</MenuItem>
-              <MenuItem value="d-3">D-3</MenuItem>
-              <MenuItem value="weekly">Weekly</MenuItem>
-              <MenuItem value="overall">Overall</MenuItem>
-              <MenuItem value="custom">Custom Range</MenuItem>
-            </Select>
-          </FormControl>
-
-          {timeframe === 'custom' && (
-            <>
-              <TextField
-                size="small"
-                type="date"
-                label="Start Date"
-                value={customStartDate}
-                onChange={(e) => setCustomStartDate(e.target.value)}
-                InputLabelProps={{ shrink: true }}
-                sx={{ 
-                  width: 150,
-                  '& .MuiOutlinedInput-notchedOutline': { borderColor: '#E2E8F0' },
-                }}
-              />
-              <TextField
-                size="small"
-                type="date"
-                label="End Date"
-                value={customEndDate}
-                onChange={(e) => setCustomEndDate(e.target.value)}
-                InputLabelProps={{ shrink: true }}
-                sx={{ 
-                  width: 150,
-                  '& .MuiOutlinedInput-notchedOutline': { borderColor: '#E2E8F0' },
-                }}
-              />
-            </>
-          )}
-
+      {/* Filters & Summary */}
+      <Paper sx={{ p: 1.5, mb: 1.5, borderRadius: 1.5, border: '1px solid #E2E8F0', boxShadow: 'none' }}>
+        <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center', flexWrap: 'wrap', mb: 1.5 }}>
+          <TimeframeSelector
+            timeframe={timeframe} onTimeframeChange={setTimeframe}
+            weekOffset={weekOffset} onWeekOffsetChange={setWeekOffset}
+            customStartDate={customStartDate} onCustomStartDateChange={setCustomStartDate}
+            customEndDate={customEndDate} onCustomEndDateChange={setCustomEndDate}
+          />
           <TextField
-            size="small"
-            placeholder="Search Project or POD Lead..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            sx={{ 
-              minWidth: 250,
-              '& .MuiOutlinedInput-root': {
-                fontSize: '0.8125rem',
-                '& fieldset': { borderColor: '#E2E8F0' },
-                '&:hover fieldset': { borderColor: '#CBD5E1' },
-              },
-            }}
+            size="small" placeholder="Search..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}
+            sx={{ minWidth: 180, '& .MuiOutlinedInput-root': { fontSize: '0.75rem', height: 32 } }}
           />
-
-          {/* Color Settings */}
           <ColorSettingsPanel 
-            settings={colorSettings}
-            onSettingsChange={setColorSettings}
-            metrics={[
-              'tasks_reviewed',
-              'new_tasks_reviewed',
-              'rework_reviewed',
-              'total_reviews',
-              'avg_rework',
-              'rework_percent',
-              'merged_exp_aht'
-            ]}
-            applyLevel={colorApplyLevel}
-            onApplyLevelChange={setColorApplyLevel}
+            settings={colorSettings} onSettingsChange={setColorSettings}
+            metrics={['tasks_reviewed', 'new_tasks_reviewed', 'rework_reviewed', 'total_reviews', 'avg_rework', 'rework_percent', 'merged_exp_aht']}
+            applyLevel={colorApplyLevel} onApplyLevelChange={setColorApplyLevel}
           />
-
-          <Button
-            variant="contained"
-            startIcon={<DownloadIcon sx={{ fontSize: 18 }} />}
-            onClick={handleExport}
-            sx={{
-              bgcolor: '#10B981',
-              color: 'white',
-              fontWeight: 600,
-              fontSize: '0.8125rem',
-              textTransform: 'none',
-              px: 2.5,
-              boxShadow: 'none',
-              '&:hover': { 
-                bgcolor: '#059669',
-                boxShadow: '0 2px 8px rgba(16, 185, 129, 0.3)',
-              },
-            }}
-          >
+          <Button variant="contained" startIcon={<DownloadIcon sx={{ fontSize: 16 }} />} onClick={handleExport}
+            sx={{ bgcolor: '#10B981', fontSize: '0.75rem', textTransform: 'none', px: 2, py: 0.5, minHeight: 32, '&:hover': { bgcolor: '#059669' } }}>
             Export
           </Button>
         </Box>
-
-        {/* Summary */}
-        <Box sx={{ display: 'flex', gap: 1.5, flexWrap: 'wrap' }}>
-          <Box sx={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: 1, 
-            px: 2, 
-            py: 0.75, 
-            bgcolor: '#F0FDF4', 
-            borderRadius: 1.5,
-            border: '1px solid #D1FAE5',
-          }}>
-            <Typography variant="caption" sx={{ color: '#065F46', fontWeight: 700, fontSize: '0.8125rem' }}>
-              {totals.projects}
-            </Typography>
-            <Typography variant="caption" sx={{ color: '#047857', fontSize: '0.75rem' }}>
-              Projects
-            </Typography>
-          </Box>
-          <Box sx={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: 1, 
-            px: 2, 
-            py: 0.75, 
-            bgcolor: '#EEF2FF', 
-            borderRadius: 1.5,
-            border: '1px solid #C7D2FE',
-          }}>
-            <Typography variant="caption" sx={{ color: '#3730A3', fontWeight: 700, fontSize: '0.8125rem' }}>
-              {totals.podLeads}
-            </Typography>
-            <Typography variant="caption" sx={{ color: '#4F46E5', fontSize: '0.75rem' }}>
-              POD Leads
-            </Typography>
-          </Box>
-          <Box sx={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: 1, 
-            px: 2, 
-            py: 0.75, 
-            bgcolor: '#FDF4FF', 
-            borderRadius: 1.5,
-            border: '1px solid #F5D0FE',
-          }}>
-            <Typography variant="caption" sx={{ color: '#86198F', fontWeight: 700, fontSize: '0.8125rem' }}>
-              {totals.trainers}
-            </Typography>
-            <Typography variant="caption" sx={{ color: '#A21CAF', fontSize: '0.75rem' }}>
-              Trainers
-            </Typography>
-          </Box>
-          <Divider orientation="vertical" flexItem sx={{ mx: 0.5 }} />
-          <Box sx={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: 1, 
-            px: 2, 
-            py: 0.75, 
-            bgcolor: '#F8FAFC', 
-            borderRadius: 1.5,
-            border: '1px solid #E2E8F0',
-          }}>
-            <Typography variant="caption" sx={{ color: '#334155', fontWeight: 700, fontSize: '0.8125rem' }}>
-              {totals.uniqueTasks.toLocaleString()}
-            </Typography>
-            <Typography variant="caption" sx={{ color: '#64748B', fontSize: '0.75rem' }}>
-              Unique Tasks
-            </Typography>
-          </Box>
-          <Box sx={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: 1, 
-            px: 2, 
-            py: 0.75, 
-            bgcolor: '#F8FAFC', 
-            borderRadius: 1.5,
-            border: '1px solid #E2E8F0',
-          }}>
-            <Typography variant="caption" sx={{ color: '#334155', fontWeight: 700, fontSize: '0.8125rem' }}>
-              {totals.newTasks.toLocaleString()}
-            </Typography>
-            <Typography variant="caption" sx={{ color: '#64748B', fontSize: '0.75rem' }}>
-              New Tasks
-            </Typography>
-          </Box>
-          <Box sx={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: 1, 
-            px: 2, 
-            py: 0.75, 
-            bgcolor: '#F8FAFC', 
-            borderRadius: 1.5,
-            border: '1px solid #E2E8F0',
-          }}>
-            <Typography variant="caption" sx={{ color: '#334155', fontWeight: 700, fontSize: '0.8125rem' }}>
-              {totals.rework.toLocaleString()}
-            </Typography>
-            <Typography variant="caption" sx={{ color: '#64748B', fontSize: '0.75rem' }}>
-              Rework
-            </Typography>
-          </Box>
-          <Box sx={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: 1, 
-            px: 2, 
-            py: 0.75, 
-            bgcolor: '#F8FAFC', 
-            borderRadius: 1.5,
-            border: '1px solid #E2E8F0',
-          }}>
-            <Typography variant="caption" sx={{ color: '#334155', fontWeight: 700, fontSize: '0.8125rem' }}>
-              {totals.totalReviews.toLocaleString()}
-            </Typography>
-            <Typography variant="caption" sx={{ color: '#64748B', fontSize: '0.75rem' }}>
-              Total Reviews
-            </Typography>
-          </Box>
+        {/* Summary chips */}
+        <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+          {[
+            { label: 'Projects', value: totals.projects, bg: '#F0FDF4', border: '#D1FAE5', color: '#065F46' },
+            { label: 'POD Leads', value: totals.podLeads, bg: '#EEF2FF', border: '#C7D2FE', color: '#3730A3' },
+            { label: 'Trainers', value: totals.trainers, bg: '#FDF4FF', border: '#F5D0FE', color: '#86198F' },
+            { label: 'Tasks', value: totals.uniqueTasks.toLocaleString(), bg: '#F8FAFC', border: '#E2E8F0', color: '#334155' },
+            { label: 'New', value: totals.newTasks.toLocaleString(), bg: '#F8FAFC', border: '#E2E8F0', color: '#334155' },
+            { label: 'Rework', value: totals.rework.toLocaleString(), bg: '#FEF2F2', border: '#FECACA', color: '#991B1B' },
+            { label: 'Reviews', value: totals.totalReviews.toLocaleString(), bg: '#F8FAFC', border: '#E2E8F0', color: '#334155' },
+          ].map(item => (
+            <Box key={item.label} sx={{ px: 1.5, py: 0.5, bgcolor: item.bg, borderRadius: 1, border: `1px solid ${item.border}`, display: 'flex', alignItems: 'center', gap: 0.5 }}>
+              <Typography sx={{ fontSize: '0.75rem', fontWeight: 700, color: item.color }}>{item.value}</Typography>
+              <Typography sx={{ fontSize: '0.65rem', color: item.color, opacity: 0.8 }}>{item.label}</Typography>
+            </Box>
+          ))}
         </Box>
       </Paper>
 
-      <Paper sx={{ width: '100%', overflow: 'hidden', borderRadius: 2, border: '1px solid #E2E8F0', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
-        <TableContainer sx={{ maxHeight: 600, overflowX: 'auto' }}>
-          <Table stickyHeader size="small" sx={{ minWidth: 1400 }}>
+      {/* Table */}
+      <Paper sx={{ width: '100%', overflow: 'hidden', borderRadius: 1.5, border: '1px solid #E2E8F0' }}>
+        <TableContainer sx={{ maxHeight: 600 }}>
+          <Table stickyHeader size="small" sx={{ minWidth: 1000 }}>
             <TableHead>
+              {/* Group Headers Row */}
               <TableRow>
-                <TableCell sx={{ 
-                  fontWeight: 600, 
-                  bgcolor: '#F8FAFC', 
-                  color: '#334155', 
-                  minWidth: 250,
-                  borderBottom: '2px solid #E2E8F0',
-                  fontSize: '0.8125rem',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.025em',
-                  position: 'sticky',
-                  left: 0,
-                  zIndex: 3,
-                  borderRight: '2px solid #E2E8F0',
-                }}>
-                  {renderHeaderWithFilter('Project / POD Lead', 'project_name')}
+                <TableCell 
+                  colSpan={2} 
+                  sx={{ 
+                    ...headerCellStyle, 
+                    bgcolor: COLUMN_GROUPS.overview.bgHeader, 
+                    color: COLUMN_GROUPS.overview.textColor,
+                    borderBottom: `1px solid ${COLUMN_GROUPS.overview.borderColor}`,
+                    borderRight: `2px solid ${COLUMN_GROUPS.overview.borderColor}`,
+                    position: 'sticky', left: 0, zIndex: 4,
+                  }}
+                >
+                  <Typography sx={{ fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.03em' }}>OVERVIEW</Typography>
                 </TableCell>
-                <TableCell align="center" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 80, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em' }}>
-                  {renderHeaderWithFilter('POD Leads', 'count')}
+                <TableCell 
+                  colSpan={5} 
+                  align="center"
+                  sx={{ 
+                    ...headerCellStyle, 
+                    bgcolor: COLUMN_GROUPS.tasks.bgHeader, 
+                    color: COLUMN_GROUPS.tasks.textColor,
+                    borderBottom: `1px solid ${COLUMN_GROUPS.tasks.borderColor}`,
+                    borderRight: `2px solid ${COLUMN_GROUPS.tasks.borderColor}`,
+                  }}
+                >
+                  <Typography sx={{ fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.03em' }}>TASKS</Typography>
                 </TableCell>
-                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 100, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em' }}>
-                  {renderHeaderWithFilter('Unique Tasks', 'unique_tasks')}
+                <TableCell 
+                  colSpan={4} 
+                  align="center"
+                  sx={{ 
+                    ...headerCellStyle, 
+                    bgcolor: COLUMN_GROUPS.quality.bgHeader, 
+                    color: COLUMN_GROUPS.quality.textColor,
+                    borderBottom: `1px solid ${COLUMN_GROUPS.quality.borderColor}`,
+                    borderRight: `2px solid ${COLUMN_GROUPS.quality.borderColor}`,
+                  }}
+                >
+                  <Typography sx={{ fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.03em' }}>QUALITY</Typography>
                 </TableCell>
-                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 90, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em' }}>
-                  {renderHeaderWithFilter('New Tasks', 'new_tasks')}
+                <TableCell 
+                  colSpan={5} 
+                  align="center"
+                  sx={{ 
+                    ...headerCellStyle, 
+                    bgcolor: COLUMN_GROUPS.time.bgHeader, 
+                    color: COLUMN_GROUPS.time.textColor,
+                    borderBottom: `1px solid ${COLUMN_GROUPS.time.borderColor}`,
+                  }}
+                >
+                  <Typography sx={{ fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.03em' }}>TIME & EFFICIENCY</Typography>
                 </TableCell>
-                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 80, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em' }}>
-                  {renderHeaderWithFilter('Rework', 'rework')}
-                </TableCell>
-                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 100, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em' }}>
-                  {renderHeaderWithFilter('Total Reviews', 'total_reviews')}
-                </TableCell>
-                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 100, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em' }}>
-                  {renderHeaderWithFilter('Avg Rework', 'avg_rework')}
-                </TableCell>
-                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 90, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em' }}>
-                  {renderHeaderWithFilter('Rework %', 'rework_percent')}
-                </TableCell>
-                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 120, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em' }}>
-                  {renderHeaderWithFilter('Merged Exp. AHT', 'merged_exp_aht')}
-                </TableCell>
-                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 110, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em' }}>
-                  {renderHeaderWithFilter('Logged Hours', 'logged_hours')}
-                </TableCell>
-                <TableCell align="left" sx={{ fontWeight: 600, bgcolor: '#F8FAFC', color: '#334155', minWidth: 110, borderBottom: '2px solid #E2E8F0', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.025em' }}>
-                  {renderHeaderWithFilter('Total POD Hrs', 'total_pod_hours')}
-                </TableCell>
+              </TableRow>
+
+              {/* Sub-headers Row */}
+              <TableRow>
+                {/* Overview */}
+                <Tooltip title="Project name, POD Lead name, or Trainer name" arrow placement="top">
+                  <TableCell sx={{ 
+                    ...headerCellStyle, 
+                    bgcolor: COLUMN_GROUPS.overview.bgSubHeader, 
+                    color: COLUMN_GROUPS.overview.textColor,
+                    borderBottom: `2px solid ${COLUMN_GROUPS.overview.borderColor}`,
+                    position: 'sticky', left: 0, zIndex: 3,
+                    width: 220,
+                    minWidth: 200,
+                    borderRight: `1px solid ${COLUMN_GROUPS.overview.borderColor}`,
+                  }}>
+                    <Typography sx={{ fontSize: '0.6rem', fontWeight: 600 }}>Name</Typography>
+                  </TableCell>
+                </Tooltip>
+                <Tooltip title="Number of POD Leads (for projects) or Trainers (for POD Leads)" arrow placement="top">
+                  <TableCell align="center" sx={{ 
+                    ...headerCellStyle, 
+                    bgcolor: COLUMN_GROUPS.overview.bgSubHeader, 
+                    color: COLUMN_GROUPS.overview.textColor,
+                    borderBottom: `2px solid ${COLUMN_GROUPS.overview.borderColor}`,
+                    borderRight: `2px solid ${COLUMN_GROUPS.overview.borderColor}`,
+                    width: 45,
+                  }}>
+                    <Typography sx={{ fontSize: '0.6rem', fontWeight: 600 }}>Size</Typography>
+                  </TableCell>
+                </Tooltip>
+
+                {/* Tasks */}
+                <SubHeader label="Uniq" columnKey="unique_tasks" group="tasks" tooltipKey="Unique Tasks" />
+                <SubHeader label="New" columnKey="new_tasks" group="tasks" tooltipKey="New Tasks" />
+                <SubHeader label="Rwk" columnKey="rework" group="tasks" tooltipKey="Rework" />
+                <SubHeader label="Del" columnKey="delivered" group="tasks" tooltipKey="Delivered" />
+                <Tooltip title="Tasks in delivery queue, pending delivery to the client" arrow placement="top">
+                  <TableCell align="center" sx={{ 
+                    ...headerCellStyle, 
+                    bgcolor: COLUMN_GROUPS.tasks.bgSubHeader, 
+                    color: COLUMN_GROUPS.tasks.textColor,
+                    borderBottom: `2px solid ${COLUMN_GROUPS.tasks.borderColor}`,
+                    borderRight: `2px solid ${COLUMN_GROUPS.tasks.borderColor}`,
+                    width: 45,
+                  }}>
+                    <Typography sx={{ fontSize: '0.6rem', fontWeight: 600 }}>Queue</Typography>
+                  </TableCell>
+                </Tooltip>
+
+                {/* Quality */}
+                <SubHeader label="Rev" columnKey="total_reviews" group="quality" tooltipKey="Total Reviews" />
+                <SubHeader label="AvgR" columnKey="avg_rework" group="quality" tooltipKey="Avg Rework" />
+                <SubHeader label="R%" columnKey="rework_percent" group="quality" tooltipKey="Rework %" />
+                <Tooltip title="Average review rating (>4.8 Green, 4-4.8 Yellow, <4 Red)" arrow placement="top">
+                  <TableCell align="center" sx={{ 
+                    ...headerCellStyle, 
+                    bgcolor: COLUMN_GROUPS.quality.bgSubHeader, 
+                    color: COLUMN_GROUPS.quality.textColor,
+                    borderBottom: `2px solid ${COLUMN_GROUPS.quality.borderColor}`,
+                    borderRight: `2px solid ${COLUMN_GROUPS.quality.borderColor}`,
+                    width: 40,
+                  }}>
+                    <Typography sx={{ fontSize: '0.6rem', fontWeight: 600 }}>Rate</Typography>
+                  </TableCell>
+                </Tooltip>
+
+                {/* Time & Efficiency */}
+                <SubHeader label="AHT" columnKey="merged_exp_aht" group="time" tooltipKey="Merged Exp. AHT" />
+                <SubHeader label="Jib" columnKey="logged_hours" group="time" tooltipKey="Logged Hours" />
+                <Tooltip title="Accounted Hours = (New Tasks × 10) + (Rework × 4)" arrow placement="top">
+                  <TableCell align="center" sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.time.bgSubHeader, color: COLUMN_GROUPS.time.textColor, borderBottom: `2px solid ${COLUMN_GROUPS.time.borderColor}`, width: 45 }}>
+                    <Typography sx={{ fontSize: '0.6rem', fontWeight: 600 }}>Acct</Typography>
+                  </TableCell>
+                </Tooltip>
+                <Tooltip title="Efficiency = (Accounted Hours / Jibble Hours) × 100 (≥90% Green, 70-90% Yellow, <70% Red)" arrow placement="top">
+                  <TableCell align="center" sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.time.bgSubHeader, color: COLUMN_GROUPS.time.textColor, borderBottom: `2px solid ${COLUMN_GROUPS.time.borderColor}`, width: 40 }}>
+                    <Typography sx={{ fontSize: '0.6rem', fontWeight: 600 }}>Eff%</Typography>
+                  </TableCell>
+                </Tooltip>
+                <Tooltip title="POD Lead's own logged hours from Jibble" arrow placement="top">
+                  <TableCell align="center" sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.time.bgSubHeader, color: COLUMN_GROUPS.time.textColor, borderBottom: `2px solid ${COLUMN_GROUPS.time.borderColor}`, width: 50 }}>
+                    <Typography sx={{ fontSize: '0.6rem', fontWeight: 600 }}>POD</Typography>
+                  </TableCell>
+                </Tooltip>
               </TableRow>
             </TableHead>
             <TableBody>
               {sortedData.map((project, idx) => (
                 <ProjectRow 
-                  key={idx} 
-                  project={project} 
-                  colorSettings={effectiveColorSettings} 
-                  applyColors={applyColorsToProject}
-                  applyColorsToPodLeads={applyColorsToPodLeads}
+                  key={idx} project={project} colorSettings={effectiveColorSettings} 
+                  applyColors={applyColorsToProject} applyColorsToPodLeads={applyColorsToPodLeads} applyColorsToTrainers={applyColorsToPodLeads}
                 />
               ))}
             </TableBody>
@@ -925,124 +944,37 @@ export function ProjectsTab() {
         </TableContainer>
       </Paper>
 
-      {/* Sort Popover */}
-      <Popover
-        open={Boolean(filterAnchorEl) && Boolean(activeFilterColumn)}
-        anchorEl={filterAnchorEl}
-        onClose={() => {
-          setFilterAnchorEl(null)
-          setActiveFilterColumn('')
-        }}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
-        }}
+      {/* Sort Menu */}
+      <Menu
+        open={Boolean(menuPosition)} 
+        onClose={() => { setMenuPosition(null); setActiveFilterColumn('') }}
+        anchorReference="anchorPosition"
+        anchorPosition={menuPosition ? { top: menuPosition.top, left: menuPosition.left } : undefined}
         slotProps={{
           paper: {
-            sx: {
-              mt: 1,
-              boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-              borderRadius: 2,
-            }
+            sx: { minWidth: 180 }
           }
         }}
       >
-        {activeFilterColumn && (
-          <Box sx={{ minWidth: 280 }}>
-            <Box sx={{ p: 2 }}>
-              <Typography 
-                variant="subtitle2" 
-                sx={{ 
-                  fontWeight: 600, 
-                  mb: 1.5, 
-                  color: '#1F2937',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 0.5,
-                }}
-              >
-                <SortIcon fontSize="small" />
-                Sort
-              </Typography>
-              
-              <MenuItem
-                onClick={() => {
-                  setSortColumn(activeFilterColumn)
-                  setSortDirection('asc')
-                  setFilterAnchorEl(null)
-                  setActiveFilterColumn('')
-                }}
-                sx={{ borderRadius: 1, mb: 0.5 }}
-              >
-                <ListItemIcon>
-                  <ArrowUpwardIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText>Sort Ascending</ListItemText>
-              </MenuItem>
-              
-              <MenuItem
-                onClick={() => {
-                  setSortColumn(activeFilterColumn)
-                  setSortDirection('desc')
-                  setFilterAnchorEl(null)
-                  setActiveFilterColumn('')
-                }}
-                sx={{ borderRadius: 1 }}
-              >
-                <ListItemIcon>
-                  <ArrowDownwardIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText>Sort Descending</ListItemText>
-              </MenuItem>
-            </Box>
-
-            <Divider />
-
-            <Box sx={{ p: 2, display: 'flex', justifyContent: 'space-between', gap: 1 }}>
-              <Button
-                variant="outlined"
-                size="small"
-                onClick={() => {
-                  setSortColumn('')
-                  setSortDirection('asc')
-                  setFilterAnchorEl(null)
-                  setActiveFilterColumn('')
-                }}
-                sx={{
-                  color: '#6B7280',
-                  borderColor: '#D1D5DB',
-                  '&:hover': {
-                    borderColor: '#9CA3AF',
-                    backgroundColor: '#F9FAFB',
-                  },
-                }}
-              >
-                Reset
-              </Button>
-              <Button
-                variant="contained"
-                size="small"
-                onClick={() => {
-                  setFilterAnchorEl(null)
-                  setActiveFilterColumn('')
-                }}
-                sx={{
-                  backgroundColor: '#2E5CFF',
-                  '&:hover': {
-                    backgroundColor: '#2347D5',
-                  },
-                }}
-              >
-                Close
-              </Button>
-            </Box>
-          </Box>
-        )}
-      </Popover>
+        <Box sx={{ px: 1.5, py: 0.5 }}>
+          <Typography variant="subtitle2" sx={{ fontWeight: 600, fontSize: '0.75rem', display: 'flex', alignItems: 'center' }}>
+            <SortIcon sx={{ fontSize: 14, mr: 0.5 }} /> Sort
+          </Typography>
+        </Box>
+        <Divider />
+        <MenuItem onClick={() => { setSortColumn(activeFilterColumn); setSortDirection('asc'); setMenuPosition(null) }} sx={{ fontSize: '0.75rem', py: 0.75 }}>
+          <ListItemIcon><ArrowUpwardIcon fontSize="small" /></ListItemIcon>
+          <ListItemText>Ascending</ListItemText>
+        </MenuItem>
+        <MenuItem onClick={() => { setSortColumn(activeFilterColumn); setSortDirection('desc'); setMenuPosition(null) }} sx={{ fontSize: '0.75rem', py: 0.75 }}>
+          <ListItemIcon><ArrowDownwardIcon fontSize="small" /></ListItemIcon>
+          <ListItemText>Descending</ListItemText>
+        </MenuItem>
+        <Divider sx={{ my: 0.5 }} />
+        <MenuItem onClick={() => { setSortColumn(''); setMenuPosition(null) }} sx={{ fontSize: '0.7rem', py: 0.5, color: '#64748B' }}>
+          Reset
+        </MenuItem>
+      </Menu>
     </Box>
   )
 }

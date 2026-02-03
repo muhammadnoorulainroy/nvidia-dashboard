@@ -1,0 +1,40 @@
+{
+  "table": "feedback_action_comment",
+  "row_count": 2,
+  "sample_count": 2,
+  "fetched_at": "2026-01-28T23:23:31.078500",
+  "data": [
+    {
+      "id": 2,
+      "action": null,
+      "review_quality_dimension_value_id": 26802,
+      "created_at": "2025-12-30T18:13:40.931121",
+      "updated_at": "2025-12-30T18:13:40.931121",
+      "action_comment": null,
+      "turn": null,
+      "positive_feedback": 0,
+      "feedback_comment": "",
+      "author_id": 748,
+      "datastream_metadata": {
+        "uuid": "e6920c71-4a01-4ed7-9ddc-b76a00011100",
+        "source_timestamp": 1767118420000
+      }
+    },
+    {
+      "id": 1,
+      "action": null,
+      "review_quality_dimension_value_id": 23296,
+      "created_at": "2025-12-30T00:27:31.547961",
+      "updated_at": "2025-12-30T00:27:31.547961",
+      "action_comment": null,
+      "turn": null,
+      "positive_feedback": 0,
+      "feedback_comment": "",
+      "author_id": 747,
+      "datastream_metadata": {
+        "uuid": "3011ccf6-4c06-4776-936b-507100010001",
+        "source_timestamp": 1767054451000
+      }
+    }
+  ]
+}

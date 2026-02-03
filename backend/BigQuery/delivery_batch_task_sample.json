@@ -1,0 +1,1608 @@
+{
+  "table": "delivery_batch_task",
+  "row_count": 25066,
+  "sample_count": 100,
+  "fetched_at": "2026-01-28T23:23:22.348689",
+  "data": [
+    {
+      "created_at": "2026-01-28T22:11:22.295599",
+      "updated_at": "2026-01-28T22:11:22.295599",
+      "id": 30251,
+      "notes": {
+        "reason": "Manually added to the batch"
+      },
+      "delivery_batch_id": 241,
+      "task_id": 64992,
+      "task_version_id": 42510,
+      "author_id": 770,
+      "datastream_metadata": {
+        "uuid": "f4fe462f-319c-4131-b469-9f0ad98bf6d5",
+        "source_timestamp": 1769638282000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:08:54.679939",
+      "updated_at": "2026-01-28T22:08:54.679939",
+      "id": 30250,
+      "notes": {
+        "message": "Added as a result of conversation review #26194"
+      },
+      "delivery_batch_id": 217,
+      "task_id": 69668,
+      "task_version_id": 42418,
+      "author_id": 969,
+      "datastream_metadata": {
+        "uuid": "3838ef22-e12b-4882-86e6-9d71596b0508",
+        "source_timestamp": 1769638134000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:06:00.300149",
+      "updated_at": "2026-01-28T22:06:00.300149",
+      "id": 30249,
+      "notes": {
+        "message": "Added as a result of conversation review #26193"
+      },
+      "delivery_batch_id": 233,
+      "task_id": 64752,
+      "task_version_id": 42247,
+      "author_id": 749,
+      "datastream_metadata": {
+        "uuid": "fd764b1d-fdeb-4632-b57a-0143374cd25a",
+        "source_timestamp": 1769637960000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:03:04.210556",
+      "updated_at": "2026-01-28T22:03:04.210556",
+      "id": 30248,
+      "notes": {
+        "message": "Added as a result of conversation review #26191"
+      },
+      "delivery_batch_id": 240,
+      "task_id": 62894,
+      "task_version_id": 42506,
+      "author_id": 710,
+      "datastream_metadata": {
+        "uuid": "30f0e3cb-f256-4915-9b46-7c57277771fd",
+        "source_timestamp": 1769637784000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:01:55.338260",
+      "updated_at": "2026-01-28T22:01:55.338260",
+      "id": 30247,
+      "notes": {
+        "reason": "Manually added to the batch"
+      },
+      "delivery_batch_id": 240,
+      "task_id": 68065,
+      "task_version_id": 42189,
+      "author_id": 715,
+      "datastream_metadata": {
+        "uuid": "dc8a39f3-729c-4957-aebe-c5511cb21afb",
+        "source_timestamp": 1769637715000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:58:22.826332",
+      "updated_at": "2026-01-28T21:58:22.826332",
+      "id": 30246,
+      "notes": {
+        "reason": "Manually added to the batch"
+      },
+      "delivery_batch_id": 243,
+      "task_id": 54790,
+      "task_version_id": 38077,
+      "author_id": 473,
+      "datastream_metadata": {
+        "uuid": "0f2b916b-0f89-4e40-8158-578f4babeb11",
+        "source_timestamp": 1769637502000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:55:32.346566",
+      "updated_at": "2026-01-28T21:55:32.346566",
+      "id": 30245,
+      "notes": {
+        "message": "Added as a result of conversation review #26187"
+      },
+      "delivery_batch_id": 233,
+      "task_id": 64698,
+      "task_version_id": 42358,
+      "author_id": 749,
+      "datastream_metadata": {
+        "uuid": "b64de617-a634-4ac4-9052-c295b33fa8c5",
+        "source_timestamp": 1769637332000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:47:20.287713",
+      "updated_at": "2026-01-28T21:47:20.287713",
+      "id": 30244,
+      "notes": {
+        "reason": "Manually added to the batch"
+      },
+      "delivery_batch_id": 239,
+      "task_id": 62879,
+      "task_version_id": 42497,
+      "author_id": 715,
+      "datastream_metadata": {
+        "uuid": "b44b9b09-41da-4836-b3a2-ea404e23a9b0",
+        "source_timestamp": 1769636840000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:30:46.618131",
+      "updated_at": "2026-01-28T21:30:46.618131",
+      "id": 30243,
+      "notes": {
+        "message": "Added as a result of conversation review #26173"
+      },
+      "delivery_batch_id": 240,
+      "task_id": 63841,
+      "task_version_id": 42494,
+      "author_id": 710,
+      "datastream_metadata": {
+        "uuid": "5dab3988-3698-44f9-9328-52a8986448b4",
+        "source_timestamp": 1769635846000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:26:42.615266",
+      "updated_at": "2026-01-28T21:26:42.615266",
+      "id": 30242,
+      "notes": {
+        "message": "Added as a result of conversation review #26171"
+      },
+      "delivery_batch_id": 230,
+      "task_id": 70482,
+      "task_version_id": 42166,
+      "author_id": 845,
+      "datastream_metadata": {
+        "uuid": "cb6149bd-2a9a-4296-9015-78c3bf9f7748",
+        "source_timestamp": 1769635602000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:25:14.329319",
+      "updated_at": "2026-01-28T21:25:14.329319",
+      "id": 30241,
+      "notes": {
+        "message": "Added as a result of conversation review #26169"
+      },
+      "delivery_batch_id": 238,
+      "task_id": 70912,
+      "task_version_id": 42485,
+      "author_id": 835,
+      "datastream_metadata": {
+        "uuid": "a5d72c53-1960-4e5f-8c13-71a589c16fe8",
+        "source_timestamp": 1769635514000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:24:36.959259",
+      "updated_at": "2026-01-28T21:24:36.959259",
+      "id": 30240,
+      "notes": {
+        "reason": "Manually added to the batch"
+      },
+      "delivery_batch_id": 241,
+      "task_id": 64212,
+      "task_version_id": 42490,
+      "author_id": 770,
+      "datastream_metadata": {
+        "uuid": "d97a7e83-c3ca-4ce7-a87b-7e5e843183a8",
+        "source_timestamp": 1769635476000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:21:12.646732",
+      "updated_at": "2026-01-28T21:21:12.646732",
+      "id": 30239,
+      "notes": {
+        "reason": "Manually added to the batch"
+      },
+      "delivery_batch_id": 241,
+      "task_id": 65202,
+      "task_version_id": 42486,
+      "author_id": 749,
+      "datastream_metadata": {
+        "uuid": "0e69e312-5620-4d54-8b2c-343ea1dad631",
+        "source_timestamp": 1769635272000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:19:24.053606",
+      "updated_at": "2026-01-28T21:19:24.053606",
+      "id": 30238,
+      "notes": {
+        "message": "Added as a result of conversation review #26164"
+      },
+      "delivery_batch_id": 240,
+      "task_id": 68029,
+      "task_version_id": 42488,
+      "author_id": 710,
+      "datastream_metadata": {
+        "uuid": "bde089a1-3c62-4ad4-9401-e1322a06490b",
+        "source_timestamp": 1769635164000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:05:54.317458",
+      "updated_at": "2026-01-28T21:05:54.317458",
+      "id": 30237,
+      "notes": {
+        "message": "Added as a result of conversation review #26156"
+      },
+      "delivery_batch_id": 230,
+      "task_id": 70478,
+      "task_version_id": 42373,
+      "author_id": 845,
+      "datastream_metadata": {
+        "uuid": "021b5f90-8e90-4432-a22a-51156ed19bf9",
+        "source_timestamp": 1769634354000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:05:10.445865",
+      "updated_at": "2026-01-28T21:05:10.445865",
+      "id": 30236,
+      "notes": {
+        "message": "Added as a result of conversation review #26155"
+      },
+      "delivery_batch_id": 243,
+      "task_id": 54979,
+      "task_version_id": 40120,
+      "author_id": 1112,
+      "datastream_metadata": {
+        "uuid": "4861101b-eab3-4be7-93c3-b307d6f0e41b",
+        "source_timestamp": 1769634310000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:03:54.057751",
+      "updated_at": "2026-01-28T21:03:54.057751",
+      "id": 30235,
+      "notes": {
+        "message": "Added as a result of conversation review #23808"
+      },
+      "delivery_batch_id": 243,
+      "task_id": 54695,
+      "task_version_id": 40724,
+      "author_id": 1112,
+      "datastream_metadata": {
+        "uuid": "7af78ede-85a7-4145-be86-076228addffe",
+        "source_timestamp": 1769634234000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:02:16.336015",
+      "updated_at": "2026-01-28T21:02:16.336015",
+      "id": 30234,
+      "notes": {
+        "message": "Added as a result of conversation review #26153"
+      },
+      "delivery_batch_id": 243,
+      "task_id": 54791,
+      "task_version_id": 41780,
+      "author_id": 1112,
+      "datastream_metadata": {
+        "uuid": "6686fb11-2b60-448c-84e8-0b4a1de0cc24",
+        "source_timestamp": 1769634136000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:01:46.175712",
+      "updated_at": "2026-01-28T21:01:46.175712",
+      "id": 30233,
+      "notes": {
+        "message": "Added as a result of conversation review #26152"
+      },
+      "delivery_batch_id": 229,
+      "task_id": 70314,
+      "task_version_id": 41762,
+      "author_id": 969,
+      "datastream_metadata": {
+        "uuid": "884bd1a7-34be-4c29-9fff-44360d49ef60",
+        "source_timestamp": 1769634106000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:01:18.691647",
+      "updated_at": "2026-01-28T21:01:18.691647",
+      "id": 30232,
+      "notes": {
+        "message": "Added as a result of conversation review #26150"
+      },
+      "delivery_batch_id": 241,
+      "task_id": 64805,
+      "task_version_id": 42399,
+      "author_id": 813,
+      "datastream_metadata": {
+        "uuid": "067073c0-1399-4139-abac-6c20f7829b58",
+        "source_timestamp": 1769634078000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:00:11.682721",
+      "updated_at": "2026-01-28T21:00:11.682721",
+      "id": 30231,
+      "notes": {
+        "message": "Added as a result of conversation review #26151"
+      },
+      "delivery_batch_id": 243,
+      "task_id": 54941,
+      "task_version_id": 42478,
+      "author_id": 1112,
+      "datastream_metadata": {
+        "uuid": "b37f54ca-80f2-4678-b3be-2ff50fc5808b",
+        "source_timestamp": 1769634011000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:53:05.957128",
+      "updated_at": "2026-01-28T20:53:05.957128",
+      "id": 30230,
+      "notes": {
+        "message": "Added as a result of conversation review #26148"
+      },
+      "delivery_batch_id": 240,
+      "task_id": 67701,
+      "task_version_id": 42479,
+      "author_id": 710,
+      "datastream_metadata": {
+        "uuid": "4db041d1-42f7-4e67-b3d5-56f07d110754",
+        "source_timestamp": 1769633585000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:41:16.237263",
+      "updated_at": "2026-01-28T20:41:16.237263",
+      "id": 30229,
+      "notes": {
+        "message": "Added as a result of conversation review #26142"
+      },
+      "delivery_batch_id": 230,
+      "task_id": 70467,
+      "task_version_id": 42230,
+      "author_id": 845,
+      "datastream_metadata": {
+        "uuid": "127dc1f6-df60-4079-a2ed-f624c4ea6e1d",
+        "source_timestamp": 1769632876000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:29:28.339720",
+      "updated_at": "2026-01-28T20:29:28.339720",
+      "id": 30228,
+      "notes": {
+        "reason": "Manually added to the batch"
+      },
+      "delivery_batch_id": 239,
+      "task_id": 67709,
+      "task_version_id": 42464,
+      "author_id": 695,
+      "datastream_metadata": {
+        "uuid": "8a2e5a7f-4516-4561-bff2-753029ab6ab0",
+        "source_timestamp": 1769632168000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:28:46.021988",
+      "updated_at": "2026-01-28T20:28:46.021988",
+      "id": 30227,
+      "notes": {
+        "message": "Added as a result of conversation review #26134"
+      },
+      "delivery_batch_id": 243,
+      "task_id": 55136,
+      "task_version_id": 41969,
+      "author_id": 1112,
+      "datastream_metadata": {
+        "uuid": "1e8f9845-8ea5-49cd-9d36-de26ca1d5bb1",
+        "source_timestamp": 1769632126000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:25:35.852834",
+      "updated_at": "2026-01-28T20:25:35.852834",
+      "id": 30226,
+      "notes": {
+        "message": "Added as a result of conversation review #26130"
+      },
+      "delivery_batch_id": 230,
+      "task_id": 70480,
+      "task_version_id": 42282,
+      "author_id": 845,
+      "datastream_metadata": {
+        "uuid": "7f0bdbaf-c288-4c83-82c4-1a60374ed8e0",
+        "source_timestamp": 1769631935000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:13:36.656916",
+      "updated_at": "2026-01-28T20:13:36.656916",
+      "id": 30225,
+      "notes": {
+        "message": "Added as a result of conversation review #26119"
+      },
+      "delivery_batch_id": 243,
+      "task_id": 54282,
+      "task_version_id": 41792,
+      "author_id": 1112,
+      "datastream_metadata": {
+        "uuid": "405f11fe-122c-41de-931c-0e9e20f8e57d",
+        "source_timestamp": 1769631216000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:12:23.258845",
+      "updated_at": "2026-01-28T20:12:23.258845",
+      "id": 30224,
+      "notes": {
+        "message": "Added as a result of conversation review #26108"
+      },
+      "delivery_batch_id": 243,
+      "task_id": 55269,
+      "task_version_id": 42340,
+      "author_id": 1110,
+      "datastream_metadata": {
+        "uuid": "60b841e9-8475-4e54-83f3-f980db0654be",
+        "source_timestamp": 1769631143000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:09:07.500086",
+      "updated_at": "2026-01-28T20:09:07.500086",
+      "id": 30223,
+      "notes": {
+        "reason": "Manually added to the batch"
+      },
+      "delivery_batch_id": 239,
+      "task_id": 63696,
+      "task_version_id": 42426,
+      "author_id": 717,
+      "datastream_metadata": {
+        "uuid": "5c8ec054-8e01-41a5-9c35-55f5224827fc",
+        "source_timestamp": 1769630947000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:08:56.646855",
+      "updated_at": "2026-01-28T20:08:56.646855",
+      "id": 30222,
+      "notes": {
+        "message": "Added as a result of conversation review #26118"
+      },
+      "delivery_batch_id": 243,
+      "task_id": 55297,
+      "task_version_id": 42416,
+      "author_id": 1112,
+      "datastream_metadata": {
+        "uuid": "5012dfd0-c52f-4f61-8fcd-5edddeaedeeb",
+        "source_timestamp": 1769630936000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:06:56.295748",
+      "updated_at": "2026-01-28T20:06:56.295748",
+      "id": 30221,
+      "notes": {
+        "message": "Added as a result of conversation review #26115"
+      },
+      "delivery_batch_id": 230,
+      "task_id": 70477,
+      "task_version_id": 42206,
+      "author_id": 845,
+      "datastream_metadata": {
+        "uuid": "ca24fc1a-3783-4de3-b594-e4d828bb2407",
+        "source_timestamp": 1769630816000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:03:17.248025",
+      "updated_at": "2026-01-28T20:03:17.248025",
+      "id": 30220,
+      "notes": {
+        "message": "Added as a result of conversation review #26114"
+      },
+      "delivery_batch_id": 233,
+      "task_id": 68332,
+      "task_version_id": 42449,
+      "author_id": 747,
+      "datastream_metadata": {
+        "uuid": "be45425e-3525-4b92-b528-b05364fc8c2c",
+        "source_timestamp": 1769630597000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:48:25.154293",
+      "updated_at": "2026-01-28T19:48:25.154293",
+      "id": 30219,
+      "notes": {
+        "message": "Added as a result of conversation review #26103"
+      },
+      "delivery_batch_id": 212,
+      "task_id": 68902,
+      "task_version_id": 41748,
+      "author_id": 1171,
+      "datastream_metadata": {
+        "uuid": "5d2e6032-392a-4e77-a091-aa4b8dc4b28d",
+        "source_timestamp": 1769629705000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:46:20.523919",
+      "updated_at": "2026-01-28T19:46:20.523919",
+      "id": 30218,
+      "notes": {
+        "message": "Added as a result of conversation review #26102"
+      },
+      "delivery_batch_id": 243,
+      "task_id": 54876,
+      "task_version_id": 35851,
+      "author_id": 473,
+      "datastream_metadata": {
+        "uuid": "f2f531d9-5c1b-4e8d-8449-50b2d67c1c4f",
+        "source_timestamp": 1769629580000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:44:19.567180",
+      "updated_at": "2026-01-28T19:44:19.567180",
+      "id": 30217,
+      "notes": {
+        "message": "Added as a result of conversation review #26098"
+      },
+      "delivery_batch_id": 214,
+      "task_id": 70543,
+      "task_version_id": 41594,
+      "author_id": 963,
+      "datastream_metadata": {
+        "uuid": "2542aa4f-26ed-42e0-abbd-acb73e2dc260",
+        "source_timestamp": 1769629459000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:41:57.304206",
+      "updated_at": "2026-01-28T19:41:57.304206",
+      "id": 30216,
+      "notes": {
+        "message": "Added as a result of conversation review #26099"
+      },
+      "delivery_batch_id": 230,
+      "task_id": 70502,
+      "task_version_id": 42097,
+      "author_id": 845,
+      "datastream_metadata": {
+        "uuid": "0e8ef99e-290a-4e22-8f99-b6fc572e78dc",
+        "source_timestamp": 1769629317000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:38:09.656224",
+      "updated_at": "2026-01-28T19:38:09.656224",
+      "id": 30215,
+      "notes": {
+        "reason": "Manually added to the batch"
+      },
+      "delivery_batch_id": 211,
+      "task_id": 68811,
+      "task_version_id": 42420,
+      "author_id": 1063,
+      "datastream_metadata": {
+        "uuid": "a849eca3-2be4-486d-8b67-2ebb58228aa7",
+        "source_timestamp": 1769629089000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:31:40.974479",
+      "updated_at": "2026-01-28T19:31:40.974479",
+      "id": 30214,
+      "notes": {
+        "message": "Added as a result of conversation review #26060"
+      },
+      "delivery_batch_id": 243,
+      "task_id": 54453,
+      "task_version_id": 42050,
+      "author_id": 1112,
+      "datastream_metadata": {
+        "uuid": "35f8742f-a749-4dbc-9ea0-3ac0335b8182",
+        "source_timestamp": 1769628700000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:30:38.954774",
+      "updated_at": "2026-01-28T19:30:38.954774",
+      "id": 30213,
+      "notes": {
+        "message": "Added as a result of conversation review #26088"
+      },
+      "delivery_batch_id": 243,
+      "task_id": 55005,
+      "task_version_id": 42431,
+      "author_id": 650,
+      "datastream_metadata": {
+        "uuid": "c96d5c1c-37bb-4c01-af0c-89f1c1e7acb0",
+        "source_timestamp": 1769628638000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:30:30.549222",
+      "updated_at": "2026-01-28T19:30:30.549222",
+      "id": 30212,
+      "notes": {
+        "message": "Added as a result of conversation review #26084"
+      },
+      "delivery_batch_id": 226,
+      "task_id": 70737,
+      "task_version_id": 42395,
+      "author_id": 1216,
+      "datastream_metadata": {
+        "uuid": "7399bbde-2e61-4dd8-9934-5fd1408232c0",
+        "source_timestamp": 1769628630000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:26:42.593601",
+      "updated_at": "2026-01-28T19:26:42.593601",
+      "id": 30211,
+      "notes": {
+        "reason": "Manually added to the batch"
+      },
+      "delivery_batch_id": 239,
+      "task_id": 67541,
+      "task_version_id": 36614,
+      "author_id": 695,
+      "datastream_metadata": {
+        "uuid": "a315bfad-08a4-45d1-a695-3007b70ffbf3",
+        "source_timestamp": 1769628402000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:22:25.106086",
+      "updated_at": "2026-01-28T19:22:25.106086",
+      "id": 30210,
+      "notes": {
+        "message": "Added as a result of conversation review #26082"
+      },
+      "delivery_batch_id": 230,
+      "task_id": 70476,
+      "task_version_id": 42265,
+      "author_id": 845,
+      "datastream_metadata": {
+        "uuid": "4e2af2c0-79b0-45b3-9536-9915eccced1f",
+        "source_timestamp": 1769628145000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:20:55.158517",
+      "updated_at": "2026-01-28T19:20:55.158517",
+      "id": 30209,
+      "notes": {
+        "message": "Added as a result of conversation review #26077"
+      },
+      "delivery_batch_id": 226,
+      "task_id": 70817,
+      "task_version_id": 42129,
+      "author_id": 1216,
+      "datastream_metadata": {
+        "uuid": "a05d5531-7c1f-4c16-9aed-94517ee3575c",
+        "source_timestamp": 1769628055000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:20:11.179562",
+      "updated_at": "2026-01-28T19:20:11.179562",
+      "id": 30208,
+      "notes": {
+        "message": "Added as a result of conversation review #26080"
+      },
+      "delivery_batch_id": 212,
+      "task_id": 69738,
+      "task_version_id": 42149,
+      "author_id": 1171,
+      "datastream_metadata": {
+        "uuid": "a3342286-9ef6-40ae-8048-ca6e7cb9a2da",
+        "source_timestamp": 1769628011000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:18:31.313934",
+      "updated_at": "2026-01-28T19:18:31.313934",
+      "id": 30207,
+      "notes": {
+        "message": "Added as a result of conversation review #26079"
+      },
+      "delivery_batch_id": 243,
+      "task_id": 54982,
+      "task_version_id": 42430,
+      "author_id": 650,
+      "datastream_metadata": {
+        "uuid": "0c7fddf7-bcf6-48f9-919b-7419db8a9bbb",
+        "source_timestamp": 1769627911000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:17:58.440136",
+      "updated_at": "2026-01-28T19:17:58.440136",
+      "id": 30206,
+      "notes": {
+        "reason": "Manually added to the batch"
+      },
+      "delivery_batch_id": 239,
+      "task_id": 63220,
+      "task_version_id": 32998,
+      "author_id": 695,
+      "datastream_metadata": {
+        "uuid": "15b2e3cf-7ede-4fdc-9354-125a56664804",
+        "source_timestamp": 1769627878000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:17:21.520230",
+      "updated_at": "2026-01-28T19:17:21.520230",
+      "id": 30205,
+      "notes": {
+        "message": "Added as a result of conversation review #26078"
+      },
+      "delivery_batch_id": 243,
+      "task_id": 55058,
+      "task_version_id": 41735,
+      "author_id": 473,
+      "datastream_metadata": {
+        "uuid": "4f04832a-a426-4d32-ab89-fdb22d41dc53",
+        "source_timestamp": 1769627841000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:14:52.856675",
+      "updated_at": "2026-01-28T19:14:52.856675",
+      "id": 30204,
+      "notes": {
+        "message": "Added as a result of conversation review #26074"
+      },
+      "delivery_batch_id": 226,
+      "task_id": 70800,
+      "task_version_id": 42432,
+      "author_id": 1216,
+      "datastream_metadata": {
+        "uuid": "f2be19c0-0f77-41d6-a5a9-4f4c6813f6bd",
+        "source_timestamp": 1769627692000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:12:28.050957",
+      "updated_at": "2026-01-28T19:12:28.050957",
+      "id": 30203,
+      "notes": {
+        "message": "Added as a result of conversation review #26075"
+      },
+      "delivery_batch_id": 233,
+      "task_id": 65271,
+      "task_version_id": 42061,
+      "author_id": 749,
+      "datastream_metadata": {
+        "uuid": "435d0ee6-e87b-492a-a840-5c0b8d44b020",
+        "source_timestamp": 1769627548000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:12:21.320332",
+      "updated_at": "2026-01-28T19:12:21.320332",
+      "id": 30202,
+      "notes": {
+        "reason": "Manually added to the batch"
+      },
+      "delivery_batch_id": 241,
+      "task_id": 64359,
+      "task_version_id": 42435,
+      "author_id": 790,
+      "datastream_metadata": {
+        "uuid": "1b485302-9eac-4c8a-847e-35446fd4e100",
+        "source_timestamp": 1769627541000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:08:04.300788",
+      "updated_at": "2026-01-28T19:08:04.300788",
+      "id": 30201,
+      "notes": {
+        "message": "Added as a result of conversation review #26065"
+      },
+      "delivery_batch_id": 226,
+      "task_id": 70888,
+      "task_version_id": 42363,
+      "author_id": 1216,
+      "datastream_metadata": {
+        "uuid": "7c7ee9d2-ca20-47ef-af3f-5e4d2e3c8050",
+        "source_timestamp": 1769627284000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:59:37.683234",
+      "updated_at": "2026-01-28T18:59:37.683234",
+      "id": 30200,
+      "notes": {
+        "message": "Added as a result of conversation review #26063"
+      },
+      "delivery_batch_id": 243,
+      "task_id": 55603,
+      "task_version_id": 42348,
+      "author_id": 1124,
+      "datastream_metadata": {
+        "uuid": "9cf8ea48-a003-4d9c-8da2-e167722c14e6",
+        "source_timestamp": 1769626777000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:58:10.338324",
+      "updated_at": "2026-01-28T18:58:10.338324",
+      "id": 30199,
+      "notes": {
+        "message": "Added as a result of conversation review #26061"
+      },
+      "delivery_batch_id": 230,
+      "task_id": 70484,
+      "task_version_id": 42005,
+      "author_id": 845,
+      "datastream_metadata": {
+        "uuid": "15e54f25-63d4-4517-9e20-d0d9a30202ca",
+        "source_timestamp": 1769626690000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:57:43.991037",
+      "updated_at": "2026-01-28T18:57:43.991037",
+      "id": 30198,
+      "notes": {
+        "message": "Added as a result of conversation review #26052"
+      },
+      "delivery_batch_id": 226,
+      "task_id": 70833,
+      "task_version_id": 42224,
+      "author_id": 1216,
+      "datastream_metadata": {
+        "uuid": "0903db42-1f11-4c05-959a-6fa922d6924c",
+        "source_timestamp": 1769626663000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:55:24.310908",
+      "updated_at": "2026-01-28T18:55:24.310908",
+      "id": 30197,
+      "notes": {
+        "message": "Added as a result of conversation review #26059"
+      },
+      "delivery_batch_id": 243,
+      "task_id": 55034,
+      "task_version_id": 42130,
+      "author_id": 1124,
+      "datastream_metadata": {
+        "uuid": "67195c7d-d373-4aae-b3cf-5aac167fe757",
+        "source_timestamp": 1769626524000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:54:40.511249",
+      "updated_at": "2026-01-28T18:54:40.511249",
+      "id": 30196,
+      "notes": {
+        "message": "Added as a result of conversation review #26057"
+      },
+      "delivery_batch_id": 233,
+      "task_id": 68350,
+      "task_version_id": 41945,
+      "author_id": 749,
+      "datastream_metadata": {
+        "uuid": "3e6ee302-6b77-40d9-808b-cda2acbb6557",
+        "source_timestamp": 1769626480000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:50:46.211372",
+      "updated_at": "2026-01-28T18:50:46.211372",
+      "id": 30195,
+      "notes": {
+        "message": "Added as a result of conversation review #26053"
+      },
+      "delivery_batch_id": 222,
+      "task_id": 70746,
+      "task_version_id": 42405,
+      "author_id": 937,
+      "datastream_metadata": {
+        "uuid": "769c54ec-8f0b-4679-8c34-c4f5230cd1c0",
+        "source_timestamp": 1769626246000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:49:22.191887",
+      "updated_at": "2026-01-28T18:49:22.191887",
+      "id": 30194,
+      "notes": {
+        "message": "Added as a result of conversation review #23873"
+      },
+      "delivery_batch_id": 243,
+      "task_id": 54225,
+      "task_version_id": 41525,
+      "author_id": 670,
+      "datastream_metadata": {
+        "uuid": "6eb09f0d-0b45-4913-a992-105e038e5950",
+        "source_timestamp": 1769626162000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:48:36.134480",
+      "updated_at": "2026-01-28T18:48:36.134480",
+      "id": 30193,
+      "notes": {
+        "message": "Added as a result of conversation review #26043"
+      },
+      "delivery_batch_id": 226,
+      "task_id": 70836,
+      "task_version_id": 42071,
+      "author_id": 1216,
+      "datastream_metadata": {
+        "uuid": "c2ec5d88-bdc4-49d1-8f9f-11552788060b",
+        "source_timestamp": 1769626116000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:48:31.053349",
+      "updated_at": "2026-01-28T18:48:31.053349",
+      "id": 30192,
+      "notes": {
+        "message": "Added as a result of conversation review #26019"
+      },
+      "delivery_batch_id": 243,
+      "task_id": 54765,
+      "task_version_id": 41833,
+      "author_id": 473,
+      "datastream_metadata": {
+        "uuid": "e85fe9f5-2f96-4eee-9b29-cb4db7d96e98",
+        "source_timestamp": 1769626111000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:47:24.135536",
+      "updated_at": "2026-01-28T18:47:24.135536",
+      "id": 30191,
+      "notes": {
+        "message": "Added as a result of conversation review #26050"
+      },
+      "delivery_batch_id": 222,
+      "task_id": 70720,
+      "task_version_id": 42126,
+      "author_id": 937,
+      "datastream_metadata": {
+        "uuid": "634490da-7dfe-4b96-ad50-6f6832ef98a8",
+        "source_timestamp": 1769626044000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:47:00.702495",
+      "updated_at": "2026-01-28T18:47:00.702495",
+      "id": 30190,
+      "notes": {
+        "message": "Added as a result of conversation review #26045"
+      },
+      "delivery_batch_id": 243,
+      "task_id": 55030,
+      "task_version_id": 42084,
+      "author_id": 1112,
+      "datastream_metadata": {
+        "uuid": "16f59959-b1c5-4388-b293-30cab0db023c",
+        "source_timestamp": 1769626020000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:46:44.072327",
+      "updated_at": "2026-01-28T18:46:44.072327",
+      "id": 30189,
+      "notes": {
+        "reason": "Manually added to the batch"
+      },
+      "delivery_batch_id": 239,
+      "task_id": 63394,
+      "task_version_id": 35243,
+      "author_id": 717,
+      "datastream_metadata": {
+        "uuid": "2ff2befc-2152-4115-a1de-b07a97d6d9a0",
+        "source_timestamp": 1769626004000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:43:36.642977",
+      "updated_at": "2026-01-28T18:43:36.642977",
+      "id": 30188,
+      "notes": {
+        "message": "Added as a result of conversation review #26046"
+      },
+      "delivery_batch_id": 222,
+      "task_id": 70245,
+      "task_version_id": 41451,
+      "author_id": 937,
+      "datastream_metadata": {
+        "uuid": "bee3200c-5107-4249-b968-b4ca4e1c0829",
+        "source_timestamp": 1769625816000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:41:47.878219",
+      "updated_at": "2026-01-28T18:41:47.878219",
+      "id": 30187,
+      "notes": {
+        "reason": "Manually added to the batch"
+      },
+      "delivery_batch_id": 211,
+      "task_id": 68758,
+      "task_version_id": 42404,
+      "author_id": 1063,
+      "datastream_metadata": {
+        "uuid": "4abb9fc5-0320-4cf9-8b7a-dadb4036c7d3",
+        "source_timestamp": 1769625707000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:39:50.997957",
+      "updated_at": "2026-01-28T18:39:50.997957",
+      "id": 30186,
+      "notes": {
+        "message": "Added as a result of conversation review #26005"
+      },
+      "delivery_batch_id": 243,
+      "task_id": 54781,
+      "task_version_id": 42299,
+      "author_id": 1112,
+      "datastream_metadata": {
+        "uuid": "5d7f787d-2dfa-420b-b5b5-c7c9bf67fc32",
+        "source_timestamp": 1769625590000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:39:16.397619",
+      "updated_at": "2026-01-28T18:39:16.397619",
+      "id": 30185,
+      "notes": {
+        "message": "Added as a result of conversation review #25652"
+      },
+      "delivery_batch_id": 226,
+      "task_id": 70747,
+      "task_version_id": 41872,
+      "author_id": 1216,
+      "datastream_metadata": {
+        "uuid": "4ca46b9b-9994-4bbb-a93e-fa22d9ee7c47",
+        "source_timestamp": 1769625556000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:39:09.630752",
+      "updated_at": "2026-01-28T18:39:09.630752",
+      "id": 30184,
+      "notes": {
+        "message": "Added as a result of conversation review #26037"
+      },
+      "delivery_batch_id": 243,
+      "task_id": 55461,
+      "task_version_id": 42376,
+      "author_id": 1124,
+      "datastream_metadata": {
+        "uuid": "a847c805-4974-494f-9772-5b40b43d4653",
+        "source_timestamp": 1769625549000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:36:22.386516",
+      "updated_at": "2026-01-28T18:36:22.386516",
+      "id": 30183,
+      "notes": {
+        "reason": "Manually added to the batch"
+      },
+      "delivery_batch_id": 239,
+      "task_id": 62802,
+      "task_version_id": 42318,
+      "author_id": 692,
+      "datastream_metadata": {
+        "uuid": "688e726f-dfd7-4a4f-87e3-66749771cfef",
+        "source_timestamp": 1769625382000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:34:41.521936",
+      "updated_at": "2026-01-28T18:34:41.521936",
+      "id": 30182,
+      "notes": {
+        "message": "Added as a result of conversation review #26030"
+      },
+      "delivery_batch_id": 233,
+      "task_id": 68278,
+      "task_version_id": 41139,
+      "author_id": 764,
+      "datastream_metadata": {
+        "uuid": "38619168-f42d-400c-9687-6f4c4f935e9c",
+        "source_timestamp": 1769625281000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:34:12.569570",
+      "updated_at": "2026-01-28T18:34:12.569570",
+      "id": 30181,
+      "notes": {
+        "reason": "Manually added to the batch"
+      },
+      "delivery_batch_id": 242,
+      "task_id": 65122,
+      "task_version_id": 42409,
+      "author_id": 768,
+      "datastream_metadata": {
+        "uuid": "51be4e80-f133-4d3e-8dfc-46a4f2ce74bd",
+        "source_timestamp": 1769625252000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:34:06.027880",
+      "updated_at": "2026-01-28T18:34:06.027880",
+      "id": 30180,
+      "notes": {
+        "reason": "Manually added to the batch"
+      },
+      "delivery_batch_id": 239,
+      "task_id": 62787,
+      "task_version_id": 42141,
+      "author_id": 692,
+      "datastream_metadata": {
+        "uuid": "2b674d69-a23d-40a1-9cb1-f911c4b20ed1",
+        "source_timestamp": 1769625246000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:32:15.291524",
+      "updated_at": "2026-01-28T18:32:15.291524",
+      "id": 30179,
+      "notes": {
+        "reason": "Manually added to the batch"
+      },
+      "delivery_batch_id": 241,
+      "task_id": 64336,
+      "task_version_id": 42388,
+      "author_id": 790,
+      "datastream_metadata": {
+        "uuid": "713351a6-701e-4810-bc84-b08e201eec62",
+        "source_timestamp": 1769625135000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:31:45.938811",
+      "updated_at": "2026-01-28T18:31:45.938811",
+      "id": 30178,
+      "notes": {
+        "message": "Added as a result of conversation review #26007"
+      },
+      "delivery_batch_id": 226,
+      "task_id": 70290,
+      "task_version_id": 42396,
+      "author_id": 1216,
+      "datastream_metadata": {
+        "uuid": "8c6d060b-d16a-47b4-a400-761155cca1f9",
+        "source_timestamp": 1769625105000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:31:13.369392",
+      "updated_at": "2026-01-28T18:31:13.369392",
+      "id": 30177,
+      "notes": {
+        "message": "Added as a result of conversation review #26026"
+      },
+      "delivery_batch_id": 224,
+      "task_id": 70206,
+      "task_version_id": 42179,
+      "author_id": 896,
+      "datastream_metadata": {
+        "uuid": "61ebed48-585f-416e-9ad5-b56c347a355a",
+        "source_timestamp": 1769625073000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:30:28.642195",
+      "updated_at": "2026-01-28T18:30:28.642195",
+      "id": 30176,
+      "notes": {
+        "message": "Added as a result of conversation review #26024"
+      },
+      "delivery_batch_id": 233,
+      "task_id": 68337,
+      "task_version_id": 42402,
+      "author_id": 813,
+      "datastream_metadata": {
+        "uuid": "a93df65a-dc24-4180-8b49-d51aea5d0d4b",
+        "source_timestamp": 1769625028000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:29:46.042248",
+      "updated_at": "2026-01-28T18:29:46.042248",
+      "id": 30175,
+      "notes": {
+        "message": "Added as a result of conversation review #26017"
+      },
+      "delivery_batch_id": 224,
+      "task_id": 70267,
+      "task_version_id": 41813,
+      "author_id": 896,
+      "datastream_metadata": {
+        "uuid": "12206631-0096-4883-8c92-eac99cd02142",
+        "source_timestamp": 1769624986000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:24:32.777371",
+      "updated_at": "2026-01-28T18:24:32.777371",
+      "id": 30174,
+      "notes": {
+        "reason": "Manually added to the batch"
+      },
+      "delivery_batch_id": 239,
+      "task_id": 63368,
+      "task_version_id": 42354,
+      "author_id": 717,
+      "datastream_metadata": {
+        "uuid": "edac0e05-692e-4f20-97b5-54f7e056f38f",
+        "source_timestamp": 1769624672000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:22:51.933566",
+      "updated_at": "2026-01-28T18:22:51.933566",
+      "id": 30173,
+      "notes": {
+        "reason": "Manually added to the batch"
+      },
+      "delivery_batch_id": 239,
+      "task_id": 62913,
+      "task_version_id": 42177,
+      "author_id": 707,
+      "datastream_metadata": {
+        "uuid": "22888e07-838f-493e-b33b-3eada1e7a136",
+        "source_timestamp": 1769624571000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:22:46.068491",
+      "updated_at": "2026-01-28T18:22:46.068491",
+      "id": 30172,
+      "notes": {
+        "message": "Added as a result of conversation review #26008"
+      },
+      "delivery_batch_id": 224,
+      "task_id": 70188,
+      "task_version_id": 41652,
+      "author_id": 896,
+      "datastream_metadata": {
+        "uuid": "b2438226-1859-436e-8937-c3298ec979a5",
+        "source_timestamp": 1769624566000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:21:49.210580",
+      "updated_at": "2026-01-28T18:21:49.210580",
+      "id": 30171,
+      "notes": {
+        "reason": "Manually added to the batch"
+      },
+      "delivery_batch_id": 239,
+      "task_id": 63186,
+      "task_version_id": 42279,
+      "author_id": 707,
+      "datastream_metadata": {
+        "uuid": "903dd54b-3f1a-4eec-b3b8-58dbf32e9995",
+        "source_timestamp": 1769624509000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:21:15.940949",
+      "updated_at": "2026-01-28T18:21:15.940949",
+      "id": 30170,
+      "notes": {
+        "reason": "Manually added to the batch"
+      },
+      "delivery_batch_id": 241,
+      "task_id": 64471,
+      "task_version_id": 38767,
+      "author_id": 770,
+      "datastream_metadata": {
+        "uuid": "5699d72c-e2a9-4196-a238-694c902a859f",
+        "source_timestamp": 1769624475000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:21:07.545714",
+      "updated_at": "2026-01-28T18:21:07.545714",
+      "id": 30169,
+      "notes": {
+        "reason": "Manually added to the batch"
+      },
+      "delivery_batch_id": 239,
+      "task_id": 63269,
+      "task_version_id": 28168,
+      "author_id": 717,
+      "datastream_metadata": {
+        "uuid": "3fe6e7af-127b-4137-bd19-73f14cfb8002",
+        "source_timestamp": 1769624467000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:21:07.178313",
+      "updated_at": "2026-01-28T18:21:07.178313",
+      "id": 30168,
+      "notes": {
+        "reason": "Manually added to the batch"
+      },
+      "delivery_batch_id": 243,
+      "task_id": 55677,
+      "task_version_id": 42350,
+      "author_id": 650,
+      "datastream_metadata": {
+        "uuid": "43bc32f4-ba6b-4f5f-8a79-5842cce2929e",
+        "source_timestamp": 1769624467000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:20:35.995005",
+      "updated_at": "2026-01-28T18:20:35.995005",
+      "id": 30167,
+      "notes": {
+        "message": "Added as a result of conversation review #26003"
+      },
+      "delivery_batch_id": 211,
+      "task_id": 68757,
+      "task_version_id": 42178,
+      "author_id": 1063,
+      "datastream_metadata": {
+        "uuid": "3fa28bda-69c9-49a6-b25a-6b30b397ce96",
+        "source_timestamp": 1769624435000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:20:29.886849",
+      "updated_at": "2026-01-28T18:20:29.886849",
+      "id": 30166,
+      "notes": {
+        "message": "Added as a result of conversation review #26004"
+      },
+      "delivery_batch_id": 224,
+      "task_id": 70059,
+      "task_version_id": 41585,
+      "author_id": 896,
+      "datastream_metadata": {
+        "uuid": "12a32ab6-dbf4-41f4-8703-a39dab9e406c",
+        "source_timestamp": 1769624429000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:19:35.906451",
+      "updated_at": "2026-01-28T18:19:35.906451",
+      "id": 30165,
+      "notes": {
+        "reason": "Manually added to the batch"
+      },
+      "delivery_batch_id": 239,
+      "task_id": 62901,
+      "task_version_id": 25080,
+      "author_id": 692,
+      "datastream_metadata": {
+        "uuid": "d28be34d-2f33-411e-98b0-c211df2fa6b2",
+        "source_timestamp": 1769624375000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:17:56.533143",
+      "updated_at": "2026-01-28T18:17:56.533143",
+      "id": 30164,
+      "notes": {
+        "message": "Added as a result of conversation review #26001"
+      },
+      "delivery_batch_id": 224,
+      "task_id": 70232,
+      "task_version_id": 41954,
+      "author_id": 896,
+      "datastream_metadata": {
+        "uuid": "d3f28e1e-6a31-45bb-9776-58c664970b9b",
+        "source_timestamp": 1769624276000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:17:34.393612",
+      "updated_at": "2026-01-28T18:17:34.393612",
+      "id": 30163,
+      "notes": {
+        "message": "Added as a result of conversation review #25640"
+      },
+      "delivery_batch_id": 226,
+      "task_id": 70104,
+      "task_version_id": 41844,
+      "author_id": 1216,
+      "datastream_metadata": {
+        "uuid": "be70d5ad-18cb-4e81-8daa-60455587fc7a",
+        "source_timestamp": 1769624254000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:13:58.951446",
+      "updated_at": "2026-01-28T18:13:58.951446",
+      "id": 30162,
+      "notes": {
+        "reason": "Manually added to the batch"
+      },
+      "delivery_batch_id": 242,
+      "task_id": 67399,
+      "task_version_id": 42387,
+      "author_id": 768,
+      "datastream_metadata": {
+        "uuid": "ee2dbf32-9fcf-4ef2-889f-cd9f221c8778",
+        "source_timestamp": 1769624038000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:13:45.842559",
+      "updated_at": "2026-01-28T18:13:45.842559",
+      "id": 30160,
+      "notes": {
+        "reason": "Manually added to the batch"
+      },
+      "delivery_batch_id": 239,
+      "task_id": 63197,
+      "task_version_id": 41727,
+      "author_id": 692,
+      "datastream_metadata": {
+        "uuid": "9bec6717-86b8-421f-8460-0cf698d15bff",
+        "source_timestamp": 1769624025000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:09:33.630957",
+      "updated_at": "2026-01-28T18:09:33.630957",
+      "id": 30159,
+      "notes": {
+        "message": "Added as a result of conversation review #25994"
+      },
+      "delivery_batch_id": 243,
+      "task_id": 55055,
+      "task_version_id": 42080,
+      "author_id": 1124,
+      "datastream_metadata": {
+        "uuid": "eba53b9a-dd0a-4f3d-80ba-341f15cb5450",
+        "source_timestamp": 1769623773000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:09:10.025745",
+      "updated_at": "2026-01-28T18:09:10.025745",
+      "id": 30158,
+      "notes": {
+        "message": "Added as a result of conversation review #25991"
+      },
+      "delivery_batch_id": 237,
+      "task_id": 55262,
+      "task_version_id": 40618,
+      "author_id": 536,
+      "datastream_metadata": {
+        "uuid": "a3f33e1c-a9fd-40ed-8746-171298b8e842",
+        "source_timestamp": 1769623750000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:07:06.370678",
+      "updated_at": "2026-01-28T18:07:06.370678",
+      "id": 30157,
+      "notes": {
+        "message": "Added as a result of conversation review #25892"
+      },
+      "delivery_batch_id": 224,
+      "task_id": 70841,
+      "task_version_id": 41934,
+      "author_id": 896,
+      "datastream_metadata": {
+        "uuid": "8dd69d1e-e1d0-43c7-822b-cae919661904",
+        "source_timestamp": 1769623626000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:03:01.115291",
+      "updated_at": "2026-01-28T18:03:01.115291",
+      "id": 30156,
+      "notes": {
+        "message": "Added as a result of conversation review #25988"
+      },
+      "delivery_batch_id": 243,
+      "task_id": 54623,
+      "task_version_id": 42159,
+      "author_id": 1124,
+      "datastream_metadata": {
+        "uuid": "0544854e-8e3f-4ab4-b88e-cbc3e2fa9491",
+        "source_timestamp": 1769623381000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:02:38.913015",
+      "updated_at": "2026-01-28T18:02:38.913015",
+      "id": 30155,
+      "notes": {
+        "message": "Added as a result of conversation review #25986"
+      },
+      "delivery_batch_id": 209,
+      "task_id": 69499,
+      "task_version_id": 42167,
+      "author_id": 1043,
+      "datastream_metadata": {
+        "uuid": "60b1db7b-5e05-41ea-bb16-cb5de95bdf87",
+        "source_timestamp": 1769623358000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:57:36.909806",
+      "updated_at": "2026-01-28T17:57:36.909806",
+      "id": 30154,
+      "notes": {
+        "message": "Added as a result of conversation review #25970"
+      },
+      "delivery_batch_id": 243,
+      "task_id": 55480,
+      "task_version_id": 42371,
+      "author_id": 645,
+      "datastream_metadata": {
+        "uuid": "fa8a58f6-a565-4f8a-aecb-3a52016ec7a6",
+        "source_timestamp": 1769623056000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:51:06.692987",
+      "updated_at": "2026-01-28T17:51:06.692987",
+      "id": 30153,
+      "notes": {
+        "message": "Added as a result of conversation review #25736"
+      },
+      "delivery_batch_id": 237,
+      "task_id": 54248,
+      "task_version_id": 42353,
+      "author_id": 1121,
+      "datastream_metadata": {
+        "uuid": "6e8256ee-f41d-4693-8e1a-205f01a99e74",
+        "source_timestamp": 1769622666000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:48:39.571194",
+      "updated_at": "2026-01-28T17:48:39.571194",
+      "id": 30152,
+      "notes": {
+        "message": "Added as a result of conversation review #25973"
+      },
+      "delivery_batch_id": 243,
+      "task_id": 54907,
+      "task_version_id": 42214,
+      "author_id": 670,
+      "datastream_metadata": {
+        "uuid": "56f1bdf6-649a-460a-ae7c-06a22b2b6280",
+        "source_timestamp": 1769622519000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:45:46.401187",
+      "updated_at": "2026-01-28T17:45:46.401187",
+      "id": 30151,
+      "notes": {
+        "reason": "Manually added to the batch"
+      },
+      "delivery_batch_id": 239,
+      "task_id": 63377,
+      "task_version_id": 42331,
+      "author_id": 692,
+      "datastream_metadata": {
+        "uuid": "4df70c64-2672-4691-9d00-e4c32c573fb5",
+        "source_timestamp": 1769622346000
+      }
+    }
+  ]
+}

@@ -1,0 +1,128 @@
+{
+  "table": "category",
+  "row_count": 10,
+  "sample_count": 10,
+  "fetched_at": "2026-01-28T23:22:41.144096",
+  "data": [
+    {
+      "id": 10,
+      "conversation_id": 10830,
+      "project_id": 16,
+      "category": "CID004 - RTL: Modify Code",
+      "created_at": "2024-09-30T17:25:02+00:00",
+      "updated_at": "2024-09-30T17:25:02+00:00",
+      "datastream_metadata": {
+        "uuid": "e7eab153-4c3b-413c-8a5f-1bd110001100",
+        "source_timestamp": 1727717102000
+      }
+    },
+    {
+      "id": 9,
+      "conversation_id": 10829,
+      "project_id": 16,
+      "category": "CID016 - RTL: Bug Fixing",
+      "created_at": "2024-09-30T17:14:51+00:00",
+      "updated_at": "2024-09-30T17:14:51+00:00",
+      "datastream_metadata": {
+        "uuid": "9538053a-4e67-4a61-a96a-20f110000011",
+        "source_timestamp": 1727716491000
+      }
+    },
+    {
+      "id": 8,
+      "conversation_id": 10843,
+      "project_id": 16,
+      "category": "CID003 - RTL: Single Module",
+      "created_at": "2024-09-27T08:50:39+00:00",
+      "updated_at": "2024-09-27T08:50:39+00:00",
+      "datastream_metadata": {
+        "uuid": "c32f80d6-acd6-49dc-a327-337a01001001",
+        "source_timestamp": 1727427039000
+      }
+    },
+    {
+      "id": 7,
+      "conversation_id": 10806,
+      "project_id": 16,
+      "category": "CID004 - RTL: Modify Code",
+      "created_at": "2024-09-26T16:55:23+00:00",
+      "updated_at": "2024-09-26T16:55:23+00:00",
+      "datastream_metadata": {
+        "uuid": "82bbfc87-22ee-4cb5-9243-f55f11011100",
+        "source_timestamp": 1727369723000
+      }
+    },
+    {
+      "id": 6,
+      "conversation_id": 10805,
+      "project_id": 16,
+      "category": "CID002 - RTL: Code Completion",
+      "created_at": "2024-09-26T15:48:34+00:00",
+      "updated_at": "2024-09-26T15:48:34+00:00",
+      "datastream_metadata": {
+        "uuid": "763a883d-20d3-4382-8741-7d3010000110",
+        "source_timestamp": 1727365714000
+      }
+    },
+    {
+      "id": 5,
+      "conversation_id": 10766,
+      "project_id": 16,
+      "category": "CID011 - TB: Testplan Documentation",
+      "created_at": "2024-09-26T15:38:01+00:00",
+      "updated_at": "2024-09-26T15:38:01+00:00",
+      "datastream_metadata": {
+        "uuid": "394e872c-74f0-4482-a8cc-93c810011001",
+        "source_timestamp": 1727365081000
+      }
+    },
+    {
+      "id": 4,
+      "conversation_id": 10723,
+      "project_id": 16,
+      "category": "CID002 - RTL: Code Completion",
+      "created_at": "2024-09-24T17:11:11+00:00",
+      "updated_at": "2024-09-24T17:11:11+00:00",
+      "datastream_metadata": {
+        "uuid": "30df3ae2-e898-4038-9224-20f010100001",
+        "source_timestamp": 1727197871000
+      }
+    },
+    {
+      "id": 3,
+      "conversation_id": 10221,
+      "project_id": 15,
+      "category": "CID003 - RTL: Single Module",
+      "created_at": "2024-09-23T23:15:00+00:00",
+      "updated_at": "2024-09-23T23:15:00+00:00",
+      "datastream_metadata": {
+        "uuid": "261607b2-b1f7-4881-b665-8a5700011001",
+        "source_timestamp": 1727133300000
+      }
+    },
+    {
+      "id": 2,
+      "conversation_id": 7217,
+      "project_id": 15,
+      "category": "CID004 - RTL: Modify Code",
+      "created_at": "2024-09-23T22:41:55+00:00",
+      "updated_at": "2024-09-23T22:56:26+00:00",
+      "datastream_metadata": {
+        "uuid": "eb007ab6-e7b3-4cf3-832e-f39a00101010",
+        "source_timestamp": 1727132186000
+      }
+    },
+    {
+      "id": 1,
+      "conversation_id": 7216,
+      "project_id": 15,
+      "category": "CID001 - Concept to Spec",
+      "created_at": "2024-09-19T20:25:30+00:00",
+      "updated_at": "2025-04-30T17:58:07+00:00",
+      "datastream_metadata": {
+        "uuid": "d10014eb-4a2c-4020-8585-580701011011",
+        "source_timestamp": 1746035887000
+      }
+    }
+  ]
+}

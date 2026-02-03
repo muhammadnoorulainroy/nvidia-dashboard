@@ -76,6 +76,8 @@ export const COLUMN_TOOLTIPS: Record<string, string> = {
   total_trainer_hours: 'Sum of hours logged by all trainers under this POD Lead',
   trainer_jibble_hours: 'Hours logged by trainers in Jibble',
   pod_jibble_hours: 'Hours logged by POD Lead in Jibble',
+  accounted_hours: 'Hours accounted for by actual work = (New Tasks × 10 + Rework × 4) minutes converted to hours',
+  efficiency: 'Efficiency = (Accounted Hrs / Jibble Hrs) × 100. Higher is better. Below 70% may indicate inefficiency',
   
   // Task-specific columns
   task_id: 'Unique identifier for the task/conversation',
@@ -198,6 +200,30 @@ export const HEADER_TO_KEY_MAP: Record<string, string> = {
   'Reviewer Name': 'reviewer_name',
   'Total Reworks': 'rework',
   'Total Tasks': 'unique_tasks',
+  
+  // Abbreviated headers (for compact grouped tables)
+  'Name': 'trainer_name',
+  'Email': 'trainer_email',
+  'Size': 'trainer_count',
+  'Uniq': 'unique_tasks',
+  'New': 'new_tasks',
+  'Rwk': 'rework',
+  'Appr': 'approved_tasks',
+  'Del': 'delivered_tasks',
+  'Queue': 'in_delivery_queue',
+  'Rev': 'total_reviews',
+  'AvgR': 'avg_rework',
+  'R%': 'rework_percent',
+  'Rate': 'avg_rating',
+  'AHT': 'merged_exp_aht',
+  'Jibble': 'jibble_hours',
+  'JIB': 'jibble_hours',
+  'TrnHrs': 'total_trainer_hours',
+  'AHT/S': 'aht_submission',
+  'Acct': 'accounted_hours',
+  'Eff%': 'efficiency',
+  'Total': 'total_reviews',
+  'Ready': 'approved_tasks',
 }
 
 /**

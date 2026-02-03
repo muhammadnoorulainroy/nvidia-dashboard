@@ -1,0 +1,908 @@
+{
+  "table": "role_permissions",
+  "row_count": 504,
+  "sample_count": 100,
+  "fetched_at": "2026-01-28T23:24:38.234671",
+  "data": [
+    {
+      "role_id": 1,
+      "permission_id": 1,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042100101111",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 9,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042100110000",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 17,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042100110001",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 25,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042100110010",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 28,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042100110011",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 36,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042100110100",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 46,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042100110101",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 54,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042100110110",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 62,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042100110111",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 78,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042100111000",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 82,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042100111001",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 85,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042100111010",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 96,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042100111011",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 104,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042100111100",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 113,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042100111101",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 121,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042100111110",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 132,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042100111111",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 136,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101000000",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 144,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101000001",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 148,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101000010",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 150,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101000011",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 153,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101000100",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 169,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101000101",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 181,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101000110",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 185,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101000111",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 189,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101001000",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 198,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101001001",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 208,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101001010",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 212,
+      "datastream_metadata": {
+        "uuid": "3225d9cd-fd3f-4a5a-8c09-b9ba00110010",
+        "source_timestamp": 1754576830000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 213,
+      "datastream_metadata": {
+        "uuid": "3225d9cd-fd3f-4a5a-8c09-b9ba01100000",
+        "source_timestamp": 1754576832000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 219,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101001011",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 224,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101001100",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 235,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101001101",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 236,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101001110",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 244,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101001111",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 247,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101010000",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 250,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101010001",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 251,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101010010",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 252,
+      "datastream_metadata": {
+        "uuid": "a09e0cd7-19d7-45f3-a08f-106300101100",
+        "source_timestamp": 1748378676000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 253,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101010011",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 261,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101010100",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 273,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101010101",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 274,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101010110",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 283,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101010111",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 284,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101011000",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 287,
+      "datastream_metadata": {
+        "uuid": "f86ad676-cb15-4574-a959-04fd10011100",
+        "source_timestamp": 1754576135000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 288,
+      "datastream_metadata": {
+        "uuid": "3225d9cd-fd3f-4a5a-8c09-b9ba00010100",
+        "source_timestamp": 1754576818000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 289,
+      "datastream_metadata": {
+        "uuid": "3225d9cd-fd3f-4a5a-8c09-b9ba00001100",
+        "source_timestamp": 1754576814000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 290,
+      "datastream_metadata": {
+        "uuid": "3225d9cd-fd3f-4a5a-8c09-b9ba00001110",
+        "source_timestamp": 1754576815000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 291,
+      "datastream_metadata": {
+        "uuid": "f86ad676-cb15-4574-a959-04fd10111011",
+        "source_timestamp": 1754576145000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 303,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101011001",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 305,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101011010",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 306,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101011011",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 323,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101011100",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 326,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101011101",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 327,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101011110",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 328,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101011111",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 329,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101100000",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 330,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101100001",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 331,
+      "datastream_metadata": {
+        "uuid": "f86ad676-cb15-4574-a959-04fd11010010",
+        "source_timestamp": 1754576151000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 346,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101100010",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 350,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101100011",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 351,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101100100",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 352,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101100101",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 354,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101100110",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 355,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101100111",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 356,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101101000",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 357,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101101001",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 365,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101101010",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 370,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101101011",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 371,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101101100",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 374,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101101101",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 375,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101101110",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 376,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101101111",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 377,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101110000",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 379,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101110001",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 381,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101110010",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 383,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101110011",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 384,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101110100",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 386,
+      "datastream_metadata": {
+        "uuid": "3225d9cd-fd3f-4a5a-8c09-b9ba00001010",
+        "source_timestamp": 1754576813000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 387,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101110101",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 395,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101110110",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 403,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101110111",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 412,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101111000",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 413,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101111001",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 415,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101111010",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 416,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101111011",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 417,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101111100",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 430,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101111101",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 433,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101111110",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 434,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042101111111",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 435,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042110000000",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 436,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042110000001",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 437,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042110000010",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 438,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042110000011",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 446,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042110000100",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 447,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042110000101",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 451,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042110000110",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 452,
+      "datastream_metadata": {
+        "uuid": "23bc12a4-04f0-4df0-ae32-042110000111",
+        "source_timestamp": 1748234041000
+      },
+      "action": "allow"
+    },
+    {
+      "role_id": 1,
+      "permission_id": 455,
+      "datastream_metadata": {
+        "uuid": "6b2a71c3-1f54-433f-9432-bc5e01100010",
+        "source_timestamp": 1749098047000
+      },
+      "action": "allow"
+    }
+  ]
+}

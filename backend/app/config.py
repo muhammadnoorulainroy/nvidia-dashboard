@@ -117,6 +117,48 @@ class Settings(BaseSettings):
     jibble_time_attendance_url: str = "https://time-attendance.prod.jibble.io/v1"
     jibble_project_name: Optional[str] = None
     
+    # Nvidia Jibble Project IDs (UUIDs from Jibble API)
+    # These are the project IDs for filtering time entries
+    jibble_nvidia_project_ids: str = ",".join([
+        "a1b6c34e-67cd-4554-8a7b-4cab2d0fa744",  # Nvidia - CFBench Multilingual
+        "16e16c63-6deb-4f3c-9d88-46537c006dc9",  # Nvidia - InverseIFEval
+        "7c305ca8-9675-4edc-a51c-84ad0beaae78",  # Nvidia - Multichallenge
+        "2581d1d5-e729-437f-92aa-2e3d7ceebc4f",  # Nvidia - Multichallenge Advanced
+        "1f33fccc-9c95-409a-b17c-541bdd5e446e",  # Nvidia - ICPC
+        "e6a4ebc3-5f25-42ce-806e-d23f9026d95b",  # NVIDIA_STEM Math_Eval
+    ])
+    
+    # Jibble project name to dashboard project mapping
+    jibble_project_mapping_json: str = '''{
+        "Nvidia - CFBench Multilingual": 37,
+        "Nvidia - InverseIFEval": 38,
+        "Nvidia - Multichallenge": 39,
+        "Nvidia - Multichallenge Advanced": 39,
+        "Nvidia - ICPC": 36,
+        "NVIDIA_STEM Math_Eval": 36,
+        "Nvidia - SysBench": 36
+    }'''
+    
+    # Google Sheet for Jibble email mapping
+    jibble_email_mapping_sheet_id: str = "1nR15UwSHx2WwQYFePAQIyIORf2aSCNp4ny33jetETZ8"
+    jibble_email_mapping_sheet_gid: str = "1375209319"
+    
+    @property
+    def jibble_nvidia_project_ids_list(self) -> List[str]:
+        """Get Nvidia Jibble project IDs as a list"""
+        if not self.jibble_nvidia_project_ids:
+            return []
+        return [pid.strip() for pid in self.jibble_nvidia_project_ids.split(',') if pid.strip()]
+    
+    @property
+    def jibble_project_mapping(self) -> dict:
+        """Get Jibble project name to dashboard project ID mapping"""
+        import json
+        try:
+            return json.loads(self.jibble_project_mapping_json)
+        except json.JSONDecodeError:
+            return {}
+    
     # ==========================================================================
     # Sentry Settings - Optional (error tracking disabled if not set)
     # ==========================================================================

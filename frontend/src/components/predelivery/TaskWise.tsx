@@ -54,7 +54,15 @@ interface TextFilter {
   value: string
 }
 
-export default function TaskWise() {
+// Import TabSummaryStats type from PreDelivery
+import type { TabSummaryStats } from '../../pages/PreDelivery'
+
+interface TaskWiseProps {
+  onSummaryUpdate?: (stats: TabSummaryStats) => void
+  onSummaryLoading?: () => void
+}
+
+export default function TaskWise({ onSummaryUpdate, onSummaryLoading }: TaskWiseProps) {
   const [data, setData] = useState<TaskLevelInfo[]>([])
   const [filteredData, setFilteredData] = useState<TaskLevelInfo[]>([])
   const [loading, setLoading] = useState(true)
@@ -71,10 +79,29 @@ export default function TaskWise() {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(100)
 
+  // Report summary stats to parent when data changes
+  useEffect(() => {
+    if (data.length > 0 && onSummaryUpdate) {
+      const uniqueTrainers = new Set(data.map(t => t.annotator_email).filter(Boolean))
+      const uniqueReviewers = new Set(data.map(t => t.reviewer_email).filter(Boolean))
+      
+      onSummaryUpdate({
+        totalTasks: data.length,
+        totalTrainers: uniqueTrainers.size,
+        totalPodLeads: 0,
+        totalProjects: 4,
+        totalReviews: uniqueReviewers.size,
+        newTasks: data.filter(t => (t.rework_count || 0) === 0).length,
+        rework: data.filter(t => (t.rework_count || 0) > 0).length
+      })
+    }
+  }, [data, onSummaryUpdate])
+
   const fetchData = async () => {
     try {
       setLoading(true)
       setError(null)
+      onSummaryLoading?.()
       
       console.log('TaskWise: fetchData called - loading all data')
       
