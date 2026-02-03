@@ -49,7 +49,15 @@ import { getRatingTrends, getRatingComparison, RatingTrendsResponse, RatingCompa
 type ViewMode = 'trends' | 'comparison'
 type Granularity = 'daily' | 'weekly' | 'monthly'
 
-export function RatingTrends() {
+// Import TabSummaryStats type from PreDelivery
+import type { TabSummaryStats } from '../../pages/PreDelivery'
+
+interface RatingTrendsProps {
+  onSummaryUpdate?: (stats: TabSummaryStats) => void
+  onSummaryLoading?: () => void
+}
+
+export function RatingTrends({ onSummaryUpdate, onSummaryLoading }: RatingTrendsProps) {
   const [viewMode, setViewMode] = useState<ViewMode>('trends')
   const [granularity, setGranularity] = useState<Granularity>('weekly')
   const [selectedTrainer, setSelectedTrainer] = useState<string>('')
@@ -65,6 +73,24 @@ export function RatingTrends() {
   const [period1End, setPeriod1End] = useState('')
   const [period2Start, setPeriod2Start] = useState('')
   const [period2End, setPeriod2End] = useState('')
+  
+  // Report summary stats to parent - Rating Trends doesn't have typical stats
+  useEffect(() => {
+    if (trendsData && onSummaryUpdate) {
+      const totalReviews = trendsData.overall_trends?.reduce((sum: number, d) => sum + (d.total_reviews || 0), 0) || 0
+      const totalTasks = trendsData.overall_trends?.reduce((sum: number, d) => sum + (d.tasks_count || 0), 0) || 0
+      
+      onSummaryUpdate({
+        totalTasks,
+        totalTrainers: trendsData.trainer_count || 0,
+        totalPodLeads: 0,
+        totalProjects: 4,
+        totalReviews,
+        newTasks: totalTasks,
+        rework: 0
+      })
+    }
+  }, [trendsData, onSummaryUpdate])
   
   // Initialize default dates
   useEffect(() => {
@@ -92,6 +118,7 @@ export function RatingTrends() {
   const fetchTrends = async () => {
     setLoading(true)
     setError(null)
+    onSummaryLoading?.()
     try {
       const data = await getRatingTrends(granularity, selectedTrainer || undefined)
       setTrendsData(data)

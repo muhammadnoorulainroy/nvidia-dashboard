@@ -1,0 +1,3655 @@
+{
+  "table": "quality_dimension",
+  "row_count": 160,
+  "sample_count": 100,
+  "fetched_at": "2026-01-28T23:24:23.267433",
+  "data": [
+    {
+      "created_at": "2026-01-23T18:29:43.728435",
+      "updated_at": "2026-01-23T18:29:43.728435",
+      "id": 170,
+      "name": "NO FACT-RELATED QUESTIONS IN PROMPT AND NO FACTS IN RESPONSE REFERENCE",
+      "system_name": "nOFACT-RELATEDQUESTIONSINPROMPTANDNOFACTSINRESPONSEREFERENCE_3e85f8e0-cfc7-46ac-a6f1-b011e840e74b",
+      "description": "This rubric ensures tasks focus on counter-intuitive instruction following\nrather than factual knowledge testing. Tasks should not require factual\ninformation to be evaluated.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "5bede8ed-7009-400e-83df-e70a5f966ac3",
+        "source_timestamp": 1769192983000
+      },
+      "review_display": {
+        "options": [
+          {
+            "value": "Pass"
+          },
+          {
+            "value": "Fail"
+          }
+        ],
+        "type": "BOOLEAN_CHOICE"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-22T10:04:29.194734",
+      "updated_at": "2026-01-22T10:04:29.194734",
+      "id": 169,
+      "name": "Quality of Human Validation",
+      "system_name": "qualityofHumanValidation_5a9e044d-c953-4d53-acf7-a9ef50dd84f0",
+      "description": "Validate that the trainer's manual assessment of model responses is accurate for all llm_judge criteria.\nChecks:\nAssessment accuracy - Pass if all llm_judge judgments in human_report are present and correct when verified against the corresponding model responses. Fail if any judgment is missing or incorrect.\n",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "9cfd41e5-844e-49e8-bdfd-44b0fe0e287e",
+        "source_timestamp": 1769076269000
+      },
+      "review_display": {
+        "options": [
+          {
+            "value": "Pass"
+          },
+          {
+            "value": "Fail"
+          }
+        ],
+        "type": "BOOLEAN_CHOICE"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-22T10:01:56.886494",
+      "updated_at": "2026-01-22T10:01:56.886494",
+      "id": 168,
+      "name": "Model Failure Validation",
+      "system_name": "modelFailureValidation_0f962bbf-7a33-4aaf-98d8-69c7a46b04c6",
+      "description": "Confirm the task achieves required model failure rates and that human validation aligns with automated validation.\nChecks:\n1. Task difficulty - Pass if at least 3 out of 4 model responses fail >=50% of turn_metadata criteria. Fail if fewer than 3.\n2. Report alignment - Pass if validation report and human report are >=85% similar. Fail if < 85%.\n",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "9bb4d892-63fc-4285-866b-1a17c955c41a",
+        "source_timestamp": 1769076116000
+      },
+      "review_display": {
+        "options": [
+          {
+            "value": "Pass"
+          },
+          {
+            "value": "Fail"
+          }
+        ],
+        "type": "BOOLEAN_CHOICE"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-22T10:01:19.814710",
+      "updated_at": "2026-01-22T10:01:19.814710",
+      "id": 167,
+      "name": "Turn_metadata Quality",
+      "system_name": "turn_metadataQuality_0e537215-2b77-4add-8b1e-bdc78fa5b2cb",
+      "description": "Validate that evaluation criteria in turn_metadata are derived from system instructions or final user turn, unique, objective, and compliant with project restrictions.\n",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "e88078cf-1171-4f30-9f68-69ad88baea25",
+        "source_timestamp": 1769076079000
+      },
+      "review_display": {
+        "options": [
+          {
+            "value": "Pass"
+          },
+          {
+            "value": "Fail"
+          }
+        ],
+        "type": "BOOLEAN_CHOICE"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-22T09:59:23.448256",
+      "updated_at": "2026-01-22T09:59:23.448256",
+      "id": 166,
+      "name": "System Prompt Quality",
+      "system_name": "systemPromptQuality_c6a6f61b-63bc-4eed-bfc2-d7b88b470c72",
+      "description": "Validate system prompt for metadata alignment, prohibited topic absence, logical coherence, and structural completeness.\nChecks:\n1. Metadata alignment - Pass if content aligns with Domain and Use-case and word count within specified range. Fail if misaligns or word count outside range.\n2. Prohibited topics - Pass if no content from Prohibited Topics list. Fail if it contains any.\n3. Language clarity - Pass if all the constraints are clear and unambiguous. Fail if they are completely vague and ambiguous.\n4. Internal consistency - Pass if constraints and rules within the system prompt do not contradict each other. Fail if contradictory.\n5. Algorithm presence - Pass if SI defines a deterministic, rule-based decision system. Fail if only persona without verifiable rules.\n6. Required sections - Pass if contains all required fields like Role, Background, Action, Constraints, Style, Format, Precedence. Fail if any missing.\n",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "3d9295fe-fcdd-411e-bac5-6a7199bcb208",
+        "source_timestamp": 1769075963000
+      },
+      "review_display": {
+        "options": [
+          {
+            "value": "Pass"
+          },
+          {
+            "value": "Fail"
+          }
+        ],
+        "type": "BOOLEAN_CHOICE"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-22T09:58:58.432179",
+      "updated_at": "2026-01-22T09:58:58.432179",
+      "id": 165,
+      "name": "Notebook Structure",
+      "system_name": "notebookStructure_a1493b62-5b1b-4a4c-a2a8-428803b5bb21",
+      "description": "Validate structural completeness of the task notebook including cell presence, order, count, and metadata.\nChecks:\n1. Cell presence - Pass if all required cells present (metadata, system; user, thinking, assistant per turn; turn_metadata, 4 model responses in final turn, llm model response validation and human validation cells for each model). Fail if any missing.\n2. Turn count - Pass if matches metadata specification. Fail if not.\n3. Cell order - Pass if follows standard task template. Fail if not.\n4. Model responses - Pass if all 4 are nemo or qwen. Fail if any is neither.\n5. Metadata unchanged - Pass if metadata entries unchanged from original. Fail if any modified (verify via Colab version history).\n",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "b775a10a-16a8-43e5-b414-75b72ed2c0b8",
+        "source_timestamp": 1769075938000
+      },
+      "review_display": {
+        "options": [
+          {
+            "value": "Pass"
+          },
+          {
+            "value": "Fail"
+          }
+        ],
+        "type": "BOOLEAN_CHOICE"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-22T07:45:30.723270",
+      "updated_at": "2026-01-22T07:45:30.723270",
+      "id": 164,
+      "name": "Notebook Structure",
+      "system_name": "notebookStructure_8e3c9291-4881-4f26-8344-7a041386ab66",
+      "description": "Validate structural completeness of the task notebook including cell presence, order, count, and metadata.\nChecks:\n1. Cell presence - Pass if all required cells present (metadata, system; user, thinking, assistant per turn; turn_metadata, 4 model responses in final turn, llm model response validation and human validation cells for each model). Fail if any missing.\n2. Turn count - Pass if matches metadata specification. Fail if not.\n3. Cell order - Pass if follows standard task template. Fail if not.\n4. Model responses - Pass if all 4 are nemo or qwen. Fail if any is neither.\n",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "dbc8554a-0075-41b3-b3eb-14dfb80c39d1",
+        "source_timestamp": 1769067930000
+      },
+      "review_display": {
+        "options": [],
+        "type": "BOOLEAN_CHOICE"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-22T07:38:54.526733",
+      "updated_at": "2026-01-22T07:38:54.526733",
+      "id": 163,
+      "name": "QD9: Quality of Human Validation",
+      "system_name": "qD9:QualityofHumanValidation_a22db032-1991-4038-b7f1-646ab912a479",
+      "description": "Type: Pass/Fail. Validate that the trainer's manual assessment of model responses is accurate for all llm_judge criteria. Checks: Assessment accuracy - Pass if all llm_judge judgments in human_report are present and correct when verified against the corresponding model responses. Fail if any judgment is missing or incorrect.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "c3252ddf-0016-4767-b491-68d68ab20bd3",
+        "source_timestamp": 1769067534000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-22T07:38:54.521880",
+      "updated_at": "2026-01-22T07:38:54.521880",
+      "id": 162,
+      "name": "QD1: Notebook Structure",
+      "system_name": "qD1:NotebookStructure_a5f5fe08-7510-4172-bacc-4734f8908895",
+      "description": "Type: Pass/Fail. Validate structural completeness of the task notebook including cell presence, order, count, and metadata. Checks: 1. Cell presence - Pass if all required cells present (metadata, system; user, thinking, assistant per turn; turn_metadata, 4 model responses in final turn, llm model response validation and human validation cells for each model). Fail if any missing. 2. Turn count - Pass if matches metadata specification. Fail if not. 3. Cell order - Pass if follows standard task template. Fail if not. 4. Model responses - Pass if all 4 are nemo or qwen. Fail if any is neither. 5. Metadata unchanged - Pass if metadata entries unchanged from original. Fail if any modified (verify via Colab version history).",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "e1b32119-796f-4054-a302-29baa7eb56b3",
+        "source_timestamp": 1769067534000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-22T07:38:54.475605",
+      "updated_at": "2026-01-22T07:38:54.475605",
+      "id": 161,
+      "name": "QD4: Model Failure Validation",
+      "system_name": "qD4:ModelFailureValidation_fbae002f-a033-4cd2-9b82-e57e3bc362d2",
+      "description": "Type: Pass/Fail. Confirm the task achieves required model failure rates and that human validation aligns with automated validation. Checks: 1. Task difficulty - Pass if at least 3 out of 4 model responses fail >=50% of turn_metadata criteria. Fail if fewer than 3. 2. Report alignment - Pass if validation report and human report are >=85% similar. Fail if < 85%.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "c38ac18a-8312-468d-9973-842e19e9d74c",
+        "source_timestamp": 1769067534000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-22T07:38:54.475186",
+      "updated_at": "2026-01-22T07:38:54.475186",
+      "id": 160,
+      "name": "QD2: System Prompt Quality",
+      "system_name": "qD2:SystemPromptQuality_1ae294b8-b8c5-4abd-ac13-b7ee401fe3e4",
+      "description": "Type: Pass/Fail. Validate system prompt for metadata alignment, prohibited topic absence, logical coherence, and structural completeness. Checks: 1. Metadata alignment - Pass if content aligns with Domain and Use-case and word count within specified range. Fail if misaligns or word count outside range. 2. Prohibited topics - Pass if no content from Prohibited Topics list. Fail if it contains any. 3. Language clarity - Pass if all the constraints are clear and unambiguous. Fail if they are completely vague and ambiguous. 4. Internal consistency - Pass if constraints and rules within the system prompt do not contradict each other. Fail if contradictory. 5. Algorithm presence - Pass if SI defines a deterministic, rule-based decision system. Fail if only persona without verifiable rules. 6. Required sections - Pass if contains all required fields like Role, Background, Action, Constraints, Style, Format, Precedence. Fail if any missing.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "8045ab8a-268c-4bff-ba6f-150c918436ba",
+        "source_timestamp": 1769067534000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:43:23.020480",
+      "updated_at": "2026-01-20T09:43:23.020480",
+      "id": 159,
+      "name": "Naturalness & Fluency",
+      "system_name": "naturalness&Fluency_cb344668-c1de-4902-b9c8-2f2f12ccdf17",
+      "description": "Reflects native, human-like phrasing, word order, and sentence flow. Avoids literal translation artifacts, repetitive patterns, unnatural symmetry, and other common LLM \"tells.\"",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "bf37f894-a7ed-4461-85ce-8f7f4f798c7f",
+        "source_timestamp": 1768902203000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:43:23.020177",
+      "updated_at": "2026-01-20T09:43:23.020177",
+      "id": 158,
+      "name": "Grammar & Syntax",
+      "system_name": "grammar&Syntax_86f31400-5a23-4477-a206-0246ce1f2428",
+      "description": "Adherence to standard English grammar, including sentence structure, subject-verb agreement, verb tenses, articles, prepositions, and punctuation.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "da6ceb70-85b7-4994-a276-3188a28f8d4c",
+        "source_timestamp": 1768902203000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:43:23.019743",
+      "updated_at": "2026-01-20T09:43:23.019743",
+      "id": 157,
+      "name": "Gender-Inclusive & Unbiased Language",
+      "system_name": "gender-Inclusive&UnbiasedLanguage_0437b491-dc72-483b-abaf-c171fd51f142",
+      "description": "Appropriate and consistent use of gender-specific or gender-neutral language according to context and modern standards. Avoids unnecessary gendering, stereotypes, or exclusionary terms.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "406c6fad-dcfa-4122-86b9-d2e146f5f041",
+        "source_timestamp": 1768902203000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:43:23.018753",
+      "updated_at": "2026-01-20T09:43:23.018753",
+      "id": 156,
+      "name": "Vocabulary & Lexical Choice",
+      "system_name": "vocabulary&LexicalChoice_a28235b8-b9b5-49b5-8e6a-73cf18f28b11",
+      "description": "Richness, precision, and contextual appropriateness of word choice. Avoidance of unnatural synonyms, awkward calques from other languages, or overly archaic/formal terms.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "1c9a2726-fbd0-42d8-a428-c7d0a2442a32",
+        "source_timestamp": 1768902203000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:43:23.017630",
+      "updated_at": "2026-01-20T09:43:23.017630",
+      "id": 155,
+      "name": "Tone & Register",
+      "system_name": "tone&Register_82e795b9-111b-4c95-847a-a8c3a18b9bbe",
+      "description": "Consistency and appropriateness of formality, politeness, and stylistic level (e.g., formal, neutral, informal) for the given task and context.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "8fa6b474-d109-4c3b-973e-88c6c7a08727",
+        "source_timestamp": 1768902203000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:43:00.191004",
+      "updated_at": "2026-01-20T09:43:00.191004",
+      "id": 154,
+      "name": "Cultural Nuance & Tone",
+      "system_name": "culturalNuance&Tone_c5ab1e97-6006-4408-9a27-aff8c962e63b",
+      "description": "Evaluates the consistency of honorifics and the formality level. Ensures the tone matches the user's intent and cultural expectations.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "f17ced8e-5c40-4965-9c90-65105714d827",
+        "source_timestamp": 1768902180000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:43:00.189017",
+      "updated_at": "2026-01-20T09:43:00.189017",
+      "id": 153,
+      "name": "Hindi Grammar & Syntax",
+      "system_name": "hindiGrammar&Syntax_50c37e78-9103-4a79-ad32-d0239da178bb",
+      "description": "Evaluates sentence structure, verb-agreement, gender, and number correctness. Ensures the text follows natural Hindi syntactic rules.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "fedb9ecc-396f-43bf-a6cb-b1db1435e362",
+        "source_timestamp": 1768902180000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:43:00.186998",
+      "updated_at": "2026-01-20T09:43:00.186998",
+      "id": 152,
+      "name": "Lexical Choice & Vocabulary",
+      "system_name": "lexicalChoice&Vocabulary_0762dcb2-31a2-49c5-8d10-059ed89b0ae7",
+      "description": "Assesses the appropriateness of word choice and the handling of technical terms. Checks if the mix of Hindi and English is used appropriately or excessively.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "089c047d-75d4-4ef0-bb67-ea735a230832",
+        "source_timestamp": 1768902180000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:43:00.186417",
+      "updated_at": "2026-01-20T09:43:00.186417",
+      "id": 151,
+      "name": "Devanagari Orthography & Script",
+      "system_name": "devanagariOrthography&Script_9fb662a0-8829-4d5d-be2d-f08eb87c5ff4",
+      "description": "Checks for correct spelling, matra placement, conjunct characters, and absence of hallucinated Unicode or broken rendering.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "11328cbf-6214-4e49-870a-dd03ec6df3df",
+        "source_timestamp": 1768902180000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:39:32.322745",
+      "updated_at": "2026-01-20T09:39:32.322745",
+      "id": 150,
+      "name": "Cultural Nuance & Tone",
+      "system_name": "culturalNuance&Tone_5347bfbc-1d4e-42b8-a9f7-1fc43d565fd2",
+      "description": "Evaluates the consistency of honorifics and the formality level. Ensures the tone matches the user's intent and cultural expectations.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "9b652b51-4db3-4f5a-a3ba-6dc4a6eeb434",
+        "source_timestamp": 1768901972000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:39:32.322376",
+      "updated_at": "2026-01-20T09:39:32.322376",
+      "id": 149,
+      "name": "Lexical Choice & Vocabulary",
+      "system_name": "lexicalChoice&Vocabulary_615552a2-1a5d-4ede-8cb4-ea5dcfc8c0a0",
+      "description": "Assesses the appropriateness of word choice and the handling of technical terms. Checks if the mix of Hindi and English is used appropriately or excessively.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "0201c539-8750-4d4f-813b-15f5e1f2a04c",
+        "source_timestamp": 1768901972000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:39:32.319922",
+      "updated_at": "2026-01-20T09:39:32.319922",
+      "id": 148,
+      "name": "Devanagari Orthography & Script",
+      "system_name": "devanagariOrthography&Script_455e527c-83ff-469a-9736-7c5fc41ac6b8",
+      "description": "Checks for correct spelling, matra placement, conjunct characters, and absence of hallucinated Unicode or broken rendering.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "b3081a20-0339-4ffd-806d-7f4d5c655288",
+        "source_timestamp": 1768901972000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:39:32.319591",
+      "updated_at": "2026-01-20T09:39:32.319591",
+      "id": 147,
+      "name": "Hindi Grammar & Syntax",
+      "system_name": "hindiGrammar&Syntax_0ae06743-2568-44cb-a7bd-96678b42a4b0",
+      "description": "Evaluates sentence structure, verb-agreement, gender, and number correctness. Ensures the text follows natural Hindi syntactic rules.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "b12a03c5-7629-469d-b60b-f2f01c50bed3",
+        "source_timestamp": 1768901972000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:35:00.334374",
+      "updated_at": "2026-01-20T09:35:00.334374",
+      "id": 146,
+      "name": "Lexical Appropriateness & Vocabulary Choice",
+      "system_name": "lexicalAppropriateness&VocabularyChoice_aaddf65a-8d81-44a1-b787-7412a843a42b",
+      "description": "This criterion assesses the quality and appropriateness of vocabulary choices in the text. It focuses on using contemporary, contextually appropriate Arabic words rather than literal translations, archaic terms, or unnatural expressions.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "7b9976b7-f2e1-4aea-bee5-061996a112c7",
+        "source_timestamp": 1768901700000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:35:00.333697",
+      "updated_at": "2026-01-20T09:35:00.333697",
+      "id": 145,
+      "name": "Language-Specific Error Sensitivity",
+      "system_name": "language-SpecificErrorSensitivity_cb0aa108-0e1a-4ac2-a8ee-5dce92b0224b",
+      "description": "This criterion evaluates the text's avoidance of high-impact errors that are particularly damaging in Arabic, even when general meaning remains understandable. These errors significantly undermine credibility and show lack of proficiency. Focus is on errors that native speakers consider particularly egregious.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "ee82fe47-4deb-4bc8-a00f-88937a752f9f",
+        "source_timestamp": 1768901700000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:35:00.332047",
+      "updated_at": "2026-01-20T09:35:00.332047",
+      "id": 144,
+      "name": "MSA & Register Correctness Evaluation",
+      "system_name": "mSA&RegisterCorrectnessEvaluation_61bc5c69-2ccb-44bb-9018-6840d52f4a4e",
+      "description": "This criterion evaluates the consistent use of Modern Standard Arabic (MSA) throughout the text, focusing on maintaining linguistic purity and appropriate register. The text must demonstrate mastery of ?????? ????????? (standard literary Arabic) without contamination from regional dialects, colloquial expressions, or foreign language interference.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "c32e63e5-d331-47ee-9a04-4c38ddac9061",
+        "source_timestamp": 1768901700000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:35:00.331379",
+      "updated_at": "2026-01-20T09:35:00.331379",
+      "id": 143,
+      "name": "Human-Likeness vs LLM Artifacts",
+      "system_name": "human-LikenessvsLLMArtifacts_3f20a556-52af-4d05-8499-03f0ffb1a697",
+      "description": "This criterion evaluates whether the text demonstrates natural, human-like writing characteristics or exhibits telltale signs of AI/LLM generation. It focuses on detecting patterns that differentiate authentic human writing from machine-generated content, including sentence structure variety, natural flow, avoidance of formulaic expressions, and authentic stylistic choices.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "9ffc7e30-bb77-4daa-bc38-9ff3c68cb1e5",
+        "source_timestamp": 1768901700000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:35:00.328608",
+      "updated_at": "2026-01-20T09:35:00.328608",
+      "id": 142,
+      "name": "Grammatical & Morphological",
+      "system_name": "grammatical&Morphological_0dbd9794-6947-4115-bde1-d8464777898f",
+      "description": "This criterion assesses adherence to Arabic grammatical rules and morphological structures. It covers all aspects of ????? ?????? including case endings, agreement, verb conjugation, and proper use of particles.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "849ddc5c-49fe-4cda-8622-7c96948b1af7",
+        "source_timestamp": 1768901700000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:33:05.516774",
+      "updated_at": "2026-01-20T09:33:05.516774",
+      "id": 141,
+      "name": "Cultural Nuance",
+      "system_name": "culturalNuance_0e4e99b0-4f67-4b84-8faf-22012ad61d9b",
+      "description": "Consistency of Italian expressions, idiomatic phrases, and regional vs. standard usage.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "469b02c9-876f-4aa8-98ab-df0e2025414d",
+        "source_timestamp": 1768901585000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:33:05.515454",
+      "updated_at": "2026-01-20T09:33:05.515454",
+      "id": 140,
+      "name": "Tone",
+      "system_name": "tone_89277387-2091-40ae-9e1d-0c873d5345ae",
+      "description": "Adequacy and consistency of formality (Lei vs. Tu) according to the conversation context.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "5275beff-38b1-45d6-8c57-7aea3042c098",
+        "source_timestamp": 1768901585000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:33:05.514170",
+      "updated_at": "2026-01-20T09:33:05.514170",
+      "id": 139,
+      "name": "Vocabulary",
+      "system_name": "vocabulary_9e961116-fdbb-41ac-943e-68c4401fc2ac",
+      "description": "Richness and appropriateness of word choice. Handling of technical terms and avoidance of \"English calques.\"",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "a4044a9f-365a-4030-af57-bc9bca1c63d2",
+        "source_timestamp": 1768901585000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:33:05.513789",
+      "updated_at": "2026-01-20T09:33:05.513789",
+      "id": 138,
+      "name": "Grammar & Spelling",
+      "system_name": "grammar&Spelling_f3a9e123-7673-4aa6-810c-50ed4bfc57f5",
+      "description": "Sentence structure, verb-agreement (especially Congiuntivo), gender, and number correctness.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "a16df677-7995-4089-8d98-150a6a3eba56",
+        "source_timestamp": 1768901585000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:31:12.301342",
+      "updated_at": "2026-01-20T09:31:12.301342",
+      "id": 137,
+      "name": "Honorifics & Cultural Fitness",
+      "system_name": "honorifics&CulturalFitness_4f9ad970-afea-4d32-8e82-15060de526a0",
+      "description": "Evaluates the consistency of respectful forms (? vs ?), \nuse of honorific titles (??, ??, ??), \nand consideration of Chinese cultural background and politeness conventions. \nProper formal expressions (??, ??).",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "2e1858ee-2855-4ac9-97c2-c21027019411",
+        "source_timestamp": 1768901472000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:31:12.300805",
+      "updated_at": "2026-01-20T09:31:12.300805",
+      "id": 136,
+      "name": "Chinese Grammar and Syntax",
+      "system_name": "chineseGrammarandSyntax_0bd49da4-8a50-472b-965c-47ee8901c817",
+      "description": "Evaluates sentence structure, use of aspect markers (?, ?, ?), \nsentence-final particles (?, ?, ?), \nsubject-predicate agreement, and natural word order.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "4d8ee19e-5bd4-47d0-b175-2af427922e13",
+        "source_timestamp": 1768901472000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:31:12.293410",
+      "updated_at": "2026-01-20T09:31:12.293410",
+      "id": 135,
+      "name": "Cross-language Interference",
+      "system_name": "cross-LanguageInterference_bf4d03aa-8942-43d3-805c-14ad1b415529",
+      "description": "Avoids calques and false translations: \"make sense\" ?? ??? (not ????); \navoids excessive passive constructions with ?; \nmaintains Chinese topic-prominent structure rather than English subject-prominent. \nNo word-for-word translation feel.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "3b4772fe-981c-46b1-9494-253635c949a8",
+        "source_timestamp": 1768901472000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:31:12.292900",
+      "updated_at": "2026-01-20T09:31:12.292900",
+      "id": 134,
+      "name": "Golden Response Quality",
+      "system_name": "goldenResponseQuality_ed144256-b8c6-460c-bec5-2349e43ad56a",
+      "description": "Can serve as reference model for learners and annotators. \nDemonstrates exemplary Chinese writing that \nrepresents native-level quality.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "4b0d3fb3-4289-4479-bc59-798eebe5f5fb",
+        "source_timestamp": 1768901472000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:31:12.292532",
+      "updated_at": "2026-01-20T09:31:12.292532",
+      "id": 133,
+      "name": "Compliance with Instructions",
+      "system_name": "compliancewithInstructions_ac9d4e32-3e94-4898-b465-86b106f28d0d",
+      "description": "Evaluates adherence to constraints like \"No English words,\" \n\"Use Classical Chinese (???),\" \n\"Use a specific dialect,\" \nor \"Only use simplified/traditional characters.\"",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "09b0a937-6028-4f53-8af1-c84b19a88c44",
+        "source_timestamp": 1768901472000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:31:12.292032",
+      "updated_at": "2026-01-20T09:31:12.292032",
+      "id": 132,
+      "name": "Sensitivity to Critical Chinese Errors",
+      "system_name": "sensitivitytoCriticalChineseErrors_220f0f90-c161-40a6-9492-3f1157f8fddc",
+      "description": "Avoids: wrong ?/?/? (e.g., ??? not ???), \nwrong measure words (??? not ???), \naspect marker errors, missing or wrong sentence-final particles that change meaning, \nsimplified/traditional mixing.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "4b5d47b9-b2d5-4ad0-af67-cec4ed35fd8b",
+        "source_timestamp": 1768901472000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:31:12.291609",
+      "updated_at": "2026-01-20T09:31:12.291609",
+      "id": 131,
+      "name": "Orthography (Notation & Punctuation)",
+      "system_name": "orthography(Notation&Punctuation)_3c0a23ca-153e-494e-88c1-bf86d86a94d3",
+      "description": "Evaluates the use of simplified/traditional characters consistently, \nproper use of structural particles (?/?/?), correct punctuation (full-width ?,?;:?!), \nquotation marks (??or \"\"), \nand the presence of character corruption.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "b23c0fad-b03a-4b92-a76d-9cf7e4659b33",
+        "source_timestamp": 1768901472000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:31:12.291084",
+      "updated_at": "2026-01-20T09:31:12.291084",
+      "id": 130,
+      "name": "Human Naturalness vs LLM Artifacts",
+      "system_name": "humanNaturalnessvsLLMArtifacts_cb14af25-d0b1-4973-a8ae-5617d9dc8f5f",
+      "description": "Avoids repetitive opening phrases (??????�, ??????�, ??????�). \nVaried sentence rhythm. \nNo over-structured list format when prose is more natural.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "bce80dd9-2d42-42c0-b673-0129a6612a9c",
+        "source_timestamp": 1768901472000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:31:12.290535",
+      "updated_at": "2026-01-20T09:31:12.290535",
+      "id": 129,
+      "name": "Vocabulary Selection & Character Usage",
+      "system_name": "vocabularySelection&CharacterUsage_571dc2dc-2ad4-4055-8304-6535d2443503",
+      "description": "Evaluates the choice of vocabulary (colloquial vs. literary, modern vs. archaic), \ntechnical term handling, and proper use of simplified/traditional characters. \nBalance of four-character idioms (??) and modern expressions.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "03049ade-2c11-4399-8d06-af6481967cf6",
+        "source_timestamp": 1768901472000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:29:02.231765",
+      "updated_at": "2026-01-20T09:29:02.231765",
+      "id": 128,
+      "name": "Golden Response Quality",
+      "system_name": "goldenResponseQuality_840262c9-7c59-4aaf-9ec9-5d704089f8f7",
+      "description": "Can serve as reference model for learners and annotators. \nDemonstrates exemplary Korean writing that \nrepresents native-level quality.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "3d3bbb29-43c9-4261-a8d3-a2a616520359",
+        "source_timestamp": 1768901342000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:29:02.231335",
+      "updated_at": "2026-01-20T09:29:02.231335",
+      "id": 127,
+      "name": "Korean Grammar and Syntax",
+      "system_name": "koreanGrammarandSyntax_6f11dfd5-c11f-4c4e-81ed-01cd343855f1",
+      "description": "Evaluates the use of particles (eun-neon-iee-ga), verb conjugation, subject-predicate agreement, and natural word order.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "31a2d744-c818-43ca-aab3-c55096de2657",
+        "source_timestamp": 1768901342000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:29:02.226722",
+      "updated_at": "2026-01-20T09:29:02.226722",
+      "id": 126,
+      "name": "Dialogue Realisticness (Cultural Fitness)",
+      "system_name": "dialogueRealisticness(CulturalFitness)_66d0eca3-72a9-415a-890b-26ac1f4ccee4",
+      "description": "Dialogues should avoid bizarre, artificial, or unrealistic content.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "43313189-1aff-4878-8f9c-9aa4136f2525",
+        "source_timestamp": 1768901342000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:29:02.226171",
+      "updated_at": "2026-01-20T09:29:02.226171",
+      "id": 125,
+      "name": "Orthography & Punctuation",
+      "system_name": "orthography&Punctuation_6bcc97ed-1f23-4516-a2f5-56cd28654a0a",
+      "description": "Evaluates the spelling, use of comma, puctuation, etc..",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "5e10e667-b545-40b4-818f-fd91a198f699",
+        "source_timestamp": 1768901342000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:29:02.225510",
+      "updated_at": "2026-01-20T09:29:02.225510",
+      "id": 124,
+      "name": "Sentence Structure (Word Order) & Vocab Choice",
+      "system_name": "sentenceStructure(WordOrder)&VocabChoice_c7b869fe-4ff4-440f-9e49-e4c6f2d2f0b3",
+      "description": "Evaluates sentence structure and the choice of vocabulary per context, technical term handling, and proper word order.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "f9b9dbcc-60f6-4c32-8b3d-9d81c6157301",
+        "source_timestamp": 1768901342000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:23:18.219936",
+      "updated_at": "2026-01-20T09:23:18.219936",
+      "id": 123,
+      "name": "Vocabulary Selection & Kanji",
+      "system_name": "vocabularySelection&Kanji_1b486176-3cf7-4853-a09c-50e72dc6834c",
+      "description": "Evaluates the choice of vocabulary (Wago, Kango, loanwords) per context, technical term handling, and proper Kanji use.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "b24bdab3-2611-4ba8-87b4-3711f45b494d",
+        "source_timestamp": 1768900998000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:23:18.219573",
+      "updated_at": "2026-01-20T09:23:18.219573",
+      "id": 122,
+      "name": "Compliance with Instructions",
+      "system_name": "compliancewithInstructions_975431a2-a928-4aed-8ce5-e829c837138b",
+      "description": "Evaluates adherence to constraints like \"No Katakana,\" \"Legal style,\" or \"Use a specific dialect\".",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "f55e8a38-48f9-4e30-86bb-60405c70ad08",
+        "source_timestamp": 1768900998000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:23:18.217914",
+      "updated_at": "2026-01-20T09:23:18.217914",
+      "id": 121,
+      "name": "Japanese Grammar and Syntax",
+      "system_name": "japaneseGrammarandSyntax_aba5f7a8-0901-47c1-b524-c1d33278699a",
+      "description": "Evaluates the use of particles (te-ni-wo-ha), verb conjugation, subject-predicate agreement, and natural word order.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "a0978f1e-e816-4d8c-b60f-e180008ad62d",
+        "source_timestamp": 1768900998000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:23:18.217125",
+      "updated_at": "2026-01-20T09:23:18.217125",
+      "id": 120,
+      "name": "Orthography (Notation & Spelling)",
+      "system_name": "orthography(Notation&Spelling)_6ce0afbb-4ef0-48c7-bb1b-a52729b5061d",
+      "description": "Evaluates the use of Kanji, Hiragana, and Katakana, okurigana, typos, and the presence of character corruption.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "58afa2a7-6979-4977-b560-8f9422c50913",
+        "source_timestamp": 1768900998000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:23:18.214958",
+      "updated_at": "2026-01-20T09:23:18.214958",
+      "id": 119,
+      "name": "Honourifics & Cultural Fitness",
+      "system_name": "honourifics&CulturalFitness_7088320a-0075-49fb-a149-4a7ac45b5852",
+      "description": "Evaluates the consistency of honourifics, reproduction of dialects, and consideration of Japanese cultural background.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "a26a38c9-8eda-4ed9-b6dc-aff3463a50c4",
+        "source_timestamp": 1768900998000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:21:43.821415",
+      "updated_at": "2026-01-20T09:21:43.821415",
+      "id": 118,
+      "name": "Natural Sentence Structure & Word Order",
+      "system_name": "naturalSentenceStructure&WordOrder_d0b0d3c2-6bfc-4c31-8e7b-86a4e9b6524d",
+      "description": "Whether sentence construction reflects native, human-like word order and phrasing, rather than literal translations or syntactic patterns borrowed from English or other languages. Whether word choices are contextually appropriate, modern, and natural for the language, avoiding unnatural synonyms, literal translations, or excessively formal, archaic, or literary expressions/vocabulary/structure unless justified by the task.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "5b6ea4b0-cab0-40e1-8644-cc108062154a",
+        "source_timestamp": 1768900903000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:21:43.820928",
+      "updated_at": "2026-01-20T09:21:43.820928",
+      "id": 117,
+      "name": "Brazilian Portuguese Correctness",
+      "system_name": "brazilianPortugueseCorrectness_af945fbf-b376-4ec4-aa97-3cf63f22793a",
+      "description": "Variant and forms of portuguese other than brazilian should be avoided (e.g. autocarro, comboio, casa de banho, telem�vel, bomba de combust�vel instead of posto de combust�vel, rebu�ado, pequeno-almo�o, rapariga, bicha instead of fila, sumo, frigor�fico instead of geladeira, etc).",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "2227673b-a443-4dbb-a160-ebca1f5e9b5e",
+        "source_timestamp": 1768900903000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:21:43.817172",
+      "updated_at": "2026-01-20T09:21:43.817172",
+      "id": 116,
+      "name": "Human-Likeness vs LLM Artifacts",
+      "system_name": "human-LikenessvsLLMArtifacts_46bfe797-43ce-46c0-a16f-d0f19dc9da05",
+      "description": "Whether the language appears human-written and avoids common LLM artifacts, such as repetitive phrasing, templated sentence openings, unnatural symmetry, or excessive explicitness. The text should exhibit variation in structure, natural emphasis, and pragmatic economy consistent with human authorship, but without seeming sloppy.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "f76740d5-3937-4ce6-b44c-8f0c063f19c9",
+        "source_timestamp": 1768900903000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:21:43.814484",
+      "updated_at": "2026-01-20T09:21:43.814484",
+      "id": 115,
+      "name": "Sensitivity to Critical Portuguese Errors",
+      "system_name": "sensitivitytoCriticalPortugueseErrors_2851ed21-0138-4f20-ba36-7796b2217c50",
+      "description": "Whether the response avoids high-impact errors that are particularly damaging or unacceptable in this language, even if the general meaning remains understandable. Text must follow the core grammatical and morphological rules of the language (e.g., use of correct graphic accentuation, verb conjugation, nominal and verbal agreement, appropriate use of pronouns and prepositions, correct verb�preposition regency, and syntactic structures), without errors caused by English-driven structure or simplification. For example, avoid mixing the use of a/�, hyphen, c/�, s/z or similar. (E.g. avoid using sector, facto, director, acad�mico, fen�meno, econ�mico, contactar, direccionar, baptizar, bem vindo, etc).",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "32cc7ee7-7890-4524-9e57-61b822ebf3fe",
+        "source_timestamp": 1768900903000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:21:43.813827",
+      "updated_at": "2026-01-20T09:21:43.813827",
+      "id": 114,
+      "name": "Language Variant & Register Correctness",
+      "system_name": "languageVariant&RegisterCorrectness_f64d4777-947d-4d97-812c-91cfed1ee598",
+      "description": "Whether the content consistently uses the required standard language variant / regional specificities for the language, and avoids mixing regional specificities, informal speech (e.g., �t�, �pra�, �a gente�), or regionally incorrect forms unless explicitly required by the task.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "a0f3fd9e-7baa-4f97-9cdc-c2973df0f3c8",
+        "source_timestamp": 1768900903000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:14:51.773786",
+      "updated_at": "2026-01-20T09:14:51.773786",
+      "id": 113,
+      "name": "Sentence Structure",
+      "system_name": "sentenceStructure_04adc4c0-e29f-4849-8f0b-082bd4c276ab",
+      "description": "Position of subject, verb and nouns. The main verb is always in the second position.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "f1fb80fd-4946-47f5-92c3-89f122dbab19",
+        "source_timestamp": 1768900491000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:14:51.773202",
+      "updated_at": "2026-01-20T09:14:51.773202",
+      "id": 112,
+      "name": "Grammatical Accuracy - Correct Reference and Conjugation",
+      "system_name": "grammaticalAccuracy-CorrectReferenceandConjugation_47a5409a-9624-40ba-926b-4120764e0d7b",
+      "description": "Referring to the right person is very important in German language usage. Its like ich (first person), du (second person), er/sie/es (Third person), wir (we), ihr (they/you all), Sie (you). Conjugation of the Verbs are dependent on this. Example: Conjugation for the verb Sehen (to see) is given below:\n\nich sehe \ndu siehst \ner/sie/es sieht \nwir sehen \nihr seht \nSie sehen",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "72928b7d-c38b-4083-a4cb-18d6bdb2325a",
+        "source_timestamp": 1768900491000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:14:51.768477",
+      "updated_at": "2026-01-20T09:14:51.768477",
+      "id": 111,
+      "name": "Correct Article",
+      "system_name": "correctArticle_b0fd7c0e-0b4d-4147-ac44-8edc81a20e12",
+      "description": "Der, Die, Das are the 3 articles in German for the Nouns",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "c6ae69a0-7389-4dc4-9718-e5a6513c9b3b",
+        "source_timestamp": 1768900491000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:14:51.767745",
+      "updated_at": "2026-01-20T09:14:51.767745",
+      "id": 110,
+      "name": "Grammatical Accuracy - Correct Cases",
+      "system_name": "grammaticalAccuracy-CorrectCases_93df2e84-0109-4df6-9b3e-67a71cc210ba",
+      "description": "One has to use the correct cases in German, which are Nominativ, Akkusative, Dativ and Genetiv",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "7d75c080-7bad-47d3-abb2-8b8c8857dda1",
+        "source_timestamp": 1768900491000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:14:51.764567",
+      "updated_at": "2026-01-20T09:14:51.764567",
+      "id": 109,
+      "name": "Noun and Verb usage",
+      "system_name": "nounandVerbusage_f0f284eb-3612-4767-8ef9-e0bab11478b3",
+      "description": "Nouns should start in capital letters and verbs in small letters",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "6ea936a8-3993-4f24-a4dc-4eaa9024bfb3",
+        "source_timestamp": 1768900491000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:10:59.121514",
+      "updated_at": "2026-01-20T09:10:59.121514",
+      "id": 108,
+      "name": "Sentence Structure",
+      "system_name": "sentenceStructure_bd0e6c24-b1b5-4474-a95d-42353dae850c",
+      "description": "Position of subject, verb and nouns. The main verb is always in the second position.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "c7524d29-dfa5-4a08-80e3-25d588d63136",
+        "source_timestamp": 1768900259000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:10:59.120991",
+      "updated_at": "2026-01-20T09:10:59.120991",
+      "id": 107,
+      "name": "Grammatical Accuracy - Correct Reference and Conjugation",
+      "system_name": "grammaticalAccuracy-CorrectReferenceandConjugation_4046b5df-4094-4ecf-b4c3-0a12b756f020",
+      "description": "Referring to the right person is very important in German language usage. Its like ich (first person), du (second person), er/sie/es (Third person), wir (we), ihr (they/you all), Sie (you). Conjugation of the Verbs are dependent on this. Example: Conjugation for the verb Sehen (to see) is given below:\n\nich sehe \ndu siehst \ner/sie/es sieht \nwir sehen \nihr seht \nSie sehen",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "935645b8-714f-4b16-81ad-c6c11657e60b",
+        "source_timestamp": 1768900259000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:10:59.115955",
+      "updated_at": "2026-01-20T09:10:59.115955",
+      "id": 106,
+      "name": "Noun and Verb usage",
+      "system_name": "nounandVerbusage_db872170-299c-4eec-9321-16ae2d430aa6",
+      "description": "Nouns should start in capital letters and verbs in small letters",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "af121348-3a77-4fa3-a377-18923dedc086",
+        "source_timestamp": 1768900259000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:10:59.115436",
+      "updated_at": "2026-01-20T09:10:59.115436",
+      "id": 105,
+      "name": "Correct Article",
+      "system_name": "correctArticle_c9eab584-684c-470b-9624-0fc1025a3d86",
+      "description": "Der, Die, Das are the 3 articles in German for the Nouns",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "41f9de20-9232-477b-8144-9f932a115697",
+        "source_timestamp": 1768900259000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:10:59.114844",
+      "updated_at": "2026-01-20T09:10:59.114844",
+      "id": 104,
+      "name": "Grammatical Accuracy - Correct Cases",
+      "system_name": "grammaticalAccuracy-CorrectCases_44b1a7f5-101f-4a62-b2ab-a716fbcdc4b8",
+      "description": "One has to use the correct cases in German, which are Nominativ, Akkusative, Dativ and Genetiv",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "91ee8f83-3940-434d-8434-59e4d8da029d",
+        "source_timestamp": 1768900259000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:09:00.860794",
+      "updated_at": "2026-01-20T09:09:00.860794",
+      "id": 103,
+      "name": "Cultural Nuance",
+      "system_name": "culturalNuance_1dfc0c28-7941-46f1-80d8-624716978a1c",
+      "description": "Consistency of Spanish expressions or idiomatic phrases in relation to the context of the conversation initiated by the user.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "a90fe5a2-e56b-4398-a42d-3460fec73057",
+        "source_timestamp": 1768900140000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:09:00.860080",
+      "updated_at": "2026-01-20T09:09:00.860080",
+      "id": 102,
+      "name": "Vocabulary",
+      "system_name": "vocabulary_3e75b80a-5d18-4cdb-8125-b9ca842f5d10",
+      "description": "Richness and appropriateness of word choice and handling of technical terms.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "8be8a164-eda9-4bd4-ae2c-b9291a1b7251",
+        "source_timestamp": 1768900140000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:09:00.855566",
+      "updated_at": "2026-01-20T09:09:00.855566",
+      "id": 101,
+      "name": "Tone",
+      "system_name": "tone_eef1c51b-3a76-4ca9-b7b2-511075562a21",
+      "description": "Adequacy of tone of formality to the context of the conversation.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "d5053ff9-272d-44f4-b026-3c5b6296a762",
+        "source_timestamp": 1768900140000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:09:00.852530",
+      "updated_at": "2026-01-20T09:09:00.852530",
+      "id": 100,
+      "name": "Grammar & Spelling",
+      "system_name": "grammar&Spelling_f3ffeb50-55f6-4d4f-b5fd-19debf484297",
+      "description": "Sentence structure, verb-agreement, gender, and number correctness. Ensures the text follows natural Spanish syntactic rules.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "4e4429d1-ce00-439b-a158-3df2a78c7440",
+        "source_timestamp": 1768900140000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:07:13.378821",
+      "updated_at": "2026-01-20T09:07:13.378821",
+      "id": 99,
+      "name": "Sentence Structure & Word Order",
+      "system_name": "sentenceStructure&WordOrder_76caf650-fe36-490c-b16c-2fd50a0f0a5e",
+      "description": "Natural French order: Je lui ai parl� hier (not je parl� lui hier). Proper negation (ne�pas).",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "cb9a5b61-c04e-4cb1-8d5c-3e73029b3254",
+        "source_timestamp": 1768900033000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:07:13.377868",
+      "updated_at": "2026-01-20T09:07:13.377868",
+      "id": 98,
+      "name": "Human Naturalness vs LLM Artifacts",
+      "system_name": "humanNaturalnessvsLLMArtifacts_6e15592f-9e79-45f3-a3ef-7576fce091c9",
+      "description": "Avoids repetition (Il est important de noter que�). Varied sentence rhythm.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "dac26733-315a-4f8b-89c8-2d97abc932b3",
+        "source_timestamp": 1768900033000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:07:13.363190",
+      "updated_at": "2026-01-20T09:07:13.363190",
+      "id": 97,
+      "name": "Cross-language Interference",
+      "system_name": "cross-LanguageInterference_1aba4c62-6c64-4ddf-b6f8-a81d59c2de39",
+      "description": "Avoids calques: faire sens ? avoir du sens; supporter ? soutenir.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "576f9d0f-3615-4b76-ad4f-c23035cdb2ba",
+        "source_timestamp": 1768900033000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:07:13.362763",
+      "updated_at": "2026-01-20T09:07:13.362763",
+      "id": 96,
+      "name": "Sensitivity to Critical French Errors",
+      "system_name": "sensitivitytoCriticalFrenchErrors_c75e69bb-c090-4bd3-aed3-39c8e3b6137b",
+      "description": "Avoids: ce/se, a/�, son/sont, ils manges.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "da2dd78a-9b8e-4633-900a-2ef6019fbbc9",
+        "source_timestamp": 1768900033000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:07:13.362205",
+      "updated_at": "2026-01-20T09:07:13.362205",
+      "id": 95,
+      "name": "Grammatical & Morphological Accuracy",
+      "system_name": "grammatical&MorphologicalAccuracy_0ce625ba-5167-4201-a5dd-e7e3c21d29b5",
+      "description": "Correct conjugation (il a fait), agreement (des id�es int�ressantes), tense usage, pronouns (dont, y, en).",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "6d8579f8-6675-4afc-b822-294e2f170e32",
+        "source_timestamp": 1768900033000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:07:13.361513",
+      "updated_at": "2026-01-20T09:07:13.361513",
+      "id": 94,
+      "name": "Orthography & Punctuation",
+      "system_name": "orthography&Punctuation_80205c46-d15c-4ce7-817c-56b52c546b6a",
+      "description": "Accents (�), apostrophes (l�homme), spacing before : ; ? !.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "0e64be42-94a5-464e-a423-76cf04e91458",
+        "source_timestamp": 1768900033000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:07:13.360623",
+      "updated_at": "2026-01-20T09:07:13.360623",
+      "id": 93,
+      "name": "Pragmatic & Politeness Control",
+      "system_name": "pragmatic&PolitenessControl_110f1d53-d59c-48f4-b4f7-1022c3a2490b",
+      "description": "Proper vous/tu, formulas (Je vous prie de, Cordialement).",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "23d12d9e-51de-44bc-92a0-248ffd4fffd5",
+        "source_timestamp": 1768900033000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:07:13.359841",
+      "updated_at": "2026-01-20T09:07:13.359841",
+      "id": 92,
+      "name": "French Language Variant & Register Accuracy",
+      "system_name": "frenchLanguageVariant&RegisterAccuracy_6eb88b1f-189f-4ca7-ad45-1b6c23ba094a",
+      "description": "Consistent use of standard written French. Avoids slang (c�est ouf), SMS (pk), regional forms (chui), anglicisms (deadline).",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "5f604f5c-6d6e-4519-825d-f8cc9c3aae43",
+        "source_timestamp": 1768900033000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T09:07:13.359001",
+      "updated_at": "2026-01-20T09:07:13.359001",
+      "id": 91,
+      "name": "Lexical Choice & Vocabulary",
+      "system_name": "lexicalChoice&Vocabulary_a221a1fd-c1c0-4b4a-80c5-6fa0f3e2b8d3",
+      "description": "Appropriate vocabulary: tenir compte de, pertinent, s�engager. Avoids archaic (moult).",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "e0b0b9b9-1db2-4281-b670-c86c1f62ca60",
+        "source_timestamp": 1768900033000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T03:06:35.078574",
+      "updated_at": "2026-01-20T03:06:35.078574",
+      "id": 90,
+      "name": "JUDGE FORMAT CONSISTENCY",
+      "system_name": "jUDGEFORMATCONSISTENCY_07140374-dd0b-4854-874e-f7f5b7530ceb",
+      "description": "This rubric will verify that LLM judge and human judge use the SAME format for evaluation.",
+      "prompt": null,
+      "weight": 0.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "a763453b-d866-49da-9cb9-b342c7fcbb00",
+        "source_timestamp": 1768878395000
+      },
+      "review_display": {
+        "options": [
+          {
+            "value": "Pass"
+          },
+          {
+            "value": "Fail"
+          }
+        ],
+        "type": "BOOLEAN_CHOICE"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T03:04:38.240260",
+      "updated_at": "2026-01-20T03:04:38.240260",
+      "id": 89,
+      "name": "TARGET MODEL BREAKING RATE ",
+      "system_name": "tARGETMODELBREAKINGRATE_19e76862-743a-412d-9851-8d808564fca7",
+      "description": "This rubric verify that at least 75% of target model responses (Nemotron/Qwen) have a score of 0 (model broke) in LLM judge evaluation. ",
+      "prompt": null,
+      "weight": 0.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "0b413648-c975-4af3-8166-48c86c466f7b",
+        "source_timestamp": 1768878278000
+      },
+      "review_display": {
+        "options": [
+          {
+            "value": "Pass"
+          },
+          {
+            "value": "Fail"
+          }
+        ],
+        "type": "BOOLEAN_CHOICE"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T03:02:40.658965",
+      "updated_at": "2026-01-20T03:02:40.658965",
+      "id": 88,
+      "name": "JUDGE SYSTEM PROMPT GUIDELINES COMPLIANCE",
+      "system_name": "jUDGESYSTEMPROMPTGUIDELINESCOMPLIANCE_9ef79d0d-8714-482d-9d74-75c872d28e15",
+      "description": "This rubric will verify that the judge_system_prompt follows all guidelines.",
+      "prompt": null,
+      "weight": 0.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "8575389a-27c5-4b54-8752-318f9a71cf45",
+        "source_timestamp": 1768878160000
+      },
+      "review_display": {
+        "options": [
+          {
+            "value": "Pass"
+          },
+          {
+            "value": "Fail"
+          }
+        ],
+        "type": "BOOLEAN_CHOICE"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T02:59:38.277506",
+      "updated_at": "2026-01-20T02:59:38.277506",
+      "id": 87,
+      "name": "NO IMAGINARY CONSTRAINTS IN RESPONSE REFERENCE",
+      "system_name": "nOIMAGINARYCONSTRAINTSINRESPONSEREFERENCE_ebcd44b6-f1f9-4dc5-a605-e46ac5bc07cc",
+      "description": "This rubric will verify that the response_reference criteria contain NO imaginary constraints.",
+      "prompt": null,
+      "weight": 0.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "ceab1ff8-78de-4661-b19d-80448547f551",
+        "source_timestamp": 1768877978000
+      },
+      "review_display": {
+        "options": [
+          {
+            "value": "Pass"
+          },
+          {
+            "value": "Fail"
+          }
+        ],
+        "type": "BOOLEAN_CHOICE"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T02:56:51.214298",
+      "updated_at": "2026-01-20T02:56:51.214298",
+      "id": 86,
+      "name": "RESPONSE REFERENCE FORMAT",
+      "system_name": "rESPONSEREFERENCEFORMAT_e3e08a79-0e47-4b04-bb9f-103af0579610",
+      "description": "This rubirc will verify that the response_reference uses the NEW criteria array format as specified in by the client",
+      "prompt": null,
+      "weight": 0.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "75ef8555-5e5d-4eec-89ec-d86c6801234a",
+        "source_timestamp": 1768877811000
+      },
+      "review_display": {
+        "options": [
+          {
+            "value": "Pass"
+          },
+          {
+            "value": "Fail"
+          }
+        ],
+        "type": "BOOLEAN_CHOICE"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T02:54:37.744509",
+      "updated_at": "2026-01-20T02:54:37.744509",
+      "id": 85,
+      "name": "IDEAL RESPONSE QUALITY",
+      "system_name": "iDEALRESPONSEQUALITY_1028cbd4-b122-45db-892d-bc9a39bdc609",
+      "description": "This rubirc will evaluatewhether the ideal response is correct, appropriate for the prompt, and demonstrates perfect compliance with the counter-intuitive instruction. ",
+      "prompt": null,
+      "weight": 0.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "d4aae82a-b7cb-46aa-b44d-0d686d7204a9",
+        "source_timestamp": 1768877677000
+      },
+      "review_display": {
+        "options": [
+          {
+            "value": "Pass"
+          },
+          {
+            "value": "Fail"
+          }
+        ],
+        "type": "BOOLEAN_CHOICE"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T02:51:55.102833",
+      "updated_at": "2026-01-20T02:51:55.102833",
+      "id": 84,
+      "name": "PROMPT LENGTH COMPLIANCE",
+      "system_name": "pROMPTLENGTHCOMPLIANCE_ac34ab5f-203f-4691-b9aa-f729a893bbd8",
+      "description": "This rubric will verify that the prompt word count matches the specified requirement exactly. You perform binary PASS/FAIL evaluation based solely on word count compliance.",
+      "prompt": null,
+      "weight": 0.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "34d2c0d1-627a-4ac5-bbdc-6984d1574bb9",
+        "source_timestamp": 1768877515000
+      },
+      "review_display": {
+        "options": [
+          {
+            "value": "Pass"
+          },
+          {
+            "value": "Fail"
+          }
+        ],
+        "type": "BOOLEAN_CHOICE"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T02:48:49.894444",
+      "updated_at": "2026-01-20T02:48:49.894444",
+      "id": 83,
+      "name": "NO SUBJECTIVE FACT CHECKING",
+      "system_name": "nOSUBJECTIVEFACTCHECKING_b84aeb6b-8a61-4372-a374-a4b54e315465",
+      "description": "This rubric will verify that prompts and criteria do NOT require evaluation of subjective data that changes over time.",
+      "prompt": null,
+      "weight": 0.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "ed50edc3-eb32-4551-b44e-4f3c9d5a22bf",
+        "source_timestamp": 1768877329000
+      },
+      "review_display": {
+        "options": [
+          {
+            "value": "Pass"
+          },
+          {
+            "value": "Fail"
+          }
+        ],
+        "type": "BOOLEAN_CHOICE"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-20T02:46:21.763228",
+      "updated_at": "2026-01-20T02:46:21.763228",
+      "id": 82,
+      "name": "PROMPT QUALITY AND DOMAIN COMPLIANCE",
+      "system_name": "pROMPTQUALITYANDDOMAINCOMPLIANCE_f9685792-b7a4-4610-90e2-6f86905b108b",
+      "description": "This rubric will evaluate whether a task's prompt is well-formed, logically sound, properly aligned with its assigned domain, and contains an explicit, unambiguous\ncounter-intuitive constraint. You perform binary PASS/FAIL evaluation only.",
+      "prompt": null,
+      "weight": 0.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "22492aca-5b77-48b9-822c-42f473fb60e2",
+        "source_timestamp": 1768877181000
+      },
+      "review_display": {
+        "options": [
+          {
+            "value": "Pass"
+          },
+          {
+            "value": "Fail"
+          }
+        ],
+        "type": "BOOLEAN_CHOICE"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-19T19:38:07.854907",
+      "updated_at": "2026-01-19T19:38:07.854907",
+      "id": 81,
+      "name": "JSON Correct Formatting and Turn_Metadata Accuracy",
+      "system_name": "jSONCorrectFormattingandTurn_MetadataAccuracy_8162c754-9dcd-4803-9a54-f1311a5d682b",
+      "description": "Whether all JSON blocks are syntactically valid and whether turn_metadata correctly encodes all instruction types, labels, arguments, and change tracking, and includes at least 4 IF constraints and atleast 2 llm eval constraints(atleast 1 llm_judge).",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "db706257-1ea6-479a-a335-c109a704e8a4",
+        "source_timestamp": 1768851487000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-19T19:37:15.877470",
+      "updated_at": "2026-01-19T19:37:15.877470",
+      "id": 80,
+      "name": "Cell Tags - Spelling, Format, and Order",
+      "system_name": "cellTags-Spelling,Format,AndOrder_aa2bb6b0-81da-4659-b1e9-bae6aa1495df",
+      "description": "Whether all notebook cell tags are spelled correctly, formatted correctly, and appear in the exact required sequential order across all turns and model responses.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "3db14e56-b22a-400a-8750-963a3da39492",
+        "source_timestamp": 1768851435000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-19T19:35:54.284445",
+      "updated_at": "2026-01-19T19:35:54.284445",
+      "id": 79,
+      "name": "Metadata Accuracy and Taxonomy Alignment",
+      "system_name": "metadataAccuracyandTaxonomyAlignment_23ce8897-e2ed-4fb8-b2be-161e424349e2",
+      "description": "Whether notebook metadata correctly and precisely matches the prompt, task type, domain, use case, categories, and CFBench taxonomy, without loose fits or hidden mismatches.",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "a97db290-505d-4693-9332-43e65c68df4e",
+        "source_timestamp": 1768851354000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-18T14:59:27.587096",
+      "updated_at": "2026-01-18T14:59:27.587096",
+      "id": 78,
+      "name": "CFBench Problem Framing and Motivation",
+      "system_name": "cFBenchProblemFramingandMotivation_1d153d1d-a775-489a-aca5-d0cc89bf91b3",
+      "description": "Clarity of why comprehensive constraints following matters, and why CFBench style data plus evaluation better matches user perception",
+      "prompt": null,
+      "weight": 1.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "c5d3acaa-cd5c-4cd4-932a-10f19ecd7337",
+        "source_timestamp": 1768748367000
+      },
+      "review_display": {
+        "options": [],
+        "type": "STAR_RATING"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-13T17:20:56.276730",
+      "updated_at": "2026-01-13T17:20:56.276730",
+      "id": 77,
+      "name": "NO SUBJECTIVE FACT CHECKING",
+      "system_name": "nOSUBJECTIVEFACTCHECKING_9c0fb3b5-18e3-45b6-8d70-e3ecf2bd9f81",
+      "description": "Test",
+      "prompt": null,
+      "weight": 0.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "ada772b7-9e02-424e-9174-07df11111000",
+        "source_timestamp": 1768324856000
+      },
+      "review_display": {
+        "options": [
+          {
+            "value": "Pass"
+          },
+          {
+            "value": "Fail"
+          }
+        ],
+        "type": "BOOLEAN_CHOICE"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-13T12:22:37.335936",
+      "updated_at": "2026-01-13T12:22:37.335936",
+      "id": 76,
+      "name": "Prompt",
+      "system_name": "prompt_f6178c04-8c06-4559-abf2-f572416437a9",
+      "description": "test",
+      "prompt": null,
+      "weight": 0.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "162e43c0-f788-4594-8a2d-3f7700001010",
+        "source_timestamp": 1768306957000
+      },
+      "review_display": {
+        "options": [],
+        "type": "BOOLEAN_CHOICE"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-08T06:17:19.344878",
+      "updated_at": "2026-01-08T06:17:19.344878",
+      "id": 75,
+      "name": "JUDGE FORMAT CONSISTENCY",
+      "system_name": "jUDGEFORMATCONSISTENCY_36e94684-3b73-4f33-9964-a280eee0bb4d",
+      "description": "Test",
+      "prompt": null,
+      "weight": 0.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "3451c590-2212-4640-a208-231e10110001",
+        "source_timestamp": 1767853039000
+      },
+      "review_display": {
+        "options": [
+          {
+            "value": "Pass"
+          },
+          {
+            "value": "Fail"
+          }
+        ],
+        "type": "BOOLEAN_CHOICE"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-08T06:15:38.614336",
+      "updated_at": "2026-01-08T06:15:38.614336",
+      "id": 74,
+      "name": "TARGET MODEL BREAKING RATE",
+      "system_name": "tARGETMODELBREAKINGRATE_f08d91d0-f014-4751-a37d-42db1cefc842",
+      "description": "Test",
+      "prompt": null,
+      "weight": 0.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "bdff51c0-f3e1-4124-8334-a38a11100100",
+        "source_timestamp": 1767852938000
+      },
+      "review_display": {
+        "options": [
+          {
+            "value": "Pass"
+          },
+          {
+            "value": "Fail"
+          }
+        ],
+        "type": "BOOLEAN_CHOICE"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-08T06:13:53.274163",
+      "updated_at": "2026-01-08T06:13:53.274163",
+      "id": 73,
+      "name": "JUDGE SYSTEM PROMPT GUIDELINES COMPLIANCE",
+      "system_name": "jUDGESYSTEMPROMPTGUIDELINESCOMPLIANCE_a751a04b-4490-43d7-81b4-eb2068425706",
+      "description": "Test",
+      "prompt": null,
+      "weight": 0.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "d046e50b-ab70-4e0e-9057-351a01111111",
+        "source_timestamp": 1767852833000
+      },
+      "review_display": {
+        "options": [
+          {
+            "value": "Pass"
+          },
+          {
+            "value": "Fail"
+          }
+        ],
+        "type": "BOOLEAN_CHOICE"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-08T06:10:27.415993",
+      "updated_at": "2026-01-08T06:10:27.415993",
+      "id": 72,
+      "name": "NO IMAGINARY CONSTRAINTS IN RESPONSE REFERENCE",
+      "system_name": "nOIMAGINARYCONSTRAINTSINRESPONSEREFERENCE_016ff6da-de87-42aa-a425-d2b7a184d7df",
+      "description": "Test",
+      "prompt": null,
+      "weight": 0.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "bc336745-91a2-4271-acde-766200001000",
+        "source_timestamp": 1767852627000
+      },
+      "review_display": {
+        "options": [
+          {
+            "value": "Pass"
+          },
+          {
+            "value": "Fail"
+          }
+        ],
+        "type": "BOOLEAN_CHOICE"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    },
+    {
+      "created_at": "2026-01-08T06:08:42.542477",
+      "updated_at": "2026-01-08T06:08:42.542477",
+      "id": 71,
+      "name": "RESPONSE REFERENCE FORMAT",
+      "system_name": "rESPONSEREFERENCEFORMAT_36f3f846-900a-46c2-8ac0-80ea7410528d",
+      "description": "Test",
+      "prompt": null,
+      "weight": 0.0,
+      "mode": "opt-in",
+      "role": "both",
+      "reviewer_type": "manual",
+      "prompt_template": null,
+      "reviewer_identity_prompt": null,
+      "temperature": 0.0,
+      "llm_evaluator": "general_purpose_evaluator",
+      "project_type": "sft",
+      "checked_part": null,
+      "quality_guidelines": null,
+      "quality_evaluation_rules": null,
+      "datastream_metadata": {
+        "uuid": "eeac6d30-ee18-4c30-85b1-a56810010000",
+        "source_timestamp": 1767852522000
+      },
+      "review_display": {
+        "options": [
+          {
+            "value": "Pass"
+          },
+          {
+            "value": "Fail"
+          }
+        ],
+        "type": "BOOLEAN_CHOICE"
+      },
+      "feedback_display_pref": "whole-conversation",
+      "model": null,
+      "input_filters": null,
+      "is_turn_level": 0,
+      "provider": null,
+      "star_rating_tooltip": null
+    }
+  ]
+}

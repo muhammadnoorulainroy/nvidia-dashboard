@@ -1,0 +1,463 @@
+{
+  "table": "reviewer_ranking",
+  "row_count": 35,
+  "sample_count": 35,
+  "fetched_at": "2026-01-28T23:24:33.571590",
+  "data": [
+    {
+      "created_at": "2026-01-27T17:34:00.928814",
+      "updated_at": "2026-01-27T17:34:00.928814",
+      "id": 106,
+      "rank": 4,
+      "score": 0.0,
+      "project_id": 36,
+      "reviewer_id": 536,
+      "datastream_metadata": {
+        "uuid": "d3eadbe6-2f9a-41e7-ae9f-aa34f3a9a043",
+        "source_timestamp": 1769535240000
+      }
+    },
+    {
+      "created_at": "2026-01-27T17:32:57.251615",
+      "updated_at": "2026-01-27T17:32:57.251615",
+      "id": 105,
+      "rank": 3,
+      "score": 0.0,
+      "project_id": 36,
+      "reviewer_id": 1124,
+      "datastream_metadata": {
+        "uuid": "b54bc176-6f27-41c4-ae40-007653b8538a",
+        "source_timestamp": 1769535177000
+      }
+    },
+    {
+      "created_at": "2026-01-27T17:32:57.251615",
+      "updated_at": "2026-01-27T17:32:57.251615",
+      "id": 104,
+      "rank": 2,
+      "score": 0.0,
+      "project_id": 36,
+      "reviewer_id": 650,
+      "datastream_metadata": {
+        "uuid": "0813b138-4eea-4b7e-ba7c-669271910efd",
+        "source_timestamp": 1769535177000
+      }
+    },
+    {
+      "created_at": "2026-01-27T16:56:44.597907",
+      "updated_at": "2026-01-27T16:56:44.597907",
+      "id": 103,
+      "rank": 2,
+      "score": 0.0,
+      "project_id": 36,
+      "reviewer_id": 1093,
+      "datastream_metadata": {
+        "uuid": "b26297d7-6b1f-422c-a53c-8849a9a3faf3",
+        "source_timestamp": 1769533004000
+      }
+    },
+    {
+      "created_at": "2026-01-22T02:00:11.128532",
+      "updated_at": "2026-01-22T02:00:11.128532",
+      "id": 76,
+      "rank": 1,
+      "score": 43.81,
+      "project_id": 53,
+      "reviewer_id": 833,
+      "datastream_metadata": {
+        "uuid": "3eac09c7-fc8a-4493-b2cf-66c6d105c5f5",
+        "source_timestamp": 1769047211000
+      }
+    },
+    {
+      "created_at": "2026-01-22T02:00:10.488227",
+      "updated_at": "2026-01-22T02:00:10.488227",
+      "id": 75,
+      "rank": 2,
+      "score": 42.65,
+      "project_id": 52,
+      "reviewer_id": 1037,
+      "datastream_metadata": {
+        "uuid": "70d66843-304c-496a-910f-90a1252d0da9",
+        "source_timestamp": 1769047210000
+      }
+    },
+    {
+      "created_at": "2026-01-22T02:00:10.486447",
+      "updated_at": "2026-01-22T02:00:10.486447",
+      "id": 74,
+      "rank": 1,
+      "score": 47.06,
+      "project_id": 52,
+      "reviewer_id": 969,
+      "datastream_metadata": {
+        "uuid": "a694a264-82bd-431a-8980-88ecb67b77d3",
+        "source_timestamp": 1769047210000
+      }
+    },
+    {
+      "created_at": "2026-01-22T02:00:09.610042",
+      "updated_at": "2026-01-22T02:00:09.610042",
+      "id": 73,
+      "rank": 1,
+      "score": 46.63,
+      "project_id": 51,
+      "reviewer_id": 845,
+      "datastream_metadata": {
+        "uuid": "e25982b9-6296-42b8-82f5-3081127c6ffc",
+        "source_timestamp": 1769047209000
+      }
+    },
+    {
+      "created_at": "2026-01-22T02:00:09.048081",
+      "updated_at": "2026-01-22T02:00:09.048081",
+      "id": 72,
+      "rank": 1,
+      "score": 43.75,
+      "project_id": 50,
+      "reviewer_id": 861,
+      "datastream_metadata": {
+        "uuid": "fd5ffea8-cbd7-4884-ac29-e8dabad2fb16",
+        "source_timestamp": 1769047209000
+      }
+    },
+    {
+      "created_at": "2026-01-21T02:00:08.738082",
+      "updated_at": "2026-01-21T02:00:08.738082",
+      "id": 71,
+      "rank": 2,
+      "score": 42.52,
+      "project_id": 49,
+      "reviewer_id": 963,
+      "datastream_metadata": {
+        "uuid": "8552f381-ea8a-4b42-9314-24be59257e30",
+        "source_timestamp": 1768960808000
+      }
+    },
+    {
+      "created_at": "2026-01-21T02:00:08.736177",
+      "updated_at": "2026-01-21T02:00:08.736177",
+      "id": 70,
+      "rank": 1,
+      "score": 45.29,
+      "project_id": 49,
+      "reviewer_id": 1018,
+      "datastream_metadata": {
+        "uuid": "0acf1162-dac6-4f57-8be1-57859367ed5f",
+        "source_timestamp": 1768960808000
+      }
+    },
+    {
+      "created_at": "2026-01-21T02:00:08.074812",
+      "updated_at": "2026-01-21T02:00:08.074812",
+      "id": 69,
+      "rank": 1,
+      "score": 59.41,
+      "project_id": 48,
+      "reviewer_id": 856,
+      "datastream_metadata": {
+        "uuid": "d6854585-750f-43cf-8a26-0465570cd3af",
+        "source_timestamp": 1768960808000
+      }
+    },
+    {
+      "created_at": "2026-01-21T02:00:07.458179",
+      "updated_at": "2026-01-21T02:00:07.458179",
+      "id": 68,
+      "rank": 1,
+      "score": 9.13,
+      "project_id": 47,
+      "reviewer_id": 1171,
+      "datastream_metadata": {
+        "uuid": "41d7356d-ae13-4ad4-a30a-3f536cb0ea57",
+        "source_timestamp": 1768960807000
+      }
+    },
+    {
+      "created_at": "2026-01-21T02:00:06.375686",
+      "updated_at": "2026-01-21T02:00:06.375686",
+      "id": 67,
+      "rank": 1,
+      "score": 50.5,
+      "project_id": 46,
+      "reviewer_id": 1073,
+      "datastream_metadata": {
+        "uuid": "842261f0-9dc5-41e5-a16a-f49991f67f7a",
+        "source_timestamp": 1768960806000
+      }
+    },
+    {
+      "created_at": "2026-01-21T02:00:05.722397",
+      "updated_at": "2026-01-21T02:00:05.722397",
+      "id": 66,
+      "rank": 1,
+      "score": 13.74,
+      "project_id": 45,
+      "reviewer_id": 859,
+      "datastream_metadata": {
+        "uuid": "1274584e-63fa-4c4d-8701-51c6428d7f89",
+        "source_timestamp": 1768960805000
+      }
+    },
+    {
+      "created_at": "2026-01-21T02:00:04.687243",
+      "updated_at": "2026-01-21T02:00:04.687243",
+      "id": 65,
+      "rank": 1,
+      "score": 42.86,
+      "project_id": 44,
+      "reviewer_id": 1043,
+      "datastream_metadata": {
+        "uuid": "8a422bb0-c277-4152-aefe-ab5cf3a69579",
+        "source_timestamp": 1768960804000
+      }
+    },
+    {
+      "created_at": "2026-01-20T02:00:04.641483",
+      "updated_at": "2026-01-20T02:00:04.641483",
+      "id": 64,
+      "rank": 1,
+      "score": 68.0,
+      "project_id": 42,
+      "reviewer_id": 937,
+      "datastream_metadata": {
+        "uuid": "50e1ffbb-9444-4c98-b737-55e42451f844",
+        "source_timestamp": 1768874404000
+      }
+    },
+    {
+      "created_at": "2026-01-13T11:34:46.169234",
+      "updated_at": "2026-01-13T11:34:46.169234",
+      "id": 63,
+      "rank": 5,
+      "score": 0.0,
+      "project_id": 37,
+      "reviewer_id": 710,
+      "datastream_metadata": {
+        "uuid": "038e3ade-4c11-4851-b369-cab000010010",
+        "source_timestamp": 1768304086000
+      }
+    },
+    {
+      "created_at": "2026-01-13T11:34:27.707865",
+      "updated_at": "2026-01-13T11:34:27.707865",
+      "id": 61,
+      "rank": 3,
+      "score": 0.0,
+      "project_id": 37,
+      "reviewer_id": 738,
+      "datastream_metadata": {
+        "uuid": "9545fc9d-410a-488e-98dd-f8cd01010010",
+        "source_timestamp": 1768304067000
+      }
+    },
+    {
+      "created_at": "2026-01-13T11:34:15.601881",
+      "updated_at": "2026-01-13T11:34:15.601881",
+      "id": 60,
+      "rank": 2,
+      "score": 0.0,
+      "project_id": 37,
+      "reviewer_id": 747,
+      "datastream_metadata": {
+        "uuid": "342bc723-c43f-40de-b990-f8fb11111100",
+        "source_timestamp": 1768304055000
+      }
+    },
+    {
+      "created_at": "2026-01-09T16:33:47.881320",
+      "updated_at": "2026-01-09T16:33:47.881320",
+      "id": 27,
+      "rank": 4,
+      "score": 0.0,
+      "project_id": 38,
+      "reviewer_id": 1190,
+      "datastream_metadata": {
+        "uuid": "fa5c2cad-f0c8-4c83-a404-129401110111",
+        "source_timestamp": 1767976427000
+      }
+    },
+    {
+      "created_at": "2026-01-09T16:33:35.646561",
+      "updated_at": "2026-01-09T16:33:35.646561",
+      "id": 26,
+      "rank": 3,
+      "score": 0.0,
+      "project_id": 38,
+      "reviewer_id": 1216,
+      "datastream_metadata": {
+        "uuid": "75c1713e-2a5d-4152-bb11-b26711101011",
+        "source_timestamp": 1767976415000
+      }
+    },
+    {
+      "created_at": "2026-01-09T16:33:22.920546",
+      "updated_at": "2026-01-09T16:33:22.920546",
+      "id": 25,
+      "rank": 2,
+      "score": 0.0,
+      "project_id": 38,
+      "reviewer_id": 1193,
+      "datastream_metadata": {
+        "uuid": "75c1713e-2a5d-4152-bb11-b26701100001",
+        "source_timestamp": 1767976402000
+      }
+    },
+    {
+      "created_at": "2025-12-20T02:00:03.743443",
+      "updated_at": "2025-12-20T02:00:03.743443",
+      "id": 24,
+      "rank": 1,
+      "score": 25.2,
+      "project_id": 39,
+      "reviewer_id": 834,
+      "datastream_metadata": {
+        "uuid": "e5499efd-09cd-4315-ad04-d06e11010100",
+        "source_timestamp": 1766196003000
+      }
+    },
+    {
+      "created_at": "2025-12-09T02:00:02.821950",
+      "updated_at": "2025-12-09T02:00:02.821950",
+      "id": 22,
+      "rank": 1,
+      "score": 68.42,
+      "project_id": 38,
+      "reviewer_id": 805,
+      "datastream_metadata": {
+        "uuid": "3ab884bd-2359-4c02-b9ac-50cb00001010",
+        "source_timestamp": 1765245602000
+      }
+    },
+    {
+      "created_at": "2025-10-24T01:00:01.843677",
+      "updated_at": "2025-10-24T01:00:01.843677",
+      "id": 15,
+      "rank": 2,
+      "score": 71.4,
+      "project_id": 35,
+      "reviewer_id": 507,
+      "datastream_metadata": {
+        "uuid": "a3e684a1-7f67-45b9-b4ec-2bd401010001",
+        "source_timestamp": 1761267601000
+      }
+    },
+    {
+      "created_at": "2025-10-24T01:00:01.840185",
+      "updated_at": "2025-10-24T01:00:01.840185",
+      "id": 14,
+      "rank": 1,
+      "score": 100.0,
+      "project_id": 35,
+      "reviewer_id": 506,
+      "datastream_metadata": {
+        "uuid": "a3e684a1-7f67-45b9-b4ec-2bd401010000",
+        "source_timestamp": 1761267601000
+      }
+    },
+    {
+      "created_at": "2025-08-05T01:00:01.247131",
+      "updated_at": "2025-08-05T01:00:01.247131",
+      "id": 11,
+      "rank": 1,
+      "score": 65.6,
+      "project_id": 28,
+      "reviewer_id": 167,
+      "datastream_metadata": {
+        "uuid": "582f88b2-7e55-4ae3-a8ef-3ebf00000000",
+        "source_timestamp": 1754355601000
+      }
+    },
+    {
+      "created_at": "2025-07-22T01:00:01.471354",
+      "updated_at": "2025-07-22T01:00:01.471354",
+      "id": 10,
+      "rank": 1,
+      "score": 78.8,
+      "project_id": 27,
+      "reviewer_id": 176,
+      "datastream_metadata": {
+        "uuid": "8e335c84-b476-4a02-940a-2cab10001110",
+        "source_timestamp": 1753146001000
+      }
+    },
+    {
+      "created_at": "2025-07-19T01:00:01.003002",
+      "updated_at": "2025-07-19T01:00:01.003002",
+      "id": 8,
+      "rank": 1,
+      "score": 71.04,
+      "project_id": 26,
+      "reviewer_id": 167,
+      "datastream_metadata": {
+        "uuid": "ddc4a5e5-166b-4a5c-a95a-886810100001",
+        "source_timestamp": 1752886801000
+      }
+    },
+    {
+      "created_at": "2025-07-19T01:00:00.966287",
+      "updated_at": "2025-07-19T01:00:00.966287",
+      "id": 7,
+      "rank": 2,
+      "score": 20.0,
+      "project_id": 24,
+      "reviewer_id": 167,
+      "datastream_metadata": {
+        "uuid": "ddc4a5e5-166b-4a5c-a95a-886810100000",
+        "source_timestamp": 1752886800000
+      }
+    },
+    {
+      "created_at": "2025-07-19T01:00:00.964815",
+      "updated_at": "2025-07-19T01:00:00.964815",
+      "id": 6,
+      "rank": 1,
+      "score": 20.2,
+      "project_id": 24,
+      "reviewer_id": 169,
+      "datastream_metadata": {
+        "uuid": "ddc4a5e5-166b-4a5c-a95a-886810011111",
+        "source_timestamp": 1752886800000
+      }
+    },
+    {
+      "created_at": "2025-07-19T01:00:00.674772",
+      "updated_at": "2025-07-19T01:00:00.674772",
+      "id": 5,
+      "rank": 2,
+      "score": 35.8,
+      "project_id": 16,
+      "reviewer_id": 167,
+      "datastream_metadata": {
+        "uuid": "ddc4a5e5-166b-4a5c-a95a-886801111100",
+        "source_timestamp": 1752886800000
+      }
+    },
+    {
+      "created_at": "2025-07-19T01:00:00.672886",
+      "updated_at": "2025-07-19T01:00:00.672886",
+      "id": 4,
+      "rank": 1,
+      "score": 40.4,
+      "project_id": 16,
+      "reviewer_id": 169,
+      "datastream_metadata": {
+        "uuid": "ddc4a5e5-166b-4a5c-a95a-886801111011",
+        "source_timestamp": 1752886800000
+      }
+    },
+    {
+      "created_at": "2025-07-19T01:00:00.217496",
+      "updated_at": "2025-07-19T01:00:00.217496",
+      "id": 3,
+      "rank": 1,
+      "score": 96.19,
+      "project_id": 2,
+      "reviewer_id": 108,
+      "datastream_metadata": {
+        "uuid": "ddc4a5e5-166b-4a5c-a95a-886801001000",
+        "source_timestamp": 1752886800000
+      }
+    }
+  ]
+}

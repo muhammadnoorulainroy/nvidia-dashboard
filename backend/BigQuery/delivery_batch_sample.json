@@ -1,0 +1,1708 @@
+{
+  "table": "delivery_batch",
+  "row_count": 210,
+  "sample_count": 100,
+  "fetched_at": "2026-01-28T23:23:12.425520",
+  "data": [
+    {
+      "created_at": "2026-01-28T17:31:09.042574",
+      "updated_at": "2026-01-28T17:31:09.042574",
+      "id": 243,
+      "name": "Batch 8",
+      "description": "",
+      "open_date": "2026-01-28T17:31:09+00:00",
+      "close_date": null,
+      "status": "ongoing",
+      "author_id": 524,
+      "project_id": 36,
+      "datastream_metadata": {
+        "uuid": "20b7601f-b8cc-4c2e-a122-caeecd91d1ec",
+        "source_timestamp": 1769621469000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-28T16:34:21.819270",
+      "updated_at": "2026-01-28T16:34:21.819270",
+      "id": 242,
+      "name": "advanced-qwen3-rework",
+      "description": "",
+      "open_date": "2026-01-28T16:34:22+00:00",
+      "close_date": null,
+      "status": "ongoing",
+      "author_id": 1167,
+      "project_id": 37,
+      "datastream_metadata": {
+        "uuid": "575640f8-d7e1-46ad-8536-0347cdfebf94",
+        "source_timestamp": 1769618061000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-28T16:34:00.041209",
+      "updated_at": "2026-01-28T16:34:00.041209",
+      "id": 241,
+      "name": "advanced-nemotron-rework-3",
+      "description": "",
+      "open_date": "2026-01-28T16:34:00+00:00",
+      "close_date": null,
+      "status": "ongoing",
+      "author_id": 1167,
+      "project_id": 37,
+      "datastream_metadata": {
+        "uuid": "685d5017-fd4f-4f96-9273-dba07b690e42",
+        "source_timestamp": 1769618040000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-28T16:33:32.283357",
+      "updated_at": "2026-01-28T16:33:32.283357",
+      "id": 240,
+      "name": "vanilla-qwen3-rework",
+      "description": "",
+      "open_date": "2026-01-28T16:33:32+00:00",
+      "close_date": null,
+      "status": "ongoing",
+      "author_id": 1167,
+      "project_id": 37,
+      "datastream_metadata": {
+        "uuid": "e7cf26aa-73f2-4c1e-94d5-fc1c3c4fc571",
+        "source_timestamp": 1769618012000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-28T16:33:02.449467",
+      "updated_at": "2026-01-28T16:33:02.449467",
+      "id": 239,
+      "name": "vanilla-nemotron-rework-3",
+      "description": "",
+      "open_date": "2026-01-28T16:33:02+00:00",
+      "close_date": null,
+      "status": "ongoing",
+      "author_id": 1167,
+      "project_id": 37,
+      "datastream_metadata": {
+        "uuid": "81437f66-68b9-43d3-a5a0-393aa7cc124a",
+        "source_timestamp": 1769617982000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-28T16:06:39.186586",
+      "updated_at": "2026-01-28T16:06:39.186586",
+      "id": 238,
+      "name": "Spanish-Week6-No-SI",
+      "description": "",
+      "open_date": "2026-01-28T16:06:39+00:00",
+      "close_date": null,
+      "status": "ongoing",
+      "author_id": 1164,
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "06432286-d122-486b-9306-65b37b7d9de5",
+        "source_timestamp": 1769616399000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-27T17:27:29.310575",
+      "updated_at": "2026-01-28T17:30:57",
+      "id": 237,
+      "name": "Batch 7",
+      "description": "",
+      "open_date": "2026-01-27T17:27:29+00:00",
+      "close_date": "2026-01-28T17:30:57+00:00",
+      "status": "delivered",
+      "author_id": 524,
+      "project_id": 36,
+      "datastream_metadata": {
+        "uuid": "433146b2-c230-4378-b943-59d066863357",
+        "source_timestamp": 1769621457000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-27T10:45:36.763735",
+      "updated_at": "2026-01-27T10:45:36.763735",
+      "id": 236,
+      "name": "Japanese-Week6-No-SI",
+      "description": "",
+      "open_date": "2026-01-27T10:45:37+00:00",
+      "close_date": null,
+      "status": "ongoing",
+      "author_id": 519,
+      "project_id": 49,
+      "datastream_metadata": {
+        "uuid": "341d03a7-10f9-4439-82c4-e2377972988e",
+        "source_timestamp": 1769510736000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-27T10:45:17.501016",
+      "updated_at": "2026-01-27T10:45:17.501016",
+      "id": 235,
+      "name": "Chinese-Week6-No-SI",
+      "description": "",
+      "open_date": "2026-01-27T10:45:17+00:00",
+      "close_date": null,
+      "status": "ongoing",
+      "author_id": 519,
+      "project_id": 53,
+      "datastream_metadata": {
+        "uuid": "d3559489-5264-4eef-b39f-326fcb29b65a",
+        "source_timestamp": 1769510717000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-26T23:31:52.241505",
+      "updated_at": "2026-01-26T23:31:52.241505",
+      "id": 234,
+      "name": "Delivery-Saud",
+      "description": "",
+      "open_date": "2026-01-26T23:31:52+00:00",
+      "close_date": null,
+      "status": "ongoing",
+      "author_id": 1190,
+      "project_id": 38,
+      "datastream_metadata": {
+        "uuid": "427a828e-0c10-4bc3-8556-ac139bc9bc9f",
+        "source_timestamp": 1769470312000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-26T17:30:01.055928",
+      "updated_at": "2026-01-26T17:30:01.055928",
+      "id": 233,
+      "name": "week-7-nvidia-mcb-advanced",
+      "description": "",
+      "open_date": "2026-01-26T17:30:01+00:00",
+      "close_date": null,
+      "status": "ongoing",
+      "author_id": 1167,
+      "project_id": 37,
+      "datastream_metadata": {
+        "uuid": "1e96148f-916c-4b36-9dd0-3ba74ce65edf",
+        "source_timestamp": 1769448601000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-26T17:29:35.315752",
+      "updated_at": "2026-01-28T16:30:51",
+      "id": 232,
+      "name": "week-7-nvidia-mcb-vanilla",
+      "description": "",
+      "open_date": "2026-01-26T17:29:35+00:00",
+      "close_date": "2026-01-28T16:30:52+00:00",
+      "status": "delivered",
+      "author_id": 1167,
+      "project_id": 37,
+      "datastream_metadata": {
+        "uuid": "129200c1-ebff-4023-bc8f-bdb10b17cfab",
+        "source_timestamp": 1769617851000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-26T12:27:32.232257",
+      "updated_at": "2026-01-26T12:27:32.232257",
+      "id": 231,
+      "name": "Italian-Week6-No-SI",
+      "description": "",
+      "open_date": "2026-01-26T12:27:32+00:00",
+      "close_date": null,
+      "status": "ongoing",
+      "author_id": 519,
+      "project_id": 46,
+      "datastream_metadata": {
+        "uuid": "b20afe40-085a-43e0-b56e-dda703190041",
+        "source_timestamp": 1769430452000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-26T12:27:11.160871",
+      "updated_at": "2026-01-26T12:27:11.160871",
+      "id": 230,
+      "name": "Hindi-Week6-No-SI",
+      "description": "",
+      "open_date": "2026-01-26T12:27:11+00:00",
+      "close_date": null,
+      "status": "ongoing",
+      "author_id": 519,
+      "project_id": 51,
+      "datastream_metadata": {
+        "uuid": "5baa0db6-fb9a-4045-9ae9-35efce552e2b",
+        "source_timestamp": 1769430431000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-26T12:26:55.663651",
+      "updated_at": "2026-01-26T12:26:55.663651",
+      "id": 229,
+      "name": "Arabic-Week6-No-SI",
+      "description": "",
+      "open_date": "2026-01-26T12:26:56+00:00",
+      "close_date": null,
+      "status": "ongoing",
+      "author_id": 519,
+      "project_id": 52,
+      "datastream_metadata": {
+        "uuid": "d4e97513-2691-4f80-ab49-046c9e318ae3",
+        "source_timestamp": 1769430415000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-25T19:28:32.949724",
+      "updated_at": "2026-01-25T19:28:32.949724",
+      "id": 228,
+      "name": "English-Week 6-With SI",
+      "description": "",
+      "open_date": "2026-01-25T19:28:33+00:00",
+      "close_date": null,
+      "status": "ongoing",
+      "author_id": 1164,
+      "project_id": 39,
+      "datastream_metadata": {
+        "uuid": "2b860648-f759-4105-b507-a2ff80e6e474",
+        "source_timestamp": 1769369312000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-24T09:00:57.732277",
+      "updated_at": "2026-01-27T17:27:16",
+      "id": 227,
+      "name": "Batch 6",
+      "description": "",
+      "open_date": "2026-01-24T09:00:58+00:00",
+      "close_date": "2026-01-27T17:27:16+00:00",
+      "status": "delivered",
+      "author_id": 524,
+      "project_id": 36,
+      "datastream_metadata": {
+        "uuid": "f1d89ac9-004c-499d-a390-6aef522b4993",
+        "source_timestamp": 1769534836000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-23T22:23:32.337418",
+      "updated_at": "2026-01-26T23:30:19",
+      "id": 226,
+      "name": "Week-2-Madhusudhana",
+      "description": "",
+      "open_date": "2026-01-23T22:23:32+00:00",
+      "close_date": null,
+      "status": "ongoing",
+      "author_id": 1190,
+      "project_id": 42,
+      "datastream_metadata": {
+        "uuid": "239e585f-b765-41c6-99af-5a4560b2d77e",
+        "source_timestamp": 1769470219000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-23T22:22:39.521489",
+      "updated_at": "2026-01-26T23:28:59",
+      "id": 225,
+      "name": "Week-2-Naish",
+      "description": "",
+      "open_date": "2026-01-25T23:11:18+00:00",
+      "close_date": "2026-01-26T23:29:00+00:00",
+      "status": "delivered",
+      "author_id": 1190,
+      "project_id": 42,
+      "datastream_metadata": {
+        "uuid": "a0de0c12-e839-469e-a7d0-a592983bc8a0",
+        "source_timestamp": 1769470139000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-23T22:22:30.668594",
+      "updated_at": "2026-01-26T23:30:14",
+      "id": 224,
+      "name": "Week-2-Jasmeet",
+      "description": "",
+      "open_date": "2026-01-23T22:22:31+00:00",
+      "close_date": null,
+      "status": "ongoing",
+      "author_id": 1190,
+      "project_id": 42,
+      "datastream_metadata": {
+        "uuid": "e4421330-8ee2-4c6b-ac08-7b1f7f1ba4c1",
+        "source_timestamp": 1769470214000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-23T22:22:17.130282",
+      "updated_at": "2026-01-26T23:30:09",
+      "id": 223,
+      "name": "Week-2-Sourav",
+      "description": "",
+      "open_date": "2026-01-23T22:22:17+00:00",
+      "close_date": null,
+      "status": "ongoing",
+      "author_id": 1190,
+      "project_id": 42,
+      "datastream_metadata": {
+        "uuid": "b93111e2-0adb-40e2-a960-ebd6384dda84",
+        "source_timestamp": 1769470209000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-23T22:22:05.370718",
+      "updated_at": "2026-01-26T23:30:03",
+      "id": 222,
+      "name": "Week-2-Ankit \t",
+      "description": "",
+      "open_date": "2026-01-23T22:22:05+00:00",
+      "close_date": null,
+      "status": "ongoing",
+      "author_id": 1190,
+      "project_id": 42,
+      "datastream_metadata": {
+        "uuid": "fcae69a2-4b4b-48fe-8016-4ac119a208ee",
+        "source_timestamp": 1769470203000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-23T22:21:53.102301",
+      "updated_at": "2026-01-26T23:29:57",
+      "id": 221,
+      "name": "Week-2-Jahnabee \t",
+      "description": "",
+      "open_date": "2026-01-23T22:21:53+00:00",
+      "close_date": null,
+      "status": "ongoing",
+      "author_id": 1190,
+      "project_id": 42,
+      "datastream_metadata": {
+        "uuid": "d81aa300-52c6-4144-a298-291023eca913",
+        "source_timestamp": 1769470197000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-23T22:11:34.373847",
+      "updated_at": "2026-01-23T22:20:42",
+      "id": 220,
+      "name": "Week-1-Vahid",
+      "description": "",
+      "open_date": "2026-01-23T22:11:34+00:00",
+      "close_date": "2026-01-23T22:20:42+00:00",
+      "status": "delivered",
+      "author_id": 1190,
+      "project_id": 42,
+      "datastream_metadata": {
+        "uuid": "123051d1-ed34-4855-b699-c4a04aaf44b3",
+        "source_timestamp": 1769206842000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-23T17:16:21.357247",
+      "updated_at": "2026-01-26T23:30:53",
+      "id": 219,
+      "name": "AutoReviewer-Batch",
+      "description": "",
+      "open_date": "2026-01-23T17:16:21+00:00",
+      "close_date": "2026-01-26T23:30:54+00:00",
+      "status": "delivered",
+      "author_id": 1190,
+      "project_id": 38,
+      "datastream_metadata": {
+        "uuid": "533f2694-073e-4337-a49f-550eb4ec2bfd",
+        "source_timestamp": 1769470253000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-23T16:08:47.257375",
+      "updated_at": "2026-01-23T16:08:47.257375",
+      "id": 218,
+      "name": "Chinese-Week6-SI",
+      "description": "",
+      "open_date": "2026-01-23T16:08:47+00:00",
+      "close_date": null,
+      "status": "ongoing",
+      "author_id": 519,
+      "project_id": 53,
+      "datastream_metadata": {
+        "uuid": "06b2acfb-39fb-46cb-86af-81c67310b0fb",
+        "source_timestamp": 1769184527000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-23T16:08:25.858040",
+      "updated_at": "2026-01-23T16:08:25.858040",
+      "id": 217,
+      "name": "Arabic-Week6-SI",
+      "description": "",
+      "open_date": "2026-01-23T16:08:26+00:00",
+      "close_date": null,
+      "status": "ongoing",
+      "author_id": 519,
+      "project_id": 52,
+      "datastream_metadata": {
+        "uuid": "86ae36c3-4452-45ad-b7c1-a01b2fe826f7",
+        "source_timestamp": 1769184505000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-23T16:08:08.770930",
+      "updated_at": "2026-01-23T16:08:08.770930",
+      "id": 216,
+      "name": "Hindi-Week6-SI",
+      "description": "",
+      "open_date": "2026-01-23T16:08:09+00:00",
+      "close_date": null,
+      "status": "ongoing",
+      "author_id": 519,
+      "project_id": 51,
+      "datastream_metadata": {
+        "uuid": "9c705879-ff8c-4c77-8a93-035a98a07d3e",
+        "source_timestamp": 1769184488000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-23T16:07:50.632727",
+      "updated_at": "2026-01-23T16:07:50.632727",
+      "id": 215,
+      "name": "Korean-Week6-SI",
+      "description": "",
+      "open_date": "2026-01-23T16:07:51+00:00",
+      "close_date": null,
+      "status": "ongoing",
+      "author_id": 519,
+      "project_id": 50,
+      "datastream_metadata": {
+        "uuid": "41db3d09-6f69-4ef6-8513-7ee70e9cb564",
+        "source_timestamp": 1769184470000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-23T16:07:22.675563",
+      "updated_at": "2026-01-23T16:07:22.675563",
+      "id": 214,
+      "name": "Japanese-Week6-SI",
+      "description": "",
+      "open_date": "2026-01-23T16:07:23+00:00",
+      "close_date": null,
+      "status": "ongoing",
+      "author_id": 519,
+      "project_id": 49,
+      "datastream_metadata": {
+        "uuid": "8872af4b-27d0-4727-9ed7-3aafe14e0e0a",
+        "source_timestamp": 1769184442000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-23T16:07:02.671426",
+      "updated_at": "2026-01-23T16:07:02.671426",
+      "id": 213,
+      "name": "Portuguese-Week6-SI",
+      "description": "",
+      "open_date": "2026-01-23T16:07:03+00:00",
+      "close_date": null,
+      "status": "ongoing",
+      "author_id": 519,
+      "project_id": 48,
+      "datastream_metadata": {
+        "uuid": "e0475e9b-2d47-42b1-a998-07e1742addba",
+        "source_timestamp": 1769184422000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-23T16:06:44.113463",
+      "updated_at": "2026-01-23T16:06:44.113463",
+      "id": 212,
+      "name": "German-Week6-SI",
+      "description": "",
+      "open_date": "2026-01-23T16:06:44+00:00",
+      "close_date": null,
+      "status": "ongoing",
+      "author_id": 519,
+      "project_id": 47,
+      "datastream_metadata": {
+        "uuid": "6e3d67a1-b219-4fef-bdc5-865e133c3d3d",
+        "source_timestamp": 1769184404000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-23T16:05:57.759035",
+      "updated_at": "2026-01-23T16:05:57.759035",
+      "id": 211,
+      "name": "Italian-Week6-SI",
+      "description": "",
+      "open_date": "2026-01-23T16:05:58+00:00",
+      "close_date": null,
+      "status": "ongoing",
+      "author_id": 519,
+      "project_id": 46,
+      "datastream_metadata": {
+        "uuid": "b3d2e83f-2396-4afe-8db6-49e4a249c519",
+        "source_timestamp": 1769184357000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-23T16:05:29.061965",
+      "updated_at": "2026-01-23T16:05:29.061965",
+      "id": 210,
+      "name": "Spanish-Week6-SI",
+      "description": "",
+      "open_date": "2026-01-23T16:05:29+00:00",
+      "close_date": null,
+      "status": "ongoing",
+      "author_id": 519,
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "8a34e1a5-4c0b-4136-9096-f1a4d43eaeba",
+        "source_timestamp": 1769184329000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-23T16:03:21.344832",
+      "updated_at": "2026-01-23T16:03:21.344832",
+      "id": 209,
+      "name": "French-Week6-SI",
+      "description": "",
+      "open_date": "2026-01-23T16:03:21+00:00",
+      "close_date": null,
+      "status": "ongoing",
+      "author_id": 519,
+      "project_id": 44,
+      "datastream_metadata": {
+        "uuid": "b1bf6f05-c17f-4a39-a4f9-caa2df61d30b",
+        "source_timestamp": 1769184201000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-23T16:01:47.110421",
+      "updated_at": "2026-01-23T16:04:11",
+      "id": 208,
+      "name": "English-Week6-No-SI",
+      "description": "",
+      "open_date": "2026-01-23T16:01:47+00:00",
+      "close_date": null,
+      "status": "ongoing",
+      "author_id": 519,
+      "project_id": 39,
+      "datastream_metadata": {
+        "uuid": "3680d685-46bb-42b4-bee0-1db645fbe3b0",
+        "source_timestamp": 1769184251000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-23T15:53:59.536251",
+      "updated_at": "2026-01-26T23:30:59",
+      "id": 207,
+      "name": "Delivery-jan-23th",
+      "description": "",
+      "open_date": "2026-01-23T15:59:09+00:00",
+      "close_date": "2026-01-26T23:30:59+00:00",
+      "status": "delivered",
+      "author_id": 1190,
+      "project_id": 38,
+      "datastream_metadata": {
+        "uuid": "6d64536c-3f5f-48e1-80a7-5354d2cbc2a5",
+        "source_timestamp": 1769470259000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-23T14:19:10.296046",
+      "updated_at": "2026-01-28T16:31:39",
+      "id": 206,
+      "name": "rework-2-nvidia-mcb-advanced",
+      "description": "",
+      "open_date": "2026-01-23T14:19:10+00:00",
+      "close_date": "2026-01-28T16:31:40+00:00",
+      "status": "delivered",
+      "author_id": 1167,
+      "project_id": 37,
+      "datastream_metadata": {
+        "uuid": "13db2754-79b0-44f9-a06c-ddd5e7e64700",
+        "source_timestamp": 1769617899000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-23T14:18:42.408249",
+      "updated_at": "2026-01-28T16:31:08",
+      "id": 205,
+      "name": "rework-2-nvidia-mcb-vanilla",
+      "description": "",
+      "open_date": "2026-01-23T14:18:42+00:00",
+      "close_date": "2026-01-28T16:31:09+00:00",
+      "status": "delivered",
+      "author_id": 1167,
+      "project_id": 37,
+      "datastream_metadata": {
+        "uuid": "f0587040-2fa9-4621-96c1-121401f40758",
+        "source_timestamp": 1769617868000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-23T14:17:55.598909",
+      "updated_at": "2026-01-26T17:25:48",
+      "id": 204,
+      "name": "week-6-nvidia-mcb-vanilla",
+      "description": "",
+      "open_date": "2026-01-23T14:17:56+00:00",
+      "close_date": "2026-01-26T17:25:48+00:00",
+      "status": "delivered",
+      "author_id": 1167,
+      "project_id": 37,
+      "datastream_metadata": {
+        "uuid": "7ab9eee8-27f5-4340-9a3a-fdbca539f07d",
+        "source_timestamp": 1769448348000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-23T14:17:28.746604",
+      "updated_at": "2026-01-26T17:25:54",
+      "id": 203,
+      "name": "week-6-nvidia-mcb-advanced",
+      "description": "",
+      "open_date": "2026-01-23T14:17:29+00:00",
+      "close_date": "2026-01-26T17:25:54+00:00",
+      "status": "delivered",
+      "author_id": 1167,
+      "project_id": 37,
+      "datastream_metadata": {
+        "uuid": "64be3272-02fc-4e39-ac8d-898f90f535c1",
+        "source_timestamp": 1769448354000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-22T18:35:27.123358",
+      "updated_at": "2026-01-23T14:14:49",
+      "id": 202,
+      "name": "rework-1-nvidia-mcb-advanced",
+      "description": "",
+      "open_date": "2026-01-22T18:35:27+00:00",
+      "close_date": "2026-01-23T14:14:49+00:00",
+      "status": "delivered",
+      "author_id": 1167,
+      "project_id": 37,
+      "datastream_metadata": {
+        "uuid": "c79aaaf2-0af4-4ba2-844e-11e5ce20d7e0",
+        "source_timestamp": 1769177689000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-22T18:34:54.509421",
+      "updated_at": "2026-01-23T14:14:59",
+      "id": 201,
+      "name": "rework-1-nvidia-mcb-vanilla",
+      "description": "",
+      "open_date": "2026-01-22T18:34:55+00:00",
+      "close_date": "2026-01-23T14:14:59+00:00",
+      "status": "delivered",
+      "author_id": 1167,
+      "project_id": 37,
+      "datastream_metadata": {
+        "uuid": "1dc8d770-f952-42ef-9701-9d94d2b75edb",
+        "source_timestamp": 1769177699000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-22T11:58:18.772560",
+      "updated_at": "2026-01-23T15:57:30",
+      "id": 200,
+      "name": "English-week5-No-SI",
+      "description": "",
+      "open_date": "2026-01-22T11:59:01+00:00",
+      "close_date": "2026-01-23T15:57:30+00:00",
+      "status": "delivered",
+      "author_id": 1028,
+      "project_id": 39,
+      "datastream_metadata": {
+        "uuid": "8fa8823d-4490-4b4e-9aec-52f6eec0c0cd",
+        "source_timestamp": 1769183850000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-20T16:05:11.301314",
+      "updated_at": "2026-01-23T15:58:01",
+      "id": 197,
+      "name": "Chinese-week5",
+      "description": "",
+      "open_date": "2026-01-20T16:05:11+00:00",
+      "close_date": "2026-01-23T15:58:01+00:00",
+      "status": "delivered",
+      "author_id": 1028,
+      "project_id": 53,
+      "datastream_metadata": {
+        "uuid": "02763d67-ce57-4a99-ad5c-6b636b784308",
+        "source_timestamp": 1769183881000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-20T16:04:51.795818",
+      "updated_at": "2026-01-23T15:58:15",
+      "id": 196,
+      "name": "Arabic-week5",
+      "description": "",
+      "open_date": "2026-01-20T16:04:52+00:00",
+      "close_date": "2026-01-23T15:58:16+00:00",
+      "status": "delivered",
+      "author_id": 1028,
+      "project_id": 52,
+      "datastream_metadata": {
+        "uuid": "24303cfd-9d1a-4985-a09a-2bde2a88136d",
+        "source_timestamp": 1769183895000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-20T16:04:34.005217",
+      "updated_at": "2026-01-23T15:58:30",
+      "id": 195,
+      "name": "Hindi-week5",
+      "description": "",
+      "open_date": "2026-01-20T16:04:34+00:00",
+      "close_date": "2026-01-23T15:58:31+00:00",
+      "status": "delivered",
+      "author_id": 1028,
+      "project_id": 51,
+      "datastream_metadata": {
+        "uuid": "bb2074d2-4eac-41a7-8754-677368cde5f1",
+        "source_timestamp": 1769183910000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-20T16:04:08.564458",
+      "updated_at": "2026-01-23T15:58:43",
+      "id": 194,
+      "name": "Korean-week5",
+      "description": "",
+      "open_date": "2026-01-20T16:04:09+00:00",
+      "close_date": "2026-01-23T15:58:44+00:00",
+      "status": "delivered",
+      "author_id": 1028,
+      "project_id": 50,
+      "datastream_metadata": {
+        "uuid": "b64b3795-10da-4b37-82d3-74643e66b9f3",
+        "source_timestamp": 1769183923000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-20T16:03:47.584509",
+      "updated_at": "2026-01-23T16:01:44",
+      "id": 193,
+      "name": "Japanese-week5",
+      "description": "",
+      "open_date": "2026-01-20T16:03:48+00:00",
+      "close_date": "2026-01-23T16:01:44+00:00",
+      "status": "delivered",
+      "author_id": 1028,
+      "project_id": 49,
+      "datastream_metadata": {
+        "uuid": "8f7d6363-ea76-420f-a4b0-b26c21b5ae5f",
+        "source_timestamp": 1769184104000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-20T16:03:24.153881",
+      "updated_at": "2026-01-23T16:14:10",
+      "id": 192,
+      "name": "Portuguese-week5",
+      "description": "",
+      "open_date": "2026-01-20T16:03:24+00:00",
+      "close_date": "2026-01-23T16:14:10+00:00",
+      "status": "delivered",
+      "author_id": 1028,
+      "project_id": 48,
+      "datastream_metadata": {
+        "uuid": "786472eb-f205-4c03-85f3-fb06d429066a",
+        "source_timestamp": 1769184850000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-20T16:03:01.124667",
+      "updated_at": "2026-01-23T16:15:04",
+      "id": 191,
+      "name": "German-week5",
+      "description": "",
+      "open_date": "2026-01-20T16:03:01+00:00",
+      "close_date": "2026-01-23T16:15:05+00:00",
+      "status": "delivered",
+      "author_id": 1028,
+      "project_id": 47,
+      "datastream_metadata": {
+        "uuid": "4573d146-223b-4cf5-ad4a-618bb32e2cad",
+        "source_timestamp": 1769184904000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-20T16:02:33.349321",
+      "updated_at": "2026-01-23T16:14:53",
+      "id": 190,
+      "name": "Italian-week5",
+      "description": "",
+      "open_date": "2026-01-20T16:02:33+00:00",
+      "close_date": "2026-01-23T16:14:54+00:00",
+      "status": "delivered",
+      "author_id": 1028,
+      "project_id": 46,
+      "datastream_metadata": {
+        "uuid": "c67979e0-00f7-4b45-b38c-d34d2f6cb14f",
+        "source_timestamp": 1769184893000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-20T16:02:08.703873",
+      "updated_at": "2026-01-23T16:14:44",
+      "id": 189,
+      "name": "Spanish-week5",
+      "description": "",
+      "open_date": "2026-01-20T16:02:09+00:00",
+      "close_date": "2026-01-23T16:14:45+00:00",
+      "status": "delivered",
+      "author_id": 1028,
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "b7ae6699-cbe5-423b-b8d0-b8ffae23ad47",
+        "source_timestamp": 1769184884000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-20T16:01:47.074187",
+      "updated_at": "2026-01-23T16:16:21",
+      "id": 188,
+      "name": "French-week5",
+      "description": "",
+      "open_date": "2026-01-20T16:01:47+00:00",
+      "close_date": "2026-01-23T16:16:22+00:00",
+      "status": "delivered",
+      "author_id": 1028,
+      "project_id": 44,
+      "datastream_metadata": {
+        "uuid": "ec095db4-6f74-4d18-b52a-d2fb549fbdd8",
+        "source_timestamp": 1769184981000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-20T16:01:23.037137",
+      "updated_at": "2026-01-22T18:16:14",
+      "id": 187,
+      "name": "English-week5",
+      "description": "",
+      "open_date": "2026-01-20T16:01:23+00:00",
+      "close_date": "2026-01-22T18:16:15+00:00",
+      "status": "delivered",
+      "author_id": 1028,
+      "project_id": 39,
+      "datastream_metadata": {
+        "uuid": "d8ddb6cd-7bd5-464c-ba1c-f2d11e85d10d",
+        "source_timestamp": 1769105774000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-20T04:28:13.408499",
+      "updated_at": "2026-01-23T22:20:16",
+      "id": 186,
+      "name": "Week-1-Madhusudhana",
+      "description": "",
+      "open_date": "2026-01-20T04:28:13+00:00",
+      "close_date": "2026-01-23T22:20:16+00:00",
+      "status": "delivered",
+      "author_id": 1190,
+      "project_id": 42,
+      "datastream_metadata": {
+        "uuid": "e948f680-ecad-49e2-b288-08dee4e9e9ae",
+        "source_timestamp": 1769206816000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-20T04:27:50.163137",
+      "updated_at": "2026-01-23T22:20:31",
+      "id": 185,
+      "name": "Week-1-Sourav",
+      "description": "",
+      "open_date": "2026-01-20T04:27:50+00:00",
+      "close_date": "2026-01-23T22:20:32+00:00",
+      "status": "delivered",
+      "author_id": 1190,
+      "project_id": 42,
+      "datastream_metadata": {
+        "uuid": "d4cc9de9-35a6-49a4-bf88-f794dfaac8e7",
+        "source_timestamp": 1769206831000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-20T04:27:38.515739",
+      "updated_at": "2026-01-23T22:20:50",
+      "id": 184,
+      "name": "Week-1-Jasmeet",
+      "description": "",
+      "open_date": "2026-01-20T04:27:39+00:00",
+      "close_date": "2026-01-23T22:20:50+00:00",
+      "status": "delivered",
+      "author_id": 1190,
+      "project_id": 42,
+      "datastream_metadata": {
+        "uuid": "51d6cb41-b816-43a4-b387-8cdc9875b5a7",
+        "source_timestamp": 1769206850000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-20T04:27:26.987165",
+      "updated_at": "2026-01-23T22:20:57",
+      "id": 183,
+      "name": "Week-1-Naish",
+      "description": "",
+      "open_date": "2026-01-20T04:27:27+00:00",
+      "close_date": "2026-01-23T22:20:57+00:00",
+      "status": "delivered",
+      "author_id": 1190,
+      "project_id": 42,
+      "datastream_metadata": {
+        "uuid": "001ddc05-b03c-4775-8c34-bf20e703da2f",
+        "source_timestamp": 1769206857000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-20T04:27:16.356937",
+      "updated_at": "2026-01-23T22:21:05",
+      "id": 182,
+      "name": "Week-1-Jahnabee",
+      "description": "",
+      "open_date": "2026-01-20T04:27:16+00:00",
+      "close_date": "2026-01-23T22:21:05+00:00",
+      "status": "delivered",
+      "author_id": 1190,
+      "project_id": 42,
+      "datastream_metadata": {
+        "uuid": "1fbf600a-3e38-4619-9426-e9c77b753dab",
+        "source_timestamp": 1769206865000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-20T04:27:04.556471",
+      "updated_at": "2026-01-23T22:21:12",
+      "id": 181,
+      "name": "Week-1-Ankit",
+      "description": "",
+      "open_date": "2026-01-20T04:27:05+00:00",
+      "close_date": "2026-01-23T22:21:13+00:00",
+      "status": "delivered",
+      "author_id": 1190,
+      "project_id": 42,
+      "datastream_metadata": {
+        "uuid": "0bc19bf9-b24d-427f-b99b-b61f4dc53982",
+        "source_timestamp": 1769206872000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-19T06:13:41.907296",
+      "updated_at": "2026-01-26T23:31:04",
+      "id": 180,
+      "name": "Delivery-Week-4-Madhusudhana",
+      "description": "",
+      "open_date": "2026-01-19T06:13:42+00:00",
+      "close_date": "2026-01-26T23:31:05+00:00",
+      "status": "delivered",
+      "author_id": 1190,
+      "project_id": 38,
+      "datastream_metadata": {
+        "uuid": "3bdf675d-e252-48b1-8719-566b6d6c1de5",
+        "source_timestamp": 1769470264000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-19T06:13:22.827629",
+      "updated_at": "2026-01-26T23:31:32",
+      "id": 179,
+      "name": "Delivery-Week-4-Ankit",
+      "description": "",
+      "open_date": "2026-01-19T06:13:23+00:00",
+      "close_date": "2026-01-26T23:31:32+00:00",
+      "status": "delivered",
+      "author_id": 1190,
+      "project_id": 38,
+      "datastream_metadata": {
+        "uuid": "2c63868e-e734-4524-b35c-c5e0b18beebb",
+        "source_timestamp": 1769470292000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-19T06:13:13.050517",
+      "updated_at": "2026-01-26T23:31:26",
+      "id": 178,
+      "name": "Delivery-Week-4-Naish",
+      "description": "",
+      "open_date": "2026-01-19T06:13:13+00:00",
+      "close_date": "2026-01-26T23:31:27+00:00",
+      "status": "delivered",
+      "author_id": 1190,
+      "project_id": 38,
+      "datastream_metadata": {
+        "uuid": "978436b2-dcfd-4b6b-90b7-8e820fc760db",
+        "source_timestamp": 1769470286000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-19T06:13:02.341131",
+      "updated_at": "2026-01-26T23:31:21",
+      "id": 177,
+      "name": "Delivery-Week-4-Sourav",
+      "description": "",
+      "open_date": "2026-01-19T06:13:02+00:00",
+      "close_date": "2026-01-26T23:31:22+00:00",
+      "status": "delivered",
+      "author_id": 1190,
+      "project_id": 38,
+      "datastream_metadata": {
+        "uuid": "b9cae321-d5f5-453c-a220-91b0ba406a29",
+        "source_timestamp": 1769470281000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-19T06:12:47.480985",
+      "updated_at": "2026-01-26T23:31:16",
+      "id": 176,
+      "name": "Delivery-Week-4-Jasmeet",
+      "description": "",
+      "open_date": "2026-01-19T06:12:47+00:00",
+      "close_date": "2026-01-26T23:31:16+00:00",
+      "status": "delivered",
+      "author_id": 1190,
+      "project_id": 38,
+      "datastream_metadata": {
+        "uuid": "56f0cc23-1ff1-4a17-8466-589ae95641b5",
+        "source_timestamp": 1769470276000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-19T06:12:35.447333",
+      "updated_at": "2026-01-26T23:31:10",
+      "id": 175,
+      "name": "Delivery-Week-4-Jahnabee",
+      "description": "",
+      "open_date": "2026-01-19T06:12:35+00:00",
+      "close_date": "2026-01-26T23:31:10+00:00",
+      "status": "delivered",
+      "author_id": 1190,
+      "project_id": 38,
+      "datastream_metadata": {
+        "uuid": "4557137b-86fb-4ef0-8a72-392ebfc05dcb",
+        "source_timestamp": 1769470270000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-14T19:32:09.514001",
+      "updated_at": "2026-01-23T13:56:05",
+      "id": 174,
+      "name": "week-5-nvidia-mcb-advanced",
+      "description": "",
+      "open_date": "2026-01-14T19:32:41+00:00",
+      "close_date": "2026-01-23T13:56:06+00:00",
+      "status": "delivered",
+      "author_id": 658,
+      "project_id": 37,
+      "datastream_metadata": {
+        "uuid": "189128c0-2a5d-43bc-8e59-54da58cdf610",
+        "source_timestamp": 1769176565000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-14T19:31:39.107271",
+      "updated_at": "2026-01-23T13:55:59",
+      "id": 173,
+      "name": "week-5-nvidia-mcb-vanilla",
+      "description": "",
+      "open_date": "2026-01-14T19:32:30+00:00",
+      "close_date": "2026-01-23T13:55:59+00:00",
+      "status": "delivered",
+      "author_id": 658,
+      "project_id": 37,
+      "datastream_metadata": {
+        "uuid": "81686c60-0e0e-4942-8b3b-d57a55daef6d",
+        "source_timestamp": 1769176559000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-12T17:23:13.639259",
+      "updated_at": "2026-01-19T06:11:43",
+      "id": 170,
+      "name": "Delivery-Weak-3-Sourav",
+      "description": "",
+      "open_date": "2026-01-12T17:24:03+00:00",
+      "close_date": "2026-01-19T06:11:44+00:00",
+      "status": "delivered",
+      "author_id": 1190,
+      "project_id": 38,
+      "datastream_metadata": {
+        "uuid": "b7893ee2-42e0-4e70-8be7-ceef36b9c9b0",
+        "source_timestamp": 1768803103000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-12T13:46:58.142739",
+      "updated_at": "2026-01-20T05:44:26",
+      "id": 166,
+      "name": "Delivery-jan-16th",
+      "description": "",
+      "open_date": "2026-01-12T13:46:58+00:00",
+      "close_date": "2026-01-20T05:44:27+00:00",
+      "status": "delivered",
+      "author_id": 1190,
+      "project_id": 38,
+      "datastream_metadata": {
+        "uuid": "c566bb37-e0fe-494d-b54b-4b29d7b071e8",
+        "source_timestamp": 1768887866000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-12T13:24:54.465366",
+      "updated_at": "2026-01-15T10:38:58",
+      "id": 165,
+      "name": "sft-week4-chinese-yeoh",
+      "description": "",
+      "open_date": "2026-01-12T13:24:54+00:00",
+      "close_date": "2026-01-15T10:38:59+00:00",
+      "status": "delivered",
+      "author_id": 519,
+      "project_id": 39,
+      "datastream_metadata": {
+        "uuid": "5b92d31c-e9d0-4ae0-9bb5-627fd93ab3aa",
+        "source_timestamp": 1768473538000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-12T13:24:40.951670",
+      "updated_at": "2026-01-15T10:39:12",
+      "id": 164,
+      "name": "sft-week4-chinese-vincent",
+      "description": "",
+      "open_date": "2026-01-12T13:24:41+00:00",
+      "close_date": "2026-01-15T10:39:13+00:00",
+      "status": "delivered",
+      "author_id": 519,
+      "project_id": 39,
+      "datastream_metadata": {
+        "uuid": "cb80f292-2ef0-4865-8b89-14f448eb1b72",
+        "source_timestamp": 1768473552000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-12T13:23:24.329652",
+      "updated_at": "2026-01-15T10:39:27",
+      "id": 163,
+      "name": "sft-week4-korean-kim",
+      "description": "",
+      "open_date": "2026-01-12T13:23:24+00:00",
+      "close_date": "2026-01-15T10:39:28+00:00",
+      "status": "delivered",
+      "author_id": 519,
+      "project_id": 39,
+      "datastream_metadata": {
+        "uuid": "87177a0b-d1ad-437a-a04b-be9d727223cd",
+        "source_timestamp": 1768473567000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-12T13:23:13.335381",
+      "updated_at": "2026-01-15T10:39:48",
+      "id": 162,
+      "name": "sft-week4-korean-sarah",
+      "description": "",
+      "open_date": "2026-01-12T13:23:13+00:00",
+      "close_date": "2026-01-15T10:39:48+00:00",
+      "status": "delivered",
+      "author_id": 519,
+      "project_id": 39,
+      "datastream_metadata": {
+        "uuid": "13d3e413-731e-40b0-84d5-b6b6a050f9e6",
+        "source_timestamp": 1768473588000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-12T13:22:07.216208",
+      "updated_at": "2026-01-15T10:39:54",
+      "id": 161,
+      "name": "sft-week4-german-talha",
+      "description": "",
+      "open_date": "2026-01-12T13:22:07+00:00",
+      "close_date": "2026-01-15T10:39:54+00:00",
+      "status": "delivered",
+      "author_id": 519,
+      "project_id": 39,
+      "datastream_metadata": {
+        "uuid": "f2343203-ced0-4de0-8912-eeaf472e983c",
+        "source_timestamp": 1768473594000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-12T12:58:07.765423",
+      "updated_at": "2026-01-15T10:40:00",
+      "id": 160,
+      "name": "sft-week4-portuguese-barbara",
+      "description": "",
+      "open_date": "2026-01-12T12:58:08+00:00",
+      "close_date": "2026-01-15T10:40:01+00:00",
+      "status": "delivered",
+      "author_id": 519,
+      "project_id": 39,
+      "datastream_metadata": {
+        "uuid": "9f607194-2382-48d5-bf80-aaa313a66633",
+        "source_timestamp": 1768473600000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-12T12:57:34.679794",
+      "updated_at": "2026-01-15T10:40:33",
+      "id": 159,
+      "name": "sft-week4-portuguese-rafael",
+      "description": "",
+      "open_date": "2026-01-12T12:57:35+00:00",
+      "close_date": "2026-01-15T10:40:33+00:00",
+      "status": "delivered",
+      "author_id": 519,
+      "project_id": 39,
+      "datastream_metadata": {
+        "uuid": "6d35a428-8300-49e2-94cc-9cf367cbcc2a",
+        "source_timestamp": 1768473633000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-12T12:51:01.337444",
+      "updated_at": "2026-01-15T10:40:40",
+      "id": 158,
+      "name": "sft-week4-japanese-team02-masami",
+      "description": "",
+      "open_date": "2026-01-12T12:51:01+00:00",
+      "close_date": "2026-01-15T10:40:41+00:00",
+      "status": "delivered",
+      "author_id": 519,
+      "project_id": 39,
+      "datastream_metadata": {
+        "uuid": "27e11346-0eec-4b55-b249-3e4eda7183db",
+        "source_timestamp": 1768473640000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-12T12:50:06.316503",
+      "updated_at": "2026-01-15T10:40:46",
+      "id": 157,
+      "name": "sft-week4-japanese-team01-yusuke",
+      "description": "",
+      "open_date": "2026-01-12T12:50:06+00:00",
+      "close_date": "2026-01-15T10:40:47+00:00",
+      "status": "delivered",
+      "author_id": 519,
+      "project_id": 39,
+      "datastream_metadata": {
+        "uuid": "4aa1444a-7471-44d8-87f7-73acb56d6089",
+        "source_timestamp": 1768473646000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-12T12:49:06.340667",
+      "updated_at": "2026-01-15T10:41:11",
+      "id": 156,
+      "name": "sft-week4-arabic-team02-salma",
+      "description": "",
+      "open_date": "2026-01-12T12:49:06+00:00",
+      "close_date": "2026-01-15T10:41:11+00:00",
+      "status": "delivered",
+      "author_id": 519,
+      "project_id": 39,
+      "datastream_metadata": {
+        "uuid": "37c70b11-75cb-44ac-9fc7-23cb9b2c61d0",
+        "source_timestamp": 1768473671000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-12T12:48:11.794678",
+      "updated_at": "2026-01-15T10:41:18",
+      "id": 155,
+      "name": "sft-week4-arabic-team01-anas",
+      "description": "",
+      "open_date": "2026-01-12T12:48:12+00:00",
+      "close_date": "2026-01-15T10:41:19+00:00",
+      "status": "delivered",
+      "author_id": 519,
+      "project_id": 39,
+      "datastream_metadata": {
+        "uuid": "a03f78f0-7b5c-4b5e-aed5-4ced5532d8c6",
+        "source_timestamp": 1768473678000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-12T12:47:37.595106",
+      "updated_at": "2026-01-15T10:41:23",
+      "id": 154,
+      "name": "sft-week4-hindi-team02-amit",
+      "description": "",
+      "open_date": "2026-01-12T12:47:38+00:00",
+      "close_date": "2026-01-15T10:41:24+00:00",
+      "status": "delivered",
+      "author_id": 519,
+      "project_id": 39,
+      "datastream_metadata": {
+        "uuid": "46ce04f0-d0b6-4da5-acca-7a33034a6e5a",
+        "source_timestamp": 1768473683000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-12T12:47:25.655675",
+      "updated_at": "2026-01-15T10:41:51",
+      "id": 153,
+      "name": "sft-week4-hindi-team01-riya",
+      "description": "",
+      "open_date": "2026-01-12T12:47:26+00:00",
+      "close_date": "2026-01-15T10:41:52+00:00",
+      "status": "delivered",
+      "author_id": 519,
+      "project_id": 39,
+      "datastream_metadata": {
+        "uuid": "ea7031ed-8137-40a1-9298-634707a77ffc",
+        "source_timestamp": 1768473711000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-12T12:47:10.656760",
+      "updated_at": "2026-01-15T10:41:56",
+      "id": 152,
+      "name": "sft-week4-italian-team02-josue",
+      "description": "",
+      "open_date": "2026-01-12T12:47:11+00:00",
+      "close_date": "2026-01-15T10:41:57+00:00",
+      "status": "delivered",
+      "author_id": 519,
+      "project_id": 39,
+      "datastream_metadata": {
+        "uuid": "a7ea0369-7146-4b96-82af-03670cb6ace1",
+        "source_timestamp": 1768473716000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-12T12:46:53.129944",
+      "updated_at": "2026-01-15T10:42:08",
+      "id": 151,
+      "name": "sft-week4-italian-team01-nayra",
+      "description": "",
+      "open_date": "2026-01-12T12:46:53+00:00",
+      "close_date": "2026-01-15T10:42:09+00:00",
+      "status": "delivered",
+      "author_id": 519,
+      "project_id": 39,
+      "datastream_metadata": {
+        "uuid": "6a97c798-133e-4df1-8c6a-0da507f77651",
+        "source_timestamp": 1768473728000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-12T12:46:42.247468",
+      "updated_at": "2026-01-15T10:42:29",
+      "id": 150,
+      "name": "sft-week4-spanish-team02-duarte",
+      "description": "",
+      "open_date": "2026-01-12T12:46:42+00:00",
+      "close_date": "2026-01-15T10:42:30+00:00",
+      "status": "delivered",
+      "author_id": 519,
+      "project_id": 39,
+      "datastream_metadata": {
+        "uuid": "5ad3eb97-f34c-4185-bcb0-ba84cdbbad95",
+        "source_timestamp": 1768473749000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-12T12:46:28.299305",
+      "updated_at": "2026-01-15T10:42:36",
+      "id": 149,
+      "name": "sft-week4-spanish-team01-riva",
+      "description": "",
+      "open_date": "2026-01-12T12:46:28+00:00",
+      "close_date": "2026-01-15T10:42:36+00:00",
+      "status": "delivered",
+      "author_id": 519,
+      "project_id": 39,
+      "datastream_metadata": {
+        "uuid": "d31b58ff-3472-4ba9-84e1-5833b5f1b85f",
+        "source_timestamp": 1768473756000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-12T12:46:13.450498",
+      "updated_at": "2026-01-15T10:42:42",
+      "id": 148,
+      "name": "sft-week4-french-team02-balde",
+      "description": "",
+      "open_date": "2026-01-12T12:46:13+00:00",
+      "close_date": "2026-01-15T10:42:42+00:00",
+      "status": "delivered",
+      "author_id": 519,
+      "project_id": 39,
+      "datastream_metadata": {
+        "uuid": "8e10976a-4ed5-4ca3-97a5-96e6dfa765b8",
+        "source_timestamp": 1768473762000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-12T12:46:02.069633",
+      "updated_at": "2026-01-15T10:52:33",
+      "id": 147,
+      "name": "sft-week4-french-team01-palmer",
+      "description": "",
+      "open_date": "2026-01-12T12:46:02+00:00",
+      "close_date": "2026-01-15T10:52:34+00:00",
+      "status": "delivered",
+      "author_id": 519,
+      "project_id": 39,
+      "datastream_metadata": {
+        "uuid": "214250ff-d818-4e2a-ab59-9aef9a664495",
+        "source_timestamp": 1768474353000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-12T12:45:45.729841",
+      "updated_at": "2026-01-15T10:52:39",
+      "id": 146,
+      "name": "sft-week4-english-team03-sheethal",
+      "description": "",
+      "open_date": "2026-01-12T12:45:46+00:00",
+      "close_date": "2026-01-15T10:52:40+00:00",
+      "status": "delivered",
+      "author_id": 519,
+      "project_id": 39,
+      "datastream_metadata": {
+        "uuid": "4579ed41-9d03-465a-bd70-97c5f488d59c",
+        "source_timestamp": 1768474359000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-12T12:45:32.876509",
+      "updated_at": "2026-01-15T10:52:45",
+      "id": 145,
+      "name": "sft-week4-english-team02-bashir",
+      "description": "",
+      "open_date": "2026-01-12T12:45:33+00:00",
+      "close_date": "2026-01-15T10:52:45+00:00",
+      "status": "delivered",
+      "author_id": 519,
+      "project_id": 39,
+      "datastream_metadata": {
+        "uuid": "645b7001-d0e3-483e-bc55-adefb028773e",
+        "source_timestamp": 1768474365000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-12T12:45:16.991255",
+      "updated_at": "2026-01-15T10:52:51",
+      "id": 144,
+      "name": "sft-week4-english-team01-khaled",
+      "description": "",
+      "open_date": "2026-01-12T12:45:17+00:00",
+      "close_date": "2026-01-15T10:52:52+00:00",
+      "status": "delivered",
+      "author_id": 519,
+      "project_id": 39,
+      "datastream_metadata": {
+        "uuid": "e252e224-36aa-48a0-bac2-d5705c03de47",
+        "source_timestamp": 1768474371000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-09T16:41:11.401959",
+      "updated_at": "2026-01-09T16:43:11",
+      "id": 143,
+      "name": "5-tasks-calibration",
+      "description": "",
+      "open_date": "2026-01-09T16:41:11+00:00",
+      "close_date": "2026-01-09T16:43:11+00:00",
+      "status": "delivered",
+      "author_id": 1190,
+      "project_id": 41,
+      "datastream_metadata": {
+        "uuid": "70d49705-1e80-4be8-8d2e-6d5511110110",
+        "source_timestamp": 1767976991000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-07T17:37:59.248926",
+      "updated_at": "2026-01-24T08:57:49",
+      "id": 141,
+      "name": "Batch 4 updated",
+      "description": "",
+      "open_date": "2026-01-07T17:37:59+00:00",
+      "close_date": "2026-01-24T08:57:49+00:00",
+      "status": "delivered",
+      "author_id": 524,
+      "project_id": 36,
+      "datastream_metadata": {
+        "uuid": "e4ee80fa-cf98-4dae-8c9f-ba182a08f104",
+        "source_timestamp": 1769245069000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-07T07:37:35.916363",
+      "updated_at": "2026-01-09T16:45:23",
+      "id": 140,
+      "name": "sft-week3-german-kuruvilla",
+      "description": "",
+      "open_date": "2026-01-07T07:37:36+00:00",
+      "close_date": "2026-01-09T16:45:24+00:00",
+      "status": "delivered",
+      "author_id": 519,
+      "project_id": 39,
+      "datastream_metadata": {
+        "uuid": "024337e9-0b00-4342-b586-4f6f01011100",
+        "source_timestamp": 1767977123000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-07T07:36:32.278649",
+      "updated_at": "2026-01-09T16:45:41",
+      "id": 139,
+      "name": "sft-week3-korean-youngeun",
+      "description": "",
+      "open_date": "2026-01-07T07:36:32+00:00",
+      "close_date": "2026-01-09T16:45:42+00:00",
+      "status": "delivered",
+      "author_id": 519,
+      "project_id": 39,
+      "datastream_metadata": {
+        "uuid": "e62fe2b8-e1e5-4a18-a624-8f0d00110101",
+        "source_timestamp": 1767977141000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-07T07:35:39.993674",
+      "updated_at": "2026-01-09T16:46:08",
+      "id": 138,
+      "name": "sft-week3-chinese-tianjiao",
+      "description": "",
+      "open_date": "2026-01-07T07:35:40+00:00",
+      "close_date": "2026-01-09T16:46:08+00:00",
+      "status": "delivered",
+      "author_id": 519,
+      "project_id": 39,
+      "datastream_metadata": {
+        "uuid": "98214fe6-0bb1-4b5c-8300-9a7311101010",
+        "source_timestamp": 1767977168000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-05T19:57:32.317352",
+      "updated_at": "2026-01-09T16:46:31",
+      "id": 135,
+      "name": "sft-week3-portuguese-barbara",
+      "description": "",
+      "open_date": "2026-01-05T19:57:32+00:00",
+      "close_date": "2026-01-09T16:46:32+00:00",
+      "status": "delivered",
+      "author_id": 1028,
+      "project_id": 39,
+      "datastream_metadata": {
+        "uuid": "5b0fbe5e-24c7-495d-bcd8-7dbd11111010",
+        "source_timestamp": 1767977191000
+      },
+      "metadata": null
+    },
+    {
+      "created_at": "2026-01-05T19:52:49.996563",
+      "updated_at": "2026-01-09T16:47:21",
+      "id": 134,
+      "name": "sft-week3-japanese-team02-masami",
+      "description": "",
+      "open_date": "2026-01-05T19:52:50+00:00",
+      "close_date": "2026-01-09T16:47:21+00:00",
+      "status": "delivered",
+      "author_id": 519,
+      "project_id": 39,
+      "datastream_metadata": {
+        "uuid": "6ae9e5bf-6906-4b6e-ac11-db2610101000",
+        "source_timestamp": 1767977241000
+      },
+      "metadata": null
+    }
+  ]
+}

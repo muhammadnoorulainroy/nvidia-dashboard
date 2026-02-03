@@ -46,9 +46,16 @@ import { getDomainStats, getClientDeliveryDomainStats } from '../../services/api
 import type { DomainAggregation } from '../../types'
 import LoadingSpinner from '../LoadingSpinner'
 import ErrorDisplay from '../ErrorDisplay'
+import { Timeframe, getDateRange } from '../../utils/dateUtils'
+import TimeframeSelector from '../common/TimeframeSelector'
+
+// Import TabSummaryStats type from PreDelivery
+import type { TabSummaryStats } from '../../pages/PreDelivery'
 
 interface DomainWiseProps {
   isClientDelivery?: boolean
+  onSummaryUpdate?: (stats: TabSummaryStats) => void
+  onSummaryLoading?: () => void
 }
 
 interface NumericFilter {
@@ -62,18 +69,43 @@ interface TextFilter {
   value: string
 }
 
-export default function DomainWise({ isClientDelivery = false }: DomainWiseProps) {
+export default function DomainWise({ isClientDelivery = false, onSummaryUpdate, onSummaryLoading }: DomainWiseProps) {
   const [data, setData] = useState<DomainAggregation[]>([])
   const [filteredData, setFilteredData] = useState<DomainAggregation[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [selectedDomains, setSelectedDomains] = useState<string[]>([])
+  const [timeframe, setTimeframe] = useState<Timeframe>('overall')
+  const [weekOffset, setWeekOffset] = useState<number>(0) // Default to current week (Mon-Sun)
+  const [customStartDate, setCustomStartDate] = useState<string>('')
+  const [customEndDate, setCustomEndDate] = useState<string>('')
   const [numericFilters, setNumericFilters] = useState<Record<string, NumericFilter>>({})
   const [textFilters, setTextFilters] = useState<Record<string, TextFilter>>({})
   const [filterAnchorEl, setFilterAnchorEl] = useState<HTMLElement | null>(null)
   const [activeFilterColumn, setActiveFilterColumn] = useState<string>('')
   const [sortColumn, setSortColumn] = useState<string>('')
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc')
+
+  // Report summary stats to parent when data changes
+  useEffect(() => {
+    if (data.length > 0 && onSummaryUpdate) {
+      const totalTasks = data.reduce((sum, d) => sum + (d.task_count || 0), 0)
+      const totalDomains = data.length
+      const totalReworkCount = data.reduce((sum, d) => sum + (d.total_rework_count || 0), 0)
+      
+      // Domain view doesn't have new vs rework breakdown
+      // Show total tasks as the primary metric
+      onSummaryUpdate({
+        totalTasks,
+        totalTrainers: 0, // Not available in domain view
+        totalPodLeads: 0,
+        totalProjects: totalDomains, // Number of domains
+        totalReviews: totalTasks,
+        newTasks: totalTasks, // Show total tasks (no breakdown available)
+        rework: totalReworkCount
+      })
+    }
+  }, [data, onSummaryUpdate])
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(100)
 
@@ -81,10 +113,17 @@ export default function DomainWise({ isClientDelivery = false }: DomainWiseProps
     try {
       setLoading(true)
       setError(null)
+      onSummaryLoading?.()
+      
+      // Build filters with date range
+      const filters: any = {}
+      const { startDate, endDate } = getDateRange(timeframe, weekOffset, customStartDate, customEndDate)
+      if (startDate) filters.start_date = startDate
+      if (endDate) filters.end_date = endDate
       
       const result = isClientDelivery 
-        ? await getClientDeliveryDomainStats({})
-        : await getDomainStats({})
+        ? await getClientDeliveryDomainStats(filters)
+        : await getDomainStats(filters)
       setData(result)
       setFilteredData(result)
     } catch (err: any) {
@@ -96,7 +135,7 @@ export default function DomainWise({ isClientDelivery = false }: DomainWiseProps
 
   useEffect(() => {
     fetchData()
-  }, [isClientDelivery])
+  }, [isClientDelivery, timeframe, weekOffset, customStartDate, customEndDate])
 
   // Initialize numeric filters when data changes
   const initializeNumericFilters = (domains: DomainAggregation[]) => {
@@ -407,6 +446,19 @@ export default function DomainWise({ isClientDelivery = false }: DomainWiseProps
     <Box>
       <Paper sx={{ width: '100%', overflow: 'hidden' }}>
         <Box sx={{ p: 2, backgroundColor: '#F7F7F7', display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
+          {/* Timeframe Selector */}
+          <TimeframeSelector
+            timeframe={timeframe}
+            onTimeframeChange={setTimeframe}
+            weekOffset={weekOffset}
+            onWeekOffsetChange={setWeekOffset}
+            customStartDate={customStartDate}
+            onCustomStartDateChange={setCustomStartDate}
+            customEndDate={customEndDate}
+            onCustomEndDateChange={setCustomEndDate}
+            compact
+          />
+          
           <Box sx={{ flex: 1 }}>
             <Autocomplete
             multiple

@@ -1,0 +1,1816 @@
+{
+  "table": "project_history",
+  "row_count": 46,
+  "sample_count": 46,
+  "fetched_at": "2026-01-28T23:24:14.569020",
+  "data": [
+    {
+      "created_at": "2026-01-19T11:15:00.636692",
+      "updated_at": "2026-01-19T11:15:00.636692",
+      "id": 46,
+      "changed_fields": {
+        "averageHandleTimeMinutes": {
+          "new": 300,
+          "old": null
+        },
+        "category": {
+          "new": "external-client",
+          "old": null
+        },
+        "description": {
+          "new": "",
+          "old": null
+        },
+        "isDeliverable": {
+          "new": true,
+          "old": null
+        },
+        "name": {
+          "new": "SFT-CFBench-Instruction-Following-Chinese",
+          "old": null
+        },
+        "projectType": {
+          "new": "sft",
+          "old": null
+        },
+        "status": {
+          "new": "ongoing",
+          "old": null
+        },
+        "supportsFunctionCalling": {
+          "new": false,
+          "old": null
+        },
+        "supportsMultipleFilesPerTask": {
+          "new": false,
+          "old": null
+        },
+        "supportsWorkflows": {
+          "new": false,
+          "old": null
+        }
+      },
+      "comment": "Project created",
+      "project_id": 53,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "6f7c1d86-96d8-4888-b61b-123f7de6bfd4",
+        "source_timestamp": 1768821300000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:14:29.173172",
+      "updated_at": "2026-01-19T11:14:29.173172",
+      "id": 45,
+      "changed_fields": {
+        "averageHandleTimeMinutes": {
+          "new": 300,
+          "old": null
+        },
+        "category": {
+          "new": "external-client",
+          "old": null
+        },
+        "description": {
+          "new": "",
+          "old": null
+        },
+        "isDeliverable": {
+          "new": true,
+          "old": null
+        },
+        "name": {
+          "new": "SFT-CFBench-Instruction-Following-Arabic",
+          "old": null
+        },
+        "projectType": {
+          "new": "sft",
+          "old": null
+        },
+        "status": {
+          "new": "ongoing",
+          "old": null
+        },
+        "supportsFunctionCalling": {
+          "new": false,
+          "old": null
+        },
+        "supportsMultipleFilesPerTask": {
+          "new": false,
+          "old": null
+        },
+        "supportsWorkflows": {
+          "new": false,
+          "old": null
+        }
+      },
+      "comment": "Project created",
+      "project_id": 52,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "c15c38d7-b818-43aa-8c34-be717f5b7fcd",
+        "source_timestamp": 1768821269000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:13:59.950994",
+      "updated_at": "2026-01-19T11:13:59.950994",
+      "id": 44,
+      "changed_fields": {
+        "averageHandleTimeMinutes": {
+          "new": 300,
+          "old": null
+        },
+        "category": {
+          "new": "external-client",
+          "old": null
+        },
+        "description": {
+          "new": "",
+          "old": null
+        },
+        "isDeliverable": {
+          "new": true,
+          "old": null
+        },
+        "name": {
+          "new": "SFT-CFBench-Instruction-Following-Hindi",
+          "old": null
+        },
+        "projectType": {
+          "new": "sft",
+          "old": null
+        },
+        "status": {
+          "new": "ongoing",
+          "old": null
+        },
+        "supportsFunctionCalling": {
+          "new": false,
+          "old": null
+        },
+        "supportsMultipleFilesPerTask": {
+          "new": false,
+          "old": null
+        },
+        "supportsWorkflows": {
+          "new": false,
+          "old": null
+        }
+      },
+      "comment": "Project created",
+      "project_id": 51,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "1f6a9fbb-d826-4396-95bc-c8440b2b0d8e",
+        "source_timestamp": 1768821239000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:13:24.083296",
+      "updated_at": "2026-01-19T11:13:24.083296",
+      "id": 43,
+      "changed_fields": {
+        "averageHandleTimeMinutes": {
+          "new": 0,
+          "old": null
+        },
+        "category": {
+          "new": "external-client",
+          "old": null
+        },
+        "description": {
+          "new": "",
+          "old": null
+        },
+        "isDeliverable": {
+          "new": true,
+          "old": null
+        },
+        "name": {
+          "new": "SFT-CFBench-Instruction-Following-Korean",
+          "old": null
+        },
+        "projectType": {
+          "new": "sft",
+          "old": null
+        },
+        "status": {
+          "new": "ongoing",
+          "old": null
+        },
+        "supportsFunctionCalling": {
+          "new": false,
+          "old": null
+        },
+        "supportsMultipleFilesPerTask": {
+          "new": false,
+          "old": null
+        },
+        "supportsWorkflows": {
+          "new": false,
+          "old": null
+        }
+      },
+      "comment": "Project created",
+      "project_id": 50,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "776e1717-65cf-4fd0-8805-8c2d4a238df5",
+        "source_timestamp": 1768821204000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:13:01.036066",
+      "updated_at": "2026-01-19T11:13:01.036066",
+      "id": 42,
+      "changed_fields": {
+        "averageHandleTimeMinutes": {
+          "new": 300,
+          "old": null
+        },
+        "category": {
+          "new": "external-client",
+          "old": null
+        },
+        "description": {
+          "new": "",
+          "old": null
+        },
+        "isDeliverable": {
+          "new": true,
+          "old": null
+        },
+        "name": {
+          "new": "SFT-CFBench-Instruction-Following-Japanese",
+          "old": null
+        },
+        "projectType": {
+          "new": "sft",
+          "old": null
+        },
+        "status": {
+          "new": "ongoing",
+          "old": null
+        },
+        "supportsFunctionCalling": {
+          "new": false,
+          "old": null
+        },
+        "supportsMultipleFilesPerTask": {
+          "new": false,
+          "old": null
+        },
+        "supportsWorkflows": {
+          "new": false,
+          "old": null
+        }
+      },
+      "comment": "Project created",
+      "project_id": 49,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "1e17f52c-8a7f-42af-812d-7f7c1adda30f",
+        "source_timestamp": 1768821181000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:12:37.599919",
+      "updated_at": "2026-01-19T11:12:37.599919",
+      "id": 41,
+      "changed_fields": {
+        "averageHandleTimeMinutes": {
+          "new": 300,
+          "old": null
+        },
+        "category": {
+          "new": "external-client",
+          "old": null
+        },
+        "description": {
+          "new": "",
+          "old": null
+        },
+        "isDeliverable": {
+          "new": true,
+          "old": null
+        },
+        "name": {
+          "new": "SFT-CFBench-Instruction-Following-Portuguese",
+          "old": null
+        },
+        "projectType": {
+          "new": "sft",
+          "old": null
+        },
+        "status": {
+          "new": "ongoing",
+          "old": null
+        },
+        "supportsFunctionCalling": {
+          "new": false,
+          "old": null
+        },
+        "supportsMultipleFilesPerTask": {
+          "new": false,
+          "old": null
+        },
+        "supportsWorkflows": {
+          "new": false,
+          "old": null
+        }
+      },
+      "comment": "Project created",
+      "project_id": 48,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "2f87b513-d34f-4e8b-89fd-61fd362d1d7f",
+        "source_timestamp": 1768821157000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:12:13.068412",
+      "updated_at": "2026-01-19T11:12:13.068412",
+      "id": 40,
+      "changed_fields": {
+        "averageHandleTimeMinutes": {
+          "new": 300,
+          "old": null
+        },
+        "category": {
+          "new": "external-client",
+          "old": null
+        },
+        "description": {
+          "new": "",
+          "old": null
+        },
+        "isDeliverable": {
+          "new": true,
+          "old": null
+        },
+        "name": {
+          "new": "SFT-CFBench-Instruction-Following-German",
+          "old": null
+        },
+        "projectType": {
+          "new": "sft",
+          "old": null
+        },
+        "status": {
+          "new": "ongoing",
+          "old": null
+        },
+        "supportsFunctionCalling": {
+          "new": false,
+          "old": null
+        },
+        "supportsMultipleFilesPerTask": {
+          "new": false,
+          "old": null
+        },
+        "supportsWorkflows": {
+          "new": false,
+          "old": null
+        }
+      },
+      "comment": "Project created",
+      "project_id": 47,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "c3f048ae-3230-4c8a-99f0-080ff3c0dd08",
+        "source_timestamp": 1768821133000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:11:49.496464",
+      "updated_at": "2026-01-19T11:11:49.496464",
+      "id": 39,
+      "changed_fields": {
+        "averageHandleTimeMinutes": {
+          "new": 300,
+          "old": null
+        },
+        "category": {
+          "new": "external-client",
+          "old": null
+        },
+        "description": {
+          "new": "",
+          "old": null
+        },
+        "isDeliverable": {
+          "new": true,
+          "old": null
+        },
+        "name": {
+          "new": "SFT-CFBench-Instruction-Following-Italian",
+          "old": null
+        },
+        "projectType": {
+          "new": "sft",
+          "old": null
+        },
+        "status": {
+          "new": "ongoing",
+          "old": null
+        },
+        "supportsFunctionCalling": {
+          "new": false,
+          "old": null
+        },
+        "supportsMultipleFilesPerTask": {
+          "new": false,
+          "old": null
+        },
+        "supportsWorkflows": {
+          "new": false,
+          "old": null
+        }
+      },
+      "comment": "Project created",
+      "project_id": 46,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "f524e14b-cdfb-4304-8974-b72a8e4bad2d",
+        "source_timestamp": 1768821109000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:11:16.907188",
+      "updated_at": "2026-01-19T11:11:16.907188",
+      "id": 38,
+      "changed_fields": {
+        "averageHandleTimeMinutes": {
+          "new": 300,
+          "old": null
+        },
+        "category": {
+          "new": "external-client",
+          "old": null
+        },
+        "description": {
+          "new": "",
+          "old": null
+        },
+        "isDeliverable": {
+          "new": true,
+          "old": null
+        },
+        "name": {
+          "new": "SFT-CFBench-Instruction-Following-Spanish",
+          "old": null
+        },
+        "projectType": {
+          "new": "sft",
+          "old": null
+        },
+        "status": {
+          "new": "ongoing",
+          "old": null
+        },
+        "supportsFunctionCalling": {
+          "new": false,
+          "old": null
+        },
+        "supportsMultipleFilesPerTask": {
+          "new": false,
+          "old": null
+        },
+        "supportsWorkflows": {
+          "new": false,
+          "old": null
+        }
+      },
+      "comment": "Project created",
+      "project_id": 45,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "236399db-baf9-4172-b9f0-9bd45811c8e6",
+        "source_timestamp": 1768821076000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:10:31.881707",
+      "updated_at": "2026-01-19T11:10:31.881707",
+      "id": 37,
+      "changed_fields": {
+        "averageHandleTimeMinutes": {
+          "new": 300,
+          "old": null
+        },
+        "category": {
+          "new": "external-client",
+          "old": null
+        },
+        "description": {
+          "new": "",
+          "old": null
+        },
+        "isDeliverable": {
+          "new": true,
+          "old": null
+        },
+        "name": {
+          "new": "SFT-CFBench-Instruction-Following-French",
+          "old": null
+        },
+        "projectType": {
+          "new": "sft",
+          "old": null
+        },
+        "status": {
+          "new": "ongoing",
+          "old": null
+        },
+        "supportsFunctionCalling": {
+          "new": false,
+          "old": null
+        },
+        "supportsMultipleFilesPerTask": {
+          "new": false,
+          "old": null
+        },
+        "supportsWorkflows": {
+          "new": false,
+          "old": null
+        }
+      },
+      "comment": "Project created",
+      "project_id": 44,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "d3a4d602-bf9c-49a3-9051-33960dec5be0",
+        "source_timestamp": 1768821031000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:09:23.250793",
+      "updated_at": "2026-01-19T11:09:23.250793",
+      "id": 36,
+      "changed_fields": {
+        "name": {
+          "new": "SFT-CFBench-Instruction-Following-English",
+          "old": "SFT-CFBench-Instruction-Following"
+        }
+      },
+      "comment": null,
+      "project_id": 39,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "07557011-475e-4cdc-bded-10242ad573d3",
+        "source_timestamp": 1768820963000
+      }
+    },
+    {
+      "created_at": "2026-01-18T14:57:49.660267",
+      "updated_at": "2026-01-18T14:57:49.660267",
+      "id": 35,
+      "changed_fields": {
+        "averageHandleTimeMinutes": {
+          "new": 180,
+          "old": null
+        },
+        "category": {
+          "new": "testing",
+          "old": null
+        },
+        "description": {
+          "new": "",
+          "old": null
+        },
+        "isDeliverable": {
+          "new": true,
+          "old": null
+        },
+        "name": {
+          "new": "CFBench-Test-Project",
+          "old": null
+        },
+        "projectType": {
+          "new": "sft",
+          "old": null
+        },
+        "status": {
+          "new": "ongoing",
+          "old": null
+        },
+        "supportsFunctionCalling": {
+          "new": false,
+          "old": null
+        },
+        "supportsMultipleFilesPerTask": {
+          "new": false,
+          "old": null
+        },
+        "supportsWorkflows": {
+          "new": false,
+          "old": null
+        }
+      },
+      "comment": "Project created",
+      "project_id": 43,
+      "author_id": 464,
+      "datastream_metadata": {
+        "uuid": "14dac7ba-8319-4d02-ad21-1a4518431001",
+        "source_timestamp": 1768748269000
+      }
+    },
+    {
+      "created_at": "2026-01-16T17:52:12.933592",
+      "updated_at": "2026-01-16T17:52:12.933592",
+      "id": 34,
+      "changed_fields": {
+        "averageHandleTimeMinutes": {
+          "new": 0,
+          "old": null
+        },
+        "category": {
+          "new": "external-client",
+          "old": null
+        },
+        "description": {
+          "new": "",
+          "old": null
+        },
+        "isDeliverable": {
+          "new": false,
+          "old": null
+        },
+        "name": {
+          "new": "SFT-InverseIF-Prod",
+          "old": null
+        },
+        "projectType": {
+          "new": "sft",
+          "old": null
+        },
+        "status": {
+          "new": "ongoing",
+          "old": null
+        },
+        "supportsFunctionCalling": {
+          "new": false,
+          "old": null
+        },
+        "supportsMultipleFilesPerTask": {
+          "new": false,
+          "old": null
+        },
+        "supportsWorkflows": {
+          "new": false,
+          "old": null
+        }
+      },
+      "comment": "Copied from project #38 | SFT-InverseIFEval",
+      "project_id": 42,
+      "author_id": 1190,
+      "datastream_metadata": {
+        "uuid": "443ea225-f6d3-40c5-a592-1aa809c607e1",
+        "source_timestamp": 1768585932000
+      }
+    },
+    {
+      "created_at": "2026-01-07T10:49:31.370453",
+      "updated_at": "2026-01-07T10:49:31.370453",
+      "id": 33,
+      "changed_fields": {
+        "status": {
+          "new": "archived",
+          "old": "ongoing"
+        }
+      },
+      "comment": null,
+      "project_id": 40,
+      "author_id": 1190,
+      "datastream_metadata": {
+        "uuid": "4a6af5a3-78d4-476f-aad4-e1d710101011",
+        "source_timestamp": 1767782971000
+      }
+    },
+    {
+      "created_at": "2026-01-06T17:46:59.934200",
+      "updated_at": "2026-01-06T17:46:59.934200",
+      "id": 32,
+      "changed_fields": {
+        "isDeliverable": {
+          "new": false,
+          "old": true
+        },
+        "supportsFunctionCalling": {
+          "new": false,
+          "old": true
+        },
+        "supportsMultipleFilesPerTask": {
+          "new": false,
+          "old": true
+        },
+        "supportsWorkflows": {
+          "new": false,
+          "old": true
+        }
+      },
+      "comment": null,
+      "project_id": 41,
+      "author_id": 805,
+      "datastream_metadata": {
+        "uuid": "0d0b3a37-f3fe-4151-892a-012900010001",
+        "source_timestamp": 1767721619000
+      }
+    },
+    {
+      "created_at": "2026-01-06T17:44:26.108391",
+      "updated_at": "2026-01-06T17:44:26.108391",
+      "id": 31,
+      "changed_fields": {
+        "category": {
+          "new": "external-client",
+          "old": "testing"
+        }
+      },
+      "comment": null,
+      "project_id": 41,
+      "author_id": 805,
+      "datastream_metadata": {
+        "uuid": "9e778c7f-9c2b-422c-88d4-4da201100100",
+        "source_timestamp": 1767721466000
+      }
+    },
+    {
+      "created_at": "2026-01-06T17:06:48.605902",
+      "updated_at": "2026-01-06T17:06:48.605902",
+      "id": 30,
+      "changed_fields": {
+        "category": {
+          "new": "testing",
+          "old": "external-client"
+        }
+      },
+      "comment": null,
+      "project_id": 41,
+      "author_id": 805,
+      "datastream_metadata": {
+        "uuid": "b6037aa0-a86f-48e2-b6f2-f12c01000111",
+        "source_timestamp": 1767719208000
+      }
+    },
+    {
+      "created_at": "2026-01-06T17:06:19.063600",
+      "updated_at": "2026-01-06T17:06:19.063600",
+      "id": 29,
+      "changed_fields": {
+        "category": {
+          "new": "external-client",
+          "old": "testing"
+        },
+        "isDeliverable": {
+          "new": true,
+          "old": false
+        },
+        "supportsFunctionCalling": {
+          "new": true,
+          "old": false
+        },
+        "supportsMultipleFilesPerTask": {
+          "new": true,
+          "old": false
+        },
+        "supportsWorkflows": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": null,
+      "project_id": 41,
+      "author_id": 805,
+      "datastream_metadata": {
+        "uuid": "9f19bab8-bcab-48e1-b2e8-a10d10010100",
+        "source_timestamp": 1767719179000
+      }
+    },
+    {
+      "created_at": "2026-01-05T16:24:29.481800",
+      "updated_at": "2026-01-05T16:24:29.481800",
+      "id": 28,
+      "changed_fields": {
+        "averageHandleTimeMinutes": {
+          "new": 0,
+          "old": null
+        },
+        "category": {
+          "new": "testing",
+          "old": null
+        },
+        "description": {
+          "new": "",
+          "old": null
+        },
+        "isDeliverable": {
+          "new": false,
+          "old": null
+        },
+        "name": {
+          "new": "InverseIF pilot for agentic reviewer",
+          "old": null
+        },
+        "projectType": {
+          "new": "sft",
+          "old": null
+        },
+        "status": {
+          "new": "ongoing",
+          "old": null
+        },
+        "supportsFunctionCalling": {
+          "new": false,
+          "old": null
+        },
+        "supportsMultipleFilesPerTask": {
+          "new": false,
+          "old": null
+        },
+        "supportsWorkflows": {
+          "new": false,
+          "old": null
+        }
+      },
+      "comment": "Project created",
+      "project_id": 41,
+      "author_id": 805,
+      "datastream_metadata": {
+        "uuid": "ae1edf8e-8b5d-4a3d-b470-8e0600110011",
+        "source_timestamp": 1767630269000
+      }
+    },
+    {
+      "created_at": "2025-12-27T06:31:26.801111",
+      "updated_at": "2025-12-27T06:31:26.801111",
+      "id": 27,
+      "changed_fields": {
+        "averageHandleTimeMinutes": {
+          "new": 0,
+          "old": null
+        },
+        "category": {
+          "new": "external-client",
+          "old": null
+        },
+        "description": {
+          "new": "",
+          "old": null
+        },
+        "isDeliverable": {
+          "new": false,
+          "old": null
+        },
+        "name": {
+          "new": "InverseIFTest",
+          "old": null
+        },
+        "projectType": {
+          "new": "rlhf",
+          "old": null
+        },
+        "status": {
+          "new": "ongoing",
+          "old": null
+        },
+        "supportsFunctionCalling": {
+          "new": false,
+          "old": null
+        },
+        "supportsMultipleFilesPerTask": {
+          "new": false,
+          "old": null
+        },
+        "supportsWorkflows": {
+          "new": false,
+          "old": null
+        }
+      },
+      "comment": "Project created",
+      "project_id": 40,
+      "author_id": 1190,
+      "datastream_metadata": {
+        "uuid": "f814ea1d-8a79-481a-8f51-436500010101",
+        "source_timestamp": 1766817086000
+      }
+    },
+    {
+      "created_at": "2025-12-05T05:53:02.526458",
+      "updated_at": "2025-12-05T05:53:02.526458",
+      "id": 26,
+      "changed_fields": {
+        "category": {
+          "new": "external-client",
+          "old": "testing"
+        }
+      },
+      "comment": null,
+      "project_id": 38,
+      "author_id": 659,
+      "datastream_metadata": {
+        "uuid": "ff7cca88-c659-482e-bce2-c3f801100111",
+        "source_timestamp": 1764913982000
+      }
+    },
+    {
+      "created_at": "2025-12-04T18:58:24.097441",
+      "updated_at": "2025-12-04T18:58:24.097441",
+      "id": 25,
+      "changed_fields": {
+        "averageHandleTimeMinutes": {
+          "new": 0,
+          "old": null
+        },
+        "category": {
+          "new": "external-client",
+          "old": null
+        },
+        "description": {
+          "new": "",
+          "old": null
+        },
+        "isDeliverable": {
+          "new": true,
+          "old": null
+        },
+        "name": {
+          "new": "SFT-CFBench-Instruction-Following",
+          "old": null
+        },
+        "projectType": {
+          "new": "sft",
+          "old": null
+        },
+        "status": {
+          "new": "ongoing",
+          "old": null
+        },
+        "supportsFunctionCalling": {
+          "new": false,
+          "old": null
+        },
+        "supportsMultipleFilesPerTask": {
+          "new": false,
+          "old": null
+        },
+        "supportsWorkflows": {
+          "new": false,
+          "old": null
+        }
+      },
+      "comment": "Project created",
+      "project_id": 39,
+      "author_id": 464,
+      "datastream_metadata": {
+        "uuid": "e3443f21-769c-4d1f-9c45-f7d411101001",
+        "source_timestamp": 1764874704000
+      }
+    },
+    {
+      "created_at": "2025-12-04T14:03:53.625216",
+      "updated_at": "2025-12-04T14:03:53.625216",
+      "id": 24,
+      "changed_fields": {
+        "averageHandleTimeMinutes": {
+          "new": 0,
+          "old": null
+        },
+        "category": {
+          "new": "testing",
+          "old": null
+        },
+        "description": {
+          "new": "",
+          "old": null
+        },
+        "isDeliverable": {
+          "new": false,
+          "old": null
+        },
+        "name": {
+          "new": "SFT-InverseIFEval",
+          "old": null
+        },
+        "projectType": {
+          "new": "sft",
+          "old": null
+        },
+        "status": {
+          "new": "ongoing",
+          "old": null
+        },
+        "supportsFunctionCalling": {
+          "new": false,
+          "old": null
+        },
+        "supportsMultipleFilesPerTask": {
+          "new": false,
+          "old": null
+        },
+        "supportsWorkflows": {
+          "new": false,
+          "old": null
+        }
+      },
+      "comment": "Project created",
+      "project_id": 38,
+      "author_id": 659,
+      "datastream_metadata": {
+        "uuid": "73993070-1368-48df-8be9-970210101101",
+        "source_timestamp": 1764857033000
+      }
+    },
+    {
+      "created_at": "2025-11-28T15:28:37.635042",
+      "updated_at": "2025-11-28T15:28:37.635042",
+      "id": 23,
+      "changed_fields": {
+        "averageHandleTimeMinutes": {
+          "new": 0,
+          "old": null
+        },
+        "category": {
+          "new": "external-client",
+          "old": null
+        },
+        "description": {
+          "new": "",
+          "old": null
+        },
+        "isDeliverable": {
+          "new": true,
+          "old": null
+        },
+        "name": {
+          "new": "SFT-Multichallenge-Instruction-Following",
+          "old": null
+        },
+        "projectType": {
+          "new": "sft",
+          "old": null
+        },
+        "status": {
+          "new": "ongoing",
+          "old": null
+        },
+        "supportsFunctionCalling": {
+          "new": false,
+          "old": null
+        },
+        "supportsMultipleFilesPerTask": {
+          "new": false,
+          "old": null
+        },
+        "supportsWorkflows": {
+          "new": false,
+          "old": null
+        }
+      },
+      "comment": "Project created",
+      "project_id": 37,
+      "author_id": 658,
+      "datastream_metadata": {
+        "uuid": "87c8e292-92d8-4133-848a-0ede01110101",
+        "source_timestamp": 1764343717000
+      }
+    },
+    {
+      "created_at": "2025-11-28T04:59:56.187607",
+      "updated_at": "2025-11-28T04:59:56.187607",
+      "id": 22,
+      "changed_fields": {
+        "averageHandleTimeMinutes": {
+          "new": 0,
+          "old": null
+        },
+        "category": {
+          "new": "external-client",
+          "old": null
+        },
+        "description": {
+          "new": "",
+          "old": null
+        },
+        "isDeliverable": {
+          "new": true,
+          "old": null
+        },
+        "name": {
+          "new": "SFT-SysBench-Instruction-Following",
+          "old": null
+        },
+        "projectType": {
+          "new": "sft",
+          "old": null
+        },
+        "status": {
+          "new": "ongoing",
+          "old": null
+        },
+        "supportsFunctionCalling": {
+          "new": false,
+          "old": null
+        },
+        "supportsMultipleFilesPerTask": {
+          "new": false,
+          "old": null
+        },
+        "supportsWorkflows": {
+          "new": false,
+          "old": null
+        }
+      },
+      "comment": "Project created",
+      "project_id": 36,
+      "author_id": 465,
+      "datastream_metadata": {
+        "uuid": "19ee7bf1-04ba-4a85-8750-850500111111",
+        "source_timestamp": 1764305996000
+      }
+    },
+    {
+      "created_at": "2025-10-22T15:50:09.363326",
+      "updated_at": "2025-10-22T15:50:09.363326",
+      "id": 21,
+      "changed_fields": {
+        "averageHandleTimeMinutes": {
+          "new": 3600,
+          "old": null
+        },
+        "category": {
+          "new": "external-client",
+          "old": null
+        },
+        "description": {
+          "new": "",
+          "old": null
+        },
+        "isDeliverable": {
+          "new": true,
+          "old": null
+        },
+        "name": {
+          "new": "SFT-SysBench-IF",
+          "old": null
+        },
+        "projectType": {
+          "new": "sft",
+          "old": null
+        },
+        "status": {
+          "new": "ongoing",
+          "old": null
+        },
+        "supportsFunctionCalling": {
+          "new": false,
+          "old": null
+        },
+        "supportsMultipleFilesPerTask": {
+          "new": false,
+          "old": null
+        },
+        "supportsWorkflows": {
+          "new": false,
+          "old": null
+        }
+      },
+      "comment": "Project created",
+      "project_id": 35,
+      "author_id": 464,
+      "datastream_metadata": {
+        "uuid": "83d78e5c-0f4a-40cf-ad79-5a8b01000111",
+        "source_timestamp": 1761148209000
+      }
+    },
+    {
+      "created_at": "2025-08-22T19:37:16.151492",
+      "updated_at": "2025-08-22T19:37:16.151492",
+      "id": 20,
+      "changed_fields": {
+        "isDeliverable": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": null,
+      "project_id": 27,
+      "author_id": 290,
+      "datastream_metadata": {
+        "uuid": "39d1ac1e-3420-44cb-bab9-9a1411001111",
+        "source_timestamp": 1755891436000
+      }
+    },
+    {
+      "created_at": "2025-08-18T22:18:11.980403",
+      "updated_at": "2025-08-18T22:18:11.980403",
+      "id": 19,
+      "changed_fields": {
+        "category": {
+          "new": "external-client",
+          "old": "testing"
+        }
+      },
+      "comment": null,
+      "project_id": 34,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "bc163de6-ef9f-4506-bf5e-eb8901010011",
+        "source_timestamp": 1755555491000
+      }
+    },
+    {
+      "created_at": "2025-08-18T22:06:02.984543",
+      "updated_at": "2025-08-18T22:06:02.984543",
+      "id": 18,
+      "changed_fields": {
+        "averageHandleTimeMinutes": {
+          "new": 0,
+          "old": null
+        },
+        "category": {
+          "new": "testing",
+          "old": null
+        },
+        "description": {
+          "new": "",
+          "old": null
+        },
+        "isDeliverable": {
+          "new": false,
+          "old": null
+        },
+        "name": {
+          "new": "scaleRTL - Workflow",
+          "old": null
+        },
+        "projectType": {
+          "new": "rlhf",
+          "old": null
+        },
+        "status": {
+          "new": "ongoing",
+          "old": null
+        },
+        "supportsFunctionCalling": {
+          "new": false,
+          "old": null
+        },
+        "supportsMultipleFilesPerTask": {
+          "new": false,
+          "old": null
+        },
+        "supportsWorkflows": {
+          "new": true,
+          "old": null
+        }
+      },
+      "comment": "Project created",
+      "project_id": 34,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "36898058-c8a3-4ad3-acef-1cc201110000",
+        "source_timestamp": 1755554762000
+      }
+    },
+    {
+      "created_at": "2025-08-18T19:38:06.745413",
+      "updated_at": "2025-08-18T19:38:06.745413",
+      "id": 17,
+      "changed_fields": {
+        "category": {
+          "new": "external-client",
+          "old": "testing"
+        }
+      },
+      "comment": null,
+      "project_id": 33,
+      "author_id": 29,
+      "datastream_metadata": {
+        "uuid": "1d47b49b-a68c-4215-b99a-b4a100100110",
+        "source_timestamp": 1755545886000
+      }
+    },
+    {
+      "created_at": "2025-08-18T19:19:27.316445",
+      "updated_at": "2025-08-18T19:19:27.316445",
+      "id": 16,
+      "changed_fields": {
+        "averageHandleTimeMinutes": {
+          "new": 0,
+          "old": null
+        },
+        "category": {
+          "new": "testing",
+          "old": null
+        },
+        "description": {
+          "new": "",
+          "old": null
+        },
+        "isDeliverable": {
+          "new": false,
+          "old": null
+        },
+        "name": {
+          "new": "Grading Project",
+          "old": null
+        },
+        "projectType": {
+          "new": "basic",
+          "old": null
+        },
+        "status": {
+          "new": "ongoing",
+          "old": null
+        },
+        "supportsFunctionCalling": {
+          "new": false,
+          "old": null
+        },
+        "supportsMultipleFilesPerTask": {
+          "new": false,
+          "old": null
+        },
+        "supportsWorkflows": {
+          "new": true,
+          "old": null
+        }
+      },
+      "comment": "Project created",
+      "project_id": 33,
+      "author_id": 29,
+      "datastream_metadata": {
+        "uuid": "b95ca14b-3658-4f59-b8e1-f38c00011111",
+        "source_timestamp": 1755544767000
+      }
+    },
+    {
+      "created_at": "2025-08-15T16:06:26.181127",
+      "updated_at": "2025-08-15T16:06:26.181127",
+      "id": 15,
+      "changed_fields": {
+        "averageHandleTimeMinutes": {
+          "new": 0,
+          "old": null
+        },
+        "category": {
+          "new": "external-client",
+          "old": null
+        },
+        "description": {
+          "new": "",
+          "old": null
+        },
+        "isDeliverable": {
+          "new": false,
+          "old": null
+        },
+        "name": {
+          "new": "ScaleRTL - Basic Test",
+          "old": null
+        },
+        "projectType": {
+          "new": "basic",
+          "old": null
+        },
+        "status": {
+          "new": "ongoing",
+          "old": null
+        },
+        "supportsFunctionCalling": {
+          "new": false,
+          "old": null
+        },
+        "supportsMultipleFilesPerTask": {
+          "new": false,
+          "old": null
+        },
+        "supportsWorkflows": {
+          "new": false,
+          "old": null
+        }
+      },
+      "comment": "Project created",
+      "project_id": 32,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "f3171258-3906-44ae-b54b-388e00101110",
+        "source_timestamp": 1755273986000
+      }
+    },
+    {
+      "created_at": "2025-08-12T00:44:36.177244",
+      "updated_at": "2025-08-12T00:44:36.177244",
+      "id": 14,
+      "changed_fields": {
+        "averageHandleTimeMinutes": {
+          "new": 0,
+          "old": null
+        },
+        "category": {
+          "new": "external-client",
+          "old": null
+        },
+        "description": {
+          "new": "",
+          "old": null
+        },
+        "isDeliverable": {
+          "new": true,
+          "old": null
+        },
+        "name": {
+          "new": "ScaleRTL2",
+          "old": null
+        },
+        "projectType": {
+          "new": "form",
+          "old": null
+        },
+        "status": {
+          "new": "ongoing",
+          "old": null
+        },
+        "supportsFunctionCalling": {
+          "new": true,
+          "old": null
+        },
+        "supportsMultipleFilesPerTask": {
+          "new": true,
+          "old": null
+        },
+        "supportsWorkflows": {
+          "new": false,
+          "old": null
+        }
+      },
+      "comment": "Project created",
+      "project_id": 31,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "2de3c867-86aa-4606-ad6a-3e1b00000010",
+        "source_timestamp": 1754959476000
+      }
+    },
+    {
+      "created_at": "2025-08-12T00:43:50.143365",
+      "updated_at": "2025-08-12T00:43:50.143365",
+      "id": 13,
+      "changed_fields": {
+        "averageHandleTimeMinutes": {
+          "new": 0,
+          "old": null
+        },
+        "category": {
+          "new": "external-client",
+          "old": null
+        },
+        "description": {
+          "new": "",
+          "old": null
+        },
+        "isDeliverable": {
+          "new": false,
+          "old": null
+        },
+        "name": {
+          "new": "ScaleRTL - Form",
+          "old": null
+        },
+        "projectType": {
+          "new": "form",
+          "old": null
+        },
+        "status": {
+          "new": "unstarted",
+          "old": null
+        },
+        "supportsFunctionCalling": {
+          "new": false,
+          "old": null
+        },
+        "supportsMultipleFilesPerTask": {
+          "new": false,
+          "old": null
+        },
+        "supportsWorkflows": {
+          "new": false,
+          "old": null
+        }
+      },
+      "comment": "Project created",
+      "project_id": 30,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "5af77025-55e6-4946-a0d7-894e00000101",
+        "source_timestamp": 1754959430000
+      }
+    },
+    {
+      "created_at": "2025-08-12T00:43:12.330675",
+      "updated_at": "2025-08-12T00:43:12.330675",
+      "id": 12,
+      "changed_fields": {
+        "averageHandleTimeMinutes": {
+          "new": 0,
+          "old": null
+        },
+        "category": {
+          "new": "external-client",
+          "old": null
+        },
+        "description": {
+          "new": "",
+          "old": null
+        },
+        "isDeliverable": {
+          "new": false,
+          "old": null
+        },
+        "name": {
+          "new": "ScaleRLT - Form",
+          "old": null
+        },
+        "projectType": {
+          "new": "form",
+          "old": null
+        },
+        "status": {
+          "new": "unstarted",
+          "old": null
+        },
+        "supportsFunctionCalling": {
+          "new": false,
+          "old": null
+        },
+        "supportsMultipleFilesPerTask": {
+          "new": false,
+          "old": null
+        },
+        "supportsWorkflows": {
+          "new": false,
+          "old": null
+        }
+      },
+      "comment": "Project created",
+      "project_id": 29,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "5af77025-55e6-4946-a0d7-894e00000001",
+        "source_timestamp": 1754959392000
+      }
+    },
+    {
+      "created_at": "2025-08-06T17:22:42.738537",
+      "updated_at": "2025-08-06T17:22:42.738537",
+      "id": 11,
+      "changed_fields": {
+        "name": {
+          "new": "cuBench-Deepseek R1",
+          "old": "cuBench"
+        }
+      },
+      "comment": null,
+      "project_id": 28,
+      "author_id": 167,
+      "datastream_metadata": {
+        "uuid": "c7604ef2-06bf-4d52-9e86-d52701101001",
+        "source_timestamp": 1754500962000
+      }
+    },
+    {
+      "created_at": "2025-08-05T07:17:27.161500",
+      "updated_at": "2025-08-05T07:17:27.161500",
+      "id": 10,
+      "changed_fields": {
+        "supportsWorkflows": {
+          "new": false,
+          "old": true
+        }
+      },
+      "comment": null,
+      "project_id": 28,
+      "author_id": 167,
+      "datastream_metadata": {
+        "uuid": "cfae5ddf-87c3-4ecb-9b8e-20fd01111000",
+        "source_timestamp": 1754378247000
+      }
+    },
+    {
+      "created_at": "2025-08-05T06:14:46.332627",
+      "updated_at": "2025-08-05T06:14:46.332627",
+      "id": 9,
+      "changed_fields": {
+        "supportsWorkflows": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": null,
+      "project_id": 28,
+      "author_id": 167,
+      "datastream_metadata": {
+        "uuid": "f30ae184-48ac-440b-b99f-582b10001000",
+        "source_timestamp": 1754374486000
+      }
+    },
+    {
+      "created_at": "2025-08-04T19:49:13.397093",
+      "updated_at": "2025-08-04T19:49:13.397093",
+      "id": 8,
+      "changed_fields": {
+        "status": {
+          "new": "ongoing",
+          "old": "unstarted"
+        }
+      },
+      "comment": null,
+      "project_id": 28,
+      "author_id": 167,
+      "datastream_metadata": {
+        "uuid": "170930b8-19c4-4987-bf30-d4f410101011",
+        "source_timestamp": 1754336953000
+      }
+    },
+    {
+      "created_at": "2025-08-04T19:47:32.428551",
+      "updated_at": "2025-08-04T19:47:32.428551",
+      "id": 7,
+      "changed_fields": {
+        "averageHandleTimeMinutes": {
+          "new": 0,
+          "old": null
+        },
+        "category": {
+          "new": "external-client",
+          "old": null
+        },
+        "description": {
+          "new": "",
+          "old": null
+        },
+        "isDeliverable": {
+          "new": false,
+          "old": null
+        },
+        "name": {
+          "new": "cuBench",
+          "old": null
+        },
+        "projectType": {
+          "new": "rlhf",
+          "old": null
+        },
+        "status": {
+          "new": "unstarted",
+          "old": null
+        },
+        "supportsFunctionCalling": {
+          "new": false,
+          "old": null
+        },
+        "supportsMultipleFilesPerTask": {
+          "new": false,
+          "old": null
+        },
+        "supportsWorkflows": {
+          "new": false,
+          "old": null
+        }
+      },
+      "comment": "Project created",
+      "project_id": 28,
+      "author_id": 167,
+      "datastream_metadata": {
+        "uuid": "eec129ba-052e-468c-b4c4-3e0d00101001",
+        "source_timestamp": 1754336852000
+      }
+    },
+    {
+      "created_at": "2025-07-30T08:39:33.385082",
+      "updated_at": "2025-07-30T08:39:33.385082",
+      "id": 6,
+      "changed_fields": {
+        "supportsFunctionCalling": {
+          "new": true,
+          "old": false
+        },
+        "supportsMultipleFilesPerTask": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": null,
+      "project_id": 24,
+      "author_id": 167,
+      "datastream_metadata": {
+        "uuid": "569086ab-4872-46fa-957c-921800000000",
+        "source_timestamp": 1753864773000
+      }
+    },
+    {
+      "created_at": "2025-07-30T08:38:30.892493",
+      "updated_at": "2025-07-30T08:38:30.892493",
+      "id": 5,
+      "changed_fields": {
+        "supportsFunctionCalling": {
+          "new": false,
+          "old": true
+        },
+        "supportsMultipleFilesPerTask": {
+          "new": false,
+          "old": true
+        },
+        "supportsWorkflows": {
+          "new": false,
+          "old": true
+        }
+      },
+      "comment": null,
+      "project_id": 24,
+      "author_id": 167,
+      "datastream_metadata": {
+        "uuid": "1743ee11-8ac1-4a35-a0b0-9f7900001111",
+        "source_timestamp": 1753864710000
+      }
+    },
+    {
+      "created_at": "2025-07-30T08:37:53.173624",
+      "updated_at": "2025-07-30T08:37:53.173624",
+      "id": 4,
+      "changed_fields": {
+        "supportsFunctionCalling": {
+          "new": true,
+          "old": false
+        },
+        "supportsMultipleFilesPerTask": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": null,
+      "project_id": 24,
+      "author_id": 167,
+      "datastream_metadata": {
+        "uuid": "d0476da6-e2af-41a0-93c8-f5dc00011110",
+        "source_timestamp": 1753864673000
+      }
+    },
+    {
+      "created_at": "2025-07-30T08:36:59.953556",
+      "updated_at": "2025-07-30T08:36:59.953556",
+      "id": 3,
+      "changed_fields": {
+        "supportsWorkflows": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": null,
+      "project_id": 24,
+      "author_id": 167,
+      "datastream_metadata": {
+        "uuid": "d7cf9991-0344-4765-b621-9fc010010010",
+        "source_timestamp": 1753864619000
+      }
+    },
+    {
+      "created_at": "2025-07-24T13:28:30.897199",
+      "updated_at": "2025-07-24T13:28:30.897199",
+      "id": 2,
+      "changed_fields": {
+        "supportsWorkflows": {
+          "new": true,
+          "old": false
+        }
+      },
+      "comment": null,
+      "project_id": 27,
+      "author_id": 77,
+      "datastream_metadata": {
+        "uuid": "79ea00f8-3d84-4b57-8764-f9dd00111010",
+        "source_timestamp": 1753363710000
+      }
+    },
+    {
+      "created_at": "2025-07-23T19:26:48.054806",
+      "updated_at": "2025-07-23T19:26:48.054806",
+      "id": 1,
+      "changed_fields": {
+        "name": {
+          "new": "ScaleRTL",
+          "old": "[Test] Verilog DeepSeek"
+        }
+      },
+      "comment": null,
+      "project_id": 24,
+      "author_id": 16,
+      "datastream_metadata": {
+        "uuid": "6dcf84aa-6b11-4145-8737-a07e01111101",
+        "source_timestamp": 1753298808000
+      }
+    }
+  ]
+}

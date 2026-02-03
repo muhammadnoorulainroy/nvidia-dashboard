@@ -1,0 +1,1811 @@
+{
+  "table": "app_config_history",
+  "row_count": 18,
+  "sample_count": 18,
+  "fetched_at": "2026-01-28T23:22:24.262569",
+  "data": [
+    {
+      "created_at": "2025-12-05T15:06:29.632732",
+      "updated_at": "2025-12-05T15:06:29.632732",
+      "id": 18,
+      "old_value": {
+        "value": 1
+      },
+      "new_value": {
+        "value": 0
+      },
+      "app_config_id": 134,
+      "author_id": 1026,
+      "datastream_metadata": {
+        "uuid": "8ee9ce13-f212-4151-bb35-625e01000001",
+        "source_timestamp": 1764947189000
+      }
+    },
+    {
+      "created_at": "2025-08-14T16:49:08.045272",
+      "updated_at": "2025-08-14T16:49:08.045272",
+      "id": 17,
+      "old_value": {
+        "value": {
+          "levels": [
+            {
+              "name": "Easy",
+              "value": "easy"
+            },
+            {
+              "name": "Medium",
+              "value": "medium"
+            },
+            {
+              "name": "Hard",
+              "value": "hard"
+            }
+          ],
+          "required": true
+        }
+      },
+      "new_value": {
+        "value": {
+          "levels": [
+            {
+              "name": "Easy",
+              "value": "easy"
+            },
+            {
+              "name": "Medium",
+              "value": "medium"
+            },
+            {
+              "name": "Hard",
+              "value": "hard"
+            }
+          ],
+          "required": true
+        }
+      },
+      "app_config_id": 23,
+      "author_id": 290,
+      "datastream_metadata": {
+        "uuid": "f8868fde-3f58-4991-a8b5-b95210111111",
+        "source_timestamp": 1755190148000
+      }
+    },
+    {
+      "created_at": "2025-07-09T19:26:06.187799",
+      "updated_at": "2025-07-09T19:26:06.187799",
+      "id": 16,
+      "old_value": {
+        "value": false
+      },
+      "new_value": {
+        "value": true
+      },
+      "app_config_id": 113,
+      "author_id": 419,
+      "datastream_metadata": {
+        "uuid": "643f76f7-8b07-4d7e-b8b1-f6ba11010000",
+        "source_timestamp": 1752089166000
+      }
+    },
+    {
+      "created_at": "2024-10-18T17:24:37.919581",
+      "updated_at": "2024-10-18T17:24:37.919581",
+      "id": 15,
+      "old_value": {
+        "value": "You are a Content Specialist. Your task is to review each provided input text and identify potential issues in the following areas using American English conventions:\n\nGrammar: Ensure proper subject-verb agreement, tense consistency, spelling correctness, and correct use of prepositions, conjunctions, etc.\nPunctuation: Check for correct and consistent use of commas, periods, semicolons, and other punctuation marks.\nArticle Usage: Verify that articles (a, an, the) are used appropriately based on the context.\nStyle Consistency: Assess if the writing maintains a uniform tone, tense, and formal/informal style throughout the text.\nSentence Structure: Evaluate the clarity and readability of each sentence. Ensure sentences are well-structured, avoiding awkward phrasing or overly complex constructions.\n\nPlease review each text and provide your answer in JSON format with a \"reviewResults\" field. Its value should be an array, where each item is an object containing the review results for a single text.\n\nFor each area, provide detailed feedback. If no issues are found, respond with \"No changes required\" for that specific area. Provide feedback in the form of suggestions for each of the above flag and then give the final suggested version.\n\nWhen providing corrections, maintain the original structure and essence of the text. Avoid rewording the text or altering the intended meaning.\n\nGuidelines to be followed:\n1. Please use American English conventions during your evaluation (e.g., spelling, punctuation styles, and word choice).\n2. Additionally, ensure that the text aligns with U.S. conventions in the following areas:\na) Currency and Numerical Formats: Use USD as the currency symbol and follow U.S. conventions for numbers (e.g., Mn/Bn for million/billion instead of other conventions like lakh/crore or different symbols).\nb) General U.S. Context: Adapt terminology, units of measurement, and any references to align with U.S. cultural, economic, or geographical scenarios.\n3. Comma Usage in Introductory Clauses: Ensure that a comma is placed after introductory clauses or phrases that precede the main clause (e.g.,\n\"After reviewing the data, the team made a decision\" or \"Given the circumstances, we should reconsider\").\n4. Pay special attention to commonly confused words (e.g.,\n\"if\" vs. \"of,\"\"than\" vs. \"then,\"\"its\" vs. \"it's\"). Carefully assess whether each word is appropriate given the context of the sentence. Ensure that no small word substitutions or misuses are overlooked, as they can significantly impact meaning. Flag it in the output.\n6. Preferably replace the currency symbol (For example: Replacing Lakh/INR with $) and don't try to convert it to USD equivalent (For example: 1L is equivalent to ~1340 $)\n7. Ensure no duplicate punctuation marks are used unless explicitly required by the context. Double-check for cases of multiple periods, commas, question marks, or exclamation points. Verify that all punctuation follows standard usage conventions and eliminate any unnecessary repetitions.\n8. When processing text, do not apply any punctuation corrections to numerical values. Maintain the original formatting of numbers as they are presented.\n\nImportant Note: If the text includes a question, do not provide an answer. Focus solely on reviewing the question from a content, grammar, and style standpoint.\n"
+      },
+      "new_value": {
+        "value": "You are a Content Specialist. Your task is to review each provided input text and identify potential issues in the following areas using American English conventions:\n\nGrammar: Ensure proper subject-verb agreement, tense consistency, spelling correctness, and correct use of prepositions, conjunctions, etc.\nPunctuation: Check for correct and consistent use of commas, periods, semicolons, and other punctuation marks.\nArticle Usage: Verify that articles (a, an, the) are used appropriately based on the context.\nStyle Consistency: Assess if the writing maintains a uniform tone, tense, and formal/informal style throughout the text.\nSentence Structure: Evaluate the clarity and readability of each sentence. Ensure sentences are well-structured, avoiding awkward phrasing or overly complex constructions.\n\nPlease review each text and provide your answer in JSON format with a \"reviewResults\" field. Its value should be an array, where each item is an object containing the review results for each input text individually.\n\nFor each area, provide detailed feedback. If no issues are found, respond with \"No changes required\" for that specific area. Provide feedback in the form of suggestions for each of the above flag and then give the final suggested version.\n\nWhen providing corrections, maintain the original structure and essence of the text. Avoid rewording the text or altering the intended meaning.\n\nGuidelines to be followed:\n1. Please use American English conventions during your evaluation (e.g., spelling, punctuation styles, and word choice).\n2. Additionally, ensure that the text aligns with U.S. conventions in the following areas:\na) Currency and Numerical Formats: Use USD as the currency symbol and follow U.S. conventions for numbers (e.g., Mn/Bn for million/billion instead of other conventions like lakh/crore or different symbols).\nb) General U.S. Context: Adapt terminology, units of measurement, and any references to align with U.S. cultural, economic, or geographical scenarios.\n3. Comma Usage in Introductory Clauses: Ensure that a comma is placed after introductory clauses or phrases that precede the main clause (e.g.,\n\"After reviewing the data, the team made a decision\" or \"Given the circumstances, we should reconsider\").\n4. Pay special attention to commonly confused words (e.g.,\n\"if\" vs. \"of,\"\"than\" vs. \"then,\"\"its\" vs. \"it's\"). Carefully assess whether each word is appropriate given the context of the sentence. Ensure that no small word substitutions or misuses are overlooked, as they can significantly impact meaning. Flag it in the output.\n6. Preferably replace the currency symbol (For example: Replacing Lakh/INR with $) and don't try to convert it to USD equivalent (For example: 1L is equivalent to ~1340 $)\n7. Ensure no duplicate punctuation marks are used unless explicitly required by the context. Double-check for cases of multiple periods, commas, question marks, or exclamation points. Verify that all punctuation follows standard usage conventions and eliminate any unnecessary repetitions.\n8. When processing text, do not apply any punctuation corrections to numerical values. Maintain the original formatting of numbers as they are presented.\n\nImportant Note: If the text includes a question, do not provide an answer. Focus solely on reviewing the question from a content, grammar, and style standpoint.\n"
+      },
+      "app_config_id": 61,
+      "author_id": 1,
+      "datastream_metadata": {
+        "uuid": "f49216c3-f892-4bd4-aa60-5cfa00100000",
+        "source_timestamp": 1729272277000
+      }
+    },
+    {
+      "created_at": "2024-09-30T10:26:31.714277",
+      "updated_at": "2024-09-30T10:26:31.714277",
+      "id": 14,
+      "old_value": {
+        "value": {
+          "collaboratorsType": {
+            "prompt-team": {
+              "headerName": "Prompt Team",
+              "role": "prompt-team"
+            },
+            "qa-team": {
+              "headerName": "QA",
+              "role": "qa-team"
+            },
+            "response-and-explanation-team": {
+              "headerName": "Response Team",
+              "role": "response-and-explanation-team"
+            }
+          },
+          "labelingType": {
+            "explanation": {
+              "headerName": "Explanation Text",
+              "type": "string"
+            },
+            "finalAnswer": {
+              "headerName": "Final Answer",
+              "type": "number"
+            },
+            "prompt": {
+              "headerName": "Prompt Text",
+              "type": "string"
+            },
+            "promptCategory": {
+              "headerName": "Prompt Category",
+              "type": "string"
+            },
+            "promptQA": {
+              "feedback": {
+                "headerName": "Prompt QA Feedback",
+                "type": "string"
+              },
+              "prompt": {
+                "creativity": {
+                  "headerName": "Creativity Score",
+                  "type": "number"
+                },
+                "isCorrect": {
+                  "headerName": "Is Prompt Correct",
+                  "type": "boolean"
+                },
+                "relevance": {
+                  "headerName": "Prompt Relevance",
+                  "type": "number"
+                }
+              }
+            },
+            "response": {
+              "headerName": "Response Text",
+              "type": "string"
+            },
+            "responseQA": {
+              "explanation": {
+                "coherence": {
+                  "headerName": "Explanation Coherence",
+                  "type": "number"
+                },
+                "compareWithLLM": {
+                  "headerName": "Compare with LLM",
+                  "type": "string"
+                },
+                "correctness": {
+                  "headerName": "Explanation Correctness",
+                  "type": "number"
+                },
+                "helpfulness": {
+                  "headerName": "Explanation Helpfullness",
+                  "type": "number"
+                },
+                "isCorrect": {
+                  "headerName": "Is Explanation Correct",
+                  "type": "boolean"
+                },
+                "quality": {
+                  "headerName": "Explanation Quality",
+                  "type": "number"
+                }
+              },
+              "feedback": {
+                "headerName": "Response QA Feedback",
+                "type": "string"
+              },
+              "resolution": {
+                "reason": {
+                  "headerName": "Resolution Reason",
+                  "type": "string"
+                },
+                "result": {
+                  "headerName": "Resolution Result",
+                  "type": "string"
+                }
+              },
+              "response": {
+                "coherence": {
+                  "headerName": "Response Coherence Score",
+                  "type": "number"
+                },
+                "compareWithLLM": {
+                  "headerName": "Response Compare with LLM",
+                  "type": "string"
+                },
+                "correctness": {
+                  "headerName": "Response Correctness",
+                  "type": "number"
+                },
+                "helpfulness": {
+                  "headerName": "Response Helpfulness Score",
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      },
+      "new_value": {
+        "value": {
+          "collaboratorsType": {
+            "prompt-team": {
+              "headerName": "Prompt Team",
+              "role": "prompt-team"
+            },
+            "qa-team": {
+              "headerName": "QA",
+              "role": "qa-team"
+            },
+            "response-and-explanation-team": {
+              "headerName": "Response Team",
+              "role": "response-and-explanation-team"
+            }
+          },
+          "labelingType": {
+            "explanation": {
+              "headerName": "Explanation Text",
+              "type": "string"
+            },
+            "finalAnswer": {
+              "headerName": "Final Answer",
+              "type": "number"
+            },
+            "prompt": {
+              "headerName": "Prompt Text",
+              "type": "string"
+            },
+            "promptCategory": {
+              "headerName": "Prompt Category",
+              "type": "string"
+            },
+            "promptQA": {
+              "feedback": {
+                "headerName": "Prompt QA Feedback",
+                "type": "string"
+              },
+              "prompt": {
+                "creativity": {
+                  "headerName": "Creativity Score",
+                  "type": "number"
+                },
+                "isCorrect": {
+                  "headerName": "Is Prompt Correct",
+                  "type": "boolean"
+                },
+                "relevance": {
+                  "headerName": "Prompt Relevance",
+                  "type": "number"
+                },
+                "typeOfPrompt": {
+                  "headerName": "Type of Prompt",
+                  "type": "string"
+                }
+              }
+            },
+            "response": {
+              "headerName": "Response Text",
+              "type": "string"
+            },
+            "responseQA": {
+              "explanation": {
+                "coherence": {
+                  "headerName": "Explanation Coherence",
+                  "type": "number"
+                },
+                "compareWithLLM": {
+                  "headerName": "Compare with LLM",
+                  "type": "string"
+                },
+                "correctness": {
+                  "headerName": "Explanation Correctness",
+                  "type": "number"
+                },
+                "helpfulness": {
+                  "headerName": "Explanation Helpfullness",
+                  "type": "number"
+                },
+                "isCorrect": {
+                  "headerName": "Is Explanation Correct",
+                  "type": "boolean"
+                },
+                "quality": {
+                  "headerName": "Explanation Quality",
+                  "type": "number"
+                }
+              },
+              "feedback": {
+                "headerName": "Response QA Feedback",
+                "type": "string"
+              },
+              "resolution": {
+                "reason": {
+                  "headerName": "Resolution Reason",
+                  "type": "string"
+                },
+                "result": {
+                  "headerName": "Resolution Result",
+                  "type": "string"
+                }
+              },
+              "response": {
+                "coherence": {
+                  "headerName": "Response Coherence Score",
+                  "type": "number"
+                },
+                "compareWithLLM": {
+                  "headerName": "Response Compare with LLM",
+                  "type": "string"
+                },
+                "correctness": {
+                  "headerName": "Response Correctness",
+                  "type": "number"
+                },
+                "helpfulness": {
+                  "headerName": "Response Helpfulness Score",
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      },
+      "app_config_id": 41,
+      "author_id": 77,
+      "datastream_metadata": {
+        "uuid": "28b152ed-5e5d-463a-938e-07d500100100",
+        "source_timestamp": 1727691991000
+      }
+    },
+    {
+      "created_at": "2024-09-18T12:50:26.723474",
+      "updated_at": "2024-09-18T12:50:26.723474",
+      "id": 13,
+      "old_value": {
+        "value": {
+          "collaboratorsType": {
+            "prompt-team": {
+              "headerName": "Prompt Team",
+              "role": "prompt-team"
+            },
+            "qa-team": {
+              "headerName": "QA",
+              "role": "qa-team"
+            },
+            "response-and-explanation-team": {
+              "headerName": "Response Team",
+              "role": "response-and-explanation-team"
+            }
+          },
+          "labelingType": {
+            "explanation": {
+              "headerName": "Explanation Text",
+              "type": "string"
+            },
+            "finalAnswer": {
+              "headerName": "Final Answer",
+              "type": "number"
+            },
+            "prompt": {
+              "headerName": "Prompt Text",
+              "type": "string"
+            },
+            "promptCategory": {
+              "headerName": "Prompt Category",
+              "type": "string"
+            },
+            "promptQA": {
+              "prompt": {
+                "creativity": {
+                  "headerName": "Creativity Score",
+                  "type": "number"
+                },
+                "isCorrect": {
+                  "headerName": "Is Prompt Correct",
+                  "type": "boolean"
+                },
+                "relevance": {
+                  "headerName": "Prompt Relevance",
+                  "type": "number"
+                }
+              }
+            },
+            "response": {
+              "headerName": "Response Text",
+              "type": "string"
+            },
+            "responseQA": {
+              "explanation": {
+                "coherence": {
+                  "headerName": "Explanation Coherence",
+                  "type": "number"
+                },
+                "compareWithLLM": {
+                  "headerName": "Compare with LLM",
+                  "type": "string"
+                },
+                "correctness": {
+                  "headerName": "Explanation Correctness",
+                  "type": "number"
+                },
+                "helpfulness": {
+                  "headerName": "Explanation Helpfullness",
+                  "type": "number"
+                },
+                "isCorrect": {
+                  "headerName": "Is Explanation Correct",
+                  "type": "boolean"
+                },
+                "quality": {
+                  "headerName": "Explanation Quality",
+                  "type": "number"
+                }
+              },
+              "feedback": {
+                "headerName": "Response QA Feedback",
+                "type": "string"
+              },
+              "resolution": {
+                "reason": {
+                  "headerName": "Resolution Reason",
+                  "type": "string"
+                },
+                "result": {
+                  "headerName": "Resolution Result",
+                  "type": "string"
+                }
+              },
+              "response": {
+                "coherence": {
+                  "headerName": "Response Coherence Score",
+                  "type": "number"
+                },
+                "compareWithLLM": {
+                  "headerName": "Response Compare with LLM",
+                  "type": "string"
+                },
+                "correctness": {
+                  "headerName": "Response Correctness",
+                  "type": "number"
+                },
+                "helpfulness": {
+                  "headerName": "Response Helpfulness Score",
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      },
+      "new_value": {
+        "value": {
+          "collaboratorsType": {
+            "prompt-team": {
+              "headerName": "Prompt Team",
+              "role": "prompt-team"
+            },
+            "qa-team": {
+              "headerName": "QA",
+              "role": "qa-team"
+            },
+            "response-and-explanation-team": {
+              "headerName": "Response Team",
+              "role": "response-and-explanation-team"
+            }
+          },
+          "labelingType": {
+            "explanation": {
+              "headerName": "Explanation Text",
+              "type": "string"
+            },
+            "finalAnswer": {
+              "headerName": "Final Answer",
+              "type": "number"
+            },
+            "prompt": {
+              "headerName": "Prompt Text",
+              "type": "string"
+            },
+            "promptCategory": {
+              "headerName": "Prompt Category",
+              "type": "string"
+            },
+            "promptQA": {
+              "feedback": {
+                "headerName": "Prompt QA Feedback",
+                "type": "string"
+              },
+              "prompt": {
+                "creativity": {
+                  "headerName": "Creativity Score",
+                  "type": "number"
+                },
+                "isCorrect": {
+                  "headerName": "Is Prompt Correct",
+                  "type": "boolean"
+                },
+                "relevance": {
+                  "headerName": "Prompt Relevance",
+                  "type": "number"
+                }
+              }
+            },
+            "response": {
+              "headerName": "Response Text",
+              "type": "string"
+            },
+            "responseQA": {
+              "explanation": {
+                "coherence": {
+                  "headerName": "Explanation Coherence",
+                  "type": "number"
+                },
+                "compareWithLLM": {
+                  "headerName": "Compare with LLM",
+                  "type": "string"
+                },
+                "correctness": {
+                  "headerName": "Explanation Correctness",
+                  "type": "number"
+                },
+                "helpfulness": {
+                  "headerName": "Explanation Helpfullness",
+                  "type": "number"
+                },
+                "isCorrect": {
+                  "headerName": "Is Explanation Correct",
+                  "type": "boolean"
+                },
+                "quality": {
+                  "headerName": "Explanation Quality",
+                  "type": "number"
+                }
+              },
+              "feedback": {
+                "headerName": "Response QA Feedback",
+                "type": "string"
+              },
+              "resolution": {
+                "reason": {
+                  "headerName": "Resolution Reason",
+                  "type": "string"
+                },
+                "result": {
+                  "headerName": "Resolution Result",
+                  "type": "string"
+                }
+              },
+              "response": {
+                "coherence": {
+                  "headerName": "Response Coherence Score",
+                  "type": "number"
+                },
+                "compareWithLLM": {
+                  "headerName": "Response Compare with LLM",
+                  "type": "string"
+                },
+                "correctness": {
+                  "headerName": "Response Correctness",
+                  "type": "number"
+                },
+                "helpfulness": {
+                  "headerName": "Response Helpfulness Score",
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      },
+      "app_config_id": 41,
+      "author_id": 77,
+      "datastream_metadata": {
+        "uuid": "1127cee4-2640-4f14-a93f-4e0600100111",
+        "source_timestamp": 1726663826000
+      }
+    },
+    {
+      "created_at": "2024-09-11T22:13:30.610163",
+      "updated_at": "2024-09-11T22:13:30.610163",
+      "id": 12,
+      "old_value": {
+        "value": false
+      },
+      "new_value": {
+        "value": true
+      },
+      "app_config_id": 21,
+      "author_id": 16,
+      "datastream_metadata": {
+        "uuid": "b3ec44a1-2c38-4665-a878-623400000000",
+        "source_timestamp": 1726092810000
+      }
+    },
+    {
+      "created_at": "2024-09-11T09:18:38.833924",
+      "updated_at": "2024-09-11T09:18:38.833924",
+      "id": 11,
+      "old_value": {
+        "value": {
+          "collaboratorsType": {
+            "prompt-team": {
+              "headerName": "Prompt Team",
+              "role": "prompt-team"
+            },
+            "qa-team": {
+              "headerName": "QA",
+              "role": "qa-team"
+            },
+            "response-and-explanation-team": {
+              "headerName": "Response Team",
+              "role": "response-and-explanation-team"
+            }
+          },
+          "labelingType": {
+            "explanation": {
+              "headerName": "Explanation Text",
+              "type": "string"
+            },
+            "finalAnswer": {
+              "headerName": "Final Answer",
+              "type": "number"
+            },
+            "prompt": {
+              "headerName": "Prompt Text",
+              "type": "string"
+            },
+            "promptCategory": {
+              "headerName": "Prompt Category",
+              "type": "string"
+            },
+            "promptQA": {
+              "prompt": {
+                "creativity": {
+                  "headerName": "Creativity Score",
+                  "type": "number"
+                },
+                "isCorrect": {
+                  "headerName": "Is Prompt Correct",
+                  "type": "boolean"
+                },
+                "relevance": {
+                  "headerName": "Prompt Relevance",
+                  "type": "number"
+                }
+              }
+            },
+            "response": {
+              "headerName": "Response Text",
+              "type": "string"
+            },
+            "responseQA": {
+              "explanation": {
+                "compareWithLLM": {
+                  "headerName": "Compare with LLM",
+                  "type": "string"
+                },
+                "correctness": {
+                  "headerName": "Explanation Correctness",
+                  "type": "number"
+                },
+                "helpfulness": {
+                  "headerName": "Explanation Helpfullness",
+                  "type": "number"
+                },
+                "isCorrect": {
+                  "headerName": "Is Explanation Correct",
+                  "type": "boolean"
+                },
+                "quality": {
+                  "headerName": "Explanation Quality",
+                  "type": "number"
+                }
+              },
+              "feedback": {
+                "headerName": "Response QA Feedback",
+                "type": "string"
+              },
+              "resolution": {
+                "reason": {
+                  "headerName": "Resolution Reason",
+                  "type": "string"
+                },
+                "result": {
+                  "headerName": "Resolution Result",
+                  "type": "string"
+                }
+              },
+              "response": {
+                "coherence": {
+                  "headerName": "Response Coherence Score",
+                  "type": "number"
+                },
+                "compareWithLLM": {
+                  "headerName": "Response Compare with LLM",
+                  "type": "string"
+                },
+                "helpfulness": {
+                  "headerName": "Response Helpfulness Score",
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      },
+      "new_value": {
+        "value": {
+          "collaboratorsType": {
+            "prompt-team": {
+              "headerName": "Prompt Team",
+              "role": "prompt-team"
+            },
+            "qa-team": {
+              "headerName": "QA",
+              "role": "qa-team"
+            },
+            "response-and-explanation-team": {
+              "headerName": "Response Team",
+              "role": "response-and-explanation-team"
+            }
+          },
+          "labelingType": {
+            "explanation": {
+              "headerName": "Explanation Text",
+              "type": "string"
+            },
+            "finalAnswer": {
+              "headerName": "Final Answer",
+              "type": "number"
+            },
+            "prompt": {
+              "headerName": "Prompt Text",
+              "type": "string"
+            },
+            "promptCategory": {
+              "headerName": "Prompt Category",
+              "type": "string"
+            },
+            "promptQA": {
+              "prompt": {
+                "creativity": {
+                  "headerName": "Creativity Score",
+                  "type": "number"
+                },
+                "isCorrect": {
+                  "headerName": "Is Prompt Correct",
+                  "type": "boolean"
+                },
+                "relevance": {
+                  "headerName": "Prompt Relevance",
+                  "type": "number"
+                }
+              }
+            },
+            "response": {
+              "headerName": "Response Text",
+              "type": "string"
+            },
+            "responseQA": {
+              "explanation": {
+                "coherence": {
+                  "headerName": "Explanation Coherence",
+                  "type": "number"
+                },
+                "compareWithLLM": {
+                  "headerName": "Compare with LLM",
+                  "type": "string"
+                },
+                "correctness": {
+                  "headerName": "Explanation Correctness",
+                  "type": "number"
+                },
+                "helpfulness": {
+                  "headerName": "Explanation Helpfullness",
+                  "type": "number"
+                },
+                "isCorrect": {
+                  "headerName": "Is Explanation Correct",
+                  "type": "boolean"
+                },
+                "quality": {
+                  "headerName": "Explanation Quality",
+                  "type": "number"
+                }
+              },
+              "feedback": {
+                "headerName": "Response QA Feedback",
+                "type": "string"
+              },
+              "resolution": {
+                "reason": {
+                  "headerName": "Resolution Reason",
+                  "type": "string"
+                },
+                "result": {
+                  "headerName": "Resolution Result",
+                  "type": "string"
+                }
+              },
+              "response": {
+                "coherence": {
+                  "headerName": "Response Coherence Score",
+                  "type": "number"
+                },
+                "compareWithLLM": {
+                  "headerName": "Response Compare with LLM",
+                  "type": "string"
+                },
+                "correctness": {
+                  "headerName": "Response Correctness",
+                  "type": "number"
+                },
+                "helpfulness": {
+                  "headerName": "Response Helpfulness Score",
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      },
+      "app_config_id": 41,
+      "author_id": 77,
+      "datastream_metadata": {
+        "uuid": "15738e4d-0562-4505-9071-4aa200100111",
+        "source_timestamp": 1726046318000
+      }
+    },
+    {
+      "created_at": "2024-09-11T07:55:24.960594",
+      "updated_at": "2024-09-11T07:55:24.960594",
+      "id": 10,
+      "old_value": {
+        "value": {
+          "collaboratorsType": {
+            "prompt-team": {
+              "headerName": "Prompt Team",
+              "role": "prompt-team"
+            },
+            "qa-team": {
+              "headerName": "QA",
+              "role": "qa-team"
+            },
+            "response-and-explanation-team": {
+              "headerName": "Response Team",
+              "role": "response-and-explanation-team"
+            }
+          },
+          "labelingType": {
+            "explanation": {
+              "headerName": "Explanation Text",
+              "type": "string"
+            },
+            "finalAnswer": {
+              "headerName": "Final Answer",
+              "type": "number"
+            },
+            "prompt": {
+              "headerName": "Prompt Text",
+              "type": "string"
+            },
+            "promptCategory": {
+              "headerName": "Prompt Category",
+              "type": "string"
+            },
+            "promptQA": {
+              "prompt": {
+                "creativity": {
+                  "headerName": "Creativity Score",
+                  "type": "number"
+                },
+                "isCorrect": {
+                  "headerName": "Is Prompt Correct",
+                  "type": "boolean"
+                },
+                "relevance": {
+                  "headerName": "Prompt Relevance",
+                  "type": "number"
+                }
+              }
+            },
+            "response": {
+              "headerName": "Response Text",
+              "type": "string"
+            },
+            "responseQA": {
+              "explanation": {
+                "compareWithLLM": {
+                  "headerName": "Compare with LLM",
+                  "type": "string"
+                },
+                "correctness": {
+                  "headerName": "Explanation Correctness",
+                  "type": "number"
+                },
+                "helpfulness": {
+                  "headerName": "Explanation Helpfullness",
+                  "type": "number"
+                },
+                "isCorrect": {
+                  "headerName": "Is Explanation Correct",
+                  "type": "boolean"
+                },
+                "quality": {
+                  "headerName": "Explanation Quality",
+                  "type": "number"
+                }
+              },
+              "feedback": {
+                "headerName": "Response QA Feedback",
+                "type": "string"
+              },
+              "resolution": {
+                "reason": {
+                  "headerName": "Resolution Reason",
+                  "type": "string"
+                },
+                "result": {
+                  "headerName": "Resolution Result",
+                  "type": "string"
+                }
+              },
+              "response": {
+                "coherence": {
+                  "headerName": "Coherence Score",
+                  "type": "number"
+                },
+                "compareWithLLM": {
+                  "headerName": "Compare with LLM",
+                  "type": "string"
+                },
+                "helpfulness": {
+                  "headerName": "Helpfulness Score",
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      },
+      "new_value": {
+        "value": {
+          "collaboratorsType": {
+            "prompt-team": {
+              "headerName": "Prompt Team",
+              "role": "prompt-team"
+            },
+            "qa-team": {
+              "headerName": "QA",
+              "role": "qa-team"
+            },
+            "response-and-explanation-team": {
+              "headerName": "Response Team",
+              "role": "response-and-explanation-team"
+            }
+          },
+          "labelingType": {
+            "explanation": {
+              "headerName": "Explanation Text",
+              "type": "string"
+            },
+            "finalAnswer": {
+              "headerName": "Final Answer",
+              "type": "number"
+            },
+            "prompt": {
+              "headerName": "Prompt Text",
+              "type": "string"
+            },
+            "promptCategory": {
+              "headerName": "Prompt Category",
+              "type": "string"
+            },
+            "promptQA": {
+              "prompt": {
+                "creativity": {
+                  "headerName": "Creativity Score",
+                  "type": "number"
+                },
+                "isCorrect": {
+                  "headerName": "Is Prompt Correct",
+                  "type": "boolean"
+                },
+                "relevance": {
+                  "headerName": "Prompt Relevance",
+                  "type": "number"
+                }
+              }
+            },
+            "response": {
+              "headerName": "Response Text",
+              "type": "string"
+            },
+            "responseQA": {
+              "explanation": {
+                "compareWithLLM": {
+                  "headerName": "Compare with LLM",
+                  "type": "string"
+                },
+                "correctness": {
+                  "headerName": "Explanation Correctness",
+                  "type": "number"
+                },
+                "helpfulness": {
+                  "headerName": "Explanation Helpfullness",
+                  "type": "number"
+                },
+                "isCorrect": {
+                  "headerName": "Is Explanation Correct",
+                  "type": "boolean"
+                },
+                "quality": {
+                  "headerName": "Explanation Quality",
+                  "type": "number"
+                }
+              },
+              "feedback": {
+                "headerName": "Response QA Feedback",
+                "type": "string"
+              },
+              "resolution": {
+                "reason": {
+                  "headerName": "Resolution Reason",
+                  "type": "string"
+                },
+                "result": {
+                  "headerName": "Resolution Result",
+                  "type": "string"
+                }
+              },
+              "response": {
+                "coherence": {
+                  "headerName": "Response Coherence Score",
+                  "type": "number"
+                },
+                "compareWithLLM": {
+                  "headerName": "Response Compare with LLM",
+                  "type": "string"
+                },
+                "helpfulness": {
+                  "headerName": "Response Helpfulness Score",
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      },
+      "app_config_id": 41,
+      "author_id": 77,
+      "datastream_metadata": {
+        "uuid": "44a825c5-642c-44e2-95b0-1e9c01000011",
+        "source_timestamp": 1726041324000
+      }
+    },
+    {
+      "created_at": "2024-09-11T07:52:54.271416",
+      "updated_at": "2024-09-11T07:52:54.271416",
+      "id": 9,
+      "old_value": {
+        "value": {
+          "collaboratorsType": {
+            "prompt-team": {
+              "headerName": "Prompt Team",
+              "role": "prompt-team"
+            },
+            "qa-team": {
+              "headerName": "QA",
+              "role": "qa-team"
+            },
+            "response-and-explanation-team": {
+              "headerName": "Response Team",
+              "role": "response-and-explanation-team"
+            }
+          },
+          "labelingType": {
+            "explanation": {
+              "headerName": "Explanation Text",
+              "type": "string"
+            },
+            "finalAnswer": {
+              "headerName": "Final Answer",
+              "type": "number"
+            },
+            "prompt": {
+              "headerName": "Prompt Text",
+              "type": "string"
+            },
+            "promptCategory": {
+              "headerName": "Prompt Category",
+              "type": "string"
+            },
+            "promptQA": {
+              "prompt": {
+                "creativity": {
+                  "headerName": "Creativity Score",
+                  "type": "number"
+                },
+                "isCorrect": {
+                  "headerName": "Is Prompt Correct",
+                  "type": "boolean"
+                },
+                "relevance": {
+                  "headerName": "Prompt Relevance",
+                  "type": "number"
+                }
+              }
+            },
+            "response": {
+              "headerName": "Response Text",
+              "type": "string"
+            },
+            "responseQA": {
+              "explanation": {
+                "compareWithLLM": {
+                  "headerName": "Compare with LLM",
+                  "type": "string"
+                },
+                "correctness": {
+                  "headerName": "Explanation Correctness",
+                  "type": "number"
+                },
+                "helpfullness": {
+                  "headerName": "Explanation Helpfullness",
+                  "type": "number"
+                },
+                "isCorrect": {
+                  "headerName": "Is Explanation Correct",
+                  "type": "boolean"
+                },
+                "quality": {
+                  "headerName": "Explanation Quality",
+                  "type": "number"
+                }
+              },
+              "feedback": {
+                "headerName": "Response QA Feedback",
+                "type": "string"
+              },
+              "resolution": {
+                "reason": {
+                  "headerName": "Resolution Reason",
+                  "type": "string"
+                },
+                "result": {
+                  "headerName": "Resolution Result",
+                  "type": "string"
+                }
+              },
+              "response": {
+                "coherence": {
+                  "headerName": "Coherence Score",
+                  "type": "number"
+                },
+                "compareWithLLM": {
+                  "headerName": "Compare with LLM",
+                  "type": "string"
+                },
+                "helpfulness": {
+                  "headerName": "Helpfulness Score",
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      },
+      "new_value": {
+        "value": {
+          "collaboratorsType": {
+            "prompt-team": {
+              "headerName": "Prompt Team",
+              "role": "prompt-team"
+            },
+            "qa-team": {
+              "headerName": "QA",
+              "role": "qa-team"
+            },
+            "response-and-explanation-team": {
+              "headerName": "Response Team",
+              "role": "response-and-explanation-team"
+            }
+          },
+          "labelingType": {
+            "explanation": {
+              "headerName": "Explanation Text",
+              "type": "string"
+            },
+            "finalAnswer": {
+              "headerName": "Final Answer",
+              "type": "number"
+            },
+            "prompt": {
+              "headerName": "Prompt Text",
+              "type": "string"
+            },
+            "promptCategory": {
+              "headerName": "Prompt Category",
+              "type": "string"
+            },
+            "promptQA": {
+              "prompt": {
+                "creativity": {
+                  "headerName": "Creativity Score",
+                  "type": "number"
+                },
+                "isCorrect": {
+                  "headerName": "Is Prompt Correct",
+                  "type": "boolean"
+                },
+                "relevance": {
+                  "headerName": "Prompt Relevance",
+                  "type": "number"
+                }
+              }
+            },
+            "response": {
+              "headerName": "Response Text",
+              "type": "string"
+            },
+            "responseQA": {
+              "explanation": {
+                "compareWithLLM": {
+                  "headerName": "Compare with LLM",
+                  "type": "string"
+                },
+                "correctness": {
+                  "headerName": "Explanation Correctness",
+                  "type": "number"
+                },
+                "helpfulness": {
+                  "headerName": "Explanation Helpfullness",
+                  "type": "number"
+                },
+                "isCorrect": {
+                  "headerName": "Is Explanation Correct",
+                  "type": "boolean"
+                },
+                "quality": {
+                  "headerName": "Explanation Quality",
+                  "type": "number"
+                }
+              },
+              "feedback": {
+                "headerName": "Response QA Feedback",
+                "type": "string"
+              },
+              "resolution": {
+                "reason": {
+                  "headerName": "Resolution Reason",
+                  "type": "string"
+                },
+                "result": {
+                  "headerName": "Resolution Result",
+                  "type": "string"
+                }
+              },
+              "response": {
+                "coherence": {
+                  "headerName": "Coherence Score",
+                  "type": "number"
+                },
+                "compareWithLLM": {
+                  "headerName": "Compare with LLM",
+                  "type": "string"
+                },
+                "helpfulness": {
+                  "headerName": "Helpfulness Score",
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      },
+      "app_config_id": 41,
+      "author_id": 77,
+      "datastream_metadata": {
+        "uuid": "ba0dbdea-6d54-46f8-82af-db8400010100",
+        "source_timestamp": 1726041174000
+      }
+    },
+    {
+      "created_at": "2024-09-11T07:38:09.868759",
+      "updated_at": "2024-09-11T07:38:09.868759",
+      "id": 8,
+      "old_value": {
+        "value": {
+          "collaboratorsType": {
+            "prompt-team": {
+              "headerName": "Prompt Team",
+              "role": "prompt-team"
+            },
+            "qa-team": {
+              "headerName": "QA",
+              "role": "qa-team"
+            },
+            "response-and-explanation-team": {
+              "headerName": "Response Team",
+              "role": "response-and-explanation-team"
+            }
+          },
+          "labelingType": {
+            "finalAnswer": {
+              "headerName": "Final Answer",
+              "type": "number"
+            },
+            "prompt": {
+              "headerName": "Prompt Text",
+              "type": "string"
+            },
+            "promptCategory": {
+              "headerName": "Prompt Category",
+              "type": "string"
+            },
+            "promptQA": {
+              "prompt": {
+                "creativity": {
+                  "headerName": "Creativity Score",
+                  "type": "number"
+                },
+                "isCorrect": {
+                  "headerName": "Is Prompt Correct",
+                  "type": "boolean"
+                }
+              }
+            },
+            "response": {
+              "headerName": "Response Text",
+              "type": "string"
+            },
+            "responseQA": {
+              "feedback": {
+                "headerName": "Response QA Feedback",
+                "type": "string"
+              },
+              "resolution": {
+                "reason": {
+                  "headerName": "Resolution Reason",
+                  "type": "string"
+                },
+                "result": {
+                  "headerName": "Resolution Result",
+                  "type": "string"
+                }
+              },
+              "response": {
+                "coherence": {
+                  "headerName": "Coherence Score",
+                  "type": "number"
+                },
+                "compareWithLLM": {
+                  "headerName": "Compare with LLM",
+                  "type": "string"
+                },
+                "helpfulness": {
+                  "headerName": "Helpfulness Score",
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      },
+      "new_value": {
+        "value": {
+          "collaboratorsType": {
+            "prompt-team": {
+              "headerName": "Prompt Team",
+              "role": "prompt-team"
+            },
+            "qa-team": {
+              "headerName": "QA",
+              "role": "qa-team"
+            },
+            "response-and-explanation-team": {
+              "headerName": "Response Team",
+              "role": "response-and-explanation-team"
+            }
+          },
+          "labelingType": {
+            "explanation": {
+              "headerName": "Explanation Text",
+              "type": "string"
+            },
+            "finalAnswer": {
+              "headerName": "Final Answer",
+              "type": "number"
+            },
+            "prompt": {
+              "headerName": "Prompt Text",
+              "type": "string"
+            },
+            "promptCategory": {
+              "headerName": "Prompt Category",
+              "type": "string"
+            },
+            "promptQA": {
+              "prompt": {
+                "creativity": {
+                  "headerName": "Creativity Score",
+                  "type": "number"
+                },
+                "isCorrect": {
+                  "headerName": "Is Prompt Correct",
+                  "type": "boolean"
+                },
+                "relevance": {
+                  "headerName": "Prompt Relevance",
+                  "type": "number"
+                }
+              }
+            },
+            "response": {
+              "headerName": "Response Text",
+              "type": "string"
+            },
+            "responseQA": {
+              "explanation": {
+                "compareWithLLM": {
+                  "headerName": "Compare with LLM",
+                  "type": "string"
+                },
+                "correctness": {
+                  "headerName": "Explanation Correctness",
+                  "type": "number"
+                },
+                "helpfullness": {
+                  "headerName": "Explanation Helpfullness",
+                  "type": "number"
+                },
+                "isCorrect": {
+                  "headerName": "Is Explanation Correct",
+                  "type": "boolean"
+                },
+                "quality": {
+                  "headerName": "Explanation Quality",
+                  "type": "number"
+                }
+              },
+              "feedback": {
+                "headerName": "Response QA Feedback",
+                "type": "string"
+              },
+              "resolution": {
+                "reason": {
+                  "headerName": "Resolution Reason",
+                  "type": "string"
+                },
+                "result": {
+                  "headerName": "Resolution Result",
+                  "type": "string"
+                }
+              },
+              "response": {
+                "coherence": {
+                  "headerName": "Coherence Score",
+                  "type": "number"
+                },
+                "compareWithLLM": {
+                  "headerName": "Compare with LLM",
+                  "type": "string"
+                },
+                "helpfulness": {
+                  "headerName": "Helpfulness Score",
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      },
+      "app_config_id": 41,
+      "author_id": 77,
+      "datastream_metadata": {
+        "uuid": "e7e31549-0371-4a34-a6ca-b14800100011",
+        "source_timestamp": 1726040289000
+      }
+    },
+    {
+      "created_at": "2024-09-09T12:51:28.232971",
+      "updated_at": "2024-09-09T12:51:28.232971",
+      "id": 7,
+      "old_value": {
+        "value": {}
+      },
+      "new_value": {
+        "value": {
+          "collaboratorsType": {
+            "prompt-team": {
+              "headerName": "Prompt Team",
+              "role": "prompt-team"
+            },
+            "qa-team": {
+              "headerName": "QA",
+              "role": "qa-team"
+            },
+            "response-and-explanation-team": {
+              "headerName": "Response Team",
+              "role": "response-and-explanation-team"
+            }
+          },
+          "labelingType": {
+            "finalAnswer": {
+              "headerName": "Final Answer",
+              "type": "number"
+            },
+            "prompt": {
+              "headerName": "Prompt Text",
+              "type": "string"
+            },
+            "promptCategory": {
+              "headerName": "Prompt Category",
+              "type": "string"
+            },
+            "promptQA": {
+              "prompt": {
+                "creativity": {
+                  "headerName": "Creativity Score",
+                  "type": "number"
+                },
+                "isCorrect": {
+                  "headerName": "Is Prompt Correct",
+                  "type": "boolean"
+                }
+              }
+            },
+            "response": {
+              "headerName": "Response Text",
+              "type": "string"
+            },
+            "responseQA": {
+              "feedback": {
+                "headerName": "Response QA Feedback",
+                "type": "string"
+              },
+              "resolution": {
+                "reason": {
+                  "headerName": "Resolution Reason",
+                  "type": "string"
+                },
+                "result": {
+                  "headerName": "Resolution Result",
+                  "type": "string"
+                }
+              },
+              "response": {
+                "coherence": {
+                  "headerName": "Coherence Score",
+                  "type": "number"
+                },
+                "compareWithLLM": {
+                  "headerName": "Compare with LLM",
+                  "type": "string"
+                },
+                "helpfulness": {
+                  "headerName": "Helpfulness Score",
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      },
+      "app_config_id": 41,
+      "author_id": 77,
+      "datastream_metadata": {
+        "uuid": "bc153bbe-1227-490b-8c8b-7e3a00000000",
+        "source_timestamp": 1725886288000
+      }
+    },
+    {
+      "created_at": "2024-09-09T11:09:17.453397",
+      "updated_at": "2024-09-09T11:09:17.453397",
+      "id": 6,
+      "old_value": {
+        "value": {
+          "collaboratorsType": {
+            "prompt-team": {
+              "headerName": "Prompt Team",
+              "role": "prompt-team"
+            },
+            "qa-team": {
+              "headerName": "QA",
+              "role": "qa-team"
+            },
+            "response-and-explanation-team": {
+              "headerName": "Response Team",
+              "role": "response-and-explanation-team"
+            }
+          },
+          "labelingType": {
+            "finalAnswer": {
+              "headerName": "Final Answer",
+              "type": "number"
+            },
+            "prompt": {
+              "headerName": "Prompt Text",
+              "type": "string"
+            },
+            "promptCategory": {
+              "headerName": "Prompt Category",
+              "type": "string"
+            },
+            "promptQA": {
+              "prompt": {
+                "creativity": {
+                  "headerName": "Creativity Score",
+                  "type": "number"
+                },
+                "isCorrect": {
+                  "headerName": "Is Prompt Correct",
+                  "type": "boolean"
+                }
+              }
+            },
+            "response": {
+              "headerName": "Response Text",
+              "type": "string"
+            },
+            "responseQA": {
+              "feedback": {
+                "headerName": "Response QA Feedback",
+                "type": "string"
+              },
+              "resolution": {
+                "reason": {
+                  "headerName": "Resolution Reason",
+                  "type": "string"
+                },
+                "result": {
+                  "headerName": "Resolution Result",
+                  "type": "string"
+                }
+              },
+              "response": {
+                "coherence": {
+                  "headerName": "Coherence Score",
+                  "type": "number"
+                },
+                "compareWithLLM": {
+                  "headerName": "Compare with LLM",
+                  "type": "string"
+                },
+                "helpfulness": {
+                  "headerName": "Helpfulness Score",
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      },
+      "new_value": {
+        "value": {}
+      },
+      "app_config_id": 41,
+      "author_id": 78,
+      "datastream_metadata": {
+        "uuid": "981e1143-9cce-48cf-a32b-dc9d00101001",
+        "source_timestamp": 1725880157000
+      }
+    },
+    {
+      "created_at": "2024-08-22T20:34:35.427590",
+      "updated_at": "2024-08-22T20:34:35.427590",
+      "id": 5,
+      "old_value": {
+        "value": 3
+      },
+      "new_value": {
+        "value": 10
+      },
+      "app_config_id": 36,
+      "author_id": 1,
+      "datastream_metadata": {
+        "uuid": "c37385b9-99b0-4ca5-86f9-01c600010100",
+        "source_timestamp": 1724358875000
+      }
+    },
+    {
+      "created_at": "2024-08-07T13:09:15.214844",
+      "updated_at": "2024-08-07T13:09:15.214844",
+      "id": 4,
+      "old_value": {
+        "value": {
+          "keys": [
+            "Project / Action"
+          ]
+        }
+      },
+      "new_value": {
+        "value": {
+          "keys": [
+            "Project / Action",
+            "File Name"
+          ]
+        }
+      },
+      "app_config_id": 33,
+      "author_id": 4,
+      "datastream_metadata": {
+        "uuid": "0b715cf7-cb3f-4542-83e2-386501000001",
+        "source_timestamp": 1723036155000
+      }
+    },
+    {
+      "created_at": "2024-07-22T14:46:12.985670",
+      "updated_at": "2024-07-22T14:46:12.985670",
+      "id": 3,
+      "old_value": {
+        "value": {
+          "keys": [
+            "Use Case",
+            "Technical Topic",
+            "Programming Language",
+            "User Personality"
+          ]
+        }
+      },
+      "new_value": {
+        "value": {
+          "keys": [
+            "File Name"
+          ]
+        }
+      },
+      "app_config_id": 27,
+      "author_id": 4,
+      "datastream_metadata": {
+        "uuid": "578e02f0-6319-43f0-8519-727c00000010",
+        "source_timestamp": 1721939912000
+      }
+    },
+    {
+      "created_at": "2024-07-22T14:45:54.037713",
+      "updated_at": "2024-07-22T14:45:54.037713",
+      "id": 2,
+      "old_value": {
+        "value": false
+      },
+      "new_value": {
+        "value": true
+      },
+      "app_config_id": 24,
+      "author_id": 4,
+      "datastream_metadata": {
+        "uuid": "578e02f0-6319-43f0-8519-727c00000001",
+        "source_timestamp": 1721939912000
+      }
+    },
+    {
+      "created_at": "2024-07-22T14:45:08.837928",
+      "updated_at": "2024-07-22T14:45:08.837928",
+      "id": 1,
+      "old_value": {
+        "value": {
+          "keys": [
+            "Use Case",
+            "Programming Language"
+          ]
+        }
+      },
+      "new_value": {
+        "value": {
+          "keys": [
+            "File Name"
+          ]
+        }
+      },
+      "app_config_id": 25,
+      "author_id": 4,
+      "datastream_metadata": {
+        "uuid": "578e02f0-6319-43f0-8519-727c00000000",
+        "source_timestamp": 1721939912000
+      }
+    }
+  ]
+}

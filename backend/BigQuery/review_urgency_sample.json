@@ -1,0 +1,1308 @@
+{
+  "table": "review_urgency",
+  "row_count": 8144,
+  "sample_count": 100,
+  "fetched_at": "2026-01-28T23:24:31.325874",
+  "data": [
+    {
+      "created_at": "2026-01-28T22:13:04.513354",
+      "updated_at": "2026-01-28T22:13:04.513354",
+      "id": 22171,
+      "urgency_score": 0.0,
+      "conversation_id": 70252,
+      "review_id": null,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "fca7392b-fc76-455c-a46b-be63af097950",
+        "source_timestamp": 1769638384000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:11:06.330489",
+      "updated_at": "2026-01-28T22:11:06.330489",
+      "id": 22170,
+      "urgency_score": 0.0,
+      "conversation_id": 64992,
+      "review_id": null,
+      "last_manual_review_id": 14553,
+      "datastream_metadata": {
+        "uuid": "9303ecad-6a51-4039-95fc-2ca23b0b8f90",
+        "source_timestamp": 1769638266000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:10:10.990911",
+      "updated_at": "2026-01-28T22:10:10.990911",
+      "id": 22169,
+      "urgency_score": 0.0,
+      "conversation_id": 68754,
+      "review_id": null,
+      "last_manual_review_id": 22223,
+      "datastream_metadata": {
+        "uuid": "ad4ea2f9-2d37-44d1-a0a5-9a6a79b7511c",
+        "source_timestamp": 1769638210000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:08:13.376043",
+      "updated_at": "2026-01-28T22:08:13.376043",
+      "id": 22168,
+      "urgency_score": 0.0,
+      "conversation_id": 70755,
+      "review_id": null,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "9eae2f49-d160-42a5-8760-501e7a3ad65a",
+        "source_timestamp": 1769638093000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:07:49.900997",
+      "updated_at": "2026-01-28T22:07:49.900997",
+      "id": 22167,
+      "urgency_score": 0.0,
+      "conversation_id": 55635,
+      "review_id": null,
+      "last_manual_review_id": 5106,
+      "datastream_metadata": {
+        "uuid": "e365a061-76ed-4fd2-8737-218cfe659372",
+        "source_timestamp": 1769638069000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:06:10.386840",
+      "updated_at": "2026-01-28T22:06:10.386840",
+      "id": 22166,
+      "urgency_score": 0.0,
+      "conversation_id": 70149,
+      "review_id": null,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "8081ce98-560a-43c8-bd5e-37e7a5596287",
+        "source_timestamp": 1769637970000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:04:26.862968",
+      "updated_at": "2026-01-28T22:04:26.862968",
+      "id": 22165,
+      "urgency_score": 0.0,
+      "conversation_id": 64027,
+      "review_id": null,
+      "last_manual_review_id": 21526,
+      "datastream_metadata": {
+        "uuid": "f2223240-1b10-4bfb-87f5-28fb1cffada8",
+        "source_timestamp": 1769637866000
+      }
+    },
+    {
+      "created_at": "2026-01-28T22:01:16.673116",
+      "updated_at": "2026-01-28T22:03:04",
+      "id": 22164,
+      "urgency_score": 0.0,
+      "conversation_id": 62894,
+      "review_id": 26191,
+      "last_manual_review_id": 17014,
+      "datastream_metadata": {
+        "uuid": "8fae23e8-5c51-427c-b7ef-e3ac9c38996e",
+        "source_timestamp": 1769637784000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:59:47.375285",
+      "updated_at": "2026-01-28T21:59:47.375285",
+      "id": 22163,
+      "urgency_score": 0.0,
+      "conversation_id": 70465,
+      "review_id": null,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "497e21ee-a2c1-48e6-bd6c-d4f06013394f",
+        "source_timestamp": 1769637587000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:58:09.770672",
+      "updated_at": "2026-01-28T21:58:09.770672",
+      "id": 22162,
+      "urgency_score": 0.0,
+      "conversation_id": 70278,
+      "review_id": null,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "221ef905-075c-46f5-965c-5a896179ebbb",
+        "source_timestamp": 1769637489000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:57:07.255636",
+      "updated_at": "2026-01-28T21:57:07.255636",
+      "id": 22161,
+      "urgency_score": 0.0,
+      "conversation_id": 70018,
+      "review_id": null,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "b1101ce5-bc08-44de-a09f-31a421356efa",
+        "source_timestamp": 1769637427000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:53:34.912956",
+      "updated_at": "2026-01-28T21:53:34.912956",
+      "id": 22160,
+      "urgency_score": 0.0,
+      "conversation_id": 64785,
+      "review_id": null,
+      "last_manual_review_id": 6763,
+      "datastream_metadata": {
+        "uuid": "3410cf5f-83f8-4e26-9faa-b78a7fb044d6",
+        "source_timestamp": 1769637214000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:50:16.168166",
+      "updated_at": "2026-01-28T21:50:16.168166",
+      "id": 22159,
+      "urgency_score": 0.0,
+      "conversation_id": 70304,
+      "review_id": null,
+      "last_manual_review_id": 26170,
+      "datastream_metadata": {
+        "uuid": "8649c081-acb6-4b65-91d4-c289290e82e0",
+        "source_timestamp": 1769637016000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:48:56.542129",
+      "updated_at": "2026-01-28T21:48:56.542129",
+      "id": 22158,
+      "urgency_score": 0.0,
+      "conversation_id": 70724,
+      "review_id": null,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "65b15a65-392e-429a-9203-9548aeb00fa4",
+        "source_timestamp": 1769636936000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:46:52.979226",
+      "updated_at": "2026-01-28T21:46:52.979226",
+      "id": 22157,
+      "urgency_score": 0.0,
+      "conversation_id": 55079,
+      "review_id": null,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "3c2935e1-f3e7-441b-b861-81848adcc3dc",
+        "source_timestamp": 1769636812000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:46:46.875285",
+      "updated_at": "2026-01-28T21:46:46.875285",
+      "id": 22156,
+      "urgency_score": 0.0,
+      "conversation_id": 62879,
+      "review_id": null,
+      "last_manual_review_id": 7436,
+      "datastream_metadata": {
+        "uuid": "42bdcd37-1689-4352-9b80-22d54d760c4f",
+        "source_timestamp": 1769636806000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:40:10.776876",
+      "updated_at": "2026-01-28T21:40:10.776876",
+      "id": 22155,
+      "urgency_score": 0.0,
+      "conversation_id": 54927,
+      "review_id": null,
+      "last_manual_review_id": 26089,
+      "datastream_metadata": {
+        "uuid": "aaebcded-6f96-4b17-a035-f59400a1a2e4",
+        "source_timestamp": 1769636410000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:38:01.089807",
+      "updated_at": "2026-01-28T21:38:01.089807",
+      "id": 22154,
+      "urgency_score": 0.0,
+      "conversation_id": 70830,
+      "review_id": null,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "710e6252-2d49-4828-b4de-1cb712dcec2c",
+        "source_timestamp": 1769636281000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:32:27.687586",
+      "updated_at": "2026-01-28T21:32:27.687586",
+      "id": 22153,
+      "urgency_score": 0.0,
+      "conversation_id": 70249,
+      "review_id": null,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "89925999-2675-472d-911f-f1f9be967694",
+        "source_timestamp": 1769635947000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:29:57.846749",
+      "updated_at": "2026-01-28T21:30:46",
+      "id": 22152,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 63841,
+      "review_id": 26173,
+      "last_manual_review_id": 14239,
+      "datastream_metadata": {
+        "uuid": "6a28c5bc-3b80-4b69-ad12-2a4972551261",
+        "source_timestamp": 1769635846000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:27:13.228393",
+      "updated_at": "2026-01-28T21:30:13",
+      "id": 22151,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 70683,
+      "review_id": null,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "ff83026a-59ee-45f1-a90c-c5d64f937adc",
+        "source_timestamp": 1769635813000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:24:39.685038",
+      "updated_at": "2026-01-28T21:24:39.685038",
+      "id": 22150,
+      "urgency_score": 0.0,
+      "conversation_id": 70862,
+      "review_id": null,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "142d602f-5eb1-44a8-9fa8-804354b0ed0d",
+        "source_timestamp": 1769635479000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:23:03.475516",
+      "updated_at": "2026-01-28T21:30:14",
+      "id": 22149,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 64212,
+      "review_id": null,
+      "last_manual_review_id": 4754,
+      "datastream_metadata": {
+        "uuid": "fd607315-f74d-4c27-bead-59f348ee75fa",
+        "source_timestamp": 1769635814000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:22:39.727845",
+      "updated_at": "2026-01-28T21:30:12",
+      "id": 22148,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 70343,
+      "review_id": null,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "4cb9493e-0897-4781-b2d7-d2493e287702",
+        "source_timestamp": 1769635812000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:20:57.776616",
+      "updated_at": "2026-01-28T21:25:24",
+      "id": 22147,
+      "urgency_score": 0.0,
+      "conversation_id": 65202,
+      "review_id": 26167,
+      "last_manual_review_id": 4972,
+      "datastream_metadata": {
+        "uuid": "eddb010e-7856-4350-91a5-53158e578df8",
+        "source_timestamp": 1769635524000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:17:57.280958",
+      "updated_at": "2026-01-28T21:19:24",
+      "id": 22145,
+      "urgency_score": 0.0,
+      "conversation_id": 68029,
+      "review_id": 26164,
+      "last_manual_review_id": 15156,
+      "datastream_metadata": {
+        "uuid": "4a78f74d-1ac1-4c30-81f9-a6d827f73e97",
+        "source_timestamp": 1769635164000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:16:40.263114",
+      "updated_at": "2026-01-28T21:30:14",
+      "id": 22144,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 64464,
+      "review_id": null,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "672c4302-c2fe-4f04-9d9f-9108d80bf6e1",
+        "source_timestamp": 1769635814000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:16:36.004678",
+      "updated_at": "2026-01-28T21:30:14",
+      "id": 22143,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 69031,
+      "review_id": null,
+      "last_manual_review_id": 21448,
+      "datastream_metadata": {
+        "uuid": "bff3c5a2-a998-4e0e-a2f4-c99450105007",
+        "source_timestamp": 1769635814000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:14:14.169981",
+      "updated_at": "2026-01-28T21:25:14",
+      "id": 22142,
+      "urgency_score": 0.0,
+      "conversation_id": 70912,
+      "review_id": 26169,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "dbaba30a-ccaf-453f-a416-ecaeeee81ddd",
+        "source_timestamp": 1769635514000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:03:29.361401",
+      "updated_at": "2026-01-28T21:30:14",
+      "id": 22141,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 70152,
+      "review_id": null,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "d4553bbc-9a32-4125-ad31-256f49ab102c",
+        "source_timestamp": 1769635814000
+      }
+    },
+    {
+      "created_at": "2026-01-28T21:02:44.893578",
+      "updated_at": "2026-01-28T21:30:14",
+      "id": 22140,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 55260,
+      "review_id": null,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "1c9886db-ec0b-4dbd-b081-0936b20b2667",
+        "source_timestamp": 1769635814000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:58:19.906108",
+      "updated_at": "2026-01-28T21:30:13",
+      "id": 22139,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 70548,
+      "review_id": null,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "997a7ba8-fe42-4f10-a89a-addd35adf161",
+        "source_timestamp": 1769635813000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:52:52.261354",
+      "updated_at": "2026-01-28T21:00:11",
+      "id": 22138,
+      "urgency_score": 0.0,
+      "conversation_id": 54941,
+      "review_id": 26151,
+      "last_manual_review_id": 25707,
+      "datastream_metadata": {
+        "uuid": "fbe12cc3-12e8-493c-bff9-7218865e0de9",
+        "source_timestamp": 1769634011000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:52:12.343698",
+      "updated_at": "2026-01-28T20:53:05",
+      "id": 22137,
+      "urgency_score": 0.0,
+      "conversation_id": 67701,
+      "review_id": 26148,
+      "last_manual_review_id": 12191,
+      "datastream_metadata": {
+        "uuid": "d8f6d566-1f72-4e28-adeb-43f87437cb0d",
+        "source_timestamp": 1769633585000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:49:34.204394",
+      "updated_at": "2026-01-28T20:49:34.204394",
+      "id": 22136,
+      "urgency_score": 0.0,
+      "conversation_id": 70255,
+      "review_id": null,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "9abc1b99-c85e-4343-a639-00e04dcc5de2",
+        "source_timestamp": 1769633374000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:48:22.142059",
+      "updated_at": "2026-01-28T21:30:13",
+      "id": 22135,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 70466,
+      "review_id": null,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "5dd5c19b-a44a-4ff3-b992-c1d2fb97697d",
+        "source_timestamp": 1769635813000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:47:32.830368",
+      "updated_at": "2026-01-28T21:30:12",
+      "id": 22134,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 70719,
+      "review_id": null,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "4cd98ed5-a15a-4e18-a2dd-883e9797fb1e",
+        "source_timestamp": 1769635812000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:46:26.893513",
+      "updated_at": "2026-01-28T21:30:14",
+      "id": 22133,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 63134,
+      "review_id": null,
+      "last_manual_review_id": 8019,
+      "datastream_metadata": {
+        "uuid": "04b5d3b9-b4bc-4c61-8773-cceff5407df5",
+        "source_timestamp": 1769635814000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:45:19.494158",
+      "updated_at": "2026-01-28T21:30:14",
+      "id": 22132,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 54806,
+      "review_id": null,
+      "last_manual_review_id": 2909,
+      "datastream_metadata": {
+        "uuid": "619fd295-b85d-4fc5-aa4b-08efbfdc7e11",
+        "source_timestamp": 1769635814000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:42:30.075258",
+      "updated_at": "2026-01-28T21:30:14",
+      "id": 22131,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 69044,
+      "review_id": null,
+      "last_manual_review_id": 21435,
+      "datastream_metadata": {
+        "uuid": "b6247b43-e683-4e44-9acc-cc52b1b5bf9b",
+        "source_timestamp": 1769635814000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:42:21.042051",
+      "updated_at": "2026-01-28T21:30:14",
+      "id": 22130,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 64549,
+      "review_id": null,
+      "last_manual_review_id": 7296,
+      "datastream_metadata": {
+        "uuid": "9036070b-78a5-4ec4-8988-ebb047845b49",
+        "source_timestamp": 1769635814000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:40:11.205246",
+      "updated_at": "2026-01-28T21:30:14",
+      "id": 22129,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 70148,
+      "review_id": null,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "f7b5e40b-1523-4885-ad59-04e2d2b26afe",
+        "source_timestamp": 1769635814000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:39:17.586269",
+      "updated_at": "2026-01-28T21:30:14",
+      "id": 22128,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 54228,
+      "review_id": null,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "67f32030-46e0-4063-9188-66f00071f60d",
+        "source_timestamp": 1769635814000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:37:52.903279",
+      "updated_at": "2026-01-28T20:37:52.903279",
+      "id": 22127,
+      "urgency_score": 0.0,
+      "conversation_id": 64909,
+      "review_id": null,
+      "last_manual_review_id": 8618,
+      "datastream_metadata": {
+        "uuid": "ed5e7492-39e0-4b0f-b678-bd13442cb5bc",
+        "source_timestamp": 1769632672000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:36:05.258578",
+      "updated_at": "2026-01-28T21:30:14",
+      "id": 22126,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 70732,
+      "review_id": null,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "71ee8b6e-0ba8-4428-80da-e8ad7d1e978a",
+        "source_timestamp": 1769635814000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:35:51.195897",
+      "updated_at": "2026-01-28T21:30:12",
+      "id": 22125,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 70656,
+      "review_id": null,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "e16172a5-31ef-41ee-8038-e7ddb446919c",
+        "source_timestamp": 1769635812000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:33:29.469413",
+      "updated_at": "2026-01-28T21:30:12",
+      "id": 22124,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 69643,
+      "review_id": null,
+      "last_manual_review_id": 24044,
+      "datastream_metadata": {
+        "uuid": "a26e1a2a-5ea6-45d4-a147-e5410bcf3a6f",
+        "source_timestamp": 1769635812000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:26:35.492800",
+      "updated_at": "2026-01-28T20:29:08",
+      "id": 22122,
+      "urgency_score": 0.0,
+      "conversation_id": 67709,
+      "review_id": 26133,
+      "last_manual_review_id": 10438,
+      "datastream_metadata": {
+        "uuid": "62224291-7ac4-4394-b35d-f16fd9c7d655",
+        "source_timestamp": 1769632148000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:25:09.644296",
+      "updated_at": "2026-01-28T21:30:14",
+      "id": 22121,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 54472,
+      "review_id": null,
+      "last_manual_review_id": 2647,
+      "datastream_metadata": {
+        "uuid": "19942d64-bdaf-48b2-93a6-763def0ba771",
+        "source_timestamp": 1769635814000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:17:32.991273",
+      "updated_at": "2026-01-28T21:30:14",
+      "id": 22120,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 54705,
+      "review_id": null,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "956d07f9-89e9-42ad-8f74-2a6c9d842fc3",
+        "source_timestamp": 1769635814000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:17:21.471372",
+      "updated_at": "2026-01-28T21:30:14",
+      "id": 22119,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 54643,
+      "review_id": null,
+      "last_manual_review_id": 25390,
+      "datastream_metadata": {
+        "uuid": "2d0b1204-1950-40d5-9ef3-7eb45f2ed0ef",
+        "source_timestamp": 1769635814000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:16:39.034269",
+      "updated_at": "2026-01-28T20:16:39.034269",
+      "id": 22118,
+      "urgency_score": 0.0,
+      "conversation_id": 68300,
+      "review_id": null,
+      "last_manual_review_id": 15056,
+      "datastream_metadata": {
+        "uuid": "0f3019f3-cb35-464a-b18c-160e07334849",
+        "source_timestamp": 1769631399000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:15:41.217013",
+      "updated_at": "2026-01-28T21:30:14",
+      "id": 22117,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 62751,
+      "review_id": null,
+      "last_manual_review_id": 25311,
+      "datastream_metadata": {
+        "uuid": "c7a45901-2f3b-48c7-a62e-e40c94b97d34",
+        "source_timestamp": 1769635814000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:12:45.809177",
+      "updated_at": "2026-01-28T21:30:14",
+      "id": 22116,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 70133,
+      "review_id": null,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "f7ea34f7-5a0d-41e4-8e91-bced08af9602",
+        "source_timestamp": 1769635814000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:10:08.141506",
+      "updated_at": "2026-01-28T20:10:08.141506",
+      "id": 22115,
+      "urgency_score": 0.0,
+      "conversation_id": 70818,
+      "review_id": null,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "dd148004-3082-4554-bacd-b095e27ab4cc",
+        "source_timestamp": 1769631008000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:09:17.560262",
+      "updated_at": "2026-01-28T21:30:12",
+      "id": 22114,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 64766,
+      "review_id": null,
+      "last_manual_review_id": 9787,
+      "datastream_metadata": {
+        "uuid": "7e019fd5-4f73-49b5-9f5f-aa44325721e0",
+        "source_timestamp": 1769635812000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:02:30.708945",
+      "updated_at": "2026-01-28T20:03:17",
+      "id": 22113,
+      "urgency_score": 0.0,
+      "conversation_id": 68332,
+      "review_id": 26114,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "9b6c6995-f350-4b29-a83f-34979ae6aab1",
+        "source_timestamp": 1769630597000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:02:23.889566",
+      "updated_at": "2026-01-28T21:30:14",
+      "id": 22112,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 69741,
+      "review_id": null,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "24896b3a-dff7-4761-b741-6cce68b0657c",
+        "source_timestamp": 1769635814000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:02:01.812696",
+      "updated_at": "2026-01-28T21:30:12",
+      "id": 22111,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 64359,
+      "review_id": null,
+      "last_manual_review_id": 6515,
+      "datastream_metadata": {
+        "uuid": "015ece4c-d24d-4107-90eb-e32fbd7c2e95",
+        "source_timestamp": 1769635812000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:01:58.319232",
+      "updated_at": "2026-01-28T20:01:58.319232",
+      "id": 22110,
+      "urgency_score": 0.0,
+      "conversation_id": 65101,
+      "review_id": null,
+      "last_manual_review_id": 9745,
+      "datastream_metadata": {
+        "uuid": "62cc600c-9895-44c7-96fe-cae0b9adf4da",
+        "source_timestamp": 1769630518000
+      }
+    },
+    {
+      "created_at": "2026-01-28T20:00:39.290427",
+      "updated_at": "2026-01-28T20:01:40",
+      "id": 22109,
+      "urgency_score": 0.0,
+      "conversation_id": 67552,
+      "review_id": 26112,
+      "last_manual_review_id": 10587,
+      "datastream_metadata": {
+        "uuid": "22dcde15-9b36-46d6-9768-7e2bcb23a7e8",
+        "source_timestamp": 1769630500000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:59:36.861097",
+      "updated_at": "2026-01-28T19:59:36.861097",
+      "id": 22108,
+      "urgency_score": 0.0,
+      "conversation_id": 70762,
+      "review_id": null,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "841d226d-ce7b-4149-9493-5993ed555017",
+        "source_timestamp": 1769630376000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:58:43.977765",
+      "updated_at": "2026-01-28T19:58:43.977765",
+      "id": 22107,
+      "urgency_score": 0.0,
+      "conversation_id": 70728,
+      "review_id": null,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "27baf4ba-742d-4248-8796-3f0c2dd883fd",
+        "source_timestamp": 1769630323000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:48:57.369532",
+      "updated_at": "2026-01-28T21:30:12",
+      "id": 22106,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 65117,
+      "review_id": null,
+      "last_manual_review_id": 4467,
+      "datastream_metadata": {
+        "uuid": "ba084c8f-4049-4c82-b01f-32c4637045b8",
+        "source_timestamp": 1769635812000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:48:31.675312",
+      "updated_at": "2026-01-28T19:48:31.675312",
+      "id": 22105,
+      "urgency_score": 0.0,
+      "conversation_id": 70829,
+      "review_id": null,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "acb4d827-ee4b-413f-9399-bbe978c710ac",
+        "source_timestamp": 1769629711000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:39:30.854425",
+      "updated_at": "2026-01-28T21:30:12",
+      "id": 22104,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 54442,
+      "review_id": null,
+      "last_manual_review_id": 10455,
+      "datastream_metadata": {
+        "uuid": "9b48619f-8cb6-4b8c-b804-67ead2b5f98f",
+        "source_timestamp": 1769635812000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:36:44.569597",
+      "updated_at": "2026-01-28T21:30:12",
+      "id": 22103,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 65591,
+      "review_id": null,
+      "last_manual_review_id": 4195,
+      "datastream_metadata": {
+        "uuid": "aaefe7a1-5c59-4657-aa1b-f99b2a7339e5",
+        "source_timestamp": 1769635812000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:34:07.049065",
+      "updated_at": "2026-01-28T19:34:07.049065",
+      "id": 22102,
+      "urgency_score": 0.0,
+      "conversation_id": 70279,
+      "review_id": null,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "516f6e87-b73b-4391-b213-5b9afc018b15",
+        "source_timestamp": 1769628847000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:30:14.965160",
+      "updated_at": "2026-01-28T21:30:12",
+      "id": 22101,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 67682,
+      "review_id": null,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "e5197e20-228f-4731-bad3-ac3e2dcacab7",
+        "source_timestamp": 1769635812000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:27:28.930371",
+      "updated_at": "2026-01-28T19:27:28.930371",
+      "id": 22100,
+      "urgency_score": 0.0,
+      "conversation_id": 70855,
+      "review_id": null,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "83c9835e-e885-4232-b769-eae99310afd0",
+        "source_timestamp": 1769628448000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:24:51.187782",
+      "updated_at": "2026-01-28T21:30:12",
+      "id": 22099,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 70555,
+      "review_id": null,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "d9682302-b2fb-4cae-a546-09fd9e52f5ca",
+        "source_timestamp": 1769635812000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:23:19.248576",
+      "updated_at": "2026-01-28T21:30:14",
+      "id": 22098,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 67440,
+      "review_id": null,
+      "last_manual_review_id": 14334,
+      "datastream_metadata": {
+        "uuid": "e78d9610-b388-45a5-9436-1a9bb43f4e67",
+        "source_timestamp": 1769635814000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:19:10.630696",
+      "updated_at": "2026-01-28T19:19:10.630696",
+      "id": 22097,
+      "urgency_score": 0.0,
+      "conversation_id": 70764,
+      "review_id": null,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "8100ab05-099e-427e-8144-5c4fca3b0ede",
+        "source_timestamp": 1769627950000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:13:59.356214",
+      "updated_at": "2026-01-28T19:13:59.356214",
+      "id": 22096,
+      "urgency_score": 0.0,
+      "conversation_id": 68432,
+      "review_id": null,
+      "last_manual_review_id": 22603,
+      "datastream_metadata": {
+        "uuid": "f485a2ff-1933-4871-a930-bf5b9ff3bba1",
+        "source_timestamp": 1769627639000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:11:56.567768",
+      "updated_at": "2026-01-28T19:11:56.567768",
+      "id": 22094,
+      "urgency_score": 0.0,
+      "conversation_id": 70273,
+      "review_id": null,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "d074dfaf-6fd3-41a3-a126-511d848fb408",
+        "source_timestamp": 1769627516000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:09:42.261522",
+      "updated_at": "2026-01-28T21:30:14",
+      "id": 22093,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 69015,
+      "review_id": null,
+      "last_manual_review_id": 17329,
+      "datastream_metadata": {
+        "uuid": "d9ceeea2-fe43-471c-8506-859e5f19f7b4",
+        "source_timestamp": 1769635814000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:08:35.775660",
+      "updated_at": "2026-01-28T19:14:52",
+      "id": 22092,
+      "urgency_score": 0.0,
+      "conversation_id": 70800,
+      "review_id": 26074,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "95adfff9-3bf8-4397-bcb6-a9fa1fb7232f",
+        "source_timestamp": 1769627692000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:08:21.874686",
+      "updated_at": "2026-01-28T19:30:38",
+      "id": 22091,
+      "urgency_score": 0.0,
+      "conversation_id": 55005,
+      "review_id": 26088,
+      "last_manual_review_id": 2814,
+      "datastream_metadata": {
+        "uuid": "2b6834f4-afc2-46b6-ab2d-6f0686448d8f",
+        "source_timestamp": 1769628638000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:07:01.197694",
+      "updated_at": "2026-01-28T19:18:31",
+      "id": 22090,
+      "urgency_score": 0.0,
+      "conversation_id": 54982,
+      "review_id": 26079,
+      "last_manual_review_id": 2903,
+      "datastream_metadata": {
+        "uuid": "7cda4ce7-ce7e-4184-b2ec-324db7c15268",
+        "source_timestamp": 1769627911000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:04:16.992251",
+      "updated_at": "2026-01-28T21:30:14",
+      "id": 22089,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 55646,
+      "review_id": null,
+      "last_manual_review_id": 25699,
+      "datastream_metadata": {
+        "uuid": "8858d0ef-375f-45bd-8db1-23311184808d",
+        "source_timestamp": 1769635814000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:01:44.671499",
+      "updated_at": "2026-01-28T21:30:12",
+      "id": 22088,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 64788,
+      "review_id": null,
+      "last_manual_review_id": 9679,
+      "datastream_metadata": {
+        "uuid": "bea81c73-c804-4571-a128-5c8cb5de323c",
+        "source_timestamp": 1769635812000
+      }
+    },
+    {
+      "created_at": "2026-01-28T19:00:50.336660",
+      "updated_at": "2026-01-28T21:30:14",
+      "id": 22087,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 54279,
+      "review_id": null,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "81064014-eb34-4425-8917-18f7b0e75a45",
+        "source_timestamp": 1769635814000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:59:16.983754",
+      "updated_at": "2026-01-28T18:59:16.983754",
+      "id": 22086,
+      "urgency_score": 0.0,
+      "conversation_id": 63696,
+      "review_id": null,
+      "last_manual_review_id": 4716,
+      "datastream_metadata": {
+        "uuid": "41c81610-afa8-42f8-8187-ec08dddc6617",
+        "source_timestamp": 1769626756000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:54:20.615952",
+      "updated_at": "2026-01-28T21:30:12",
+      "id": 22084,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 65273,
+      "review_id": null,
+      "last_manual_review_id": 21838,
+      "datastream_metadata": {
+        "uuid": "1b572e85-79d1-4195-a36d-bbcd912191e8",
+        "source_timestamp": 1769635812000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:53:27.026307",
+      "updated_at": "2026-01-28T18:53:27.026307",
+      "id": 22083,
+      "urgency_score": 0.0,
+      "conversation_id": 63373,
+      "review_id": null,
+      "last_manual_review_id": 5002,
+      "datastream_metadata": {
+        "uuid": "3a692017-757e-4c26-9193-4072c8b6ebc0",
+        "source_timestamp": 1769626407000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:51:41.505210",
+      "updated_at": "2026-01-28T21:30:14",
+      "id": 22082,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 69551,
+      "review_id": null,
+      "last_manual_review_id": 25389,
+      "datastream_metadata": {
+        "uuid": "c7080d71-7c47-4c18-b0d6-178e75121e7e",
+        "source_timestamp": 1769635814000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:50:16.717659",
+      "updated_at": "2026-01-28T18:50:16.717659",
+      "id": 22080,
+      "urgency_score": 0.0,
+      "conversation_id": 70298,
+      "review_id": null,
+      "last_manual_review_id": 25421,
+      "datastream_metadata": {
+        "uuid": "e7f3b0da-efa9-4206-a36b-9d1607975f63",
+        "source_timestamp": 1769626216000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:49:09.429337",
+      "updated_at": "2026-01-28T19:42:22",
+      "id": 22079,
+      "urgency_score": 0.0,
+      "conversation_id": 68811,
+      "review_id": 26100,
+      "last_manual_review_id": 25549,
+      "datastream_metadata": {
+        "uuid": "909a4598-ec99-4813-8b17-1fee5d512058",
+        "source_timestamp": 1769629342000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:43:10.017979",
+      "updated_at": "2026-01-28T22:08:54",
+      "id": 22077,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 69668,
+      "review_id": 26194,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "3ea79f66-f353-4e3d-a7ce-5b4449d1827d",
+        "source_timestamp": 1769638134000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:41:12.689952",
+      "updated_at": "2026-01-28T21:30:14",
+      "id": 22076,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 68749,
+      "review_id": null,
+      "last_manual_review_id": 17105,
+      "datastream_metadata": {
+        "uuid": "3f017845-4bde-47c8-aa09-611a41433aad",
+        "source_timestamp": 1769635814000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:40:40.073265",
+      "updated_at": "2026-01-28T20:08:56",
+      "id": 22075,
+      "urgency_score": 0.0,
+      "conversation_id": 55297,
+      "review_id": 26118,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "ce2fc40d-0b41-48a8-9c6a-0728dc5abe31",
+        "source_timestamp": 1769630936000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:38:59.056851",
+      "updated_at": "2026-01-28T21:30:14",
+      "id": 22073,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 70381,
+      "review_id": null,
+      "last_manual_review_id": 25643,
+      "datastream_metadata": {
+        "uuid": "7960e101-4bf4-4bf3-b157-fd6e29e79bf1",
+        "source_timestamp": 1769635814000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:38:24.183562",
+      "updated_at": "2026-01-28T18:38:24.183562",
+      "id": 22072,
+      "urgency_score": 0.0,
+      "conversation_id": 70171,
+      "review_id": null,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "71e248a5-baf2-4fa0-95f9-b3a0181f8f98",
+        "source_timestamp": 1769625504000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:35:20.441883",
+      "updated_at": "2026-01-28T21:01:18",
+      "id": 22071,
+      "urgency_score": 0.0,
+      "conversation_id": 64805,
+      "review_id": 26150,
+      "last_manual_review_id": 8362,
+      "datastream_metadata": {
+        "uuid": "2d05ed97-5b29-4af8-87d7-c313306d27e9",
+        "source_timestamp": 1769634078000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:34:06.709059",
+      "updated_at": "2026-01-28T21:30:12",
+      "id": 22070,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 55217,
+      "review_id": null,
+      "last_manual_review_id": 5113,
+      "datastream_metadata": {
+        "uuid": "53c49766-5e3a-4e99-be5c-b0f7b7dbd7ef",
+        "source_timestamp": 1769635812000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:33:59.015453",
+      "updated_at": "2026-01-28T21:30:12",
+      "id": 22069,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 65122,
+      "review_id": null,
+      "last_manual_review_id": 18825,
+      "datastream_metadata": {
+        "uuid": "ee07995b-c866-4bda-9cc6-c0d9d0ba9581",
+        "source_timestamp": 1769635812000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:33:24.391595",
+      "updated_at": "2026-01-28T21:30:13",
+      "id": 22068,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 70326,
+      "review_id": null,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "c1ed183d-9e45-4de4-aac7-5d21aff8719c",
+        "source_timestamp": 1769635813000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:32:27.656136",
+      "updated_at": "2026-01-28T21:30:12",
+      "id": 22067,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 63773,
+      "review_id": null,
+      "last_manual_review_id": 14976,
+      "datastream_metadata": {
+        "uuid": "74719c15-8eb6-4e1f-b51c-fada4e3684ff",
+        "source_timestamp": 1769635812000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:32:02.586805",
+      "updated_at": "2026-01-28T21:30:13",
+      "id": 22066,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 70369,
+      "review_id": null,
+      "last_manual_review_id": 25735,
+      "datastream_metadata": {
+        "uuid": "47bdab59-9899-4053-96ef-d3c9e96b11a5",
+        "source_timestamp": 1769635813000
+      }
+    },
+    {
+      "created_at": "2026-01-28T18:30:54.840321",
+      "updated_at": "2026-01-28T21:30:13",
+      "id": 22065,
+      "urgency_score": 0.0019656529184430838,
+      "conversation_id": 69732,
+      "review_id": null,
+      "last_manual_review_id": null,
+      "datastream_metadata": {
+        "uuid": "f40bf731-87f7-4674-89c0-943b9b423527",
+        "source_timestamp": 1769635813000
+      }
+    }
+  ]
+}

@@ -1,0 +1,2468 @@
+{
+  "table": "conversation_seed",
+  "row_count": 73230,
+  "sample_count": 100,
+  "fetched_at": "2026-01-28T23:23:05.253830",
+  "data": [
+    {
+      "created_at": "2026-01-28T05:46:21.751724",
+      "updated_at": "2026-01-28T05:46:21.751724",
+      "id": 73238,
+      "metadata": {
+        "Domain": "Healthcare & Wellness",
+        "L1 Description": "Requires the response to follow a specific structure or layout.​",
+        "L1 Taxonomy": "Format",
+        "L2 Description": "Required or restricted length (e.g., word count, character limit).",
+        "L2 Taxonomy": "Length Constraints",
+        "L3 Description": "Answer questions or generate outputs strictly grounded in provided reference documents or snippets.",
+        "L3 Taxonomy": "Search & Retrieval QA",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "2",
+        "Scenario": "As a clinical research coordinator, the user must prepare a standardized summary of a recent patient safety report for an institutional review board (IRB) submission and asks the LLM to \"Analyze the provided excerpt from the adverse event documentation and generate a 150-word incident summary using a structured format with three labeled sections: 'Event Description,' 'Clinical Response,' and 'Outcome Assessment'; ensure all content is derived solely from the text, accurately reflects the timeline and interventions, and adheres strictly to the word limit to comply with IRB formatting guidelines.\"",
+        "Use Case": "Analysis & Critique",
+        "User Prompt Length": "Above 500 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "edc2d557-c071-44b5-a873-520dd4da2324",
+        "source_timestamp": 1769579181000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:15.501250",
+      "updated_at": "2026-01-28T05:46:15.501250",
+      "id": 73237,
+      "metadata": {
+        "Domain": "Business, Finance, Industry",
+        "L1 Description": "Sets conditions or contexts under which the instruction should be executed.​",
+        "L1 Taxonomy": "Situation",
+        "L2 Description": "Refers to the real-world physical setting where the instruction is executed, including the type of location, surrounding objects, environmental features, movement requirements, proximity to items or people, and any spatial constraints that may affect performance.",
+        "L2 Taxonomy": "Spatial Context",
+        "L3 Description": "Assign labels and apply simple pass/fail rules.",
+        "L3 Taxonomy": "Classification",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "4",
+        "Scenario": "While conducting an on-site audit at a manufacturing plant (spatial context), the safety inspector must evaluate whether designated hazardous material storage areas comply with regulatory standards (situation). The inspector uses a tablet to query an AI assistant, asking: \"Based on the OSHA guidelines, classify each storage zone visible in the attached photos as 'compliant' or 'non-compliant,' considering spatial requirements such as ventilation, segregation from incompatible chemicals, and minimum distance from emergency exits.\" The AI must analyze the physical layout described in the images and apply classification rules to support an explanatory Q&A about compliance status.",
+        "Use Case": "Explanatory Q&A",
+        "User Prompt Length": "20 - 50 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "c32eb294-d4ff-4b3c-bb92-63048273bcf6",
+        "source_timestamp": 1769579175000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:14.717579",
+      "updated_at": "2026-01-28T05:46:14.717579",
+      "id": 73236,
+      "metadata": {
+        "Domain": "Education & Research",
+        "L1 Description": "Demands the incorporation of patterns shown in instances or illustrations.",
+        "L1 Taxonomy": "Example",
+        "L2 Description": "The response must follow the same type of content logic or data types as in the examples (e.g., same variables, same kinds of entities, etc.).",
+        "L2 Taxonomy": "Content Parity",
+        "L3 Description": "Spot risks and produce compliant outputs.",
+        "L3 Taxonomy": "Risk, Fraud & Compliance",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "7",
+        "Scenario": "A university research compliance officer is preparing a training module for graduate students on identifying data fabrication in scientific publications and asks the LLM to generate an explanatory Q&A that mirrors the structure and content logic of provided real-world examples, including variables such as sample size discrepancies, statistical outliers, and duplicated images, while ensuring all fabricated scenarios used for illustration do not resemble actual published studies to avoid defamation or ethical breaches, thus requiring the LLM to maintain content parity with the example patterns without replicating sensitive or non-compliant material.",
+        "Use Case": "Explanatory Q&A",
+        "User Prompt Length": "Below 20 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "5b864840-fe97-449b-bf1d-baf99d8d05bd",
+        "source_timestamp": 1769579174000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:14.640233",
+      "updated_at": "2026-01-28T05:46:14.640233",
+      "id": 73235,
+      "metadata": {
+        "Domain": "Sports, Hobbies & Recreation",
+        "L1 Description": "Requires the response to follow a specific structure or layout.​",
+        "L1 Taxonomy": "Format",
+        "L2 Description": "Whether response should be chunked into sections (e.g., headings, steps).",
+        "L2 Taxonomy": "Segmentation",
+        "L3 Description": "Produce outputs in strict structured formats (JSON, tables, templates, CSV, configs, Markdown) that validate against given schemas and rules.",
+        "L3 Taxonomy": "Structured Generation",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "3",
+        "Scenario": "A user is managing a local soccer league and needs a clear, standardized way to communicate game rules and schedules to players and parents. They ask the LLM: \"Provide a detailed explanation of the official rules for youth soccer matches under U.S. Soccer guidelines, along with the upcoming match schedule for the next four weeks, formatted as a Markdown document with distinct sections including 'Game Rules Overview', 'Schedule Table', and 'Key Notes'. The 'Schedule Table' must be a properly formatted Markdown table with columns for Date, Team A, Team B, Location, and Time, and the entire response must follow a structured, segmented layout so it can be easily converted into a league newsletter.\"",
+        "Use Case": "Explanatory Q&A",
+        "User Prompt Length": "20 - 50 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "790b5449-b1fa-41a9-be6a-a6b10d26bdee",
+        "source_timestamp": 1769579174000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:14.314585",
+      "updated_at": "2026-01-28T05:46:14.314585",
+      "id": 73234,
+      "metadata": {
+        "Domain": "Science, Tech, & Environment",
+        "L1 Description": "Dictates the tone or manner of the response.​",
+        "L1 Taxonomy": "Style",
+        "L2 Description": "Consistent narrative or persona traits (e.g., witty, empathetic, robotic).",
+        "L2 Taxonomy": "Voice-Personality",
+        "L3 Description": "Plan tool calls and verify results.",
+        "L3 Taxonomy": "Tool Use & AgentOps",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "8",
+        "Scenario": "A user contacts an AI-powered technical support assistant, requesting help diagnosing intermittent connectivity issues on their company’s internal network, and asks the assistant to respond in a professional yet approachable tone, simulating the persona of a seasoned but friendly IT specialist who avoids jargon unless necessary—while also instructing it to systematically use diagnostic tools such as ping, traceroute, and DNS lookup via integrated network utilities, verify each step’s output, and adjust the troubleshooting plan based on results, ensuring all actions are logged and explained clearly for audit purposes.",
+        "Use Case": "Technical & IT Support",
+        "User Prompt Length": "50 - 100 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "2be86f7d-ccdc-4837-96b9-a909fc0fca5d",
+        "source_timestamp": 1769579174000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:14.085606",
+      "updated_at": "2026-01-28T05:46:14.085606",
+      "id": 73233,
+      "metadata": {
+        "Domain": "Society, Lifestyle & Community",
+        "L1 Description": "Requires the response to follow a specific structure or layout.​",
+        "L1 Taxonomy": "Format",
+        "L2 Description": "Required or restricted length (e.g., word count, character limit).",
+        "L2 Taxonomy": "Length Constraints",
+        "L3 Description": "Produce outputs in strict structured formats (JSON, tables, templates, CSV, configs, Markdown) that validate against given schemas and rules.",
+        "L3 Taxonomy": "Structured Generation",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "4",
+        "Scenario": "A high school teacher preparing a lesson on urban sociology asks the LLM to generate a concise, student-friendly explanation of gentrification's social impacts, formatted as a Markdown table with exactly four rows (defining gentrification, economic effects, cultural displacement, and community resistance) and three columns (Concept, Explanation, Real-World Example), using no more than 150 words total, ensuring each cell is brief and pedagogically clear for a 10th-grade audience.",
+        "Use Case": "Explanatory Tutoring",
+        "User Prompt Length": "50 - 100 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "4c1257a5-b855-4437-8b4c-3286ce4d76a0",
+        "source_timestamp": 1769579174000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:13.996192",
+      "updated_at": "2026-01-28T05:46:13.996192",
+      "id": 73232,
+      "metadata": {
+        "Domain": "Travel & Transportation",
+        "L1 Description": "Demands the incorporation of patterns shown in instances or illustrations.",
+        "L1 Taxonomy": "Example",
+        "L2 Description": "The response must follow the same type of content logic or data types as in the examples (e.g., same variables, same kinds of entities, etc.).",
+        "L2 Taxonomy": "Content Parity",
+        "L3 Description": "Turn many inputs into short, faithful outputs.",
+        "L3 Taxonomy": "Summarization & Reporting",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "6",
+        "Scenario": "A travel operations manager at a multinational tour company needs to standardize monthly performance reports across regional teams and provides the LLM with three sample reports from previous months, each summarizing key metrics such as booking volume, cancellation rates, customer satisfaction scores, and top destinations in a structured, bullet-point format with consistent data types and headings. The manager instructs the LLM to analyze a new set of raw regional data from the past month and generate a concise summary report that follows the exact content structure, variable types, and formatting patterns shown in the examples—ensuring content parity across entities like KPIs and location names—while condensing the information into a clear, strategic overview for executive review.",
+        "Use Case": "Strategic Planning & Reporting",
+        "User Prompt Length": "Above 500 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "dade6c27-e4eb-43da-b5f4-aa43057ae12e",
+        "source_timestamp": 1769579173000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:13.982892",
+      "updated_at": "2026-01-28T05:46:13.982892",
+      "id": 73231,
+      "metadata": {
+        "Domain": "Science, Tech, & Environment",
+        "L1 Description": "Requires the response to follow a specific structure or layout.​",
+        "L1 Taxonomy": "Format",
+        "L2 Description": "Needs for explicit labeling of elements (e.g., headers, bullet labels).",
+        "L2 Taxonomy": "Labeling-Tagging",
+        "L3 Description": "Answer questions or generate outputs strictly grounded in provided reference documents or snippets.",
+        "L3 Taxonomy": "Search & Retrieval QA",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "5",
+        "Scenario": "As a science communicator preparing an article on climate change mitigation technologies, you are given a set of research snippets from a recent IPCC report and asked to draft a structured, informative section that follows a specific format: organize the content under clearly labeled headers (e.g., \"Carbon Capture and Storage,\" \"Renewable Energy Expansion,\" \"Methane Reduction Strategies\"), use bullet points tagged with \"[Evidence]\" to indicate direct support from the provided excerpts, and ensure all claims are strictly grounded in the source material. You instruct the LLM: \"Using only the provided IPCC excerpts, create a draft with labeled sections for each technology, and under each, list key findings using bullet points that start with [Evidence] followed by a concise, accurately quoted or paraphrased statement from the text.\"",
+        "Use Case": "Content Creation & Drafting",
+        "User Prompt Length": "100 - 500 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "a3eac3bf-666e-4a30-87bf-580d8b669d3a",
+        "source_timestamp": 1769579173000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:13.887452",
+      "updated_at": "2026-01-28T05:46:13.887452",
+      "id": 73230,
+      "metadata": {
+        "Domain": "Society, Lifestyle & Community",
+        "L1 Description": "Specifies the inclusion or exclusion of particular information.​",
+        "L1 Taxonomy": "Content",
+        "L2 Description": "Specifies required information, entities, concepts, facts, or data to be included.",
+        "L2 Taxonomy": "Inclusion",
+        "L3 Description": "Allocate time/capacity and plan timelines.",
+        "L3 Taxonomy": "Scheduling & Planning",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "4",
+        "Scenario": "A community center coordinator is organizing a multicultural festival aimed at promoting inclusivity and local engagement, and they need to create a detailed event plan that includes specific cultural performances, food vendors representing different ethnic communities, and workshop sessions on traditional arts. The user asks the LLM to provide a comprehensive explanatory breakdown of how to schedule the day’s activities across three outdoor stages and two indoor halls over a 10-hour period, ensuring that each cultural group is allocated equitable time slots, major performances are scheduled during peak attendance hours, setup and breakdown times are factored in, and there is no overlap between similar cultural expressions to maintain variety throughout the day—all while aligning with venue availability and volunteer staffing shifts.",
+        "Use Case": "Explanatory Q&A",
+        "User Prompt Length": "20 - 50 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "5776d552-3165-4ac8-a1c0-c7cd4d88fff3",
+        "source_timestamp": 1769579173000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:13.726516",
+      "updated_at": "2026-01-28T05:46:13.726516",
+      "id": 73229,
+      "metadata": {
+        "Domain": "Media, Arts, Culture",
+        "L1 Description": "Specifies the inclusion or exclusion of particular information.​",
+        "L1 Taxonomy": "Content",
+        "L2 Description": "Defines the breadth or depth of information (e.g., comprehensive overview vs. summary).",
+        "L2 Taxonomy": "Scope",
+        "L3 Description": "Pull fields from messy inputs and make them consistent.",
+        "L3 Taxonomy": "Data Extraction & Normalization",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "7",
+        "Scenario": "A film studies researcher is analyzing the representation of historical events in global cinema and asks the LLM to extract and normalize data from a set of unstructured film reviews, scholarly articles, and production notes related to *Spielberg’s Schindler’s List* and *Kurosawa’s Ran*, specifically instructing the model to include only content discussing historical accuracy, cultural authenticity, and directorial interpretation (L1: Content), provide a comprehensive comparative analysis rather than a summary (L2: Scope), and pull fragmented details such as release years, historical periods depicted, cited sources, and director statements from disparate sources—standardizing names, dates, and references consistently across entries (L3: Data Extraction & Normalization), in order to support a scholarly critique on how Western and Eastern filmmakers engage with national history.",
+        "Use Case": "Analysis & Critique",
+        "User Prompt Length": "100 - 500 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "21fb9042-96e8-4d4c-81da-70c7c31031ad",
+        "source_timestamp": 1769579173000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:13.660653",
+      "updated_at": "2026-01-28T05:46:13.660653",
+      "id": 73228,
+      "metadata": {
+        "Domain": "Business, Finance, Industry",
+        "L1 Description": "Multiple taxonomies covered.",
+        "L1 Taxonomy": "Mixed",
+        "L2 Description": "Multiple taxonomies covered.",
+        "L2 Taxonomy": "Mixed",
+        "L3 Description": "Allocate time/capacity and plan timelines.",
+        "L3 Taxonomy": "Scheduling & Planning",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "2",
+        "Scenario": "As the Chief Operations Officer of a mid-sized renewable energy firm, I need to develop a 12-month strategic rollout plan for expanding solar farm operations across three new regions while managing budget constraints, regulatory approvals, workforce allocation, and equipment procurement. I will provide quarterly financial forecasts, regional market analyses, permitting timelines, and internal capacity reports, and I ask the LLM to synthesize this information into a detailed execution timeline that aligns resource allocation, project milestones, and compliance checkpoints across departments—ensuring optimal scheduling of capital expenditure and human resources while supporting board-level reporting on strategic progress.",
+        "Use Case": "Strategic Planning & Reporting",
+        "User Prompt Length": "50 - 100 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "213420c2-c966-443c-b068-64fc5b44d143",
+        "source_timestamp": 1769579173000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:13.510818",
+      "updated_at": "2026-01-28T05:46:13.510818",
+      "id": 73227,
+      "metadata": {
+        "Domain": "Sports, Hobbies & Recreation",
+        "L1 Description": "Dictates the tone or manner of the response.​",
+        "L1 Taxonomy": "Style",
+        "L2 Description": "Emotional or interpersonal stance (e.g., friendly, authoritative, neutral).",
+        "L2 Taxonomy": "Tone",
+        "L3 Description": "Make traceable choices under rules and tradeoffs.",
+        "L3 Taxonomy": "Decision Systems & Reasoning",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "4",
+        "Scenario": "As a local resident preparing for a weekend visit from out-of-town friends who are passionate about both craft beer and live music, I ask the LLM to recommend three nearby venues that balance a relaxed, welcoming atmosphere with authentic local appeal, emphasizing places that support independent artists and microbreweries—while explicitly avoiding tourist-heavy spots—requesting the suggestions be delivered in a warm, conversational tone that reflects thoughtful tradeoffs, such as prioritizing acoustic intimacy over venue size or favoring locally sourced ingredients in drinks, and explaining each choice by weighing factors like accessibility, crowd density, and alignment with community-driven culture.",
+        "Use Case": "Local Recommendations",
+        "User Prompt Length": "100 - 500 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "a76731db-4a57-4a60-9e87-050e7d892d18",
+        "source_timestamp": 1769579173000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:13.505305",
+      "updated_at": "2026-01-28T05:46:13.505305",
+      "id": 73226,
+      "metadata": {
+        "Domain": "Science, Tech, & Environment",
+        "L1 Description": "Dictates the tone or manner of the response.​",
+        "L1 Taxonomy": "Style",
+        "L2 Description": "Consistent narrative or persona traits (e.g., witty, empathetic, robotic).",
+        "L2 Taxonomy": "Voice-Personality",
+        "L3 Description": "Make traceable choices under rules and tradeoffs.",
+        "L3 Taxonomy": "Decision Systems & Reasoning",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "5",
+        "Scenario": "A high school environmental science teacher is preparing a lesson on climate change mitigation and asks the LLM to explain the tradeoffs between nuclear energy and large-scale solar farms in a witty, sarcastic tone reminiscent of a stand-up comedian with a PhD in physics—someone who uses humor to make complex ideas engaging but remains grounded in scientific accuracy. The teacher emphasizes that the explanation must clearly weigh factors like land use, waste, scalability, and cost, making transparent, traceable reasoning choices about which energy source might be preferable under specific environmental and policy constraints, while keeping students engaged through personality-driven storytelling.",
+        "Use Case": "Explanatory Tutoring",
+        "User Prompt Length": "50 - 100 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "d4a142b2-9c4a-4466-8c60-9f8a6cb23936",
+        "source_timestamp": 1769579173000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:13.485536",
+      "updated_at": "2026-01-28T05:46:13.485536",
+      "id": 73225,
+      "metadata": {
+        "Domain": "Other",
+        "L1 Description": "Dictates the tone or manner of the response.​",
+        "L1 Taxonomy": "Style",
+        "L2 Description": "Emotional or interpersonal stance (e.g., friendly, authoritative, neutral).",
+        "L2 Taxonomy": "Tone",
+        "L3 Description": "Understand and edit business and contractual documents.",
+        "L3 Taxonomy": "Document & Contract Ops",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "9",
+        "Scenario": "As part of a strategic planning initiative, a senior operations manager at a logistics firm needs to revise a vendor contract renewal proposal to reflect a more collaborative and partnership-oriented tone, aligning with the company’s new relationship-first business strategy; the user asks the LLM to rewrite key sections of the draft contract—specifically the preamble, service expectations, and termination clauses—to adopt a cooperative and solution-focused tone (L2: Tone under L1: Style), while ensuring all legal and operational terms remain accurate and enforceable within the Document & Contract Ops (L3) framework, and to support long-term strategic reporting goals by embedding language that facilitates performance tracking and mutual accountability.",
+        "Use Case": "Strategic Planning & Reporting",
+        "User Prompt Length": "Above 500 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "a1464b5a-f9fd-4a5f-b12c-80043a0db0f8",
+        "source_timestamp": 1769579173000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:13.475124",
+      "updated_at": "2026-01-28T05:46:13.475124",
+      "id": 73224,
+      "metadata": {
+        "Domain": "Society, Lifestyle & Community",
+        "L1 Description": "Sets conditions or contexts under which the instruction should be executed.​",
+        "L1 Taxonomy": "Situation",
+        "L2 Description": "Constraints such as time pressure, uncertainty, or availability of tools-resources.",
+        "L2 Taxonomy": "Operational Condition",
+        "L3 Description": "Assign labels and apply simple pass/fail rules.",
+        "L3 Taxonomy": "Classification",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "7",
+        "Scenario": "You are tutoring a high school student preparing for a civics exam in a 30-minute after-school session with limited internet access, and the student asks, \"Can you explain how a bill becomes a law and help me classify each step as either 'requires majority vote' or 'requires presidential action' so I can tell which parts depend on Congress versus the President?\"",
+        "Use Case": "Explanatory Tutoring",
+        "User Prompt Length": "20 - 50 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "409d305f-61c9-44f6-8f59-563876c84cc4",
+        "source_timestamp": 1769579173000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:13.412886",
+      "updated_at": "2026-01-28T05:46:13.412886",
+      "id": 73223,
+      "metadata": {
+        "Domain": "Media, Arts, Culture",
+        "L1 Description": "Sets conditions or contexts under which the instruction should be executed.​",
+        "L1 Taxonomy": "Situation",
+        "L2 Description": "Time-related conditions (e.g., future scenarios, historical settings).",
+        "L2 Taxonomy": "Temporal Context",
+        "L3 Description": "Join, validate, and compute on rows/columns.",
+        "L3 Taxonomy": "Tabular Data Ops & Calcs",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "7",
+        "Scenario": "As a film historian analyzing the evolution of Oscar-winning performances, I need you to examine the relationship between the age of Best Actor/Actress winners and the historical era in which they won, using a dataset of Academy Award winners from 1950 to 2020. Specifically, I will provide two tables: one listing winners by year, category, and birth date, and another defining mid-20th century (1950–1979) and late-20th/early-21st century (1980–2020) periods. First, calculate each winner’s age at the time of their win, then join this data with the temporal periods table, and finally, compute the average age of winners in each era. Based on this analysis, I want you to critique whether there has been a significant shift in the age profile of honorees over time, considering broader cultural trends in Hollywood’s recognition of younger versus older actors.",
+        "Use Case": "Analysis & Critique",
+        "User Prompt Length": "20 - 50 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "6236fb5e-808e-42e2-9f2d-2357ca87ff7c",
+        "source_timestamp": 1769579173000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:13.403595",
+      "updated_at": "2026-01-28T05:46:13.403595",
+      "id": 73222,
+      "metadata": {
+        "Domain": "Media, Arts, Culture",
+        "L1 Description": "Specifies the inclusion or exclusion of particular information.​",
+        "L1 Taxonomy": "Content",
+        "L2 Description": "Limits the sources from which content can be drawn (e.g., only from academic literature).",
+        "L2 Taxonomy": "Source Constraints",
+        "L3 Description": "Join, validate, and compute on rows/columns.",
+        "L3 Taxonomy": "Tabular Data Ops & Calcs",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "3",
+        "Scenario": "The user, a cultural policy researcher, asks the LLM to draft a report section comparing public funding for the arts across five European countries between 2015 and 2022, specifying that all content must be derived exclusively from peer-reviewed academic journals and government publications (L2 Source Constraints), with data on annual funding amounts, population size, and GDP drawn from provided spreadsheets (L3 Tabular Data Ops & Calcs) to compute and compare per capita funding and funding as a percentage of GDP; the final output must include only information verifiable from these sources (L1 Content) and present synthesized findings in a structured paragraph with an accompanying summary table.",
+        "Use Case": "Content Creation & Drafting",
+        "User Prompt Length": "100 - 500 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "d4945ca4-3264-4e12-9f18-9e58b6fa70c8",
+        "source_timestamp": 1769579173000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:13.290646",
+      "updated_at": "2026-01-28T05:46:13.290646",
+      "id": 73221,
+      "metadata": {
+        "Domain": "Business, Finance, Industry",
+        "L1 Description": "Requires the response to follow a specific structure or layout.​",
+        "L1 Taxonomy": "Format",
+        "L2 Description": "Needs for explicit labeling of elements (e.g., headers, bullet labels).",
+        "L2 Taxonomy": "Labeling-Tagging",
+        "L3 Description": "Answer questions or generate outputs strictly grounded in provided reference documents or snippets.",
+        "L3 Taxonomy": "Search & Retrieval QA",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "4",
+        "Scenario": "As a compliance officer at a financial services firm, you are tasked with reviewing an internal audit report and generating a standardized response document that adheres to the company’s formal remediation procedure. You provide the LLM with a reference document containing findings from the audit and ask: “Using the exact format specified in our procedural guidelines, generate a remediation action plan that includes clearly labeled sections—'Finding ID', 'Description', 'Root Cause', 'Corrective Action', 'Responsible Party', and 'Target Resolution Date'—for each issue listed in the audit findings, ensuring all content is derived strictly from the provided text without extrapolation.”",
+        "Use Case": "Procedural & Role Play",
+        "User Prompt Length": "Above 500 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "aac13207-1868-4e53-a5f3-0085c3af2290",
+        "source_timestamp": 1769579173000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:13.280966",
+      "updated_at": "2026-01-28T05:46:13.280966",
+      "id": 73220,
+      "metadata": {
+        "Domain": "Science, Tech, & Environment",
+        "L1 Description": "Dictates the tone or manner of the response.​",
+        "L1 Taxonomy": "Style",
+        "L2 Description": "Degree of linguistic formality (e.g., casual, formal, academic).",
+        "L2 Taxonomy": "Formality",
+        "L3 Description": "Make traceable choices under rules and tradeoffs.",
+        "L3 Taxonomy": "Decision Systems & Reasoning",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "1",
+        "Scenario": "As a moderator for an online community dedicated to the *Star Trek* universe, you are preparing a detailed FAQ document to resolve recurring debates about the technical capabilities of starships across different series, and you need an authoritative, well-structured explanation that adheres to established canon while distinguishing between in-universe technical specifications and real-world production decisions. You ask the LLM to generate a response in a formal, academic style—complete with logical reasoning and traceable references to canonical sources (e.g., episodes, technical manuals)—to evaluate tradeoffs between warp drive efficiency in the 23rd century (*The Original Series*) versus the 24th century (*The Next Generation*), while explicitly avoiding speculative or fan-theory content, ensuring the tone remains objective and suitable for inclusion in an official fandom knowledge base.",
+        "Use Case": "Fandom & Information Retrieval",
+        "User Prompt Length": "20 - 50 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "99695e5c-753d-4af8-9092-bed9d24e377c",
+        "source_timestamp": 1769579173000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:13.245602",
+      "updated_at": "2026-01-28T05:46:13.245602",
+      "id": 73219,
+      "metadata": {
+        "Domain": "Education & Research",
+        "L1 Description": "Specifies the inclusion or exclusion of particular information.​",
+        "L1 Taxonomy": "Content",
+        "L2 Description": "Limits the sources from which content can be drawn (e.g., only from academic literature).",
+        "L2 Taxonomy": "Source Constraints",
+        "L3 Description": "Join, validate, and compute on rows/columns.",
+        "L3 Taxonomy": "Tabular Data Ops & Calcs",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "2",
+        "Scenario": "A university researcher in the field of environmental science asks the LLM to answer the question: \"How has the annual global mean temperature change from 1980 to 2020 impacted coral reef calcification rates?\" The response must include only information derived from peer-reviewed academic literature published in journals indexed in Scopus or Web of Science (L2: Source Constraints), specifically excluding data from government reports or non-scholarly sources. The answer must incorporate and explain findings from at least three longitudinal studies that report their results in tabular form (L1: Content), requiring the LLM to extract, validate, and synthesize numerical data from these tables—such as temperature anomalies and calcification measurements—by computing average annual rates of change and correlating trends across datasets using appropriate tabular data operations (L3: Tabular Data Ops & Calcs), ultimately providing a clear, evidence-based explanation that links rising temperatures to calcification trends (Use Case: Explanatory Q&A).",
+        "Use Case": "Explanatory Q&A",
+        "User Prompt Length": "100 - 500 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "09f1f233-e17e-4fe9-b3b8-c2ad07bbbd6a",
+        "source_timestamp": 1769579173000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:13.197700",
+      "updated_at": "2026-01-28T05:46:13.197700",
+      "id": 73218,
+      "metadata": {
+        "Domain": "Sports, Hobbies & Recreation",
+        "L1 Description": "Requires the response to follow a specific structure or layout.​",
+        "L1 Taxonomy": "Format",
+        "L2 Description": "Required structural pattern (e.g., list, paragraph, table, outline).",
+        "L2 Taxonomy": "Structural Layout",
+        "L3 Description": "Work safely with sensitive data.",
+        "L3 Taxonomy": "Secure Data Handling",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "10",
+        "Scenario": "As a compliance officer for a national sports federation, I need you to create a strategic risk assessment report in a structured table format that outlines potential data privacy risks associated with collecting minors' biometric data during youth athletic competitions; the table must include columns for Risk Category, Description, Likelihood, Impact, and Mitigation Strategy, and all hypothetical data used must be fabricated to avoid referencing real individuals, ensuring compliance with secure data handling practices while supporting long-term strategic planning for safe technology adoption in youth sports programs.",
+        "Use Case": "Strategic Planning & Reporting",
+        "User Prompt Length": "50 - 100 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "e7095b28-c3df-41ae-a201-e3a90b1bcebe",
+        "source_timestamp": 1769579173000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:13.094870",
+      "updated_at": "2026-01-28T05:46:13.094870",
+      "id": 73217,
+      "metadata": {
+        "Domain": "Business, Finance, Industry",
+        "L1 Description": "Sets conditions or contexts under which the instruction should be executed.​",
+        "L1 Taxonomy": "Situation",
+        "L2 Description": "Constraints such as time pressure, uncertainty, or availability of tools-resources.",
+        "L2 Taxonomy": "Operational Condition",
+        "L3 Description": "Work safely with sensitive data.",
+        "L3 Taxonomy": "Secure Data Handling",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "4",
+        "Scenario": "As a financial compliance officer at a multinational bank, I need to explain to my team how to process a high-priority international wire transfer under time-sensitive conditions—within the next 90 minutes to meet a regulatory deadline—while ensuring secure handling of personally identifiable information (PII) and protected financial data; I will ask the LLM to provide a clear, step-by-step explanation of the secure operational workflow, including data encryption protocols, access controls, and audit logging requirements, ensuring compliance with GDPR and anti-money laundering (AML) regulations, all without using external tools or leaving data traces outside approved internal systems.",
+        "Use Case": "Explanatory Q&A",
+        "User Prompt Length": "Above 500 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "c74b1c78-951c-4b05-b25d-2c6124321fd5",
+        "source_timestamp": 1769579173000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:13.036190",
+      "updated_at": "2026-01-28T05:46:13.036190",
+      "id": 73216,
+      "metadata": {
+        "Domain": "Sports, Hobbies & Recreation",
+        "L1 Description": "Specifies the inclusion or exclusion of particular information.​",
+        "L1 Taxonomy": "Content",
+        "L2 Description": "Directs attention to a particular topic, domain, or level of detail (e.g., macro vs. micro).",
+        "L2 Taxonomy": "Focus",
+        "L3 Description": "Pull fields from messy inputs and make them consistent.",
+        "L3 Taxonomy": "Data Extraction & Normalization",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "7",
+        "Scenario": "A user is researching historical marathon performance data for a blog post comparing elite runners across decades and asks the LLM to extract and normalize specific race results from a set of unstructured text sources—such as blog summaries, scanned PDF race reports, and social media posts—focusing exclusively on male and female winners of the Boston Marathon from 1990 to 2000, with attention to their names, nationalities, finishing times, and ages at the time of the race, then standardize the data into a consistent format (e.g., converting \"2:07:12\" and \"2h 7min 12sec\" to ISO time format, resolving country name variants like \"USA\" vs. \"United States\", and correcting minor spelling errors like \"Georgi\" to \"Georges\" based on context).",
+        "Use Case": "Procedural Q&A",
+        "User Prompt Length": "Above 500 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "da510fb9-2bf8-41ca-bfd5-2c67539c8aa9",
+        "source_timestamp": 1769579173000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:12.997570",
+      "updated_at": "2026-01-28T05:46:12.997570",
+      "id": 73215,
+      "metadata": {
+        "Domain": "Society, Lifestyle & Community",
+        "L1 Description": "Requires the response to follow a specific structure or layout.​",
+        "L1 Taxonomy": "Format",
+        "L2 Description": "Required or restricted length (e.g., word count, character limit).",
+        "L2 Taxonomy": "Length Constraints",
+        "L3 Description": "Produce outputs in strict structured formats (JSON, tables, templates, CSV, configs, Markdown) that validate against given schemas and rules.",
+        "L3 Taxonomy": "Structured Generation",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "6",
+        "Scenario": "A city council community liaison officer needs to compile resident feedback about a proposed public park renovation into a standardized report format for internal review. The officer collects qualitative input from a neighborhood forum and then asks the LLM to convert the feedback into a structured Markdown table with exactly five rows—one for each of five predefined categories: Safety, Accessibility, Amenities, Sustainability, and Community Engagement—where each row must contain a concise summary of concerns or suggestions (maximum 150 characters per cell) and a sentiment score from -1 to 1, formatted as a JSON object within the table. The full response must adhere strictly to the specified Markdown table structure, respect character limits per cell, and include only the defined categories, ensuring it can be programmatically parsed for integration into the city’s urban planning dashboard.",
+        "Use Case": "Explanatory Q&A",
+        "User Prompt Length": "50 - 100 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "685be694-0df7-4379-b767-3c0fb5d7dc78",
+        "source_timestamp": 1769579172000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:12.798485",
+      "updated_at": "2026-01-28T05:46:12.798485",
+      "id": 73214,
+      "metadata": {
+        "Domain": "Education & Research",
+        "L1 Description": "Demands the incorporation of patterns shown in instances or illustrations.",
+        "L1 Taxonomy": "Example",
+        "L2 Description": "The structure of reasoning or steps taken in the example should be mimicked (e.g., first define, then reason, then conclude).",
+        "L2 Taxonomy": "Conceptual Mapping",
+        "L3 Description": "Spot risks and produce compliant outputs.",
+        "L3 Taxonomy": "Risk, Fraud & Compliance",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "7",
+        "Scenario": "A university research team is developing an AI-guided framework to detect financial fraud in grant applications and must ensure their methodology complies with federal research integrity guidelines. The user presents the LLM with a published case study where a fraudulent funding proposal was identified by first defining suspicious financial patterns, then mapping those to known fraud typologies, and finally concluding with a compliance review against NSF and OMB standards. The user asks the LLM to analyze a new, suspicious grant proposal by following the exact conceptual structure of the example—first defining anomalous line items (e.g., inflated personnel costs), then reasoning through their alignment with known fraud risks (such as fund diversion or phantom subcontracting), and concluding with a compliance assessment that flags reportable risks while avoiding unsubstantiated allegations—ensuring all outputs adhere to legal and institutional research integrity policies.",
+        "Use Case": "Technical Problem-Solving",
+        "User Prompt Length": "50 - 100 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "29f7ba6f-8f5d-42d4-9d0a-5b7f232d03c3",
+        "source_timestamp": 1769579172000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:12.689430",
+      "updated_at": "2026-01-28T05:46:12.689430",
+      "id": 73213,
+      "metadata": {
+        "Domain": "Business, Finance, Industry",
+        "L1 Description": "Sets conditions or contexts under which the instruction should be executed.​",
+        "L1 Taxonomy": "Situation",
+        "L2 Description": "Who the instruction is intended for or how the user is framed (e.g., student, manager).",
+        "L2 Taxonomy": "User Role",
+        "L3 Description": "Assign labels and apply simple pass/fail rules.",
+        "L3 Taxonomy": "Classification",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "4",
+        "Scenario": "You are a financial compliance manager at a mid-sized fintech firm, and your team has just received preliminary findings from an internal audit highlighting potential lapses in adherence to anti-money laundering (AML) protocols across two departments. As part of the remediation plan, you need to role-play a simulated communication with your department leads to assess their understanding of current compliance thresholds and classify each team’s risk level—High, Medium, or Low—based on predefined regulatory criteria. You ask the LLM to assume your role as the compliance manager, generate a structured script for a leadership meeting that includes probing questions to each department head, and apply pass/fail evaluation rules to determine whether each team meets the company’s AML compliance standards, ultimately assigning a risk classification to each.",
+        "Use Case": "Role-Play & Communication",
+        "User Prompt Length": "Above 500 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "29d4d3c9-caf3-48ca-a8b8-146f9a0ccce3",
+        "source_timestamp": 1769579172000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:12.687430",
+      "updated_at": "2026-01-28T05:46:12.687430",
+      "id": 73212,
+      "metadata": {
+        "Domain": "Healthcare & Wellness",
+        "L1 Description": "Demands the incorporation of patterns shown in instances or illustrations.",
+        "L1 Taxonomy": "Example",
+        "L2 Description": "The response must follow the same type of content logic or data types as in the examples (e.g., same variables, same kinds of entities, etc.).",
+        "L2 Taxonomy": "Content Parity",
+        "L3 Description": "Spot risks and produce compliant outputs.",
+        "L3 Taxonomy": "Risk, Fraud & Compliance",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "5",
+        "Scenario": "A healthcare compliance officer at a telemedicine company asks the LLM to draft a patient consent form for a new remote monitoring program, providing two existing consent forms as examples that include specific data elements such as patient identifiers, data transmission disclosures, third-party access statements, and revocation procedures; the officer instructs the LLM to follow the same structure, terminology, and content logic—particularly around data handling and risk disclosure—while ensuring all new content complies with HIPAA and FDA regulations regarding digital health tools, avoids downplaying risks, and maintains parity in entity types (e.g., device types, data categories, authorized personnel roles) to prevent noncompliance or misrepresentation.",
+        "Use Case": "Content Creation & Drafting",
+        "User Prompt Length": "Above 500 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "741847cb-bffc-4fa5-8981-2358878e88e7",
+        "source_timestamp": 1769579172000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:12.655515",
+      "updated_at": "2026-01-28T05:46:12.655515",
+      "id": 73211,
+      "metadata": {
+        "Domain": "Media, Arts, Culture",
+        "L1 Description": "Requires the response to follow a specific structure or layout.​",
+        "L1 Taxonomy": "Format",
+        "L2 Description": "Required structural pattern (e.g., list, paragraph, table, outline).",
+        "L2 Taxonomy": "Structural Layout",
+        "L3 Description": "Work safely with sensitive data.",
+        "L3 Taxonomy": "Secure Data Handling",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "2",
+        "Scenario": "A high school media studies teacher is preparing a lesson on ethical practices in journalism and asks the LLM to generate a structured outline explaining how journalists should handle sensitive personal data when reporting on victims of crime, with each section following a clear hierarchical format (I., A., 1., etc.), ensuring that no real names, locations, or identifying details are included or implied in the examples. The teacher emphasizes that the response must function as an explanatory tutoring tool for students, using a formal outline structure to break down concepts like informed consent, data minimization, and secure storage, while strictly adhering to secure data handling principles by avoiding the use of actual sensitive information or hypotheticals that could inadvertently normalize privacy violations.",
+        "Use Case": "Explanatory Tutoring",
+        "User Prompt Length": "50 - 100 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "bfbfbc8b-a895-4607-8038-776243b373cc",
+        "source_timestamp": 1769579172000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:12.560789",
+      "updated_at": "2026-01-28T05:46:12.560789",
+      "id": 73210,
+      "metadata": {
+        "Domain": "Healthcare & Wellness",
+        "L1 Description": "Sets conditions or contexts under which the instruction should be executed.​",
+        "L1 Taxonomy": "Situation",
+        "L2 Description": "Time-related conditions (e.g., future scenarios, historical settings).",
+        "L2 Taxonomy": "Temporal Context",
+        "L3 Description": "Join, validate, and compute on rows/columns.",
+        "L3 Taxonomy": "Tabular Data Ops & Calcs",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "7",
+        "Scenario": "A hospital data analyst is reviewing patient readmission trends for congestive heart failure (CHF) patients over the past 12 months and preparing a report for an upcoming quality improvement meeting next week. The analyst has two datasets: one containing patient discharge dates and readmission dates (if applicable), and another with comorbidity scores calculated at admission. The user needs to identify all patients who were readmitted within 30 days of discharge, join this subset with the comorbidity data, calculate the average comorbidity score for this group, and compare it to the hospital’s historical benchmark of 3.2, but only using readmission events that occurred between January and June 2023. The user asks the LLM: \"Given the discharge and readmission data in Table A and the admission-level comorbidity scores in Table B, extract all CHF patients readmitted within 30 days during Q1 and Q2 of 2023, join each readmission to their original admission comorbidity score, and calculate the mean score—then tell me if it exceeds the benchmark of 3.2.\"",
+        "Use Case": "Technical Problem-Solving",
+        "User Prompt Length": "20 - 50 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "c44e8994-8cb8-4edf-b038-e527257f43f5",
+        "source_timestamp": 1769579172000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:12.556752",
+      "updated_at": "2026-01-28T05:46:12.556752",
+      "id": 73209,
+      "metadata": {
+        "Domain": "Sports, Hobbies & Recreation",
+        "L1 Description": "Specifies the inclusion or exclusion of particular information.​",
+        "L1 Taxonomy": "Content",
+        "L2 Description": "Limits the sources from which content can be drawn (e.g., only from academic literature).",
+        "L2 Taxonomy": "Source Constraints",
+        "L3 Description": "Join, validate, and compute on rows/columns.",
+        "L3 Taxonomy": "Tabular Data Ops & Calcs",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "10",
+        "Scenario": "As a sports analyst preparing a report on player performance trends in the NBA, I need you to analyze and critique the relationship between player age and points per game over the last five seasons, using only official NBA-provided statistics tables from the league’s public data repository; specifically, extract, join, and validate tabular data from the \"Player Season Totals\" and \"Player Biographical Info\" datasets, calculate average points per game by age group (22–27, 28–32, 33+), and critically assess whether peak performance aligns with conventional wisdom, ensuring all computations and conclusions are derived exclusively from the specified source.",
+        "Use Case": "Analysis & Critique",
+        "User Prompt Length": "100 - 500 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "a91f092b-5d0a-4059-9e36-13ee890cdc08",
+        "source_timestamp": 1769579172000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:12.490971",
+      "updated_at": "2026-01-28T05:46:12.490971",
+      "id": 73208,
+      "metadata": {
+        "Domain": "Education & Research",
+        "L1 Description": "Requires the response to follow a specific structure or layout.​",
+        "L1 Taxonomy": "Format",
+        "L2 Description": "Whether response should be chunked into sections (e.g., headings, steps).",
+        "L2 Taxonomy": "Segmentation",
+        "L3 Description": "Produce outputs in strict structured formats (JSON, tables, templates, CSV, configs, Markdown) that validate against given schemas and rules.",
+        "L3 Taxonomy": "Structured Generation",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "10",
+        "Scenario": "A high school science teacher preparing a lesson on climate change asks the LLM to generate an explanatory tutorial for students that clearly breaks down the greenhouse effect, requiring the response to be organized into distinct sections with headings (Introduction, Key Concepts, Step-by-Step Process, Real-World Examples, Common Misconceptions, and Summary), and further instructs the LLM to format the entire output as a Markdown document with strict adherence to heading levels, bullet points for lists, and a final section presented as a JSON object containing key terms and definitions that must conform to a specified schema including \"term\", \"definition\", and \"example\" fields for each entry.",
+        "Use Case": "Explanatory Tutoring",
+        "User Prompt Length": "100 - 500 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "df6c3547-e38e-4c3b-88ec-e1274ab39889",
+        "source_timestamp": 1769579172000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:12.450118",
+      "updated_at": "2026-01-28T05:46:12.450118",
+      "id": 73207,
+      "metadata": {
+        "Domain": "Society, Lifestyle & Community",
+        "L1 Description": "Dictates the tone or manner of the response.​",
+        "L1 Taxonomy": "Style",
+        "L2 Description": "Degree of linguistic formality (e.g., casual, formal, academic).",
+        "L2 Taxonomy": "Formality",
+        "L3 Description": "Make traceable choices under rules and tradeoffs.",
+        "L3 Taxonomy": "Decision Systems & Reasoning",
+        "Language": "Spanish (es)",
+        "Model": "Qwen",
+        "Number of Turns": "9",
+        "Scenario": "As a policy researcher preparing a briefing for a government committee on evolving societal norms in professional environments, I need you to summarize recent trends in workplace dress codes across five major industries, using only peer-reviewed sociological studies and reputable industry reports from the past decade; the summary must be written in a formal tone, adhering to academic standards of objectivity and precision, while explicitly outlining the reasoning behind any generalizations, tradeoffs between professionalism and inclusivity, and the decision criteria used to evaluate conflicting findings across sources.",
+        "Use Case": "Research & Summarization",
+        "User Prompt Length": "20 - 50 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "adaed41c-89c9-4957-b21f-691fdac8f393",
+        "source_timestamp": 1769579172000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:12.390568",
+      "updated_at": "2026-01-28T05:46:12.390568",
+      "id": 73206,
+      "metadata": {
+        "Domain": "Society, Lifestyle & Community",
+        "L1 Description": "Requires the response to follow a specific structure or layout.​",
+        "L1 Taxonomy": "Format",
+        "L2 Description": "Required or restricted length (e.g., word count, character limit).",
+        "L2 Taxonomy": "Length Constraints",
+        "L3 Description": "Answer questions or generate outputs strictly grounded in provided reference documents or snippets.",
+        "L3 Taxonomy": "Search & Retrieval QA",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "8",
+        "Scenario": "A community organizer is preparing for a town hall meeting on sustainable urban living and asks the LLM to generate a concise summary of key findings from three provided research snippets about local recycling behaviors, public transit usage, and energy-efficient housing—requiring the response to follow a structured format with three clearly labeled sections (one per topic), each limited to exactly 75 words, ensuring all information is derived solely from the provided documents to support evidence-based discussion among residents.",
+        "Use Case": "Discussion & Exploration",
+        "User Prompt Length": "20 - 50 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "828e4eee-cac5-4571-8ed1-72776edaa86d",
+        "source_timestamp": 1769579172000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:12.358518",
+      "updated_at": "2026-01-28T05:46:12.358518",
+      "id": 73205,
+      "metadata": {
+        "Domain": "Other",
+        "L1 Description": "Specifies the inclusion or exclusion of particular information.​",
+        "L1 Taxonomy": "Content",
+        "L2 Description": "Defines the breadth or depth of information (e.g., comprehensive overview vs. summary).",
+        "L2 Taxonomy": "Scope",
+        "L3 Description": "Join, validate, and compute on rows/columns.",
+        "L3 Taxonomy": "Tabular Data Ops & Calcs",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "8",
+        "Scenario": "As a research analyst evaluating global renewable energy adoption, I need you to extract and compile data from multiple sources into a single comparative table, including only countries in the European Union (L1: Content – inclusion criteria), covering the years 2018 to 2022 with annual installed capacity (MW), percentage of total energy mix, and policy incentives (L2: Scope – defined depth and breadth), then perform calculations to determine average annual growth rate and validate data consistency across rows by cross-referencing official Eurostat reports (L3: Tabular Data Ops & Calcs); this analysis will support an upcoming team discussion on policy effectiveness and future investment opportunities (Use Case: Discussion & Exploration).",
+        "Use Case": "Discussion & Exploration",
+        "User Prompt Length": "20 - 50 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "8d7a6f04-f886-495a-8fa9-5f5bc043712c",
+        "source_timestamp": 1769579172000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:12.355303",
+      "updated_at": "2026-01-28T05:46:12.355303",
+      "id": 73204,
+      "metadata": {
+        "Domain": "Media, Arts, Culture",
+        "L1 Description": "Demands the incorporation of patterns shown in instances or illustrations.",
+        "L1 Taxonomy": "Example",
+        "L2 Description": "The response must follow the same type of content logic or data types as in the examples (e.g., same variables, same kinds of entities, etc.).",
+        "L2 Taxonomy": "Content Parity",
+        "L3 Description": "Turn many inputs into short, faithful outputs.",
+        "L3 Taxonomy": "Summarization & Reporting",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "9",
+        "Scenario": "As a cultural strategy analyst at a national arts council, the user is tasked with evaluating the impact of recent public art initiatives across five major cities, each of which has submitted detailed case study reports including variables such as artwork type, community engagement metrics, funding sources, and local demographic shifts. The user must now synthesize these diverse inputs into a concise strategic report that mirrors the structure and content logic of a provided example summary—featuring the same entity types (e.g., project name, location, budget range, outcomes in terms of public participation, and policy recommendations)—to ensure consistency in executive reporting. The user asks the LLM to generate a standardized summary for a new urban mural project in Birmingham by following the exact content pattern and data types (e.g., categorical funding source, numerical participation rates, qualitative outcome tags) from the example, condensing multiple data points into a brief, faithful report suitable for inclusion in a national policy briefing.",
+        "Use Case": "Strategic Planning & Reporting",
+        "User Prompt Length": "50 - 100 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "3792033e-8d51-4268-9b6c-06073637efa2",
+        "source_timestamp": 1769579172000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:12.346393",
+      "updated_at": "2026-01-28T05:46:12.346393",
+      "id": 73203,
+      "metadata": {
+        "Domain": "Education & Research",
+        "L1 Description": "Demands the incorporation of patterns shown in instances or illustrations.",
+        "L1 Taxonomy": "Example",
+        "L2 Description": "Tone, phrasing, or lexical style should mirror the example (e.g., narrative tone, use of specific verbs or sentence length).",
+        "L2 Taxonomy": "Stylistic Mimicry",
+        "L3 Description": "Spot risks and produce compliant outputs.",
+        "L3 Taxonomy": "Risk, Fraud & Compliance",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "1",
+        "Scenario": "A university compliance officer is planning a research collaboration trip across multiple international campuses and asks the LLM to generate a detailed travel itinerary that mirrors the tone, structure, and concise phrasing of a previously approved internal travel memo—characterized by formal yet accessible language, short declarative sentences, and bullet-style logistics—to ensure consistency with institutional documentation standards; the officer emphasizes that the itinerary must avoid any language or scheduling choices that could imply endorsement of non-compliant activities (e.g., meetings outside official academic venues, unregistered transfers of data) and must explicitly align with the university’s international travel risk management policy, requiring the LLM to both stylistically mimic the example and embed compliance-aware phrasing throughout.",
+        "Use Case": "Itinerary Planning",
+        "User Prompt Length": "20 - 50 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "65afef43-a2e5-4b68-97f6-05218e3681f7",
+        "source_timestamp": 1769579172000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:12.337431",
+      "updated_at": "2026-01-28T05:46:12.337431",
+      "id": 73202,
+      "metadata": {
+        "Domain": "Sports, Hobbies & Recreation",
+        "L1 Description": "Requires the response to follow a specific structure or layout.​",
+        "L1 Taxonomy": "Format",
+        "L2 Description": "Format-related syntax or medium (e.g., Markdown, LaTeX, JSON).",
+        "L2 Taxonomy": "Medium",
+        "L3 Description": "Answer questions or generate outputs strictly grounded in provided reference documents or snippets.",
+        "L3 Taxonomy": "Search & Retrieval QA",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "7",
+        "Scenario": "As a legal analyst for a sports governance organization, I need you to review a set of policy documents related to athlete eligibility in international competitions and extract key provisions into a structured Markdown table. Specifically, I will provide excerpts from the World Athletics, FIFA, and IOC eligibility rules, and I require you to format your response using Markdown syntax with the following columns: Governing Body, Sport, Eligibility Requirement, Documentation Required, and Relevant Rule Clause. Each row must be grounded strictly in the provided text snippets, with no external information added, and you must preserve exact terminology and clause references as they appear in the source material for legal accuracy.",
+        "Use Case": "Policy & Legal Analysis",
+        "User Prompt Length": "50 - 100 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "f34e4d74-2b9b-41fc-9b27-b646db8d8042",
+        "source_timestamp": 1769579172000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:12.295879",
+      "updated_at": "2026-01-28T05:46:12.295879",
+      "id": 73201,
+      "metadata": {
+        "Domain": "Government, Law & Public Safety",
+        "L1 Description": "Specifies the inclusion or exclusion of particular information.​",
+        "L1 Taxonomy": "Content",
+        "L2 Description": "Limits the sources from which content can be drawn (e.g., only from academic literature).",
+        "L2 Taxonomy": "Source Constraints",
+        "L3 Description": "Pull fields from messy inputs and make them consistent.",
+        "L3 Taxonomy": "Data Extraction & Normalization",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "9",
+        "Scenario": "A user researching fan-led advocacy efforts around digital rights laws asks the LLM to extract and normalize data from a set of unstructured blog posts, social media threads, and fan community petitions related to proposed legislation on online content moderation, but only include information sourced from official government publications, legislative records, or peer-reviewed legal scholarship; the user specifically instructs the LLM to exclude anecdotal or fan-generated claims and instead identify and standardize key data fields—such as bill numbers, legislative dates, sponsoring agencies, and cited legal precedents—from the approved sources, ensuring consistent formatting across entries for integration into a structured database used to track public engagement with digital policy reforms.",
+        "Use Case": "Fandom & Information Retrieval",
+        "User Prompt Length": "100 - 500 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "d0ec41a8-628f-43da-87ae-32b0cfbd131d",
+        "source_timestamp": 1769579172000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:12.286254",
+      "updated_at": "2026-01-28T05:46:12.286254",
+      "id": 73200,
+      "metadata": {
+        "Domain": "Media, Arts, Culture",
+        "L1 Description": "Multiple taxonomies covered.",
+        "L1 Taxonomy": "Mixed",
+        "L2 Description": "Multiple taxonomies covered.",
+        "L2 Taxonomy": "Mixed",
+        "L3 Description": "Allocate time/capacity and plan timelines.",
+        "L3 Taxonomy": "Scheduling & Planning",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "5",
+        "Scenario": "A user is organizing a multidisciplinary arts festival that includes film screenings, live music performances, visual art exhibitions, and panel discussions, requiring coordination across venues, artists, technical crews, and audience schedules. They ask the LLM to help develop a comprehensive event timeline that accounts for artist availability, setup/breakdown times, technical rehearsals, overlapping sessions, and audience flow, while also providing explanations for how conflicting priorities—such as prime-time slots for headliners versus emerging artists’ exposure—were balanced, ensuring equitable time allocation and logical sequencing across the festival’s four-day duration.",
+        "Use Case": "Explanatory Q&A",
+        "User Prompt Length": "Below 20 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "e29883c6-0237-437f-b93d-295c7ac7c03e",
+        "source_timestamp": 1769579172000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:12.143177",
+      "updated_at": "2026-01-28T05:46:12.143177",
+      "id": 73199,
+      "metadata": {
+        "Domain": "Science, Tech, & Environment",
+        "L1 Description": "Demands the incorporation of patterns shown in instances or illustrations.",
+        "L1 Taxonomy": "Example",
+        "L2 Description": "The relationship between input and expected output should be preserved. If the example maps a specific type of input to a style of output, this mapping should guide the response.",
+        "L2 Taxonomy": "Input–Output Alignment",
+        "L3 Description": "Understand and edit business and contractual documents.",
+        "L3 Taxonomy": "Document & Contract Ops",
+        "Language": "Spanish (es)",
+        "Model": "Qwen",
+        "Number of Turns": "9",
+        "Scenario": "As part of a technology transfer agreement between a university and a biotech startup, you are role-playing as a legal consultant reviewing a draft contract clause that outlines intellectual property (IP) ownership for inventions derived from jointly funded research. The user provides several past examples of finalized clauses from similar agreements, where specific input conditions—such as the origin of funding, type of researcher involvement, and technology domain—are consistently mapped to particular IP allocation outcomes (e.g., shared ownership vs. institution-held rights). The user asks the LLM to analyze the current draft clause, identify any misalignment with the established input–output pattern from the precedents, and revise it to maintain consistency with prior contractual decisions, ensuring that the output mirrors the style, structure, and logic of the successful examples provided.",
+        "Use Case": "Procedural & Role Play",
+        "User Prompt Length": "Above 500 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "e0726dd3-bf6c-4cf1-a567-8851b1281987",
+        "source_timestamp": 1769579172000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:12.104221",
+      "updated_at": "2026-01-28T05:46:12.104221",
+      "id": 73198,
+      "metadata": {
+        "Domain": "Education & Research",
+        "L1 Description": "Specifies the inclusion or exclusion of particular information.​",
+        "L1 Taxonomy": "Content",
+        "L2 Description": "Specifies what types of content should be omitted or avoided.",
+        "L2 Taxonomy": "Exclusion",
+        "L3 Description": "Pull fields from messy inputs and make them consistent.",
+        "L3 Taxonomy": "Data Extraction & Normalization",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "6",
+        "Scenario": "A university researcher compiling a study on local educational resource accessibility asks the LLM to analyze a set of unstructured community survey responses, but explicitly instructs it to exclude any personally identifiable information such as names, addresses, or phone numbers (L1: Content, L2: Exclusion) to comply with privacy protocols; the researcher further directs the model to extract and normalize specific data fields—such as neighborhood location, preferred learning format (in-person, online, hybrid), and age group—from inconsistently formatted text entries (e.g., “Westside, likes online classes, 18-24” vs. “Prefers Zoom, age 22, lives near the university”) into a standardized tabular format for analysis, ensuring uniformity in categorization (L3: Data Extraction & Normalization), all in service of generating localized recommendations for improving community education programs (Use Case: Local Recommendations).",
+        "Use Case": "Local Recommendations",
+        "User Prompt Length": "20 - 50 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "ea8a2020-76f1-4310-98ff-c064ee44d054",
+        "source_timestamp": 1769579172000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:12.100975",
+      "updated_at": "2026-01-28T05:46:12.100975",
+      "id": 73197,
+      "metadata": {
+        "Domain": "Business, Finance, Industry",
+        "L1 Description": "Specifies the inclusion or exclusion of particular information.​",
+        "L1 Taxonomy": "Content",
+        "L2 Description": "Directs attention to a particular topic, domain, or level of detail (e.g., macro vs. micro).",
+        "L2 Taxonomy": "Focus",
+        "L3 Description": "Allocate time/capacity and plan timelines.",
+        "L3 Taxonomy": "Scheduling & Planning",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "8",
+        "Scenario": "As a financial operations manager at a mid-sized manufacturing firm, the user needs to prepare a detailed explanatory report for senior leadership on how shifting production schedules to accommodate a new product line will impact quarterly cash flow, resource allocation, and existing project timelines; the user asks the LLM to generate a structured explanation that includes specific financial implications (L1: Content), with a primary focus on operational capacity constraints and time-sensitive budgeting decisions (L2: Focus), while organizing the analysis around a revised quarterly project and production schedule that outlines key milestones, resource bottlenecks, and financial outlays over time (L3: Scheduling & Planning), ensuring the response supports strategic decision-making within the Business, Finance, and Industry domain through a clear, explanatory Q&A format.",
+        "Use Case": "Explanatory Q&A",
+        "User Prompt Length": "20 - 50 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "d69dad0d-2544-4301-9cd2-6317b183a5d8",
+        "source_timestamp": 1769579172000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:12.013595",
+      "updated_at": "2026-01-28T05:46:12.013595",
+      "id": 73196,
+      "metadata": {
+        "Domain": "Society, Lifestyle & Community",
+        "L1 Description": "Sets conditions or contexts under which the instruction should be executed.​",
+        "L1 Taxonomy": "Situation",
+        "L2 Description": "Time-related conditions (e.g., future scenarios, historical settings).",
+        "L2 Taxonomy": "Temporal Context",
+        "L3 Description": "Pull fields from messy inputs and make them consistent.",
+        "L3 Taxonomy": "Data Extraction & Normalization",
+        "Language": "Spanish (es)",
+        "Model": "Qwen",
+        "Number of Turns": "5",
+        "Scenario": "In the context of a future fan convention set in 2027 celebrating the 50th anniversary of the *Star Trek* franchise, I need you to extract and normalize character appearance data from a collection of unstructured blog posts, forum comments, and scanned convention panels from 1993 to 2024, ensuring all entries reflect consistent character names, episode titles, and stardate formats, so I can build a timeline of when each character was first publicly discussed in fan communities relative to their canonical on-screen debut.",
+        "Use Case": "Fandom & Information Retrieval",
+        "User Prompt Length": "100 - 500 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "c76531de-ff86-484d-8490-b3256a2d2a80",
+        "source_timestamp": 1769579172000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:11.744612",
+      "updated_at": "2026-01-28T05:46:11.744612",
+      "id": 73195,
+      "metadata": {
+        "Domain": "Other",
+        "L1 Description": "Demands the incorporation of patterns shown in instances or illustrations.",
+        "L1 Taxonomy": "Example",
+        "L2 Description": "The output should result from applying the same transformation logic demonstrated in the example (e.g., if the example rewrites a sentence into passive voice, the response must do the same transformation).",
+        "L2 Taxonomy": "Transformational Equivalence",
+        "L3 Description": "Run multi-turn, policy-aware chats.",
+        "L3 Taxonomy": "Conversational Flows & CSAT",
+        "Language": "Spanish (es)",
+        "Model": "Qwen",
+        "Number of Turns": "6",
+        "Scenario": "A customer service training coordinator presents the AI with a sample conversation in which a frustrated customer’s active-voice complaints (e.g., \"You failed to deliver my order on time\") are transformed into empathetic, passive-voice responses that align with company communication policy (e.g., \"Your order was not delivered on time, and we sincerely apologize for the inconvenience\"). The user then provides a new, unprocessed customer message containing direct accusations in active voice and asks the AI to apply the exact same transformational logic—shifting tone, voice, and structure while preserving meaning—to generate a policy-compliant, de-escalated agent response suitable for a multi-turn support chat aimed at improving customer satisfaction (CSAT).",
+        "Use Case": "Other",
+        "User Prompt Length": "100 - 500 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "35ee58b3-97e7-4581-bceb-6053852d5ef9",
+        "source_timestamp": 1769579171000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:11.712046",
+      "updated_at": "2026-01-28T05:46:11.712046",
+      "id": 73194,
+      "metadata": {
+        "Domain": "Education & Research",
+        "L1 Description": "Dictates the tone or manner of the response.​",
+        "L1 Taxonomy": "Style",
+        "L2 Description": "Emotional or interpersonal stance (e.g., friendly, authoritative, neutral).",
+        "L2 Taxonomy": "Tone",
+        "L3 Description": "Understand and edit business and contractual documents.",
+        "L3 Taxonomy": "Document & Contract Ops",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "3",
+        "Scenario": "As a university research administrator, I need you to revise a draft data-sharing agreement between our institution and an external industry partner, ensuring the tone remains formally neutral and legally precise, while clearly articulating each party’s responsibilities regarding data ownership, confidentiality, and publication rights; I’m looking for edits that align with standard academic contract conventions, clarify ambiguous language, and maintain consistency in terminology across all sections—this document will be used to educate our research team on best practices in contractual collaborations, so accuracy and clarity are critical.",
+        "Use Case": "Information & Education",
+        "User Prompt Length": "50 - 100 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "0a7e38a7-4a56-4674-8f33-553c23e22ec2",
+        "source_timestamp": 1769579171000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:11.709487",
+      "updated_at": "2026-01-28T05:46:11.709487",
+      "id": 73193,
+      "metadata": {
+        "Domain": "Business, Finance, Industry",
+        "L1 Description": "Specifies the inclusion or exclusion of particular information.​",
+        "L1 Taxonomy": "Content",
+        "L2 Description": "Specifies required information, entities, concepts, facts, or data to be included.",
+        "L2 Taxonomy": "Inclusion",
+        "L3 Description": "Pull fields from messy inputs and make them consistent.",
+        "L3 Taxonomy": "Data Extraction & Normalization",
+        "Language": "Spanish (es)",
+        "Model": "Qwen",
+        "Number of Turns": "4",
+        "Scenario": "A financial analyst at a mid-sized investment firm receives a batch of unstructured earnings call transcripts from international subsidiaries, each in different formats and languages, and asks the LLM to extract specific financial metrics—such as revenue, net profit, EBITDA, and capital expenditures—for the most recent quarter, normalize the values into USD using the official exchange rates from the last day of the quarter, and present them in a consistent tabular format alongside the subsidiary name and reporting date, ensuring all data is accurately attributed and formatted for inclusion in a consolidated quarterly performance report.",
+        "Use Case": "Explanatory Q&A",
+        "User Prompt Length": "50 - 100 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "a2c9f552-b46b-49e5-90b9-efb0d570d7ca",
+        "source_timestamp": 1769579171000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:11.689260",
+      "updated_at": "2026-01-28T05:46:11.689260",
+      "id": 73192,
+      "metadata": {
+        "Domain": "Business, Finance, Industry",
+        "L1 Description": "Dictates the tone or manner of the response.​",
+        "L1 Taxonomy": "Style",
+        "L2 Description": "Degree of linguistic formality (e.g., casual, formal, academic).",
+        "L2 Taxonomy": "Formality",
+        "L3 Description": "Understand and edit business and contractual documents.",
+        "L3 Taxonomy": "Document & Contract Ops",
+        "Language": "Spanish (es)",
+        "Model": "Qwen",
+        "Number of Turns": "1",
+        "Scenario": "As a corporate compliance officer at a multinational financial services firm, I need you to analyze a proposed amendment to our internal data governance policy, ensuring it aligns with GDPR and CCPA requirements, and then rewrite the document in a formal, legally precise tone appropriate for executive review and regulatory scrutiny, making sure all terminology is consistent with existing contractual obligations and industry standards.",
+        "Use Case": "Policy & Legal Analysis",
+        "User Prompt Length": "100 - 500 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "183c7c36-0900-4f6b-aea6-fdd5658648a5",
+        "source_timestamp": 1769579171000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:11.640598",
+      "updated_at": "2026-01-28T05:46:11.640598",
+      "id": 73191,
+      "metadata": {
+        "Domain": "Education & Research",
+        "L1 Description": "Requires the response to follow a specific structure or layout.​",
+        "L1 Taxonomy": "Format",
+        "L2 Description": "Format-related syntax or medium (e.g., Markdown, LaTeX, JSON).",
+        "L2 Taxonomy": "Medium",
+        "L3 Description": "Produce outputs in strict structured formats (JSON, tables, templates, CSV, configs, Markdown) that validate against given schemas and rules.",
+        "L3 Taxonomy": "Structured Generation",
+        "Language": "Spanish (es)",
+        "Model": "Qwen",
+        "Number of Turns": "6",
+        "Scenario": "A university librarian is compiling a knowledge base of educational technology tools for faculty and asks the LLM to provide detailed, standardized entries for each tool in a machine-readable format; the user requests: \"Generate a response for the learning management system 'Moodle' in valid JSON format, following a strict schema with keys: 'name' (string), 'category' (string), 'platform_type' (array of strings), 'license_model' (string), 'supports_sso' (boolean), 'last_updated' (ISO 8601 date), and 'access_options' (object with keys 'web', 'mobile', 'api', each a boolean), ensuring all data types are correct and the JSON validates against this defined structure.\"",
+        "Use Case": "General Product & Service Q&A",
+        "User Prompt Length": "Above 500 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "1bafdf2b-18bc-4dc7-81f2-65cf54943086",
+        "source_timestamp": 1769579171000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:11.626027",
+      "updated_at": "2026-01-28T05:46:11.626027",
+      "id": 73190,
+      "metadata": {
+        "Domain": "Media, Arts, Culture",
+        "L1 Description": "Demands the incorporation of patterns shown in instances or illustrations.",
+        "L1 Taxonomy": "Example",
+        "L2 Description": "The relationship between input and expected output should be preserved. If the example maps a specific type of input to a style of output, this mapping should guide the response.",
+        "L2 Taxonomy": "Input–Output Alignment",
+        "L3 Description": "Run multi-turn, policy-aware chats.",
+        "L3 Taxonomy": "Conversational Flows & CSAT",
+        "Language": "Spanish (es)",
+        "Model": "Qwen",
+        "Number of Turns": "2",
+        "Scenario": "A user is curating a multimedia art exhibition that explores the evolution of digital storytelling and wants to design an interactive guide for visitors. They provide the assistant with a sample dialogue script from a previous exhibition, where each artwork was introduced with a three-part narrative structure: (1) historical context, (2) artist’s intent, and (3) audience interpretation. The user asks the assistant to generate new dialogue scripts for five emerging digital artworks in the same format, ensuring each follows the input–output pattern of the example—where specific artwork metadata (title, medium, year) maps to the three-part narrative structure—and to refine the tone through iterative, conversational feedback that aligns with museum policies on inclusive language and accessibility, ultimately optimizing for visitor engagement and satisfaction (CSAT).",
+        "Use Case": "Planning & How-To",
+        "User Prompt Length": "50 - 100 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "b3a33d93-4d60-43ad-a360-0b2b9a8e9e99",
+        "source_timestamp": 1769579171000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:11.495394",
+      "updated_at": "2026-01-28T05:46:11.495394",
+      "id": 73189,
+      "metadata": {
+        "Domain": "Healthcare & Wellness",
+        "L1 Description": "Sets conditions or contexts under which the instruction should be executed.​",
+        "L1 Taxonomy": "Situation",
+        "L2 Description": "Constraints such as time pressure, uncertainty, or availability of tools-resources.",
+        "L2 Taxonomy": "Operational Condition",
+        "L3 Description": "Work safely with sensitive data.",
+        "L3 Taxonomy": "Secure Data Handling",
+        "Language": "Spanish (es)",
+        "Model": "Qwen",
+        "Number of Turns": "6",
+        "Scenario": "A hospital's internal AI assistant is used by a physician during an evening shift in the emergency department, where a patient presents with acute chest pain and a complex medical history including HIV and recent international travel. The physician must quickly determine whether to administer a standard anticoagulant protocol but is constrained by uncertainty around drug interactions with the patient’s antiretroviral regimen and concerns about potential tuberculosis exposure. Time is critical, and the hospital’s EHR system is under maintenance, limiting access to full pharmacological databases. The physician queries the LLM: “Based on current guidelines, can we safely administer enoxaparin to this HIV-positive patient on dolutegravir and tenofovir who has a negative TB screen but elevated liver enzymes, and what precautions should be taken given limited diagnostic tools tonight?” The response must adhere to secure data handling by avoiding any storage or transmission of identifiable patient details while providing a step-by-step, evidence-based procedural recommendation under operational constraints.",
+        "Use Case": "Procedural Q&A",
+        "User Prompt Length": "100 - 500 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "7a64bfab-80f4-4a5e-b4bf-1aec2799d217",
+        "source_timestamp": 1769579171000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:11.474448",
+      "updated_at": "2026-01-28T05:46:11.474448",
+      "id": 73188,
+      "metadata": {
+        "Domain": "Science, Tech, & Environment",
+        "L1 Description": "Demands the incorporation of patterns shown in instances or illustrations.",
+        "L1 Taxonomy": "Example",
+        "L2 Description": "The structure of reasoning or steps taken in the example should be mimicked (e.g., first define, then reason, then conclude).",
+        "L2 Taxonomy": "Conceptual Mapping",
+        "L3 Description": "Run multi-turn, policy-aware chats.",
+        "L3 Taxonomy": "Conversational Flows & CSAT",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "1",
+        "Scenario": "A high school environmental science teacher is preparing a lesson on climate change feedback loops and asks the LLM to explain the concept using the same pedagogical structure as a prior example the system had provided about Arctic ice albedo—where the explanation first defined the concept, then walked through a real-world instance with cause-effect reasoning, and concluded with broader implications. The teacher requests that the LLM follow this exact conceptual mapping to explain permafrost thaw as a feedback loop, while ensuring the tone remains accessible for teenagers, adhering to school district content policies, and inviting follow-up questions in a natural, conversational way that could support classroom dialogue and improve student comprehension and engagement.",
+        "Use Case": "Explanatory Q&A",
+        "User Prompt Length": "100 - 500 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "ceda4014-2c6f-4dd8-9d36-d52171d3834c",
+        "source_timestamp": 1769579171000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:11.449130",
+      "updated_at": "2026-01-28T05:46:11.449130",
+      "id": 73187,
+      "metadata": {
+        "Domain": "Business, Finance, Industry",
+        "L1 Description": "Requires the response to follow a specific structure or layout.​",
+        "L1 Taxonomy": "Format",
+        "L2 Description": "Needs for explicit labeling of elements (e.g., headers, bullet labels).",
+        "L2 Taxonomy": "Labeling-Tagging",
+        "L3 Description": "Produce outputs in strict structured formats (JSON, tables, templates, CSV, configs, Markdown) that validate against given schemas and rules.",
+        "L3 Taxonomy": "Structured Generation",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "7",
+        "Scenario": "A user managing a fan wiki for a popular fantasy TV series needs to systematically catalog character data for automated integration into a dynamic website database; they ask the LLM to extract and format character information from a provided text summary into a strict JSON structure that adheres to a predefined schema, requiring specific keys (e.g., \"character_name\", \"house\", \"status\", \"appearances\") to be present and labeled correctly, with nested arrays for \"allies\" and \"key_events\", ensuring the output is both human-readable and machine-validated for seamless import into their content management system.",
+        "Use Case": "Fandom & Information Retrieval",
+        "User Prompt Length": "50 - 100 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "8002821c-2f6a-4d5e-878f-144905793ee5",
+        "source_timestamp": 1769579171000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:11.444654",
+      "updated_at": "2026-01-28T05:46:11.444654",
+      "id": 73186,
+      "metadata": {
+        "Domain": "Travel & Transportation",
+        "L1 Description": "Dictates the tone or manner of the response.​",
+        "L1 Taxonomy": "Style",
+        "L2 Description": "Consistent narrative or persona traits (e.g., witty, empathetic, robotic).",
+        "L2 Taxonomy": "Voice-Personality",
+        "L3 Description": "Plan tool calls and verify results.",
+        "L3 Taxonomy": "Tool Use & AgentOps",
+        "Language": "Spanish (es)",
+        "Model": "Qwen",
+        "Number of Turns": "1",
+        "Scenario": "While planning a two-week trip to Japan, the user asks the LLM to analyze their draft itinerary and provide a critique in the style of a seasoned travel blogger with a witty and slightly sarcastic personality, pointing out logical gaps, overambitious travel days, and cultural missteps—while using real-time data tools to verify train schedules, weather forecasts, and attraction opening hours, then adjusting recommendations accordingly. The user expects the LLM to maintain a consistent narrative voice throughout, blending humor with practical advice, and to explicitly document which tools were used and how their results influenced the critique.",
+        "Use Case": "Analysis & Critique",
+        "User Prompt Length": "100 - 500 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "ce88df9c-141e-4d9f-b30a-c9f9726c7506",
+        "source_timestamp": 1769579171000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:11.348742",
+      "updated_at": "2026-01-28T05:46:11.348742",
+      "id": 73185,
+      "metadata": {
+        "Domain": "Media, Arts, Culture",
+        "L1 Description": "Specifies the inclusion or exclusion of particular information.​",
+        "L1 Taxonomy": "Content",
+        "L2 Description": "Specifies what types of content should be omitted or avoided.",
+        "L2 Taxonomy": "Exclusion",
+        "L3 Description": "Pull fields from messy inputs and make them consistent.",
+        "L3 Taxonomy": "Data Extraction & Normalization",
+        "Language": "Spanish (es)",
+        "Model": "Qwen",
+        "Number of Turns": "6",
+        "Scenario": "As a content creator drafting a press release for an upcoming art exhibition, I need you to extract specific details—such as artist names, artwork titles, exhibition dates, and venue information—from a set of unstructured email announcements and PDF invitations, then normalize the data into a consistent format (e.g., standard date formats, title capitalization), while excluding any personal contact information, internal staff notes, or references to sponsor negotiations that may appear in the source materials.",
+        "Use Case": "Content Creation & Drafting",
+        "User Prompt Length": "50 - 100 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "01f4e99f-5ee4-4d9e-b073-f9443ff3ec6e",
+        "source_timestamp": 1769579171000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:11.336633",
+      "updated_at": "2026-01-28T05:46:11.336633",
+      "id": 73184,
+      "metadata": {
+        "Domain": "Government, Law & Public Safety",
+        "L1 Description": "Specifies the inclusion or exclusion of particular information.​",
+        "L1 Taxonomy": "Content",
+        "L2 Description": "Limits the sources from which content can be drawn (e.g., only from academic literature).",
+        "L2 Taxonomy": "Source Constraints",
+        "L3 Description": "Join, validate, and compute on rows/columns.",
+        "L3 Taxonomy": "Tabular Data Ops & Calcs",
+        "Language": "Spanish (es)",
+        "Model": "Qwen",
+        "Number of Turns": "10",
+        "Scenario": "As a researcher analyzing fan engagement with public safety campaigns, you are compiling a report on how government-issued pandemic guidelines were adapted by fan communities to promote health messaging, and you need to ensure all data comes exclusively from official government publications and peer-reviewed public health journals (L2: Source Constraints); specifically, you require the LLM to extract and compile into a structured table (L3: Tabular Data Ops & Calcs) the dates, recommended social distancing measures, and mask-wearing guidelines from CDC, WHO, and NIH documents published between March 2020 and June 2021 (L1: Content), then calculate the percentage change in distancing recommendations over time to assess messaging evolution, all within the context of understanding how these official stances were later interpreted in fandom-led information campaigns (Use Case: Fandom & Information Retrieval).",
+        "Use Case": "Fandom & Information Retrieval",
+        "User Prompt Length": "50 - 100 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "9e77d09f-8ff3-4409-9686-7f9321d3c559",
+        "source_timestamp": 1769579171000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:11.321771",
+      "updated_at": "2026-01-28T05:46:11.321771",
+      "id": 73183,
+      "metadata": {
+        "Domain": "Sports, Hobbies & Recreation",
+        "L1 Description": "Multiple taxonomies covered.",
+        "L1 Taxonomy": "Mixed",
+        "L2 Description": "Multiple taxonomies covered.",
+        "L2 Taxonomy": "Mixed",
+        "L3 Description": "Allocate time/capacity and plan timelines.",
+        "L3 Taxonomy": "Scheduling & Planning",
+        "Language": "Spanish (es)",
+        "Model": "Qwen",
+        "Number of Turns": "7",
+        "Scenario": "As a volunteer coordinator for a community youth sports league, I need to organize a multi-sport summer camp that includes soccer, basketball, and swimming sessions across three local facilities, each with different availability and staffing constraints; I must schedule 120 children across age groups and skill levels, ensure no time conflicts, accommodate volunteer coach availability, and align with city park reservations and lifeguard staffing calendars—while also generating a strategic report for stakeholders that outlines resource allocation, risk mitigation plans, and timeline dependencies. I would ask the LLM to develop a comprehensive weekly schedule with time-slot assignments by sport and age group, create a capacity utilization summary, and produce a strategic planning report detailing logistical trade-offs, staffing needs, and key milestones for camp rollout.",
+        "Use Case": "Strategic Planning & Reporting",
+        "User Prompt Length": "20 - 50 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "3c2dc1ca-665e-4d54-a20c-e433334b3ba3",
+        "source_timestamp": 1769579171000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:11.261164",
+      "updated_at": "2026-01-28T05:46:11.261164",
+      "id": 73182,
+      "metadata": {
+        "Domain": "Education & Research",
+        "L1 Description": "Sets conditions or contexts under which the instruction should be executed.​",
+        "L1 Taxonomy": "Situation",
+        "L2 Description": "Domain-specific assumptions or cultural expectations (e.g., medical, legal, academic).",
+        "L2 Taxonomy": "Domain Context",
+        "L3 Description": "Produce outputs in strict structured formats (JSON, tables, templates, CSV, configs, Markdown) that validate against given schemas and rules.",
+        "L3 Taxonomy": "Structured Generation",
+        "Language": "Spanish (es)",
+        "Model": "Qwen",
+        "Number of Turns": "8",
+        "Scenario": "As a university research coordinator in the Education & Research domain, I need to design a standardized ethics review submission template for graduate thesis projects involving human participants, and I am asking the LLM to generate a JSON-formatted schema that adheres to institutional academic integrity guidelines (Domain Context), structures required fields such as Principal Investigator details, IRB approval status, data anonymization protocols, and consent procedures (Situation), and strictly conforms to a predefined JSON schema with specific data types, required fields, and hierarchical nesting rules (Structured Generation) to ensure automated validation by our internal review system.",
+        "Use Case": "Content Creation & Drafting",
+        "User Prompt Length": "50 - 100 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "cd68d342-8310-4d16-ac43-ff893d0fb634",
+        "source_timestamp": 1769579171000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:11.241432",
+      "updated_at": "2026-01-28T05:46:11.241432",
+      "id": 73181,
+      "metadata": {
+        "Domain": "Government, Law & Public Safety",
+        "L1 Description": "Specifies the inclusion or exclusion of particular information.​",
+        "L1 Taxonomy": "Content",
+        "L2 Description": "Limits the sources from which content can be drawn (e.g., only from academic literature).",
+        "L2 Taxonomy": "Source Constraints",
+        "L3 Description": "Join, validate, and compute on rows/columns.",
+        "L3 Taxonomy": "Tabular Data Ops & Calcs",
+        "Language": "Spanish (es)",
+        "Model": "Qwen",
+        "Number of Turns": "10",
+        "Scenario": "As a policy analyst for a state public safety commission, I need you to analyze recent trends in law enforcement staffing levels and their correlation with crime rates across five major U.S. cities from 2018 to 2023, using only official government-published data sources such as FBI Uniform Crime Reports and U.S. Census Bureau datasets; specifically, extract, clean, and join the annual crime rate per 100,000 residents with full-time sworn officer counts per 10,000 residents from tabular data, compute percentage changes year-over-year, and critically assess whether fluctuations in police staffing align with changes in crime rates, highlighting any inconsistencies or anomalies in the data relationships.",
+        "Use Case": "Analysis & Critique",
+        "User Prompt Length": "Above 500 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "5652b755-21cd-48f6-994e-494c6b258806",
+        "source_timestamp": 1769579171000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:11.199356",
+      "updated_at": "2026-01-28T05:46:11.199356",
+      "id": 73180,
+      "metadata": {
+        "Domain": "Science, Tech, & Environment",
+        "L1 Description": "Dictates the tone or manner of the response.​",
+        "L1 Taxonomy": "Style",
+        "L2 Description": "Degree of linguistic formality (e.g., casual, formal, academic).",
+        "L2 Taxonomy": "Formality",
+        "L3 Description": "Make traceable choices under rules and tradeoffs.",
+        "L3 Taxonomy": "Decision Systems & Reasoning",
+        "Language": "Spanish (es)",
+        "Model": "Qwen",
+        "Number of Turns": "2",
+        "Scenario": "As a senior environmental policy advisor, I need you to draft a formal strategic report evaluating two competing decarbonization pathways for national energy infrastructure, using academically rigorous language and adhering to government reporting standards. The analysis must systematically weigh tradeoffs between economic cost, technological feasibility, and environmental impact over short-, medium-, and long-term horizons, explicitly documenting the decision logic and criteria used to rank recommendations, so it can be presented to federal stakeholders and inform upcoming climate legislation.",
+        "Use Case": "Strategic Planning & Reporting",
+        "User Prompt Length": "Above 500 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "2f4815f8-7d61-4eca-8cfd-f86821ad9b02",
+        "source_timestamp": 1769579171000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:11.183507",
+      "updated_at": "2026-01-28T05:46:11.183507",
+      "id": 73179,
+      "metadata": {
+        "Domain": "Science, Tech, & Environment",
+        "L1 Description": "Sets conditions or contexts under which the instruction should be executed.​",
+        "L1 Taxonomy": "Situation",
+        "L2 Description": "Domain-specific assumptions or cultural expectations (e.g., medical, legal, academic).",
+        "L2 Taxonomy": "Domain Context",
+        "L3 Description": "Produce outputs in strict structured formats (JSON, tables, templates, CSV, configs, Markdown) that validate against given schemas and rules.",
+        "L3 Taxonomy": "Structured Generation",
+        "Language": "Spanish (es)",
+        "Model": "Qwen",
+        "Number of Turns": "10",
+        "Scenario": "As a moderator of a fan wiki dedicated to the sci-fi series *The Expanse*, I need to compile canonical data about planetary colonies into a structured knowledge base for integration with an automated lore generator; given the domain context of hard science fiction—where technological and environmental details must align with real-world physics and established series canon—you must extract and format information about Mars' colonization timeline, governmental structure, and terraforming efforts from provided sources, then generate a JSON object that strictly adheres to a predefined schema (including fields like \"colonyName\", \"establishmentYear\", \"atmosphericComposition\", and \"governanceType\") and validates against scientific plausibility checks and series canon constraints.",
+        "Use Case": "Fandom & Information Retrieval",
+        "User Prompt Length": "Above 500 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "9df38406-4514-4c66-814e-bbc5485a6b76",
+        "source_timestamp": 1769579171000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:11.069421",
+      "updated_at": "2026-01-28T05:46:11.069421",
+      "id": 73178,
+      "metadata": {
+        "Domain": "Science, Tech, & Environment",
+        "L1 Description": "Specifies the inclusion or exclusion of particular information.​",
+        "L1 Taxonomy": "Content",
+        "L2 Description": "Specifies required information, entities, concepts, facts, or data to be included.",
+        "L2 Taxonomy": "Inclusion",
+        "L3 Description": "Allocate time/capacity and plan timelines.",
+        "L3 Taxonomy": "Scheduling & Planning",
+        "Language": "Spanish (es)",
+        "Model": "Qwen",
+        "Number of Turns": "2",
+        "Scenario": "As a science communicator preparing a detailed blog series on renewable energy infrastructure, I need you to draft a content calendar for the next quarter that includes weekly articles covering specific technologies (solar, wind, geothermal, and hydropower), integrates key industry developments from the past six months, allocates two weeks for expert interview features, reserves one week for a recap of global policy updates, and ensures each topic is spaced to align with relevant international observances—such as World Wind Day and Earth Day—while maintaining a logical progression from foundational concepts to advanced integration challenges in the grid.",
+        "Use Case": "Content Creation & Drafting",
+        "User Prompt Length": "50 - 100 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "06275938-1f2e-429c-a9ef-aabc779ffbc7",
+        "source_timestamp": 1769579171000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:11.064271",
+      "updated_at": "2026-01-28T05:46:11.064271",
+      "id": 73177,
+      "metadata": {
+        "Domain": "Science, Tech, & Environment",
+        "L1 Description": "Dictates the tone or manner of the response.​",
+        "L1 Taxonomy": "Style",
+        "L2 Description": "Consistent narrative or persona traits (e.g., witty, empathetic, robotic).",
+        "L2 Taxonomy": "Voice-Personality",
+        "L3 Description": "Plan tool calls and verify results.",
+        "L3 Taxonomy": "Tool Use & AgentOps",
+        "Language": "Spanish (es)",
+        "Model": "Qwen",
+        "Number of Turns": "5",
+        "Scenario": "As a climate tech analyst, I need you to evaluate the effectiveness of a new carbon capture startup’s public claims about their technology’s scalability and environmental impact, using a skeptical and rigorously analytical voice; cross-reference their data with peer-reviewed studies and government energy reports via available tools, verify the credibility and recency of each source, and present a concise critique in a tone that is technically precise yet subtly dismissive of unsupported assertions, highlighting discrepancies between the startup’s marketing and empirical benchmarks in the field.",
+        "Use Case": "Analysis & Critique",
+        "User Prompt Length": "100 - 500 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "4bb33321-9463-4f1a-a8f2-1b2e769e4b58",
+        "source_timestamp": 1769579171000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:10.928237",
+      "updated_at": "2026-01-28T05:46:10.928237",
+      "id": 73176,
+      "metadata": {
+        "Domain": "Science, Tech, & Environment",
+        "L1 Description": "Demands the incorporation of patterns shown in instances or illustrations.",
+        "L1 Taxonomy": "Example",
+        "L2 Description": "The structure of reasoning or steps taken in the example should be mimicked (e.g., first define, then reason, then conclude).",
+        "L2 Taxonomy": "Conceptual Mapping",
+        "L3 Description": "Run multi-turn, policy-aware chats.",
+        "L3 Taxonomy": "Conversational Flows & CSAT",
+        "Language": "Spanish (es)",
+        "Model": "Qwen",
+        "Number of Turns": "8",
+        "Scenario": "A user is evaluating an AI assistant’s ability to analyze and critique a proposed climate tech solution—a carbon capture device—by referencing a prior example analysis of a solar panel innovation, where the assistant first defined the technology, then reasoned through its efficiency and scalability, and concluded with a critique of its real-world viability. The user asks the assistant to follow the same conceptual mapping to analyze the new device, while maintaining a conversational tone that acknowledges policy constraints (e.g., regulatory hurdles, funding incentives) across multiple turns, ensuring the interaction feels natural and contextually aware, ultimately aiming to assess both technical reasoning and user satisfaction in a realistic deployment scenario.",
+        "Use Case": "Analysis & Critique",
+        "User Prompt Length": "Above 500 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "69b3d84e-f356-4ad5-9ef9-10bea87a8589",
+        "source_timestamp": 1769579170000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:10.894971",
+      "updated_at": "2026-01-28T05:46:10.894971",
+      "id": 73175,
+      "metadata": {
+        "Domain": "Travel & Transportation",
+        "L1 Description": "Demands the incorporation of patterns shown in instances or illustrations.",
+        "L1 Taxonomy": "Example",
+        "L2 Description": "Tone, phrasing, or lexical style should mirror the example (e.g., narrative tone, use of specific verbs or sentence length).",
+        "L2 Taxonomy": "Stylistic Mimicry",
+        "L3 Description": "Spot risks and produce compliant outputs.",
+        "L3 Taxonomy": "Risk, Fraud & Compliance",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "1",
+        "Scenario": "While planning an international trip, the user receives a suspiciously well-written but urgent email from a sender claiming to be a travel compliance officer, stating that their upcoming flight has been flagged for \"regulatory review\" and requesting immediate confirmation of personal and payment details to avoid cancellation. The email mimics the formal, slightly bureaucratic tone of legitimate aviation authorities, using phrases like \"per standard protocol\" and \"mandatory verification.\" The user asks the LLM to analyze the message by emulating the email’s stylistic tone and phrasing to demonstrate how convincingly it imitates official communication, while critically identifying red flags—such as unsolicited requests for sensitive data and subtle deviations from genuine regulatory language—to assess fraud risk and ensure compliance with travel security best practices.",
+        "Use Case": "Analysis & Critique",
+        "User Prompt Length": "Above 500 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "de986057-05e5-4c10-8e68-270833d76ebd",
+        "source_timestamp": 1769579170000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:10.827481",
+      "updated_at": "2026-01-28T05:46:10.827481",
+      "id": 73174,
+      "metadata": {
+        "Domain": "Sports, Hobbies & Recreation",
+        "L1 Description": "Demands the incorporation of patterns shown in instances or illustrations.",
+        "L1 Taxonomy": "Example",
+        "L2 Description": "The relationship between input and expected output should be preserved. If the example maps a specific type of input to a style of output, this mapping should guide the response.",
+        "L2 Taxonomy": "Input–Output Alignment",
+        "L3 Description": "Run multi-turn, policy-aware chats.",
+        "L3 Taxonomy": "Conversational Flows & CSAT",
+        "Language": "Spanish (es)",
+        "Model": "Qwen",
+        "Number of Turns": "8",
+        "Scenario": "A user is exploring different board game strategies with an AI assistant, aiming to improve their gameplay in *Ticket to Ride*. They provide several examples of in-game scenarios they’ve encountered—such as being blocked from a key route or having limited destination cards—and the assistant’s previous responses, which framed advice in a structured \"Situation → Option → Risk/Reward\" format. The user now presents a new, complex mid-game scenario: they have few remaining trains, hold multiple long routes, and notice two opponents are close to completing their networks. They ask the AI to \"respond the same way as before\" by analyzing this new input using the exact same reasoning pattern and output structure shown in prior exchanges, ensuring alignment between the historical input-output pairs and the current advice, while the assistant maintains a conversational, policy-compliant tone that encourages strategic thinking and continued exploration.",
+        "Use Case": "Discussion & Exploration",
+        "User Prompt Length": "20 - 50 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "2fa01049-1f62-46b8-b3cc-f411d4a8e9d2",
+        "source_timestamp": 1769579170000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:10.801910",
+      "updated_at": "2026-01-28T05:46:10.801910",
+      "id": 73173,
+      "metadata": {
+        "Domain": "Media, Arts, Culture",
+        "L1 Description": "Dictates the tone or manner of the response.​",
+        "L1 Taxonomy": "Style",
+        "L2 Description": "Consistent narrative or persona traits (e.g., witty, empathetic, robotic).",
+        "L2 Taxonomy": "Voice-Personality",
+        "L3 Description": "Plan tool calls and verify results.",
+        "L3 Taxonomy": "Tool Use & AgentOps",
+        "Language": "Spanish (es)",
+        "Model": "Qwen",
+        "Number of Turns": "2",
+        "Scenario": "A user interacting with a virtual concierge for a premium streaming service asks, \"Explain why the dark, surreal tone of *Twin Peaks* influenced modern TV, and recommend similar shows—but respond as if you're David Lynch narrating in a calm, cryptic, and slightly eerie voice, using a custom mood-matching AI tool to analyze tonal consistency and pull real-time data on comparable series from our content database.\" The assistant must adopt a persona consistent with Lynch’s distinctive voice—contemplative, mysterious, and poetic—while orchestrating tool use to analyze stylistic elements and verify current availability of recommended titles, ensuring the response aligns with both the requested tone and accurate, up-to-date service offerings.",
+        "Use Case": "General Product & Service Q&A",
+        "User Prompt Length": "20 - 50 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "bb627fcd-0fb6-478b-9ac9-b5d42aa343b3",
+        "source_timestamp": 1769579170000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:10.750198",
+      "updated_at": "2026-01-28T05:46:10.750198",
+      "id": 73172,
+      "metadata": {
+        "Domain": "Society, Lifestyle & Community",
+        "L1 Description": "Demands the incorporation of patterns shown in instances or illustrations.",
+        "L1 Taxonomy": "Example",
+        "L2 Description": "The response must follow the same type of content logic or data types as in the examples (e.g., same variables, same kinds of entities, etc.).",
+        "L2 Taxonomy": "Content Parity",
+        "L3 Description": "Turn many inputs into short, faithful outputs.",
+        "L3 Taxonomy": "Summarization & Reporting",
+        "Language": "Spanish (es)",
+        "Model": "Qwen",
+        "Number of Turns": "9",
+        "Scenario": "A community organizer is planning a neighborhood sustainability fair and has received detailed descriptions of 15 resident-led initiatives, each following a specific format: project name, lead resident, three measurable goals, and a short success story example. The organizer asks the LLM to generate a concise event program summary that lists each project with only the project name and lead resident, ensuring content parity by preserving the exact names and roles as presented in the original submissions—mirroring the structure and data types of the examples—while summarizing the full set into a one-page handout for attendees, maintaining fidelity to the procedural role of compiling community contributions uniformly.",
+        "Use Case": "Procedural & Role Play",
+        "User Prompt Length": "Above 500 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "b68dfc28-2163-4f69-9907-d7790d6ddc4d",
+        "source_timestamp": 1769579170000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:10.685056",
+      "updated_at": "2026-01-28T05:46:10.685056",
+      "id": 73171,
+      "metadata": {
+        "Domain": "Business, Finance, Industry",
+        "L1 Description": "Requires the response to follow a specific structure or layout.​",
+        "L1 Taxonomy": "Format",
+        "L2 Description": "Required or restricted length (e.g., word count, character limit).",
+        "L2 Taxonomy": "Length Constraints",
+        "L3 Description": "Answer questions or generate outputs strictly grounded in provided reference documents or snippets.",
+        "L3 Taxonomy": "Search & Retrieval QA",
+        "Language": "Spanish (es)",
+        "Model": "Qwen",
+        "Number of Turns": "3",
+        "Scenario": "As a financial analyst at a mid-sized investment firm, you are tasked with evaluating the quarterly earnings reports of three competing renewable energy companies—SunPower Dynamics, GreenVolt Inc., and EcoGen Future—using only the provided PDF excerpts from their latest filings. Your supervisor instructs you to write a comparative performance analysis strictly based on the data in these documents, formatted as a structured executive summary with exactly three sections: \"Revenue Growth,\" \"Operating Margins,\" and \"Debt Position,\" each limited to 75–80 words. You must ensure all figures and claims are directly retrieved from the reference snippets, avoid external knowledge, and conclude with a one-sentence recommendation on which company shows the strongest financial health, adhering precisely to the format and length constraints while grounding all insights in the provided materials.",
+        "Use Case": "Analysis & Critique",
+        "User Prompt Length": "50 - 100 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "c2e6351a-431f-4964-ba0e-8116d9be434d",
+        "source_timestamp": 1769579170000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:10.607771",
+      "updated_at": "2026-01-28T05:46:10.607771",
+      "id": 73170,
+      "metadata": {
+        "Domain": "Healthcare & Wellness",
+        "L1 Description": "Requires the response to follow a specific structure or layout.​",
+        "L1 Taxonomy": "Format",
+        "L2 Description": "Required structural pattern (e.g., list, paragraph, table, outline).",
+        "L2 Taxonomy": "Structural Layout",
+        "L3 Description": "Produce outputs in strict structured formats (JSON, tables, templates, CSV, configs, Markdown) that validate against given schemas and rules.",
+        "L3 Taxonomy": "Structured Generation",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "10",
+        "Scenario": "A medical researcher asks the LLM to summarize findings from five recent clinical trials on mRNA-based cancer vaccines, requiring the output in a structured JSON format that adheres to a specified schema: each trial must include \"Study ID\", \"Cancer Type\", \"Sample Size\", \"Intervention\", \"Control\", \"Primary Outcome\", \"Secondary Outcomes\" (as a list), \"p-value\", and \"Conclusion\", with all numerical values properly typed and all fields strictly present, even if marked as null; the researcher needs this standardized format to automate ingestion into a meta-analysis database, making precise structural compliance critical for downstream processing.",
+        "Use Case": "Research & Summarization",
+        "User Prompt Length": "50 - 100 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "595051fa-ae82-4b8c-a16c-1fcc9da87f20",
+        "source_timestamp": 1769579170000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:10.602190",
+      "updated_at": "2026-01-28T05:46:10.602190",
+      "id": 73169,
+      "metadata": {
+        "Domain": "Media, Arts, Culture",
+        "L1 Description": "Demands the incorporation of patterns shown in instances or illustrations.",
+        "L1 Taxonomy": "Example",
+        "L2 Description": "The relationship between input and expected output should be preserved. If the example maps a specific type of input to a style of output, this mapping should guide the response.",
+        "L2 Taxonomy": "Input–Output Alignment",
+        "L3 Description": "Run multi-turn, policy-aware chats.",
+        "L3 Taxonomy": "Conversational Flows & CSAT",
+        "Language": "Spanish (es)",
+        "Model": "Qwen",
+        "Number of Turns": "7",
+        "Scenario": "A legal researcher working at a media rights nonprofit is analyzing how different countries regulate deepfake content in artistic works and asks the LLM to review a set of real-world policy examples—such as the EU’s Audiovisual Media Services Directive, South Korea’s deepfake pornography laws, and U.S. fair use precedents—and generate a comparative analysis that mirrors the input structure: for each jurisdiction, first summarize the legal framework (input), then assess its impact on artistic expression (output), preserving the input–output alignment shown in the provided examples. The researcher engages in a multi-turn dialogue, refining requests based on initial responses while ensuring the assistant adheres to organizational policies on neutral, non-advocacy language, and the assistant must maintain conversational coherence, track prior context (e.g., excluded jurisdictions, preferred citation style), and optimize for clarity and policy compliance to achieve high CSAT in an ongoing legal consultation workflow.",
+        "Use Case": "Policy & Legal Analysis",
+        "User Prompt Length": "50 - 100 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "b9f685bc-fa14-41c3-aac1-67c015755d64",
+        "source_timestamp": 1769579170000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:10.591703",
+      "updated_at": "2026-01-28T05:46:10.591703",
+      "id": 73168,
+      "metadata": {
+        "Domain": "Society, Lifestyle & Community",
+        "L1 Description": "Sets conditions or contexts under which the instruction should be executed.​",
+        "L1 Taxonomy": "Situation",
+        "L2 Description": "Refers to the real-world physical setting where the instruction is executed, including the type of location, surrounding objects, environmental features, movement requirements, proximity to items or people, and any spatial constraints that may affect performance.",
+        "L2 Taxonomy": "Spatial Context",
+        "L3 Description": "Join, validate, and compute on rows/columns.",
+        "L3 Taxonomy": "Tabular Data Ops & Calcs",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "5",
+        "Scenario": "While organizing a community health fair at a local park pavilion, you are stationed at a crowded information booth surrounded by tables displaying flyers, registration forms, and maps of the event layout; given that the fair spans multiple zones (vaccination, screening, nutrition) across a large grassy area with designated tents and foot traffic flowing between them, you need to quickly determine which health services are running behind schedule based on real-time updates recorded in a shared spreadsheet. You ask the LLM to analyze the tabular schedule data—cross-referencing service start times, current status flags, and tent location codes—and explain which services are delayed, where those tents are physically located in relation to the main entrance, and how long each delay is expected to last based on the calculated average of past service durations.",
+        "Use Case": "Explanatory Q&A",
+        "User Prompt Length": "100 - 500 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "52c60198-90db-44af-a51d-9f4b706597d3",
+        "source_timestamp": 1769579170000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:10.583404",
+      "updated_at": "2026-01-28T05:46:10.583404",
+      "id": 73167,
+      "metadata": {
+        "Domain": "Society, Lifestyle & Community",
+        "L1 Description": "Sets conditions or contexts under which the instruction should be executed.​",
+        "L1 Taxonomy": "Situation",
+        "L2 Description": "Domain-specific assumptions or cultural expectations (e.g., medical, legal, academic).",
+        "L2 Taxonomy": "Domain Context",
+        "L3 Description": "Produce outputs in strict structured formats (JSON, tables, templates, CSV, configs, Markdown) that validate against given schemas and rules.",
+        "L3 Taxonomy": "Structured Generation",
+        "Language": "Spanish (es)",
+        "Model": "Qwen",
+        "Number of Turns": "10",
+        "Scenario": "As a sociologist studying urban community resilience, you are analyzing how cultural norms and socioeconomic factors influence neighborhood responses to public health crises. You need to compile a structured summary of case studies from three major cities—New York, Lagos, and Mumbai—focusing on community-led initiatives during the 2020–2022 pandemic period. Given the domain context of societal behavior and lifestyle adaptations, you instruct the LLM to generate a JSON-formatted report that adheres to a predefined schema including fields for City, Population Bracket, Key Community Initiatives (as an array), Cultural Factors Influencing Participation, and Measured Outcomes, ensuring each entry reflects locally relevant social structures and collective action norms. The output must validate against the schema, include only peer-reviewed or officially documented sources, and summarize findings in a way that enables cross-city comparison for academic publication.",
+        "Use Case": "Research & Summarization",
+        "User Prompt Length": "20 - 50 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "e3c403b7-a6aa-45a9-a4db-f864367e4a92",
+        "source_timestamp": 1769579170000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:10.582430",
+      "updated_at": "2026-01-28T05:46:10.582430",
+      "id": 73166,
+      "metadata": {
+        "Domain": "Sports, Hobbies & Recreation",
+        "L1 Description": "Dictates the tone or manner of the response.​",
+        "L1 Taxonomy": "Style",
+        "L2 Description": "Emotional or interpersonal stance (e.g., friendly, authoritative, neutral).",
+        "L2 Taxonomy": "Tone",
+        "L3 Description": "Make traceable choices under rules and tradeoffs.",
+        "L3 Taxonomy": "Decision Systems & Reasoning",
+        "Language": "Spanish (es)",
+        "Model": "Qwen",
+        "Number of Turns": "3",
+        "Scenario": "As a legal advisor for a national sports federation, the user is tasked with evaluating whether a proposed amateur boxing tournament complies with both internal organizational bylaws and external regulatory standards, and they ask the LLM to analyze the event’s structure—weighing athlete eligibility rules, safety protocols, and liability disclaimers—while adopting a formally authoritative tone that reflects institutional policy interpretation, ensuring each recommendation is justified through traceable reasoning that balances risk mitigation, fairness, and regulatory adherence within the domain of sports and recreation.",
+        "Use Case": "Policy & Legal Analysis",
+        "User Prompt Length": "Above 500 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "5f857a74-b61e-480c-9116-347ac2e7599f",
+        "source_timestamp": 1769579170000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:10.521935",
+      "updated_at": "2026-01-28T05:46:10.521935",
+      "id": 73165,
+      "metadata": {
+        "Domain": "Government, Law & Public Safety",
+        "L1 Description": "Sets conditions or contexts under which the instruction should be executed.​",
+        "L1 Taxonomy": "Situation",
+        "L2 Description": "Time-related conditions (e.g., future scenarios, historical settings).",
+        "L2 Taxonomy": "Temporal Context",
+        "L3 Description": "Join, validate, and compute on rows/columns.",
+        "L3 Taxonomy": "Tabular Data Ops & Calcs",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "9",
+        "Scenario": "As a policy analyst for a state emergency management agency, you are tasked with assessing the long-term effectiveness of disaster response protocols across multiple hurricane seasons between 2010 and 2022. You are provided with three separate datasets: one containing annual hurricane landfall dates and categories, another with state-deployed resource allocation records, and a third with post-event recovery time metrics by county. Given the temporal context of evaluating historical disaster responses over more than a decade, you ask the LLM to help you technically solve the problem by joining these tabular datasets on shared keys (year, county, and event ID), validating date consistency across sources, and computing a derived metric—the ratio of recovery time to resources allocated—to identify trends in operational inefficiencies during major hurricane responses.",
+        "Use Case": "Technical Problem-Solving",
+        "User Prompt Length": "100 - 500 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "3c50d04c-ba51-476a-b8b9-91e7f46d862a",
+        "source_timestamp": 1769579170000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:10.506768",
+      "updated_at": "2026-01-28T05:46:10.506768",
+      "id": 73164,
+      "metadata": {
+        "Domain": "Travel & Transportation",
+        "L1 Description": "Specifies the inclusion or exclusion of particular information.​",
+        "L1 Taxonomy": "Content",
+        "L2 Description": "Directs attention to a particular topic, domain, or level of detail (e.g., macro vs. micro).",
+        "L2 Taxonomy": "Focus",
+        "L3 Description": "Allocate time/capacity and plan timelines.",
+        "L3 Taxonomy": "Scheduling & Planning",
+        "Language": "Spanish (es)",
+        "Model": "Qwen",
+        "Number of Turns": "9",
+        "Scenario": "As a travel consultant role-playing a conversation with a client, I need you to generate a detailed 7-day Japan itinerary that focuses exclusively on cultural experiences (L1: Content – inclusion of cultural activities, exclusion of leisure or adventure tourism), with an emphasis on traditional customs, local festivals, and historical sites (L2: Focus – macro-level cultural immersion rather than micro-details like specific restaurants or transit times), while scheduling the trip to align with the timing of the Gion Matsuri festival in Kyoto and ensuring adequate travel and rest periods are planned between engagements (L3: Scheduling & Planning – timeline alignment and capacity management).",
+        "Use Case": "Role-Play & Communication",
+        "User Prompt Length": "50 - 100 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "89293c43-0b72-4d5b-9213-ae8d712fc496",
+        "source_timestamp": 1769579170000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:10.445350",
+      "updated_at": "2026-01-28T05:46:10.445350",
+      "id": 73163,
+      "metadata": {
+        "Domain": "Society, Lifestyle & Community",
+        "L1 Description": "Specifies the inclusion or exclusion of particular information.​",
+        "L1 Taxonomy": "Content",
+        "L2 Description": "Limits the sources from which content can be drawn (e.g., only from academic literature).",
+        "L2 Taxonomy": "Source Constraints",
+        "L3 Description": "Pull fields from messy inputs and make them consistent.",
+        "L3 Taxonomy": "Data Extraction & Normalization",
+        "Language": "Spanish (es)",
+        "Model": "Qwen",
+        "Number of Turns": "3",
+        "Scenario": "A public health researcher is compiling a report on the impact of urban green spaces on mental well-being in low-income communities and asks the LLM to extract and normalize data from a set of 15 unstructured research abstracts, limiting sources strictly to peer-reviewed studies published in academic journals (source constraint), while excluding any content related to economic cost-benefit analysis or policy implementation (content specification); the LLM must identify and standardize specific data fields—such as study location, sample size, age range, mental health outcome measured, and effect size—from inconsistently formatted text inputs, converting variable terms (e.g., “depression symptoms reduced,” “lowered anxiety scores”) into a unified taxonomy of outcomes for integration into a structured database (data extraction and normalization), supporting a technical workflow to build a comparable evidence matrix.",
+        "Use Case": "Technical Problem-Solving",
+        "User Prompt Length": "100 - 500 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "cca5c8fb-c6f2-4d6c-b75e-b9b7fd04302c",
+        "source_timestamp": 1769579170000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:10.439603",
+      "updated_at": "2026-01-28T05:46:10.439603",
+      "id": 73162,
+      "metadata": {
+        "Domain": "Sports, Hobbies & Recreation",
+        "L1 Description": "Dictates the tone or manner of the response.​",
+        "L1 Taxonomy": "Style",
+        "L2 Description": "Emotional or interpersonal stance (e.g., friendly, authoritative, neutral).",
+        "L2 Taxonomy": "Tone",
+        "L3 Description": "Understand and edit business and contractual documents.",
+        "L3 Taxonomy": "Document & Contract Ops",
+        "Language": "Spanish (es)",
+        "Model": "Qwen",
+        "Number of Turns": "9",
+        "Scenario": "As a legal advisor for a professional esports organization, you are drafting a sponsorship agreement with a global sports apparel brand and need technical input on performance clause language related to player streaming obligations; you ask the LLM to revise the contract section with a formal and authoritative tone, ensuring precise, legally sound terminology is used to define minimum content output, platform specifications, and compliance deadlines, while maintaining clarity for both legal and operational stakeholders.",
+        "Use Case": "Technical Problem-Solving",
+        "User Prompt Length": "Above 500 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "4274b55d-cddf-47e3-ba2f-f745c2c30a4d",
+        "source_timestamp": 1769579170000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:10.373880",
+      "updated_at": "2026-01-28T05:46:10.373880",
+      "id": 73161,
+      "metadata": {
+        "Domain": "Healthcare & Wellness",
+        "L1 Description": "Dictates the tone or manner of the response.​",
+        "L1 Taxonomy": "Style",
+        "L2 Description": "Purpose of the communication (e.g., to persuade, inform, entertain).",
+        "L2 Taxonomy": "Rhetorical Intent",
+        "L3 Description": "Make traceable choices under rules and tradeoffs.",
+        "L3 Taxonomy": "Decision Systems & Reasoning",
+        "Language": "Spanish (es)",
+        "Model": "Qwen",
+        "Number of Turns": "1",
+        "Scenario": "A fan of the TV show *House M.D.* is researching how accurately the series portrays diagnostic reasoning in real-world clinical settings and asks the LLM to analyze a specific episode’s medical decision-making process using a formal, academic writing style (Style), with the intent to persuade a healthcare-professional audience that fictional narratives can reflect authentic clinical logic (Rhetorical Intent), requiring the LLM to trace the diagnostic steps in the episode, compare them to real-world differential diagnosis protocols, weigh tradeoffs in risk and evidence, and justify whether House’s team followed a defensible, rule-based clinical reasoning pathway (Decision Systems & Reasoning), all while citing medically accurate sources and integrating canonical details from the show (Fandom & Information Retrieval).",
+        "Use Case": "Fandom & Information Retrieval",
+        "User Prompt Length": "100 - 500 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "6b2979dd-8bd2-4715-97de-86836a6a14cb",
+        "source_timestamp": 1769579170000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:10.362910",
+      "updated_at": "2026-01-28T05:46:10.362910",
+      "id": 73160,
+      "metadata": {
+        "Domain": "Education & Research",
+        "L1 Description": "Multiple taxonomies covered.",
+        "L1 Taxonomy": "Mixed",
+        "L2 Description": "Multiple taxonomies covered.",
+        "L2 Taxonomy": "Mixed",
+        "L3 Description": "Plan tool calls and verify results.",
+        "L3 Taxonomy": "Tool Use & AgentOps",
+        "Language": "Spanish (es)",
+        "Model": "Qwen",
+        "Number of Turns": "6",
+        "Scenario": "As a graduate researcher in environmental science, I need to design a study assessing the impact of urban green spaces on local temperatures using satellite data and climate models. I want you to help me plan a step-by-step methodology that integrates multiple tools: first, use NASA's Earthdata API to retrieve recent land surface temperature data for New York City, then access the USGS NLCD dataset to identify green space coverage, and finally run a spatial correlation analysis using Python’s GeoPandas and Xarray libraries. I also need guidance on validating the results through cross-referencing with NOAA ground weather stations and visualizing the findings in an interactive map using Folium. Specifically, I’m asking you to create a detailed workflow that outlines the correct sequence of tool use, required data formats, API authentication steps, code templates for analysis, and verification checks at each stage to ensure data accuracy and reproducibility.",
+        "Use Case": "Planning & How-To",
+        "User Prompt Length": "20 - 50 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "49933883-56e6-4218-92c8-3851481f561c",
+        "source_timestamp": 1769579170000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-28T05:46:10.142461",
+      "updated_at": "2026-01-28T05:46:10.142461",
+      "id": 73159,
+      "metadata": {
+        "Domain": "Business, Finance, Industry",
+        "L1 Description": "Sets conditions or contexts under which the instruction should be executed.​",
+        "L1 Taxonomy": "Situation",
+        "L2 Description": "Domain-specific assumptions or cultural expectations (e.g., medical, legal, academic).",
+        "L2 Taxonomy": "Domain Context",
+        "L3 Description": "Work safely with sensitive data.",
+        "L3 Taxonomy": "Secure Data Handling",
+        "Language": "Spanish (es)",
+        "Model": "Nemotron",
+        "Number of Turns": "8",
+        "Scenario": "As a data analyst for a global entertainment company, I need to retrieve and summarize publicly available fan sentiment data from online forums and social media platforms related to our upcoming film release, while ensuring compliance with internal policies on secure handling of potentially sensitive information; given the business context of protecting intellectual property and maintaining legal and reputational risk controls, you must follow strict protocols—such as avoiding storage of personally identifiable information, using only approved sources, and anonymizing all user-generated content—while identifying key themes in fan discussions, particularly around casting and plot rumors, to inform our marketing strategy.",
+        "Use Case": "Fandom & Information Retrieval",
+        "User Prompt Length": "20 - 50 words"
+      },
+      "project_id": 45,
+      "datastream_metadata": {
+        "uuid": "a7c5b21c-dae3-4fde-9810-b3505a53fd4c",
+        "source_timestamp": 1769579170000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-27T21:32:04.500425",
+      "updated_at": "2026-01-27T21:32:04.500425",
+      "id": 73158,
+      "metadata": {
+        "Domain": "Science, Tech, & Environment",
+        "L1 Taxonomy": "Deliberately Incorrect Answers",
+        "Model": "qwen",
+        "Task ID": "f77c1945-5fa4-4317-a2a8-2c707097dfd4",
+        "Use Case": "Explanatory Q&A",
+        "User Prompt Length": "20 - 50 words"
+      },
+      "project_id": 42,
+      "datastream_metadata": {
+        "uuid": "e0bcc18d-9334-4e00-871f-ff4888bfa162",
+        "source_timestamp": 1769549524000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-27T21:32:04.423404",
+      "updated_at": "2026-01-27T21:32:04.423404",
+      "id": 73157,
+      "metadata": {
+        "Domain": "Science, Tech, & Environment",
+        "L1 Taxonomy": "Mid-turn Instruction Modification",
+        "Model": "qwen",
+        "Task ID": "df2a6a65-c622-4984-9cc3-1b555fb32068",
+        "Use Case": "Research & Summarization",
+        "User Prompt Length": "20 - 50 words"
+      },
+      "project_id": 42,
+      "datastream_metadata": {
+        "uuid": "3018dc96-e639-4b43-8464-e6560540d334",
+        "source_timestamp": 1769549524000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-27T21:32:04.359906",
+      "updated_at": "2026-01-27T21:32:04.359906",
+      "id": 73156,
+      "metadata": {
+        "Domain": "Society, Lifestyle & Community",
+        "L1 Taxonomy": "Question Correction",
+        "Model": "qwen",
+        "Task ID": "36241151-9706-4e34-85f6-adc2eacd86fe",
+        "Use Case": "Analysis & Critique",
+        "User Prompt Length": "50 - 100 words"
+      },
+      "project_id": 42,
+      "datastream_metadata": {
+        "uuid": "cdf72a27-c93c-4812-a804-3c477e4e7022",
+        "source_timestamp": 1769549524000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-27T21:32:04.323136",
+      "updated_at": "2026-01-27T21:32:04.323136",
+      "id": 73155,
+      "metadata": {
+        "Domain": "Science, Tech, & Environment",
+        "L1 Taxonomy": "Counter-Conventional Formatting",
+        "Model": "qwen",
+        "Task ID": "e7e5406d-53c9-4fcc-bc49-7eb48d9e0839",
+        "Use Case": "Planning & Advice",
+        "User Prompt Length": "100 - 500 words"
+      },
+      "project_id": 42,
+      "datastream_metadata": {
+        "uuid": "8d65afe2-e219-4b91-acb1-74c710a39cf2",
+        "source_timestamp": 1769549524000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-27T21:32:04.307603",
+      "updated_at": "2026-01-27T21:32:04.307603",
+      "id": 73154,
+      "metadata": {
+        "Domain": "Sports, Hobbies & Recreation",
+        "L1 Taxonomy": "Mid-turn Instruction Modification",
+        "Model": "qwen",
+        "Task ID": "ad8a5b87-694b-4335-8cbb-661b8d71fdd4",
+        "Use Case": "Information & Education",
+        "User Prompt Length": "50 - 100 words"
+      },
+      "project_id": 42,
+      "datastream_metadata": {
+        "uuid": "2ab89d1c-4a5c-4e23-8139-d2c27b24cc67",
+        "source_timestamp": 1769549524000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-27T21:32:04.270742",
+      "updated_at": "2026-01-27T21:32:04.270742",
+      "id": 73153,
+      "metadata": {
+        "Domain": "Science, Tech, & Environment",
+        "L1 Taxonomy": "Counterfactual Answering",
+        "Model": "qwen",
+        "Task ID": "46a70848-a369-46d2-9f89-cc69a69b3e83",
+        "Use Case": "Analysis & Critique",
+        "User Prompt Length": "100 - 500 words"
+      },
+      "project_id": 42,
+      "datastream_metadata": {
+        "uuid": "f2000f36-13b8-43fd-a9ba-6e3ead4e74e2",
+        "source_timestamp": 1769549524000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-27T21:32:04.161371",
+      "updated_at": "2026-01-27T21:32:04.161371",
+      "id": 73152,
+      "metadata": {
+        "Domain": "Society, Lifestyle & Community",
+        "L1 Taxonomy": "Question Correction",
+        "Model": "qwen",
+        "Task ID": "546566f1-182f-4c13-8134-4a4e9d0ccf7f",
+        "Use Case": "Research & Summarization",
+        "User Prompt Length": "Above 500 words"
+      },
+      "project_id": 42,
+      "datastream_metadata": {
+        "uuid": "ec699521-c408-4944-b3f4-0cb0bacec201",
+        "source_timestamp": 1769549524000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-27T21:32:04.111658",
+      "updated_at": "2026-01-27T21:32:04.111658",
+      "id": 73151,
+      "metadata": {
+        "Domain": "Business, Finance, Industry",
+        "L1 Taxonomy": "Counter-Conventional Formatting",
+        "Model": "qwen",
+        "Task ID": "1542fdbe-4954-4d64-9d52-1da7ae6573d3",
+        "Use Case": "Explanatory Q&A",
+        "User Prompt Length": "20 - 50 words"
+      },
+      "project_id": 42,
+      "datastream_metadata": {
+        "uuid": "cf0e4a41-5005-4f3d-80e2-816e8b492808",
+        "source_timestamp": 1769549524000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-27T21:32:04.102074",
+      "updated_at": "2026-01-27T21:32:04.102074",
+      "id": 73150,
+      "metadata": {
+        "Domain": "Sports, Hobbies & Recreation",
+        "L1 Taxonomy": "Counterfactual Answering",
+        "Model": "qwen",
+        "Task ID": "051311bf-242c-4645-8427-4f6ffaf68df3",
+        "Use Case": "Information & Education",
+        "User Prompt Length": "20 - 50 words"
+      },
+      "project_id": 42,
+      "datastream_metadata": {
+        "uuid": "acf6e3df-a6d9-4f5d-b8f6-126d65b18851",
+        "source_timestamp": 1769549524000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-27T21:32:04.090062",
+      "updated_at": "2026-01-27T21:32:04.090062",
+      "id": 73149,
+      "metadata": {
+        "Domain": "Business, Finance, Industry",
+        "L1 Taxonomy": "Counter-Conventional Formatting",
+        "Model": "qwen",
+        "Task ID": "098c565f-973c-4bd7-aeda-3687c3124cc5",
+        "Use Case": "Discussion & Exploration",
+        "User Prompt Length": "20 - 50 words"
+      },
+      "project_id": 42,
+      "datastream_metadata": {
+        "uuid": "02219258-d242-42dd-8635-202c5bdedda2",
+        "source_timestamp": 1769549524000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-27T21:32:04.063004",
+      "updated_at": "2026-01-27T21:32:04.063004",
+      "id": 73148,
+      "metadata": {
+        "Domain": "Education & Research",
+        "L1 Taxonomy": "Question Correction",
+        "Model": "qwen",
+        "Task ID": "c6ed9681-caae-40ec-8440-17d0d4a92c85",
+        "Use Case": "Analysis & Critique",
+        "User Prompt Length": "50 - 100 words"
+      },
+      "project_id": 42,
+      "datastream_metadata": {
+        "uuid": "7380d877-e376-4d39-8b0c-c5d8fc4f6532",
+        "source_timestamp": 1769549524000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-27T21:32:04.058454",
+      "updated_at": "2026-01-27T21:32:04.058454",
+      "id": 73147,
+      "metadata": {
+        "Domain": "Society, Lifestyle & Community",
+        "L1 Taxonomy": "Deliberately Incorrect Answers",
+        "Model": "qwen",
+        "Task ID": "c333cdbb-a56c-45c6-93d7-2c44fef817b6",
+        "Use Case": "Content Creation & Drafting",
+        "User Prompt Length": "100 - 500 words"
+      },
+      "project_id": 42,
+      "datastream_metadata": {
+        "uuid": "2447dc29-2cb9-4ff3-aaae-0ae1bffb7af6",
+        "source_timestamp": 1769549524000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-27T21:32:04.033299",
+      "updated_at": "2026-01-27T21:32:04.033299",
+      "id": 73146,
+      "metadata": {
+        "Domain": "Science, Tech, & Environment",
+        "L1 Taxonomy": "Mid-turn Instruction Modification",
+        "Model": "qwen",
+        "Task ID": "5f06437b-a689-4e44-abf2-fd25034310da",
+        "Use Case": "Strategic Planning & Reporting",
+        "User Prompt Length": "100 - 500 words"
+      },
+      "project_id": 42,
+      "datastream_metadata": {
+        "uuid": "128faf41-bc3c-40ef-9af9-ac22e1330b8f",
+        "source_timestamp": 1769549524000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-27T21:32:04.019528",
+      "updated_at": "2026-01-27T21:32:04.019528",
+      "id": 73145,
+      "metadata": {
+        "Domain": "Media, Arts, Culture",
+        "L1 Taxonomy": "Question Correction",
+        "Model": "qwen",
+        "Task ID": "981fe3af-d554-4e92-a2fa-7afbe9480707",
+        "Use Case": "Procedural & Role Play",
+        "User Prompt Length": "50 - 100 words"
+      },
+      "project_id": 42,
+      "datastream_metadata": {
+        "uuid": "1ccc8d39-a795-44e7-b56b-7d84a4a17bd8",
+        "source_timestamp": 1769549524000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-27T21:32:03.911860",
+      "updated_at": "2026-01-27T21:32:03.911860",
+      "id": 73144,
+      "metadata": {
+        "Domain": "Science, Tech, & Environment",
+        "L1 Taxonomy": "Question Correction",
+        "Model": "qwen",
+        "Task ID": "7bddd73f-bfe0-4fdf-b885-3f9f1b844a98",
+        "Use Case": "Other",
+        "User Prompt Length": "20 - 50 words"
+      },
+      "project_id": 42,
+      "datastream_metadata": {
+        "uuid": "602bb2a0-637b-4e10-a4b5-239fa6406588",
+        "source_timestamp": 1769549523000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-27T21:32:03.851304",
+      "updated_at": "2026-01-27T21:32:03.851304",
+      "id": 73143,
+      "metadata": {
+        "Domain": "Business, Finance, Industry",
+        "L1 Taxonomy": "Question Correction",
+        "Model": "qwen",
+        "Task ID": "cce97501-c9fc-4000-abc1-1f22b9d5b334",
+        "Use Case": "Analysis & Critique",
+        "User Prompt Length": "Above 500 words"
+      },
+      "project_id": 42,
+      "datastream_metadata": {
+        "uuid": "fe3b20d6-58f7-46e8-b59b-e69e867515e1",
+        "source_timestamp": 1769549523000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-27T21:32:03.819793",
+      "updated_at": "2026-01-27T21:32:03.819793",
+      "id": 73142,
+      "metadata": {
+        "Domain": "Media, Arts, Culture",
+        "L1 Taxonomy": "Mid-turn Instruction Modification",
+        "Model": "qwen",
+        "Task ID": "d6cc0d42-4c96-4ed7-b0b0-36e13c8a795e",
+        "Use Case": "Research & Summarization",
+        "User Prompt Length": "Above 500 words"
+      },
+      "project_id": 42,
+      "datastream_metadata": {
+        "uuid": "174465cd-82c3-458f-b4fc-0ca328c48329",
+        "source_timestamp": 1769549523000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-27T21:32:03.812256",
+      "updated_at": "2026-01-27T21:32:03.812256",
+      "id": 73141,
+      "metadata": {
+        "Domain": "Education & Research",
+        "L1 Taxonomy": "Deliberately Incorrect Answers",
+        "Model": "qwen",
+        "Task ID": "4a0add97-62a5-4af7-abcb-6456e15bc568",
+        "Use Case": "Strategic Planning & Reporting",
+        "User Prompt Length": "50 - 100 words"
+      },
+      "project_id": 42,
+      "datastream_metadata": {
+        "uuid": "1a3be2a5-810b-4848-b4c8-7ca6952d7d43",
+        "source_timestamp": 1769549523000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-27T21:32:03.775523",
+      "updated_at": "2026-01-27T21:32:03.775523",
+      "id": 73140,
+      "metadata": {
+        "Domain": "Media, Arts, Culture",
+        "L1 Taxonomy": "Counter-Conventional Formatting",
+        "Model": "qwen",
+        "Task ID": "739f4a21-5906-4e37-b4ab-9203a1c3c812",
+        "Use Case": "Local Recommendations",
+        "User Prompt Length": "100 - 500 words"
+      },
+      "project_id": 42,
+      "datastream_metadata": {
+        "uuid": "80649b57-8802-41f2-ad21-a2f74fdaaa00",
+        "source_timestamp": 1769549523000
+      },
+      "turing_metadata": null
+    },
+    {
+      "created_at": "2026-01-27T21:32:03.745314",
+      "updated_at": "2026-01-27T21:32:03.745314",
+      "id": 73139,
+      "metadata": {
+        "Domain": "Business, Finance, Industry",
+        "L1 Taxonomy": "Counter-Conventional Formatting",
+        "Model": "qwen",
+        "Task ID": "8c6e319e-14bd-40e7-bb68-c98188b546d3",
+        "Use Case": "Explanatory Q&A",
+        "User Prompt Length": "50 - 100 words"
+      },
+      "project_id": 42,
+      "datastream_metadata": {
+        "uuid": "272ed129-1b3a-458f-b7e4-f38981950a89",
+        "source_timestamp": 1769549523000
+      },
+      "turing_metadata": null
+    }
+  ]
+}

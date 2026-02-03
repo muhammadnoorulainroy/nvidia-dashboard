@@ -1,0 +1,537 @@
+{
+  "table": "project_config",
+  "row_count": 20,
+  "sample_count": 20,
+  "fetched_at": "2026-01-28T23:24:06.869426",
+  "data": [
+    {
+      "created_at": "2026-01-22T14:44:35.592651",
+      "updated_at": "2026-01-22T14:44:35.592651",
+      "id": 20,
+      "value": {
+        "value": 1
+      },
+      "project_id": 42,
+      "app_config_id": 1,
+      "config_id": null,
+      "datastream_metadata": {
+        "uuid": "85354335-97d0-44df-b7c1-de86f1ca852a",
+        "source_timestamp": 1769093075000
+      }
+    },
+    {
+      "created_at": "2026-01-22T14:43:57.295040",
+      "updated_at": "2026-01-22T14:43:57.295040",
+      "id": 19,
+      "value": {
+        "value": true
+      },
+      "project_id": 42,
+      "app_config_id": 124,
+      "config_id": null,
+      "datastream_metadata": {
+        "uuid": "8a321dcf-3935-4709-8429-00cb149d27a0",
+        "source_timestamp": 1769093037000
+      }
+    },
+    {
+      "created_at": "2026-01-16T15:51:58.298278",
+      "updated_at": "2026-01-16T15:51:58.298278",
+      "id": 18,
+      "value": {
+        "value": true
+      },
+      "project_id": 39,
+      "app_config_id": 124,
+      "config_id": null,
+      "datastream_metadata": {
+        "uuid": "0e55d2be-bec1-4fa1-9ab3-056e11e6c7cd",
+        "source_timestamp": 1768578718000
+      }
+    },
+    {
+      "created_at": "2026-01-16T15:51:31.950208",
+      "updated_at": "2026-01-16T15:51:31.950208",
+      "id": 17,
+      "value": {
+        "value": true
+      },
+      "project_id": 38,
+      "app_config_id": 124,
+      "config_id": null,
+      "datastream_metadata": {
+        "uuid": "13b2f31f-71c8-4074-ba64-6a07b87b4fd9",
+        "source_timestamp": 1768578691000
+      }
+    },
+    {
+      "created_at": "2026-01-16T15:50:47.009592",
+      "updated_at": "2026-01-16T15:50:47.009592",
+      "id": 16,
+      "value": {
+        "value": true
+      },
+      "project_id": 36,
+      "app_config_id": 124,
+      "config_id": null,
+      "datastream_metadata": {
+        "uuid": "a6dc5f20-2fde-4e34-9f19-0556c6c51def",
+        "source_timestamp": 1768578647000
+      }
+    },
+    {
+      "created_at": "2026-01-16T15:50:03.199660",
+      "updated_at": "2026-01-16T15:50:03.199660",
+      "id": 15,
+      "value": {
+        "value": true
+      },
+      "project_id": 37,
+      "app_config_id": 124,
+      "config_id": null,
+      "datastream_metadata": {
+        "uuid": "c34f6c46-c895-47cf-8984-edfa6cc1c333",
+        "source_timestamp": 1768578603000
+      }
+    },
+    {
+      "created_at": "2025-10-16T07:21:03.979615",
+      "updated_at": "2025-10-16T07:21:03.979615",
+      "id": 14,
+      "value": {
+        "value": {
+          "enabled": true,
+          "options": {
+            "autostartIfCurrentUser": false,
+            "idleDetectionOptions": {
+              "idleMessage": "Timer paused due to inactivity",
+              "idleTimeout": 300000,
+              "promptMessage": "Timer is about to be auto-paused",
+              "promptTimeout": 240000
+            },
+            "showExpectedTime": true
+          }
+        }
+      },
+      "project_id": 1,
+      "app_config_id": 126,
+      "config_id": null,
+      "datastream_metadata": {
+        "uuid": "9c834956-2abe-41d8-8098-b66b11110101",
+        "source_timestamp": 1760599263000
+      }
+    },
+    {
+      "created_at": "2025-08-04T18:33:31.259291",
+      "updated_at": "2025-08-18T19:34:18",
+      "id": 13,
+      "value": {
+        "value": 10
+      },
+      "project_id": 24,
+      "app_config_id": 6,
+      "config_id": null,
+      "datastream_metadata": {
+        "uuid": "75d47fb1-d9f2-43e3-9878-704f00000000",
+        "source_timestamp": 1755545658000
+      }
+    },
+    {
+      "created_at": "2025-07-28T14:29:20.592126",
+      "updated_at": "2025-07-29T14:11:40",
+      "id": 12,
+      "value": {
+        "value": "{\n  \"schema\": {\n    \"type\": \"object\",\n    \"properties\": {\n      \"failureType\": {\n        \"type\": \"string\",\n        \"enum\": [\n          \"Syntax or Compilation Error\", \n          \"Performance Issue\",\n          \"Wrong Implementation\",\n          \"Variables and functions name not meaningful\",\n          \"Wrong Signature\",\n          \"Test cases not covering major data types or variable shapes not tested\",\n          \"Looks Good No Issues\"\n        ]\n      }\n    },\n    \"required\": [\"failureType\"]\n  },\n  \"enabled\": true,\n  \"uiSchema\": {\n    \"failureType\": {\n      \"ui:options\": {\n        \"title\": \"Feedback category\",\n        \"placeholder\": \"Choose feedback category\"\n      }\n    }\n  },\n  \"prepareInitialData\": \"\"\n}"
+      },
+      "project_id": 27,
+      "app_config_id": 62,
+      "config_id": null,
+      "datastream_metadata": {
+        "uuid": "926eab69-83f3-4af4-b19b-279310111001",
+        "source_timestamp": 1753798300000
+      }
+    },
+    {
+      "created_at": "2025-07-18T19:23:23.561921",
+      "updated_at": "2025-07-18T19:23:23.561921",
+      "id": 11,
+      "value": {
+        "value": {
+          "keys": [
+            "Project / Action",
+            "File Name",
+            "library"
+          ]
+        }
+      },
+      "project_id": 27,
+      "app_config_id": 33,
+      "config_id": null,
+      "datastream_metadata": {
+        "uuid": "1fa40553-689f-4751-a24d-609b00000100",
+        "source_timestamp": 1752866603000
+      }
+    },
+    {
+      "created_at": "2024-09-24T16:34:48.065875",
+      "updated_at": "2024-09-24T16:34:48.065875",
+      "id": 10,
+      "value": {
+        "value": false
+      },
+      "project_id": 16,
+      "app_config_id": 7,
+      "config_id": null,
+      "datastream_metadata": {
+        "uuid": "692a1c34-f715-4a95-88a9-f2c700111111",
+        "source_timestamp": 1727195688000
+      }
+    },
+    {
+      "created_at": "2024-09-24T16:34:07.697230",
+      "updated_at": "2024-09-24T16:34:07.697230",
+      "id": 9,
+      "value": {
+        "value": true
+      },
+      "project_id": 16,
+      "app_config_id": 51,
+      "config_id": null,
+      "datastream_metadata": {
+        "uuid": "3a4a3066-be7e-488e-9cb2-9f0f10001000",
+        "source_timestamp": 1727195647000
+      }
+    },
+    {
+      "created_at": "2024-09-24T16:34:01.576091",
+      "updated_at": "2024-09-26T20:49:52",
+      "id": 8,
+      "value": {
+        "value": {
+          "categories": [
+            {
+              "name": "CID001 - Concept to Spec",
+              "value": "CID001 - Concept to Spec"
+            },
+            {
+              "name": "CID002 - RTL: Code Completion",
+              "value": "CID002 - RTL: Code Completion"
+            },
+            {
+              "name": "CID003 - RTL: Single Module",
+              "value": "CID003 - RTL: Single Module"
+            },
+            {
+              "name": "CID004 - RTL: Modify Code",
+              "value": "CID004 - RTL: Modify Code"
+            },
+            {
+              "name": "CID005 - RTL: Component Integration",
+              "value": "CID005 - RTL: Component Integration"
+            },
+            {
+              "name": "CID006 - From RTL to Spec",
+              "value": "CID006 - From RTL to Spec"
+            },
+            {
+              "name": "CID007 - RTL: Code Review",
+              "value": "CID007 - RTL: Code Review"
+            },
+            {
+              "name": "CID008 - TB: Summarization",
+              "value": "CID008 - TB: Summarization"
+            },
+            {
+              "name": "CID009 - RTL: Question",
+              "value": "CID009 - RTL: Question"
+            },
+            {
+              "name": "CID010 - TB: Question",
+              "value": "CID010 - TB: Question"
+            },
+            {
+              "name": "CID011 - TB: Testplan Documentation",
+              "value": "CID011 - TB: Testplan Documentation"
+            },
+            {
+              "name": "CID012 - TB: Stimulus Generation",
+              "value": "CID012 - TB: Stimulus Generation"
+            },
+            {
+              "name": "CID013 - TB: Checker Generation",
+              "value": "CID013 - TB: Checker Generation"
+            },
+            {
+              "name": "CID014 - RTL: Assertion Generation",
+              "value": "CID014 - RTL: Assertion Generation"
+            },
+            {
+              "name": "CID015 - Bug Identification",
+              "value": "CID015 - Bug Identification"
+            },
+            {
+              "name": "CID016 - RTL: Bug Fixing",
+              "value": "CID016 - RTL: Bug Fixing"
+            }
+          ],
+          "required": true
+        }
+      },
+      "project_id": 16,
+      "app_config_id": 50,
+      "config_id": null,
+      "datastream_metadata": {
+        "uuid": "90885f83-79ad-4161-ad4a-bae900101111",
+        "source_timestamp": 1727383792000
+      }
+    },
+    {
+      "created_at": "2024-09-19T19:22:22.263824",
+      "updated_at": "2024-09-19T19:22:22.263824",
+      "id": 7,
+      "value": {
+        "value": false
+      },
+      "project_id": 15,
+      "app_config_id": 7,
+      "config_id": null,
+      "datastream_metadata": {
+        "uuid": "f9e9d1c8-7e60-49d7-b124-105c10111001",
+        "source_timestamp": 1726773742000
+      }
+    },
+    {
+      "created_at": "2024-09-19T19:22:01.142243",
+      "updated_at": "2024-09-23T22:55:40",
+      "id": 6,
+      "value": {
+        "value": {
+          "categories": [
+            {
+              "name": "CID001 - Concept to Spec",
+              "value": "CID001 - Concept to Spec"
+            },
+            {
+              "name": "CID002 - RTL: Code Completion",
+              "value": "CID002 - RTL: Code Completion"
+            },
+            {
+              "name": "CID003 - RTL: Single Module",
+              "value": "CID003 - RTL: Single Module"
+            },
+            {
+              "name": "CID004 - RTL: Modify Code",
+              "value": "CID004 - RTL: Modify Code"
+            },
+            {
+              "name": "CID005 - RTL: Component Integration",
+              "value": "CID005 - RTL: Component Integration"
+            },
+            {
+              "name": "CID006 - From RTL to Spec",
+              "value": "CID006 - From RTL to Spec"
+            },
+            {
+              "name": "CID007 - RTL: Code Review",
+              "value": "CID007 - RTL: Code Review"
+            },
+            {
+              "name": "CID008 - TB: Summarization",
+              "value": "CID008 - TB: Summarization"
+            },
+            {
+              "name": "CID009 - RTL: Question",
+              "value": "CID009 - RTL: Question"
+            },
+            {
+              "name": "CID010 - TB: Question",
+              "value": "CID010 - TB: Question"
+            },
+            {
+              "name": "CID011 - TB: Testplan Documentation",
+              "value": "CID011 - TB: Testplan Documentation"
+            },
+            {
+              "name": "CID012 - TB: Stimulus Generation",
+              "value": "CID012 - TB: Stimulus Generation"
+            },
+            {
+              "name": "CID013 - TB: Checker Generation",
+              "value": "CID013 - TB: Checker Generation"
+            },
+            {
+              "name": "CID014 - RTL: Assertion Generation",
+              "value": "CID014 - RTL: Assertion Generation"
+            },
+            {
+              "name": "CID015 - Bug Identification",
+              "value": "CID015 - Bug Identification"
+            },
+            {
+              "name": "CID016 - RTL: Bug Fixing",
+              "value": "CID016 - RTL: Bug Fixing"
+            }
+          ],
+          "required": true
+        }
+      },
+      "project_id": 15,
+      "app_config_id": 50,
+      "config_id": null,
+      "datastream_metadata": {
+        "uuid": "aa704cb6-6ad6-46c6-9c76-c49501000000",
+        "source_timestamp": 1727132140000
+      }
+    },
+    {
+      "created_at": "2024-09-19T19:20:56.500653",
+      "updated_at": "2024-09-19T19:20:56.500653",
+      "id": 5,
+      "value": {
+        "value": true
+      },
+      "project_id": 15,
+      "app_config_id": 51,
+      "config_id": null,
+      "datastream_metadata": {
+        "uuid": "eeaa7e47-babe-42c9-8d74-43bf11110111",
+        "source_timestamp": 1726773656000
+      }
+    },
+    {
+      "created_at": "2024-09-11T21:01:38.775006",
+      "updated_at": "2024-09-11T21:01:38.775006",
+      "id": 4,
+      "value": {
+        "value": false
+      },
+      "project_id": 2,
+      "app_config_id": 7,
+      "config_id": null,
+      "datastream_metadata": {
+        "uuid": "66481505-fa62-4d3b-83f0-e8ff00000100",
+        "source_timestamp": 1726088498000
+      }
+    },
+    {
+      "created_at": "2024-09-11T21:01:17.992611",
+      "updated_at": "2024-09-11T21:01:17.992611",
+      "id": 3,
+      "value": {
+        "value": false
+      },
+      "project_id": 2,
+      "app_config_id": 35,
+      "config_id": null,
+      "datastream_metadata": {
+        "uuid": "66f673d8-15ac-42f0-a94d-15c610001100",
+        "source_timestamp": 1726088477000
+      }
+    },
+    {
+      "created_at": "2024-09-11T20:58:23.592775",
+      "updated_at": "2024-09-11T20:58:23.592775",
+      "id": 2,
+      "value": {
+        "value": "{\n  \"runAll\": false\n}"
+      },
+      "project_id": 2,
+      "app_config_id": 34,
+      "config_id": null,
+      "datastream_metadata": {
+        "uuid": "8e912e3a-5903-4274-8e59-0ea000010101",
+        "source_timestamp": 1726088303000
+      }
+    },
+    {
+      "created_at": "2024-09-09T11:09:48.099971",
+      "updated_at": "2024-09-09T11:09:48.099971",
+      "id": 1,
+      "value": {
+        "value": {
+          "collaboratorsType": {
+            "prompt-team": {
+              "headerName": "Prompt Team",
+              "role": "prompt-team"
+            },
+            "qa-team": {
+              "headerName": "QA",
+              "role": "qa-team"
+            },
+            "response-and-explanation-team": {
+              "headerName": "Response Team",
+              "role": "response-and-explanation-team"
+            }
+          },
+          "labelingType": {
+            "finalAnswer": {
+              "headerName": "Final Answer",
+              "type": "number"
+            },
+            "prompt": {
+              "headerName": "Prompt Text",
+              "type": "string"
+            },
+            "promptCategory": {
+              "headerName": "Prompt Category",
+              "type": "string"
+            },
+            "promptQA": {
+              "prompt": {
+                "creativity": {
+                  "headerName": "Creativity Score",
+                  "type": "number"
+                },
+                "isCorrect": {
+                  "headerName": "Is Prompt Correct",
+                  "type": "boolean"
+                }
+              }
+            },
+            "response": {
+              "headerName": "Response Text",
+              "type": "string"
+            },
+            "responseQA": {
+              "feedback": {
+                "headerName": "Response QA Feedback",
+                "type": "string"
+              },
+              "resolution": {
+                "reason": {
+                  "headerName": "Resolution Reason",
+                  "type": "string"
+                },
+                "result": {
+                  "headerName": "Resolution Result",
+                  "type": "string"
+                }
+              },
+              "response": {
+                "coherence": {
+                  "headerName": "Coherence Score",
+                  "type": "number"
+                },
+                "compareWithLLM": {
+                  "headerName": "Compare with LLM",
+                  "type": "string"
+                },
+                "helpfulness": {
+                  "headerName": "Helpfulness Score",
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      },
+      "project_id": 13,
+      "app_config_id": 41,
+      "config_id": null,
+      "datastream_metadata": {
+        "uuid": "981e1143-9cce-48cf-a32b-dc9d01101100",
+        "source_timestamp": 1725880188000
+      }
+    }
+  ]
+}

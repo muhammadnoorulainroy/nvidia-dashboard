@@ -1,0 +1,1108 @@
+{
+  "table": "skill",
+  "row_count": 784,
+  "sample_count": 100,
+  "fetched_at": "2026-01-28T23:24:41.702281",
+  "data": [
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 475,
+      "name": "Geology-Geophysics",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b110010100",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 462,
+      "name": "Mechanical Engineering-Robotics",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b110000111",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 544,
+      "name": "Harm-Secondary Research Ability",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b111011001",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 469,
+      "name": "Hydrology-Aquifer Modeling",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b110001110",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 425,
+      "name": "Geography-Cartography",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b101100010",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 513,
+      "name": "Bioinformatics-Protein Structure Prediction",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b110111010",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 535,
+      "name": "Agriculture-Agricultural Economics",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b111010000",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 481,
+      "name": "Genetics-Genomic Data Analysis",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b110011010",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 478,
+      "name": "Geology-General Geology",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b110010111",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 523,
+      "name": "Astrophysics-Cosmic Phenomena",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b111000100",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 407,
+      "name": "Physics-Thermodynamics",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b101010000",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 460,
+      "name": "Mechanical Engineering-Fluid Dynamics",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b110000101",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 417,
+      "name": "Biology-Cell Biology",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b101011010",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 440,
+      "name": "Environmental Science-Climate Change",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b101110001",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 495,
+      "name": "Chemical Engineering-Process Control",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b110101000",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 514,
+      "name": "Bioinformatics-Computational Biology",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b110111011",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 451,
+      "name": "Nanotechnology-Scanning Electron Microscopy",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b101111100",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 397,
+      "name": "Mathematics-Geometry",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b101000110",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 414,
+      "name": "Physical Chemistry-Molecular Interactions",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b101010111",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 521,
+      "name": "Biochemistry-Proteomics",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b111000010",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 531,
+      "name": "Astronomy-Spectroscopy",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b111001100",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 477,
+      "name": "Geology-Sedimentology",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b110010110",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 403,
+      "name": "Mathematics-Differential Equations",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b101001100",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 542,
+      "name": "Harm-Logical Reasoning",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b111010111",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 538,
+      "name": "Agriculture-General Agriculture",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b111010011",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 474,
+      "name": "Geology-Petrology",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b110010011",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 516,
+      "name": "Bioinformatics-General Bioinformatics",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b110111101",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 459,
+      "name": "Mechanical Engineering-Thermodynamics",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b110000100",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 446,
+      "name": "Zoology-Physiology",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b101110111",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 519,
+      "name": "Biochemistry-Structural Biology",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b111000000",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 518,
+      "name": "Biochemistry-Metabolism",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b110111111",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 428,
+      "name": "Geography-Urban Geography",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b101100101",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 520,
+      "name": "Biochemistry-Molecular Signaling Pathways",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b111000001",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 480,
+      "name": "Genetics-Gene Editing",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b110011001",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 450,
+      "name": "Nanotechnology-Nanomaterials",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b101111011",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 457,
+      "name": "Meteorology-General Meteorology",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b110000010",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 517,
+      "name": "Biochemistry-Enzymology",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b110111110",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 452,
+      "name": "Nanotechnology-General Nanotechnology",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b101111101",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 456,
+      "name": "Meteorology-Meteorological Instrumentation",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b110000001",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 419,
+      "name": "Biology-Genetics",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b101011100",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 402,
+      "name": "Mathematics-Linear Algebra",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b101001011",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 411,
+      "name": "Physics-General Physics",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b101010100",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 432,
+      "name": "Geography-General Geography",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b101101001",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 445,
+      "name": "Zoology-Comparative Anatomy",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b101110110",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 424,
+      "name": "Biology-General Biology",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b101100001",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 401,
+      "name": "Mathematics-Number Theory",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b101001010",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 537,
+      "name": "Agriculture-Agroecology",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b111010010",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 515,
+      "name": "Bioinformatics-Sequence Alignment",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b110111100",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 448,
+      "name": "Zoology-General Zoology",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b101111001",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 522,
+      "name": "Biochemistry-General Biochemistry",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b111000011",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 471,
+      "name": "Hydrology-Hydrography",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b110010000",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 395,
+      "name": "Mathematics-Arithmetic",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b101000100",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 423,
+      "name": "Biology-Immunology",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b101100000",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 404,
+      "name": "Mathematics-General Mathematics",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b101001101",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 429,
+      "name": "Geography-Population Studies",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b101100110",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 415,
+      "name": "Physical Chemistry-Reaction Kinetics",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b101011000",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 455,
+      "name": "Meteorology-Atmospheric Physics",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b110000000",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 510,
+      "name": "Biotechnology-Tissue Engineering",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b110110111",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 461,
+      "name": "Mechanical Engineering-Machine Design",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b110000110",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 479,
+      "name": "Genetics-DNA Sequencing",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b110011000",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 436,
+      "name": "Pharmacy & Pharmacology-Clinical Trials",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b101101101",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 540,
+      "name": "Harm-Content Moderation",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b111010101",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 476,
+      "name": "Geology-Structural Geology",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b110010101",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 524,
+      "name": "Astrophysics-Galactic Dynamics",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b111000101",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 472,
+      "name": "Hydrology-General Hydrology",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b110010001",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 532,
+      "name": "Astronomy-General Astronomy",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b111001101",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 447,
+      "name": "Zoology-Evolutionary Zoology",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b101111000",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 458,
+      "name": "Mechanical Engineering-Mechanics of Materials",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b110000011",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 431,
+      "name": "Geography-Remote Sensing",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b101101000",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 492,
+      "name": "Chemistry-Analytical Chemistry",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b110100101",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 498,
+      "name": "Chemical Engineering-Reaction Engineering",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b110101011",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 435,
+      "name": "Pharmacy & Pharmacology-Pharmacodynamics",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b101101100",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 528,
+      "name": "Astronomy-Stellar Evolution",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b111001001",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 487,
+      "name": "Electrical Engineering-Embedded Systems",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b110100000",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 453,
+      "name": "Meteorology-Weather Forecasting",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b101111110",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 416,
+      "name": "Physical Chemistry-General Physical Chemistry",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b101011001",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 466,
+      "name": "Marine Biology-Aquatic Toxicology",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b110001011",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 500,
+      "name": "Chemical Engineering-General Chemical Engineering",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b110101101",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 485,
+      "name": "Electrical Engineering-Signal Processing",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b110011110",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 494,
+      "name": "Chemistry-General Chemistry",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b110100111",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 508,
+      "name": "Biotechnology-Bioprocess Engineering",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b110110101",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 410,
+      "name": "Physics-Fluid Dynamics",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b101010011",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 439,
+      "name": "Environmental Science-Ecosystem Dynamics",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b101110000",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 434,
+      "name": "Pharmacy & Pharmacology-Pharmacokinetics",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b101101011",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 493,
+      "name": "Chemistry-Biochemistry",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b110100110",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 426,
+      "name": "Geography-Geospatial Analysis",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b101100011",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 543,
+      "name": "Harm-Critical Thinking",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b111011000",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 441,
+      "name": "Environmental Science-Renewable Energy",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b101110010",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 505,
+      "name": "Botany-Phytochemistry",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b110110010",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 533,
+      "name": "Agriculture-Crop Science",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b111001110",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 430,
+      "name": "Geography-GIS",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b101100111",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 497,
+      "name": "Chemical Engineering-Fluid Mechanics",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b110101010",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 413,
+      "name": "Physical Chemistry-Quantum Chemistry",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b101010110",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 501,
+      "name": "Botany-Plant Anatomy",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b110101110",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 486,
+      "name": "Electrical Engineering-Power Systems",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b110011111",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 539,
+      "name": "Harm-Bias Mitigation",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b111010100",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 420,
+      "name": "Biology-Microbiology",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b101011101",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 396,
+      "name": "Mathematics-Algebra",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b101000101",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 529,
+      "name": "Astronomy-Observational Techniques",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b111001010",
+        "source_timestamp": 1735533374000
+      }
+    },
+    {
+      "created_at": "2024-12-30T04:36:14.874272",
+      "updated_at": "2024-12-30T04:36:14.874272",
+      "id": 488,
+      "name": "Electrical Engineering-General Electrical Engineering",
+      "description": "",
+      "datastream_metadata": {
+        "uuid": "5f4adb14-4dfb-44d4-9efd-c6b110100001",
+        "source_timestamp": 1735533374000
+      }
+    }
+  ]
+}

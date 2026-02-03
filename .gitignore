@@ -149,3 +149,46 @@ static_data/
 # Google Cloud credentials
 **/gcp-*.json
 **/google-*.json
+
+# =============================================================================
+# Debug & Test Scripts (one-off scripts, not part of main codebase)
+# =============================================================================
+backend/check_*.py
+backend/debug_*.py
+backend/verify_*.py
+backend/test_*.py
+backend/sync_*.py
+backend/investigate_*.py
+backend/find_*.py
+backend/run_*.py
+backend/calculate_*.py
+backend/analyze_*.py
+backend/explore_*.py
+backend/cleanup_*.py
+backend/compare_*.py
+backend/create_*.py
+backend/fix_*.py
+backend/get_*.py
+backend/quick_*.py
+backend/simple_*.py
+backend/add_*.py
+backend/bigquery_*.py
+backend/export_*.py
+backend/final_*.py
+backend/update_*.py
+backend/validate_*.py
+frontend/test_*.ts
+
+# Temporary files
+*.txt
+!requirements.txt
+!README.txt
+
+# Generated reports
+PRODUCTION_READINESS_REPORT.md
+backend/SECURITY_AUDIT_REPORT.md
+
+# Standalone scripts at root
+data_sync.py
+validate_data.py
+jibble_docs.txt

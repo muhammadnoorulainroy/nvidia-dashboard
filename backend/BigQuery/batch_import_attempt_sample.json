@@ -1,0 +1,1708 @@
+{
+  "table": "batch_import_attempt",
+  "row_count": 491,
+  "sample_count": 100,
+  "fetched_at": "2026-01-28T23:22:35.996891",
+  "data": [
+    {
+      "created_at": "2026-01-28T05:46:07.262189",
+      "updated_at": "2026-01-28T05:46:21",
+      "id": 491,
+      "status": "completed",
+      "number_of_files": 80,
+      "number_of_successes": 80,
+      "number_of_failures": 0,
+      "started_at": "2026-01-28T05:46:07",
+      "completed_at": "2026-01-28T05:46:22",
+      "batch_id": 464,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "0e4456f2-a6ed-4f57-a377-3c69d5f890fd",
+        "source_timestamp": 1769579181000
+      }
+    },
+    {
+      "created_at": "2026-01-27T21:31:52.887710",
+      "updated_at": "2026-01-27T21:32:04",
+      "id": 490,
+      "status": "completed",
+      "number_of_files": 200,
+      "number_of_successes": 200,
+      "number_of_failures": 0,
+      "started_at": "2026-01-27T21:31:53",
+      "completed_at": "2026-01-27T21:32:05",
+      "batch_id": 463,
+      "author_id": 1190,
+      "datastream_metadata": {
+        "uuid": "d6a79bb3-f7dc-4dc9-9995-5f328c2e1a9f",
+        "source_timestamp": 1769549524000
+      }
+    },
+    {
+      "created_at": "2026-01-27T09:17:35.059036",
+      "updated_at": "2026-01-27T09:18:25",
+      "id": 489,
+      "status": "completed",
+      "number_of_files": 80,
+      "number_of_successes": 80,
+      "number_of_failures": 0,
+      "started_at": "2026-01-27T09:17:35",
+      "completed_at": "2026-01-27T09:18:25",
+      "batch_id": 462,
+      "author_id": 1028,
+      "datastream_metadata": {
+        "uuid": "c8d4ba56-85a7-4863-bb7f-204c0d55286e",
+        "source_timestamp": 1769505505000
+      }
+    },
+    {
+      "created_at": "2026-01-27T09:10:22.051593",
+      "updated_at": "2026-01-27T09:10:28",
+      "id": 488,
+      "status": "completed",
+      "number_of_files": 80,
+      "number_of_successes": 80,
+      "number_of_failures": 0,
+      "started_at": "2026-01-27T09:10:22",
+      "completed_at": "2026-01-27T09:10:29",
+      "batch_id": 461,
+      "author_id": 1028,
+      "datastream_metadata": {
+        "uuid": "dd302541-1df1-40a0-8ccf-c20c1771a36a",
+        "source_timestamp": 1769505028000
+      }
+    },
+    {
+      "created_at": "2026-01-26T11:27:05.806417",
+      "updated_at": "2026-01-26T11:27:12",
+      "id": 487,
+      "status": "completed",
+      "number_of_files": 80,
+      "number_of_successes": 80,
+      "number_of_failures": 0,
+      "started_at": "2026-01-26T11:27:06",
+      "completed_at": "2026-01-26T11:27:12",
+      "batch_id": 460,
+      "author_id": 1028,
+      "datastream_metadata": {
+        "uuid": "ec2a4b10-185a-482b-b633-619d80e21bc0",
+        "source_timestamp": 1769426832000
+      }
+    },
+    {
+      "created_at": "2026-01-26T11:26:02.692555",
+      "updated_at": "2026-01-26T11:26:08",
+      "id": 486,
+      "status": "completed",
+      "number_of_files": 80,
+      "number_of_successes": 80,
+      "number_of_failures": 0,
+      "started_at": "2026-01-26T11:26:03",
+      "completed_at": "2026-01-26T11:26:08",
+      "batch_id": 459,
+      "author_id": 1028,
+      "datastream_metadata": {
+        "uuid": "1f0a0446-1b83-4e30-b9c3-805377a03275",
+        "source_timestamp": 1769426768000
+      }
+    },
+    {
+      "created_at": "2026-01-26T11:25:59.655756",
+      "updated_at": "2026-01-26T11:26:06",
+      "id": 485,
+      "status": "completed",
+      "number_of_files": 80,
+      "number_of_successes": 80,
+      "number_of_failures": 0,
+      "started_at": "2026-01-26T11:26:00",
+      "completed_at": "2026-01-26T11:26:06",
+      "batch_id": 458,
+      "author_id": 1028,
+      "datastream_metadata": {
+        "uuid": "9b3b1b1a-3a6b-4e8b-af95-f7a84e4a5bab",
+        "source_timestamp": 1769426766000
+      }
+    },
+    {
+      "created_at": "2026-01-25T23:11:47.314724",
+      "updated_at": "2026-01-25T23:11:59",
+      "id": 484,
+      "status": "completed",
+      "number_of_files": 200,
+      "number_of_successes": 200,
+      "number_of_failures": 0,
+      "started_at": "2026-01-25T23:11:47",
+      "completed_at": "2026-01-25T23:12:00",
+      "batch_id": 457,
+      "author_id": 1190,
+      "datastream_metadata": {
+        "uuid": "678da9a4-d267-4aa4-810e-70352218f014",
+        "source_timestamp": 1769382719000
+      }
+    },
+    {
+      "created_at": "2026-01-23T09:28:32.061634",
+      "updated_at": "2026-01-23T09:30:04",
+      "id": 483,
+      "status": "completed",
+      "number_of_files": 200,
+      "number_of_successes": 200,
+      "number_of_failures": 0,
+      "started_at": "2026-01-23T09:28:32",
+      "completed_at": "2026-01-23T09:30:05",
+      "batch_id": 456,
+      "author_id": 1190,
+      "datastream_metadata": {
+        "uuid": "097cf020-80e2-444a-80c2-523afdeddaf0",
+        "source_timestamp": 1769160604000
+      }
+    },
+    {
+      "created_at": "2026-01-21T19:49:22.123881",
+      "updated_at": "2026-01-21T19:49:29",
+      "id": 482,
+      "status": "completed",
+      "number_of_files": 60,
+      "number_of_successes": 60,
+      "number_of_failures": 0,
+      "started_at": "2026-01-21T19:49:22",
+      "completed_at": "2026-01-21T19:49:30",
+      "batch_id": 455,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "105b3e78-d807-4b46-a0d8-3b7f552f656a",
+        "source_timestamp": 1769024969000
+      }
+    },
+    {
+      "created_at": "2026-01-21T19:45:11.730341",
+      "updated_at": "2026-01-21T19:45:17",
+      "id": 481,
+      "status": "completed",
+      "number_of_files": 60,
+      "number_of_successes": 60,
+      "number_of_failures": 0,
+      "started_at": "2026-01-21T19:45:12",
+      "completed_at": "2026-01-21T19:45:17",
+      "batch_id": 455,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "e5d4ee78-af2f-48b6-9ee0-10184a23b34c",
+        "source_timestamp": 1769024717000
+      }
+    },
+    {
+      "created_at": "2026-01-21T19:44:04.981660",
+      "updated_at": "2026-01-21T19:44:10",
+      "id": 480,
+      "status": "completed",
+      "number_of_files": 60,
+      "number_of_successes": 60,
+      "number_of_failures": 0,
+      "started_at": "2026-01-21T19:44:05",
+      "completed_at": "2026-01-21T19:44:11",
+      "batch_id": 454,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "38cf87d3-4b1f-41a5-87ab-2c31d684efbd",
+        "source_timestamp": 1769024650000
+      }
+    },
+    {
+      "created_at": "2026-01-21T19:43:47.800210",
+      "updated_at": "2026-01-21T19:43:55",
+      "id": 479,
+      "status": "completed",
+      "number_of_files": 60,
+      "number_of_successes": 60,
+      "number_of_failures": 0,
+      "started_at": "2026-01-21T19:43:48",
+      "completed_at": "2026-01-21T19:43:56",
+      "batch_id": 453,
+      "author_id": 1028,
+      "datastream_metadata": {
+        "uuid": "df6de28a-d3a4-4908-be84-4d2345a7d260",
+        "source_timestamp": 1769024635000
+      }
+    },
+    {
+      "created_at": "2026-01-21T19:43:19.290467",
+      "updated_at": "2026-01-21T19:43:25",
+      "id": 478,
+      "status": "completed",
+      "number_of_files": 60,
+      "number_of_successes": 60,
+      "number_of_failures": 0,
+      "started_at": "2026-01-21T19:43:19",
+      "completed_at": "2026-01-21T19:43:25",
+      "batch_id": 452,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "64b8f464-a1ef-49c5-a69c-3193245d06c5",
+        "source_timestamp": 1769024605000
+      }
+    },
+    {
+      "created_at": "2026-01-21T19:42:25.317658",
+      "updated_at": "2026-01-21T19:42:30",
+      "id": 477,
+      "status": "completed",
+      "number_of_files": 60,
+      "number_of_successes": 60,
+      "number_of_failures": 0,
+      "started_at": "2026-01-21T19:42:25",
+      "completed_at": "2026-01-21T19:42:31",
+      "batch_id": 451,
+      "author_id": 519,
+      "datastream_metadata": {
+        "uuid": "6a4378bf-1c33-4ff8-8ff1-5124d59026df",
+        "source_timestamp": 1769024550000
+      }
+    },
+    {
+      "created_at": "2026-01-21T19:35:41.271197",
+      "updated_at": "2026-01-21T19:35:46",
+      "id": 476,
+      "status": "completed",
+      "number_of_files": 60,
+      "number_of_successes": 60,
+      "number_of_failures": 0,
+      "started_at": "2026-01-21T19:35:41",
+      "completed_at": "2026-01-21T19:35:47",
+      "batch_id": 450,
+      "author_id": 1028,
+      "datastream_metadata": {
+        "uuid": "e3e89d35-2132-4a47-988f-01ee95e66f27",
+        "source_timestamp": 1769024146000
+      }
+    },
+    {
+      "created_at": "2026-01-21T19:31:59.436948",
+      "updated_at": "2026-01-21T19:32:05",
+      "id": 475,
+      "status": "completed",
+      "number_of_files": 60,
+      "number_of_successes": 60,
+      "number_of_failures": 0,
+      "started_at": "2026-01-21T19:31:59",
+      "completed_at": "2026-01-21T19:32:05",
+      "batch_id": 449,
+      "author_id": 1028,
+      "datastream_metadata": {
+        "uuid": "2351c8fa-ac5c-4640-85a2-5ff35455ee39",
+        "source_timestamp": 1769023925000
+      }
+    },
+    {
+      "created_at": "2026-01-21T18:19:17.717918",
+      "updated_at": "2026-01-21T18:19:27",
+      "id": 474,
+      "status": "completed",
+      "number_of_files": 80,
+      "number_of_successes": 80,
+      "number_of_failures": 0,
+      "started_at": "2026-01-21T18:19:18",
+      "completed_at": "2026-01-21T18:19:28",
+      "batch_id": 448,
+      "author_id": 1028,
+      "datastream_metadata": {
+        "uuid": "1b9a2a51-1aa3-496e-8b98-ef1d8355ecb0",
+        "source_timestamp": 1769019567000
+      }
+    },
+    {
+      "created_at": "2026-01-21T17:02:41.847206",
+      "updated_at": "2026-01-21T17:02:48",
+      "id": 473,
+      "status": "completed",
+      "number_of_files": 60,
+      "number_of_successes": 60,
+      "number_of_failures": 0,
+      "started_at": "2026-01-21T17:02:42",
+      "completed_at": "2026-01-21T17:02:48",
+      "batch_id": 447,
+      "author_id": 1028,
+      "datastream_metadata": {
+        "uuid": "5785c93c-ebe6-4221-a23a-a0e0117986e5",
+        "source_timestamp": 1769014968000
+      }
+    },
+    {
+      "created_at": "2026-01-21T16:45:12.184777",
+      "updated_at": "2026-01-21T16:45:18",
+      "id": 472,
+      "status": "completed",
+      "number_of_files": 60,
+      "number_of_successes": 60,
+      "number_of_failures": 0,
+      "started_at": "2026-01-21T16:45:12",
+      "completed_at": "2026-01-21T16:45:18",
+      "batch_id": 445,
+      "author_id": 1028,
+      "datastream_metadata": {
+        "uuid": "3fccdf66-45f3-47c7-95a1-70978d871e22",
+        "source_timestamp": 1769013918000
+      }
+    },
+    {
+      "created_at": "2026-01-21T13:44:21.385849",
+      "updated_at": "2026-01-21T13:44:36",
+      "id": 471,
+      "status": "completed",
+      "number_of_files": 200,
+      "number_of_successes": 200,
+      "number_of_failures": 0,
+      "started_at": "2026-01-21T13:44:21",
+      "completed_at": "2026-01-21T13:44:36",
+      "batch_id": 444,
+      "author_id": 1190,
+      "datastream_metadata": {
+        "uuid": "ed4d9e8f-7273-429b-bee3-1ea0e6184f81",
+        "source_timestamp": 1769003076000
+      }
+    },
+    {
+      "created_at": "2026-01-19T12:04:20.745240",
+      "updated_at": "2026-01-19T12:04:23",
+      "id": 470,
+      "status": "completed",
+      "number_of_files": 19,
+      "number_of_successes": 19,
+      "number_of_failures": 0,
+      "started_at": "2026-01-19T12:04:21",
+      "completed_at": "2026-01-19T12:04:23",
+      "batch_id": 443,
+      "author_id": 1028,
+      "datastream_metadata": {
+        "uuid": "45f6d6a0-c158-4c2a-a3bb-7a95f01e7889",
+        "source_timestamp": 1768824263000
+      }
+    },
+    {
+      "created_at": "2026-01-19T12:04:15.043122",
+      "updated_at": "2026-01-19T12:04:18",
+      "id": 469,
+      "status": "completed",
+      "number_of_files": 51,
+      "number_of_successes": 51,
+      "number_of_failures": 0,
+      "started_at": "2026-01-19T12:04:15",
+      "completed_at": "2026-01-19T12:04:18",
+      "batch_id": 442,
+      "author_id": 1028,
+      "datastream_metadata": {
+        "uuid": "52aa6b0e-8ed6-45fc-bf65-e9a901f1cc9c",
+        "source_timestamp": 1768824258000
+      }
+    },
+    {
+      "created_at": "2026-01-19T12:04:10.425937",
+      "updated_at": "2026-01-19T12:04:14",
+      "id": 468,
+      "status": "completed",
+      "number_of_files": 51,
+      "number_of_successes": 51,
+      "number_of_failures": 0,
+      "started_at": "2026-01-19T12:04:10",
+      "completed_at": "2026-01-19T12:04:15",
+      "batch_id": 442,
+      "author_id": 1028,
+      "datastream_metadata": {
+        "uuid": "aab7c017-6595-4ea1-a92f-0e6c001f7c6e",
+        "source_timestamp": 1768824254000
+      }
+    },
+    {
+      "created_at": "2026-01-19T12:04:06.602278",
+      "updated_at": "2026-01-19T12:04:11",
+      "id": 467,
+      "status": "completed",
+      "number_of_files": 43,
+      "number_of_successes": 43,
+      "number_of_failures": 0,
+      "started_at": "2026-01-19T12:04:07",
+      "completed_at": "2026-01-19T12:04:11",
+      "batch_id": 441,
+      "author_id": 1028,
+      "datastream_metadata": {
+        "uuid": "f455dbed-87cb-4de3-b640-52636c918fbf",
+        "source_timestamp": 1768824251000
+      }
+    },
+    {
+      "created_at": "2026-01-19T12:04:03.292065",
+      "updated_at": "2026-01-19T12:04:05",
+      "id": 466,
+      "status": "completed",
+      "number_of_files": 13,
+      "number_of_successes": 13,
+      "number_of_failures": 0,
+      "started_at": "2026-01-19T12:04:03",
+      "completed_at": "2026-01-19T12:04:06",
+      "batch_id": 440,
+      "author_id": 1028,
+      "datastream_metadata": {
+        "uuid": "c9d4219a-b7f9-4b73-82c3-f90f0c23066e",
+        "source_timestamp": 1768824245000
+      }
+    },
+    {
+      "created_at": "2026-01-19T12:04:00.085680",
+      "updated_at": "2026-01-19T12:04:02",
+      "id": 465,
+      "status": "completed",
+      "number_of_files": 17,
+      "number_of_successes": 17,
+      "number_of_failures": 0,
+      "started_at": "2026-01-19T12:04:00",
+      "completed_at": "2026-01-19T12:04:03",
+      "batch_id": 439,
+      "author_id": 1028,
+      "datastream_metadata": {
+        "uuid": "f753df7e-7533-4be2-939e-3221442322a0",
+        "source_timestamp": 1768824242000
+      }
+    },
+    {
+      "created_at": "2026-01-19T12:03:55.387654",
+      "updated_at": "2026-01-19T12:03:59",
+      "id": 464,
+      "status": "completed",
+      "number_of_files": 22,
+      "number_of_successes": 22,
+      "number_of_failures": 0,
+      "started_at": "2026-01-19T12:03:55",
+      "completed_at": "2026-01-19T12:03:59",
+      "batch_id": 438,
+      "author_id": 1028,
+      "datastream_metadata": {
+        "uuid": "34fdf95b-200d-46bc-8aa4-97e99acb44ae",
+        "source_timestamp": 1768824239000
+      }
+    },
+    {
+      "created_at": "2026-01-19T12:03:51.901726",
+      "updated_at": "2026-01-19T12:03:55",
+      "id": 463,
+      "status": "completed",
+      "number_of_files": 35,
+      "number_of_successes": 35,
+      "number_of_failures": 0,
+      "started_at": "2026-01-19T12:03:52",
+      "completed_at": "2026-01-19T12:03:56",
+      "batch_id": 437,
+      "author_id": 1028,
+      "datastream_metadata": {
+        "uuid": "c9d7f4ef-eb92-44ae-9c50-a07de77b64ad",
+        "source_timestamp": 1768824235000
+      }
+    },
+    {
+      "created_at": "2026-01-19T12:03:48.643931",
+      "updated_at": "2026-01-19T12:03:52",
+      "id": 462,
+      "status": "completed",
+      "number_of_files": 37,
+      "number_of_successes": 37,
+      "number_of_failures": 0,
+      "started_at": "2026-01-19T12:03:49",
+      "completed_at": "2026-01-19T12:03:53",
+      "batch_id": 436,
+      "author_id": 1028,
+      "datastream_metadata": {
+        "uuid": "848f6eff-81d7-4f78-8f3e-f526af3648ba",
+        "source_timestamp": 1768824232000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:44:30.665547",
+      "updated_at": "2026-01-19T11:44:42",
+      "id": 461,
+      "status": "completed",
+      "number_of_files": 99,
+      "number_of_successes": 99,
+      "number_of_failures": 0,
+      "started_at": "2026-01-19T11:44:31",
+      "completed_at": "2026-01-19T11:44:43",
+      "batch_id": 435,
+      "author_id": 1028,
+      "datastream_metadata": {
+        "uuid": "365b7998-14ee-41bb-910e-3ca4fb9824da",
+        "source_timestamp": 1768823082000
+      }
+    },
+    {
+      "created_at": "2026-01-19T11:41:10.695929",
+      "updated_at": "2026-01-19T11:41:14",
+      "id": 460,
+      "status": "completed",
+      "number_of_files": 34,
+      "number_of_successes": 34,
+      "number_of_failures": 0,
+      "started_at": "2026-01-19T11:41:11",
+      "completed_at": "2026-01-19T11:41:15",
+      "batch_id": 434,
+      "author_id": 1028,
+      "datastream_metadata": {
+        "uuid": "ff9db5fc-362c-4205-88fb-ca1186467743",
+        "source_timestamp": 1768822874000
+      }
+    },
+    {
+      "created_at": "2026-01-19T10:19:34.005705",
+      "updated_at": "2026-01-19T10:19:41",
+      "id": 459,
+      "status": "completed",
+      "number_of_files": 99,
+      "number_of_successes": 99,
+      "number_of_failures": 0,
+      "started_at": "2026-01-19T10:19:34",
+      "completed_at": "2026-01-19T10:19:41",
+      "batch_id": 433,
+      "author_id": 1028,
+      "datastream_metadata": {
+        "uuid": "b114d49f-e53a-4b78-b4e1-0fb5a2dffbe7",
+        "source_timestamp": 1768817981000
+      }
+    },
+    {
+      "created_at": "2026-01-16T18:16:20.086585",
+      "updated_at": "2026-01-16T18:17:32",
+      "id": 458,
+      "status": "completed",
+      "number_of_files": 200,
+      "number_of_successes": 200,
+      "number_of_failures": 0,
+      "started_at": "2026-01-16T18:16:20",
+      "completed_at": "2026-01-16T18:17:33",
+      "batch_id": 432,
+      "author_id": 1190,
+      "datastream_metadata": {
+        "uuid": "bd8d896f-a763-40fc-a6d4-200a59ebcb7c",
+        "source_timestamp": 1768587452000
+      }
+    },
+    {
+      "created_at": "2026-01-16T18:14:37.975602",
+      "updated_at": "2026-01-16T18:14:49",
+      "id": 457,
+      "status": "completed",
+      "number_of_files": 200,
+      "number_of_successes": 200,
+      "number_of_failures": 0,
+      "started_at": "2026-01-16T18:14:38",
+      "completed_at": "2026-01-16T18:14:50",
+      "batch_id": 432,
+      "author_id": 1190,
+      "datastream_metadata": {
+        "uuid": "950381e4-83f5-48c4-a257-eec723944c90",
+        "source_timestamp": 1768587289000
+      }
+    },
+    {
+      "created_at": "2026-01-15T07:10:00.221562",
+      "updated_at": "2026-01-15T07:10:12",
+      "id": 456,
+      "status": "completed",
+      "number_of_files": 239,
+      "number_of_successes": 239,
+      "number_of_failures": 0,
+      "started_at": "2026-01-15T07:10:00",
+      "completed_at": "2026-01-15T07:10:13",
+      "batch_id": 431,
+      "author_id": 658,
+      "datastream_metadata": {
+        "uuid": "027ec36b-d1d6-431e-9e9f-52687ae19ca1",
+        "source_timestamp": 1768461012000
+      }
+    },
+    {
+      "created_at": "2026-01-15T07:08:56.325456",
+      "updated_at": "2026-01-15T07:09:12",
+      "id": 455,
+      "status": "completed",
+      "number_of_files": 254,
+      "number_of_successes": 254,
+      "number_of_failures": 0,
+      "started_at": "2026-01-15T07:08:56",
+      "completed_at": "2026-01-15T07:09:13",
+      "batch_id": 430,
+      "author_id": 658,
+      "datastream_metadata": {
+        "uuid": "eb114f07-1d21-419a-bef0-0fcba09e8a92",
+        "source_timestamp": 1768460952000
+      }
+    },
+    {
+      "created_at": "2026-01-12T10:05:54.523206",
+      "updated_at": "2026-01-12T10:06:04",
+      "id": 454,
+      "status": "completed",
+      "number_of_files": 200,
+      "number_of_successes": 200,
+      "number_of_failures": 0,
+      "started_at": "2026-01-12T10:05:55",
+      "completed_at": "2026-01-12T10:06:05",
+      "batch_id": 429,
+      "author_id": 1190,
+      "datastream_metadata": {
+        "uuid": "f8ab449c-e6d7-40e1-a53b-772910011011",
+        "source_timestamp": 1768212364000
+      }
+    },
+    {
+      "created_at": "2026-01-09T07:58:12.590861",
+      "updated_at": "2026-01-09T07:59:20",
+      "id": 453,
+      "status": "completed",
+      "number_of_files": 205,
+      "number_of_successes": 205,
+      "number_of_failures": 0,
+      "started_at": "2026-01-09T07:58:13",
+      "completed_at": "2026-01-09T07:59:21",
+      "batch_id": 428,
+      "author_id": 658,
+      "datastream_metadata": {
+        "uuid": "1af70ad7-28a7-400e-a7d0-c85500000100",
+        "source_timestamp": 1767945560000
+      }
+    },
+    {
+      "created_at": "2026-01-09T07:57:16.557288",
+      "updated_at": "2026-01-09T07:57:34",
+      "id": 452,
+      "status": "completed",
+      "number_of_files": 217,
+      "number_of_successes": 217,
+      "number_of_failures": 0,
+      "started_at": "2026-01-09T07:57:17",
+      "completed_at": "2026-01-09T07:57:34",
+      "batch_id": 427,
+      "author_id": 658,
+      "datastream_metadata": {
+        "uuid": "d1f67956-d474-4abf-ad91-7c2001000010",
+        "source_timestamp": 1767945454000
+      }
+    },
+    {
+      "created_at": "2026-01-06T15:20:51.173195",
+      "updated_at": "2026-01-06T15:21:24",
+      "id": 451,
+      "status": "completed",
+      "number_of_files": 21,
+      "number_of_successes": 21,
+      "number_of_failures": 0,
+      "started_at": "2026-01-06T15:20:51",
+      "completed_at": "2026-01-06T15:21:25",
+      "batch_id": 426,
+      "author_id": 1228,
+      "datastream_metadata": {
+        "uuid": "2056fec4-41e2-4b4f-b105-8a3d11100101",
+        "source_timestamp": 1767712884000
+      }
+    },
+    {
+      "created_at": "2026-01-05T18:17:18.347078",
+      "updated_at": "2026-01-05T18:18:54",
+      "id": 450,
+      "status": "completed",
+      "number_of_files": 550,
+      "number_of_successes": 550,
+      "number_of_failures": 0,
+      "started_at": "2026-01-05T18:17:18",
+      "completed_at": "2026-01-05T18:18:55",
+      "batch_id": 424,
+      "author_id": 659,
+      "datastream_metadata": {
+        "uuid": "f15023d8-b6d9-4868-af7d-2c8b00000100",
+        "source_timestamp": 1767637134000
+      }
+    },
+    {
+      "created_at": "2025-12-27T06:39:30.038226",
+      "updated_at": "2025-12-27T06:39:40",
+      "id": 449,
+      "status": "completed",
+      "number_of_files": 1,
+      "number_of_successes": 1,
+      "number_of_failures": 0,
+      "started_at": "2025-12-27T06:39:30",
+      "completed_at": "2025-12-27T06:39:41",
+      "batch_id": 423,
+      "author_id": 1190,
+      "datastream_metadata": {
+        "uuid": "c291ac14-e4d2-4598-abb0-493d00000101",
+        "source_timestamp": 1766817580000
+      }
+    },
+    {
+      "created_at": "2025-12-15T07:30:16.488251",
+      "updated_at": "2025-12-15T07:31:06",
+      "id": 448,
+      "status": "completed",
+      "number_of_files": 1100,
+      "number_of_successes": 1100,
+      "number_of_failures": 0,
+      "started_at": "2025-12-15T07:30:16",
+      "completed_at": "2025-12-15T07:31:06",
+      "batch_id": 422,
+      "author_id": 659,
+      "datastream_metadata": {
+        "uuid": "d8c6a336-0388-4e41-ae79-8c3a00100101",
+        "source_timestamp": 1765783866000
+      }
+    },
+    {
+      "created_at": "2025-12-15T06:57:50.836715",
+      "updated_at": "2025-12-15T06:59:03",
+      "id": 447,
+      "status": "completed",
+      "number_of_files": 1417,
+      "number_of_successes": 1417,
+      "number_of_failures": 0,
+      "started_at": "2025-12-15T06:57:51",
+      "completed_at": "2025-12-15T06:59:03",
+      "batch_id": 421,
+      "author_id": 658,
+      "datastream_metadata": {
+        "uuid": "c1f9bd9e-9b30-4480-ab37-247300010011",
+        "source_timestamp": 1765781943000
+      }
+    },
+    {
+      "created_at": "2025-12-15T06:55:59.810578",
+      "updated_at": "2025-12-15T06:57:38",
+      "id": 446,
+      "status": "completed",
+      "number_of_files": 1423,
+      "number_of_successes": 1423,
+      "number_of_failures": 0,
+      "started_at": "2025-12-15T06:56:00",
+      "completed_at": "2025-12-15T06:57:39",
+      "batch_id": 420,
+      "author_id": 658,
+      "datastream_metadata": {
+        "uuid": "2bf45bf4-3dd5-4862-86ba-436900110001",
+        "source_timestamp": 1765781858000
+      }
+    },
+    {
+      "created_at": "2025-12-05T15:40:04.382712",
+      "updated_at": "2025-12-05T15:41:41",
+      "id": 445,
+      "status": "completed",
+      "number_of_files": 1136,
+      "number_of_successes": 1136,
+      "number_of_failures": 0,
+      "started_at": "2025-12-05T15:40:04",
+      "completed_at": "2025-12-05T15:41:41",
+      "batch_id": 419,
+      "author_id": 659,
+      "datastream_metadata": {
+        "uuid": "b2f67589-79c7-4a2f-a0f1-d22601010010",
+        "source_timestamp": 1764949301000
+      }
+    },
+    {
+      "created_at": "2025-12-05T09:25:36.555376",
+      "updated_at": "2025-12-05T09:25:45",
+      "id": 444,
+      "status": "completed",
+      "number_of_files": 200,
+      "number_of_successes": 200,
+      "number_of_failures": 0,
+      "started_at": "2025-12-05T09:25:37",
+      "completed_at": "2025-12-05T09:25:46",
+      "batch_id": 418,
+      "author_id": 659,
+      "datastream_metadata": {
+        "uuid": "6a72407a-ac54-41c2-ab09-2dfd11011000",
+        "source_timestamp": 1764926745000
+      }
+    },
+    {
+      "created_at": "2025-12-05T09:25:34.064615",
+      "updated_at": "2025-12-05T09:25:43",
+      "id": 443,
+      "status": "completed",
+      "number_of_files": 200,
+      "number_of_successes": 200,
+      "number_of_failures": 0,
+      "started_at": "2025-12-05T09:25:34",
+      "completed_at": "2025-12-05T09:25:44",
+      "batch_id": 417,
+      "author_id": 659,
+      "datastream_metadata": {
+        "uuid": "6a72407a-ac54-41c2-ab09-2dfd00000111",
+        "source_timestamp": 1764926743000
+      }
+    },
+    {
+      "created_at": "2025-12-05T09:25:32.018289",
+      "updated_at": "2025-12-05T09:26:40",
+      "id": 442,
+      "status": "completed",
+      "number_of_files": 200,
+      "number_of_successes": 200,
+      "number_of_failures": 0,
+      "started_at": "2025-12-05T09:25:32",
+      "completed_at": "2025-12-05T09:26:41",
+      "batch_id": 418,
+      "author_id": 659,
+      "datastream_metadata": {
+        "uuid": "c82b320c-cc5a-423b-ad3f-eab500110010",
+        "source_timestamp": 1764926800000
+      }
+    },
+    {
+      "created_at": "2025-12-05T09:25:28.456091",
+      "updated_at": "2025-12-05T09:26:40",
+      "id": 441,
+      "status": "completed",
+      "number_of_files": 200,
+      "number_of_successes": 200,
+      "number_of_failures": 0,
+      "started_at": "2025-12-05T09:25:28",
+      "completed_at": "2025-12-05T09:26:41",
+      "batch_id": 417,
+      "author_id": 659,
+      "datastream_metadata": {
+        "uuid": "c82b320c-cc5a-423b-ad3f-eab500110110",
+        "source_timestamp": 1764926800000
+      }
+    },
+    {
+      "created_at": "2025-12-05T05:50:43.635491",
+      "updated_at": "2025-12-05T05:51:22",
+      "id": 440,
+      "status": "completed",
+      "number_of_files": 1002,
+      "number_of_successes": 1002,
+      "number_of_failures": 0,
+      "started_at": "2025-12-05T05:50:44",
+      "completed_at": "2025-12-05T05:51:22",
+      "batch_id": 416,
+      "author_id": 659,
+      "datastream_metadata": {
+        "uuid": "a42ba379-ea1d-414e-b0c5-475111110110",
+        "source_timestamp": 1764913882000
+      }
+    },
+    {
+      "created_at": "2025-12-04T18:41:03.965794",
+      "updated_at": "2025-12-04T18:41:06",
+      "id": 439,
+      "status": "completed",
+      "number_of_files": 4,
+      "number_of_successes": 4,
+      "number_of_failures": 0,
+      "started_at": "2025-12-04T18:41:04",
+      "completed_at": "2025-12-04T18:41:07",
+      "batch_id": 415,
+      "author_id": 805,
+      "datastream_metadata": {
+        "uuid": "49d8397a-a72d-4537-b79f-2a5a11001000",
+        "source_timestamp": 1764873666000
+      }
+    },
+    {
+      "created_at": "2025-12-04T18:40:54.131261",
+      "updated_at": "2025-12-04T18:40:57",
+      "id": 438,
+      "status": "completed",
+      "number_of_files": 4,
+      "number_of_successes": 4,
+      "number_of_failures": 0,
+      "started_at": "2025-12-04T18:40:54",
+      "completed_at": "2025-12-04T18:40:58",
+      "batch_id": 415,
+      "author_id": 805,
+      "datastream_metadata": {
+        "uuid": "49d8397a-a72d-4537-b79f-2a5a10001000",
+        "source_timestamp": 1764873657000
+      }
+    },
+    {
+      "created_at": "2025-12-03T06:03:57.753377",
+      "updated_at": "2025-12-03T06:05:41",
+      "id": 437,
+      "status": "completed",
+      "number_of_files": 1500,
+      "number_of_successes": 1500,
+      "number_of_failures": 0,
+      "started_at": "2025-12-03T06:03:58",
+      "completed_at": "2025-12-03T06:05:41",
+      "batch_id": 414,
+      "author_id": 659,
+      "datastream_metadata": {
+        "uuid": "3bd33cd7-41bf-474c-b424-817210100101",
+        "source_timestamp": 1764741941000
+      }
+    },
+    {
+      "created_at": "2025-12-03T06:03:55.036233",
+      "updated_at": "2025-12-03T06:05:24",
+      "id": 436,
+      "status": "completed",
+      "number_of_files": 1500,
+      "number_of_successes": 1500,
+      "number_of_failures": 0,
+      "started_at": "2025-12-03T06:03:55",
+      "completed_at": "2025-12-03T06:05:25",
+      "batch_id": 413,
+      "author_id": 659,
+      "datastream_metadata": {
+        "uuid": "3bd33cd7-41bf-474c-b424-817201101001",
+        "source_timestamp": 1764741924000
+      }
+    },
+    {
+      "created_at": "2025-12-02T13:41:00.299762",
+      "updated_at": "2025-12-02T13:42:01",
+      "id": 435,
+      "status": "completed",
+      "number_of_files": 1500,
+      "number_of_successes": 1500,
+      "number_of_failures": 0,
+      "started_at": "2025-12-02T13:41:00",
+      "completed_at": "2025-12-02T13:42:01",
+      "batch_id": 411,
+      "author_id": 465,
+      "datastream_metadata": {
+        "uuid": "9d9ddd4f-ddde-44bb-9f41-045000110010",
+        "source_timestamp": 1764682921000
+      }
+    },
+    {
+      "created_at": "2025-12-02T13:38:29.928986",
+      "updated_at": "2025-12-02T13:39:43",
+      "id": 434,
+      "status": "completed",
+      "number_of_files": 1500,
+      "number_of_successes": 1500,
+      "number_of_failures": 0,
+      "started_at": "2025-12-02T13:38:30",
+      "completed_at": "2025-12-02T13:39:43",
+      "batch_id": 412,
+      "author_id": 659,
+      "datastream_metadata": {
+        "uuid": "9c34ce4b-5bc0-4a98-b64d-f73600001100",
+        "source_timestamp": 1764682783000
+      }
+    },
+    {
+      "created_at": "2025-12-02T11:12:31.453886",
+      "updated_at": "2025-12-02T11:13:51",
+      "id": 433,
+      "status": "completed",
+      "number_of_files": 1500,
+      "number_of_successes": 1500,
+      "number_of_failures": 0,
+      "started_at": "2025-12-02T11:12:31",
+      "completed_at": "2025-12-02T11:13:52",
+      "batch_id": 411,
+      "author_id": 659,
+      "datastream_metadata": {
+        "uuid": "dc79d71c-c326-47df-9e75-30e701111110",
+        "source_timestamp": 1764674031000
+      }
+    },
+    {
+      "created_at": "2025-10-22T18:51:22.511494",
+      "updated_at": "2025-10-22T18:51:40",
+      "id": 432,
+      "status": "completed",
+      "number_of_files": 235,
+      "number_of_successes": 235,
+      "number_of_failures": 0,
+      "started_at": "2025-10-22T18:51:23",
+      "completed_at": "2025-10-22T18:51:40",
+      "batch_id": 410,
+      "author_id": 464,
+      "datastream_metadata": {
+        "uuid": "82f21ffb-774d-4cb8-be98-817a01010010",
+        "source_timestamp": 1761159100000
+      }
+    },
+    {
+      "created_at": "2025-09-01T18:21:45.518870",
+      "updated_at": "2025-09-01T18:21:49",
+      "id": 431,
+      "status": "completed",
+      "number_of_files": 10,
+      "number_of_successes": 10,
+      "number_of_failures": 0,
+      "started_at": "2025-09-01T18:21:46",
+      "completed_at": "2025-09-01T18:21:50",
+      "batch_id": 409,
+      "author_id": 432,
+      "datastream_metadata": {
+        "uuid": "44326b01-783f-4275-925f-022c01001100",
+        "source_timestamp": 1756750909000
+      }
+    },
+    {
+      "created_at": "2025-08-18T22:17:07.909236",
+      "updated_at": "2025-08-18T22:17:33",
+      "id": 430,
+      "status": "completed",
+      "number_of_files": 256,
+      "number_of_successes": 256,
+      "number_of_failures": 0,
+      "started_at": "2025-08-18T22:17:08",
+      "completed_at": "2025-08-18T22:17:34",
+      "batch_id": 408,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "bc163de6-ef9f-4506-bf5e-eb8901010000",
+        "source_timestamp": 1755555453000
+      }
+    },
+    {
+      "created_at": "2025-08-18T21:25:58.221886",
+      "updated_at": "2025-08-18T21:25:58",
+      "id": 429,
+      "status": "completed",
+      "number_of_files": 6,
+      "number_of_successes": 6,
+      "number_of_failures": 0,
+      "started_at": "2025-08-18T21:25:58",
+      "completed_at": "2025-08-18T21:25:59",
+      "batch_id": 407,
+      "author_id": 29,
+      "datastream_metadata": {
+        "uuid": "67224299-b299-4a28-a63b-982a00010000",
+        "source_timestamp": 1755552358000
+      }
+    },
+    {
+      "created_at": "2025-08-18T21:18:39.223797",
+      "updated_at": "2025-08-18T21:18:39",
+      "id": 428,
+      "status": "completed",
+      "number_of_files": 6,
+      "number_of_successes": 6,
+      "number_of_failures": 0,
+      "started_at": "2025-08-18T21:18:39",
+      "completed_at": "2025-08-18T21:18:39",
+      "batch_id": 406,
+      "author_id": 29,
+      "datastream_metadata": {
+        "uuid": "91efe4ce-415e-4559-a2f1-8e6c10001101",
+        "source_timestamp": 1755551919000
+      }
+    },
+    {
+      "created_at": "2025-08-18T19:57:44.194388",
+      "updated_at": "2025-08-18T19:57:44",
+      "id": 427,
+      "status": "completed",
+      "number_of_files": 6,
+      "number_of_successes": 6,
+      "number_of_failures": 0,
+      "started_at": "2025-08-18T19:57:44",
+      "completed_at": "2025-08-18T19:57:44",
+      "batch_id": 405,
+      "author_id": 29,
+      "datastream_metadata": {
+        "uuid": "5d013935-1ca6-4d4b-9b8d-121501100000",
+        "source_timestamp": 1755547064000
+      }
+    },
+    {
+      "created_at": "2025-08-18T19:23:17.801204",
+      "updated_at": "2025-08-18T19:23:18",
+      "id": 426,
+      "status": "completed",
+      "number_of_files": 6,
+      "number_of_successes": 6,
+      "number_of_failures": 0,
+      "started_at": "2025-08-18T19:23:18",
+      "completed_at": "2025-08-18T19:23:18",
+      "batch_id": 404,
+      "author_id": 29,
+      "datastream_metadata": {
+        "uuid": "97749bab-e62d-4909-a533-f49001100010",
+        "source_timestamp": 1755544998000
+      }
+    },
+    {
+      "created_at": "2025-08-15T18:49:41.235347",
+      "updated_at": "2025-08-15T18:50:08",
+      "id": 425,
+      "status": "completed",
+      "number_of_files": 256,
+      "number_of_successes": 256,
+      "number_of_failures": 0,
+      "started_at": "2025-08-15T18:49:41",
+      "completed_at": "2025-08-15T18:50:09",
+      "batch_id": 403,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "f7698435-a144-482e-bf4e-063510110001",
+        "source_timestamp": 1755283808000
+      }
+    },
+    {
+      "created_at": "2025-08-15T16:07:09.858928",
+      "updated_at": "2025-08-15T16:07:10",
+      "id": 424,
+      "status": "failed",
+      "number_of_files": 0,
+      "number_of_successes": 0,
+      "number_of_failures": 0,
+      "started_at": "2025-08-15T16:07:10",
+      "completed_at": null,
+      "batch_id": 402,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "3ae697de-4b81-44f9-993f-bb2d00010000",
+        "source_timestamp": 1755274030000
+      }
+    },
+    {
+      "created_at": "2025-08-15T16:06:59.646345",
+      "updated_at": "2025-08-15T16:06:59",
+      "id": 423,
+      "status": "failed",
+      "number_of_files": 0,
+      "number_of_successes": 0,
+      "number_of_failures": 0,
+      "started_at": "2025-08-15T16:07:00",
+      "completed_at": null,
+      "batch_id": 402,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "f3171258-3906-44ae-b54b-388e10000011",
+        "source_timestamp": 1755274019000
+      }
+    },
+    {
+      "created_at": "2025-08-15T12:51:38.527873",
+      "updated_at": "2025-08-15T12:51:45",
+      "id": 422,
+      "status": "completed",
+      "number_of_files": 16,
+      "number_of_successes": 16,
+      "number_of_failures": 0,
+      "started_at": "2025-08-15T12:51:39",
+      "completed_at": "2025-08-15T12:51:45",
+      "batch_id": 401,
+      "author_id": 432,
+      "datastream_metadata": {
+        "uuid": "fd2fc9ec-e462-49fe-bd12-933100000100",
+        "source_timestamp": 1755262305000
+      }
+    },
+    {
+      "created_at": "2025-08-14T19:34:35.624903",
+      "updated_at": "2025-08-14T19:35:43",
+      "id": 421,
+      "status": "completed",
+      "number_of_files": 6,
+      "number_of_successes": 6,
+      "number_of_failures": 0,
+      "started_at": "2025-08-14T19:34:36",
+      "completed_at": "2025-08-14T19:35:43",
+      "batch_id": 400,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "4be07950-3acc-46f3-97ad-365200011100",
+        "source_timestamp": 1755200143000
+      }
+    },
+    {
+      "created_at": "2025-08-14T19:34:33.811061",
+      "updated_at": "2025-08-14T19:35:42",
+      "id": 420,
+      "status": "completed",
+      "number_of_files": 50,
+      "number_of_successes": 50,
+      "number_of_failures": 0,
+      "started_at": "2025-08-14T19:34:34",
+      "completed_at": "2025-08-14T19:35:42",
+      "batch_id": 399,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "4be07950-3acc-46f3-97ad-365200010001",
+        "source_timestamp": 1755200142000
+      }
+    },
+    {
+      "created_at": "2025-08-14T19:34:32.055844",
+      "updated_at": "2025-08-14T19:35:32",
+      "id": 419,
+      "status": "completed",
+      "number_of_files": 46,
+      "number_of_successes": 46,
+      "number_of_failures": 0,
+      "started_at": "2025-08-14T19:34:32",
+      "completed_at": "2025-08-14T19:35:33",
+      "batch_id": 398,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "ab300666-b792-4cb0-bd84-87a300001010",
+        "source_timestamp": 1755200132000
+      }
+    },
+    {
+      "created_at": "2025-08-14T19:34:29.964659",
+      "updated_at": "2025-08-14T19:35:26",
+      "id": 418,
+      "status": "completed",
+      "number_of_files": 50,
+      "number_of_successes": 50,
+      "number_of_failures": 0,
+      "started_at": "2025-08-14T19:34:30",
+      "completed_at": "2025-08-14T19:35:26",
+      "batch_id": 397,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "fe7b8ec5-e141-46a1-b4f0-002301001000",
+        "source_timestamp": 1755200126000
+      }
+    },
+    {
+      "created_at": "2025-08-14T19:34:27.957139",
+      "updated_at": "2025-08-14T19:35:15",
+      "id": 417,
+      "status": "completed",
+      "number_of_files": 50,
+      "number_of_successes": 50,
+      "number_of_failures": 0,
+      "started_at": "2025-08-14T19:34:28",
+      "completed_at": "2025-08-14T19:35:16",
+      "batch_id": 396,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "55852834-04b9-45fe-be7a-a16e10100011",
+        "source_timestamp": 1755200115000
+      }
+    },
+    {
+      "created_at": "2025-08-14T19:34:26.111622",
+      "updated_at": "2025-08-14T19:35:11",
+      "id": 416,
+      "status": "completed",
+      "number_of_files": 50,
+      "number_of_successes": 50,
+      "number_of_failures": 0,
+      "started_at": "2025-08-14T19:34:26",
+      "completed_at": "2025-08-14T19:35:12",
+      "batch_id": 395,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "55852834-04b9-45fe-be7a-a16e00111010",
+        "source_timestamp": 1755200111000
+      }
+    },
+    {
+      "created_at": "2025-08-14T17:51:03.402894",
+      "updated_at": "2025-08-14T17:51:09",
+      "id": 415,
+      "status": "completed",
+      "number_of_files": 6,
+      "number_of_successes": 6,
+      "number_of_failures": 0,
+      "started_at": "2025-08-14T17:51:03",
+      "completed_at": "2025-08-14T17:51:10",
+      "batch_id": 394,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "9b64df6a-9376-49d8-9483-b3ee10001101",
+        "source_timestamp": 1755193869000
+      }
+    },
+    {
+      "created_at": "2025-08-14T17:50:48.545079",
+      "updated_at": "2025-08-14T17:51:05",
+      "id": 414,
+      "status": "completed",
+      "number_of_files": 50,
+      "number_of_successes": 50,
+      "number_of_failures": 0,
+      "started_at": "2025-08-14T17:50:49",
+      "completed_at": "2025-08-14T17:51:05",
+      "batch_id": 393,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "9b64df6a-9376-49d8-9483-b3ee01001111",
+        "source_timestamp": 1755193865000
+      }
+    },
+    {
+      "created_at": "2025-08-14T17:50:46.128970",
+      "updated_at": "2025-08-14T17:50:59",
+      "id": 413,
+      "status": "completed",
+      "number_of_files": 50,
+      "number_of_successes": 50,
+      "number_of_failures": 0,
+      "started_at": "2025-08-14T17:50:46",
+      "completed_at": "2025-08-14T17:51:00",
+      "batch_id": 392,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "108b2d05-8503-4866-93eb-a8c400101100",
+        "source_timestamp": 1755193859000
+      }
+    },
+    {
+      "created_at": "2025-08-14T17:50:43.651929",
+      "updated_at": "2025-08-14T17:50:59",
+      "id": 412,
+      "status": "completed",
+      "number_of_files": 50,
+      "number_of_successes": 50,
+      "number_of_failures": 0,
+      "started_at": "2025-08-14T17:50:44",
+      "completed_at": "2025-08-14T17:51:00",
+      "batch_id": 391,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "108b2d05-8503-4866-93eb-a8c400101110",
+        "source_timestamp": 1755193859000
+      }
+    },
+    {
+      "created_at": "2025-08-14T17:50:40.680961",
+      "updated_at": "2025-08-14T17:50:47",
+      "id": 411,
+      "status": "completed",
+      "number_of_files": 50,
+      "number_of_successes": 50,
+      "number_of_failures": 0,
+      "started_at": "2025-08-14T17:50:41",
+      "completed_at": "2025-08-14T17:50:47",
+      "batch_id": 390,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "0984b627-4d7b-4e20-8e96-dd3f00110011",
+        "source_timestamp": 1755193847000
+      }
+    },
+    {
+      "created_at": "2025-08-14T17:13:30.879822",
+      "updated_at": "2025-08-14T17:13:41",
+      "id": 410,
+      "status": "completed",
+      "number_of_files": 50,
+      "number_of_successes": 50,
+      "number_of_failures": 0,
+      "started_at": "2025-08-14T17:13:31",
+      "completed_at": "2025-08-14T17:13:42",
+      "batch_id": 389,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "4e637ebf-a1e4-4349-a97e-154d10010110",
+        "source_timestamp": 1755191621000
+      }
+    },
+    {
+      "created_at": "2025-08-14T15:49:06.407454",
+      "updated_at": "2025-08-14T15:49:14",
+      "id": 409,
+      "status": "completed",
+      "number_of_files": 28,
+      "number_of_successes": 28,
+      "number_of_failures": 0,
+      "started_at": "2025-08-14T15:49:06",
+      "completed_at": "2025-08-14T15:49:15",
+      "batch_id": 388,
+      "author_id": 432,
+      "datastream_metadata": {
+        "uuid": "bddc9b1a-2720-4faa-a98d-a6f500010010",
+        "source_timestamp": 1755186554000
+      }
+    },
+    {
+      "created_at": "2025-08-12T21:05:15.324525",
+      "updated_at": "2025-08-12T21:05:22",
+      "id": 408,
+      "status": "completed",
+      "number_of_files": 49,
+      "number_of_successes": 49,
+      "number_of_failures": 0,
+      "started_at": "2025-08-12T21:05:15",
+      "completed_at": "2025-08-12T21:05:23",
+      "batch_id": 387,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "018a58a5-c1c6-44ab-bf2c-687000000000",
+        "source_timestamp": 1755032722000
+      }
+    },
+    {
+      "created_at": "2025-08-12T14:00:40.305187",
+      "updated_at": "2025-08-12T14:00:46",
+      "id": 407,
+      "status": "completed",
+      "number_of_files": 15,
+      "number_of_successes": 15,
+      "number_of_failures": 0,
+      "started_at": "2025-08-12T14:00:40",
+      "completed_at": "2025-08-12T14:00:46",
+      "batch_id": 386,
+      "author_id": 432,
+      "datastream_metadata": {
+        "uuid": "a397501d-316e-4340-9860-6e7610110100",
+        "source_timestamp": 1755007246000
+      }
+    },
+    {
+      "created_at": "2025-08-12T00:45:33.081120",
+      "updated_at": "2025-08-12T00:45:38",
+      "id": 406,
+      "status": "completed",
+      "number_of_files": 33,
+      "number_of_successes": 33,
+      "number_of_failures": 0,
+      "started_at": "2025-08-12T00:45:33",
+      "completed_at": "2025-08-12T00:45:39",
+      "batch_id": 385,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "c8ac23b0-a918-42ed-8f03-7b8010100101",
+        "source_timestamp": 1754959538000
+      }
+    },
+    {
+      "created_at": "2025-08-12T00:39:32.700586",
+      "updated_at": "2025-08-12T00:39:38",
+      "id": 405,
+      "status": "completed",
+      "number_of_files": 25,
+      "number_of_successes": 25,
+      "number_of_failures": 0,
+      "started_at": "2025-08-12T00:39:33",
+      "completed_at": "2025-08-12T00:39:38",
+      "batch_id": 384,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "14dc5ad5-938d-49d0-8d36-08e710010010",
+        "source_timestamp": 1754959178000
+      }
+    },
+    {
+      "created_at": "2025-08-08T20:26:34.035091",
+      "updated_at": "2025-08-08T20:26:39",
+      "id": 404,
+      "status": "completed",
+      "number_of_files": 32,
+      "number_of_successes": 32,
+      "number_of_failures": 0,
+      "started_at": "2025-08-08T20:26:34",
+      "completed_at": "2025-08-08T20:26:40",
+      "batch_id": 383,
+      "author_id": 432,
+      "datastream_metadata": {
+        "uuid": "028bc36c-438f-408f-b561-38c111110100",
+        "source_timestamp": 1754684799000
+      }
+    },
+    {
+      "created_at": "2025-08-07T02:09:13.617539",
+      "updated_at": "2025-08-07T02:09:19",
+      "id": 403,
+      "status": "completed",
+      "number_of_files": 29,
+      "number_of_successes": 29,
+      "number_of_failures": 0,
+      "started_at": "2025-08-07T02:09:14",
+      "completed_at": "2025-08-07T02:09:19",
+      "batch_id": 382,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "ea8c09c9-c09f-44d3-ab50-930511101010",
+        "source_timestamp": 1754532559000
+      }
+    },
+    {
+      "created_at": "2025-08-07T02:06:27.792138",
+      "updated_at": "2025-08-07T02:06:32",
+      "id": 402,
+      "status": "completed",
+      "number_of_files": 24,
+      "number_of_successes": 24,
+      "number_of_failures": 0,
+      "started_at": "2025-08-07T02:06:28",
+      "completed_at": "2025-08-07T02:06:33",
+      "batch_id": 381,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "eaebef6b-34a3-4814-a635-002711000010",
+        "source_timestamp": 1754532392000
+      }
+    },
+    {
+      "created_at": "2025-08-06T14:43:41.240266",
+      "updated_at": "2025-08-06T14:43:43",
+      "id": 401,
+      "status": "completed",
+      "number_of_files": 15,
+      "number_of_successes": 15,
+      "number_of_failures": 0,
+      "started_at": "2025-08-06T14:43:41",
+      "completed_at": "2025-08-06T14:43:44",
+      "batch_id": 380,
+      "author_id": 167,
+      "datastream_metadata": {
+        "uuid": "42e1d6e2-3587-40f6-ad38-3d2811001001",
+        "source_timestamp": 1754491423000
+      }
+    },
+    {
+      "created_at": "2025-08-06T14:42:50.538068",
+      "updated_at": "2025-08-06T14:42:52",
+      "id": 400,
+      "status": "completed",
+      "number_of_files": 9,
+      "number_of_successes": 9,
+      "number_of_failures": 0,
+      "started_at": "2025-08-06T14:42:51",
+      "completed_at": "2025-08-06T14:42:52",
+      "batch_id": 379,
+      "author_id": 167,
+      "datastream_metadata": {
+        "uuid": "88f95206-cf8d-4be1-ae71-425800001001",
+        "source_timestamp": 1754491372000
+      }
+    },
+    {
+      "created_at": "2025-08-06T14:39:21.146657",
+      "updated_at": "2025-08-06T14:39:25",
+      "id": 399,
+      "status": "completed",
+      "number_of_files": 9,
+      "number_of_successes": 9,
+      "number_of_failures": 0,
+      "started_at": "2025-08-06T14:39:21",
+      "completed_at": "2025-08-06T14:39:25",
+      "batch_id": 378,
+      "author_id": 167,
+      "datastream_metadata": {
+        "uuid": "b8a058f2-f933-4bc5-9e1b-120501011010",
+        "source_timestamp": 1754491165000
+      }
+    },
+    {
+      "created_at": "2025-08-06T14:38:49.953287",
+      "updated_at": "2025-08-06T14:38:55",
+      "id": 398,
+      "status": "completed",
+      "number_of_files": 15,
+      "number_of_successes": 15,
+      "number_of_failures": 0,
+      "started_at": "2025-08-06T14:38:50",
+      "completed_at": "2025-08-06T14:38:55",
+      "batch_id": 377,
+      "author_id": 167,
+      "datastream_metadata": {
+        "uuid": "fedf9165-3b44-4c55-8778-438710010010",
+        "source_timestamp": 1754491135000
+      }
+    },
+    {
+      "created_at": "2025-08-06T14:37:47.287203",
+      "updated_at": "2025-08-06T14:37:47",
+      "id": 397,
+      "status": "completed",
+      "number_of_files": 0,
+      "number_of_successes": 0,
+      "number_of_failures": 0,
+      "started_at": "2025-08-06T14:37:47",
+      "completed_at": "2025-08-06T14:37:48",
+      "batch_id": 376,
+      "author_id": 167,
+      "datastream_metadata": {
+        "uuid": "d1b4d9ca-d41d-415e-8c14-00e210010101",
+        "source_timestamp": 1754491067000
+      }
+    },
+    {
+      "created_at": "2025-08-06T14:01:36.077901",
+      "updated_at": "2025-08-06T14:01:41",
+      "id": 396,
+      "status": "completed",
+      "number_of_files": 25,
+      "number_of_successes": 25,
+      "number_of_failures": 0,
+      "started_at": "2025-08-06T14:01:36",
+      "completed_at": "2025-08-06T14:01:42",
+      "batch_id": 375,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "a052e0b1-0215-43f1-945a-cae310010011",
+        "source_timestamp": 1754488901000
+      }
+    },
+    {
+      "created_at": "2025-08-05T15:59:09.745390",
+      "updated_at": "2025-08-05T15:59:11",
+      "id": 395,
+      "status": "completed",
+      "number_of_files": 8,
+      "number_of_successes": 8,
+      "number_of_failures": 0,
+      "started_at": "2025-08-05T15:59:10",
+      "completed_at": "2025-08-05T15:59:12",
+      "batch_id": 374,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "23de4c3b-2075-46eb-8752-af5011010000",
+        "source_timestamp": 1754409551000
+      }
+    },
+    {
+      "created_at": "2025-08-05T15:41:21.179683",
+      "updated_at": "2025-08-05T15:41:23",
+      "id": 394,
+      "status": "completed",
+      "number_of_files": 6,
+      "number_of_successes": 6,
+      "number_of_failures": 0,
+      "started_at": "2025-08-05T15:41:21",
+      "completed_at": "2025-08-05T15:41:23",
+      "batch_id": 373,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "c2da1755-905c-4df3-a24e-517a01110001",
+        "source_timestamp": 1754408483000
+      }
+    },
+    {
+      "created_at": "2025-08-05T15:40:14.635444",
+      "updated_at": "2025-08-05T15:40:17",
+      "id": 393,
+      "status": "completed",
+      "number_of_files": 7,
+      "number_of_successes": 7,
+      "number_of_failures": 0,
+      "started_at": "2025-08-05T15:40:15",
+      "completed_at": "2025-08-05T15:40:17",
+      "batch_id": 372,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "cd59864a-eb5a-46b9-9f34-417001000010",
+        "source_timestamp": 1754408417000
+      }
+    },
+    {
+      "created_at": "2025-08-05T15:39:15.389081",
+      "updated_at": "2025-08-05T15:39:17",
+      "id": 392,
+      "status": "completed",
+      "number_of_files": 7,
+      "number_of_successes": 7,
+      "number_of_failures": 0,
+      "started_at": "2025-08-05T15:39:15",
+      "completed_at": "2025-08-05T15:39:18",
+      "batch_id": 371,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "fddbceba-6810-4766-a377-c84101001011",
+        "source_timestamp": 1754408357000
+      }
+    }
+  ]
+}

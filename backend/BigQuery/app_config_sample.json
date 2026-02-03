@@ -1,0 +1,4788 @@
+{
+  "table": "app_config",
+  "row_count": 129,
+  "sample_count": 100,
+  "fetched_at": "2026-01-28T23:22:20.621878",
+  "data": [
+    {
+      "created_at": "2026-01-26T04:34:26.258226",
+      "updated_at": "2026-01-26T04:34:26.258226",
+      "id": 149,
+      "name": "Use RAG in auto review",
+      "system_name": "reviews.auto.useRag",
+      "description": "If enabled, RAG will be used in auto review.",
+      "order": 5,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": false
+      },
+      "default_value": {
+        "value": false
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        }
+      },
+      "group_id": 3,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "f2171414-aaef-46b0-9982-7ae2ecff858d",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2026-01-26T04:34:26.140378",
+      "updated_at": "2026-01-26T04:34:26.140378",
+      "id": 148,
+      "name": "AI Taxonomy Copilot Prompts",
+      "system_name": "ai.taxonomy.copilotPrompts",
+      "description": "System prompts and settings for AI-powered taxonomy suggestion generation during project setup",
+      "order": 15,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": {
+          "descriptionBasedPrompt": "You are a taxonomy design expert helping to organize a labeling project's data structure for tracking labeling coverage.\n\n## CONTEXT\nThe user is setting up a labeling project and needs to organize their data into a hierarchical taxonomy. This taxonomy will be used to:\n- Track labeling progress across different data segments\n- Group conversations by metadata categories\n- Measure coverage (completed/in-progress/total) at each hierarchy level\n\n## AVAILABLE METADATA FROM PROJECT BATCHES\nThese are the actual metadata keys present in the user's conversation data:\n{availableKeys}\n\nSample values for each metadata key:\n{sampleValues}\n\n## HOW THE TAXONOMY SYSTEM WORKS\nThe taxonomy is defined as an ORDERED ARRAY of metadata keys where:\n- The FIRST key becomes the TOP-LEVEL category (broadest grouping)\n- Each subsequent key becomes a CHILD LEVEL (more specific)\n- Example: [\"repo\", \"category\", \"issue_type\"] creates:\n  repo (Level 1 - broadest)\n    └── category (Level 2)\n          └── issue_type (Level 3 - most specific)\n\n## KEY SELECTION PRINCIPLES\n- Keys with FEWER unique values → better for TOP levels (broader groupings)\n- Keys with MANY unique values → better for LEAF levels (specific items)\n- Exclude IDs, timestamps, URLs, hashes, and non-categorical data\n- Prioritize keys that help track meaningful progress segments\n\n## YOUR TASK\nBased on the user's domain description and the available metadata, suggest 2-4 different taxonomy structures.\nEach suggestion should select metadata keys from the available keys and order them appropriately.\n\nUser's domain description will follow.\n\nReturn your response as valid JSON only (no markdown, no explanation outside JSON):\n{\n  \"suggestions\": [\n    {\n      \"title\": \"Repository-Based Taxonomy\",\n      \"mainCategory\": \"repo\",\n      \"children\": [\"category\", \"issue_type\"],\n      \"confidence\": 92,\n      \"reasoning\": \"Groups by repository first, then by category and issue type for granular tracking\"\n    }\n  ]\n}\n\nNOTE: mainCategory and children values MUST be from the available metadata keys listed above.",
+          "metadataAnalysisPrompt": "You are a taxonomy design expert analyzing conversation metadata to suggest the optimal hierarchy structure for tracking labeling coverage.\n\n## HOW THE TAXONOMY SYSTEM WORKS\nThe taxonomy configuration uses an ORDERED ARRAY of metadata keys stored as:\n{\n  \"enabled\": true,\n  \"metadataKeys\": [\"key1\", \"key2\", \"key3\"]\n}\n\nWhere:\n- The FIRST key = TOP-LEVEL category (broadest grouping, fewest unique values)\n- Each subsequent key = CHILD LEVEL (increasingly specific)\n- The LAST key = LEAF LEVEL (most specific, can have many unique values)\n\nExample: [\"domain\", \"subdomain\", \"topic\"] creates:\n  domain (Level 1 - e.g., 3 unique values)\n    └── subdomain (Level 2 - e.g., 12 unique values)\n          └── topic (Level 3 - e.g., 50 unique values)\n\n## METADATA STATISTICS FROM PROJECT BATCHES\n{metadataStats}\n\nTotal conversations in selected batches: {totalConversations}\n\n## KEY SELECTION RULES\n1. INCLUDE keys that:\n   - Represent meaningful categorical/hierarchical data\n   - Have reasonable cardinality (not 1 value, not equal to total conversations)\n   - Help segment data for progress tracking\n\n2. EXCLUDE keys that:\n   - Are identifiers (IDs, UUIDs, hashes)\n   - Are timestamps or dates\n   - Are URLs or file paths\n   - Have cardinality equal to total conversations (unique per conversation)\n   - Have only 1 unique value (no segmentation value)\n\n3. ORDER keys by:\n   - Fewer unique values → FIRST (top-level, broader groupings)\n   - More unique values → LAST (leaf-level, specific items)\n   - Consider logical parent-child relationships\n\n## YOUR TASK\nAnalyze the metadata statistics and return the optimal ordered array of metadata keys for the taxonomy hierarchy.\nSelect 2-4 keys that would provide the most meaningful coverage tracking.\n\nReturn your response as valid JSON only (no markdown, no explanation outside JSON):\n{\n  \"metadataKeys\": [\"key1\", \"key2\"],\n  \"reasoning\": \"Brief explanation of why this hierarchy makes sense based on the data distribution\"\n}",
+          "model": "gpt-4o",
+          "temperature": 0.7
+        }
+      },
+      "default_value": {
+        "value": {
+          "descriptionBasedPrompt": "You are a taxonomy design expert helping to organize a labeling project's data structure for tracking labeling coverage.\n\n## CONTEXT\nThe user is setting up a labeling project and needs to organize their data into a hierarchical taxonomy. This taxonomy will be used to:\n- Track labeling progress across different data segments\n- Group conversations by metadata categories\n- Measure coverage (completed/in-progress/total) at each hierarchy level\n\n## AVAILABLE METADATA FROM PROJECT BATCHES\nThese are the actual metadata keys present in the user's conversation data:\n{availableKeys}\n\nSample values for each metadata key:\n{sampleValues}\n\n## HOW THE TAXONOMY SYSTEM WORKS\nThe taxonomy is defined as an ORDERED ARRAY of metadata keys where:\n- The FIRST key becomes the TOP-LEVEL category (broadest grouping)\n- Each subsequent key becomes a CHILD LEVEL (more specific)\n- Example: [\"repo\", \"category\", \"issue_type\"] creates:\n  repo (Level 1 - broadest)\n    └── category (Level 2)\n          └── issue_type (Level 3 - most specific)\n\n## KEY SELECTION PRINCIPLES\n- Keys with FEWER unique values → better for TOP levels (broader groupings)\n- Keys with MANY unique values → better for LEAF levels (specific items)\n- Exclude IDs, timestamps, URLs, hashes, and non-categorical data\n- Prioritize keys that help track meaningful progress segments\n\n## YOUR TASK\nBased on the user's domain description and the available metadata, suggest 2-4 different taxonomy structures.\nEach suggestion should select metadata keys from the available keys and order them appropriately.\n\nUser's domain description will follow.\n\nReturn your response as valid JSON only (no markdown, no explanation outside JSON):\n{\n  \"suggestions\": [\n    {\n      \"title\": \"Repository-Based Taxonomy\",\n      \"mainCategory\": \"repo\",\n      \"children\": [\"category\", \"issue_type\"],\n      \"confidence\": 92,\n      \"reasoning\": \"Groups by repository first, then by category and issue type for granular tracking\"\n    }\n  ]\n}\n\nNOTE: mainCategory and children values MUST be from the available metadata keys listed above.",
+          "metadataAnalysisPrompt": "You are a taxonomy design expert analyzing conversation metadata to suggest the optimal hierarchy structure for tracking labeling coverage.\n\n## HOW THE TAXONOMY SYSTEM WORKS\nThe taxonomy configuration uses an ORDERED ARRAY of metadata keys stored as:\n{\n  \"enabled\": true,\n  \"metadataKeys\": [\"key1\", \"key2\", \"key3\"]\n}\n\nWhere:\n- The FIRST key = TOP-LEVEL category (broadest grouping, fewest unique values)\n- Each subsequent key = CHILD LEVEL (increasingly specific)\n- The LAST key = LEAF LEVEL (most specific, can have many unique values)\n\nExample: [\"domain\", \"subdomain\", \"topic\"] creates:\n  domain (Level 1 - e.g., 3 unique values)\n    └── subdomain (Level 2 - e.g., 12 unique values)\n          └── topic (Level 3 - e.g., 50 unique values)\n\n## METADATA STATISTICS FROM PROJECT BATCHES\n{metadataStats}\n\nTotal conversations in selected batches: {totalConversations}\n\n## KEY SELECTION RULES\n1. INCLUDE keys that:\n   - Represent meaningful categorical/hierarchical data\n   - Have reasonable cardinality (not 1 value, not equal to total conversations)\n   - Help segment data for progress tracking\n\n2. EXCLUDE keys that:\n   - Are identifiers (IDs, UUIDs, hashes)\n   - Are timestamps or dates\n   - Are URLs or file paths\n   - Have cardinality equal to total conversations (unique per conversation)\n   - Have only 1 unique value (no segmentation value)\n\n3. ORDER keys by:\n   - Fewer unique values → FIRST (top-level, broader groupings)\n   - More unique values → LAST (leaf-level, specific items)\n   - Consider logical parent-child relationships\n\n## YOUR TASK\nAnalyze the metadata statistics and return the optimal ordered array of metadata keys for the taxonomy hierarchy.\nSelect 2-4 keys that would provide the most meaningful coverage tracking.\n\nReturn your response as valid JSON only (no markdown, no explanation outside JSON):\n{\n  \"metadataKeys\": [\"key1\", \"key2\"],\n  \"reasoning\": \"Brief explanation of why this hierarchy makes sense based on the data distribution\"\n}",
+          "model": "gpt-4o",
+          "temperature": 0.7
+        }
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Json",
+            "props": {}
+          },
+          "modal": {
+            "size": "full"
+          }
+        },
+        "view": {
+          "component": {
+            "name": "PreCollapsible",
+            "props": {
+              "preProps": {
+                "fontFamily": "'Source Code Pro', monospace",
+                "whiteSpace": "pre-wrap"
+              },
+              "startingHeight": "10vh"
+            }
+          }
+        }
+      },
+      "group_id": 1,
+      "scope": "app",
+      "datastream_metadata": {
+        "uuid": "3677a4c5-1f58-4054-a40d-14fe5d3e50fb",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2026-01-26T04:34:26.059976",
+      "updated_at": "2026-01-26T04:34:26.059976",
+      "id": 147,
+      "name": "Enable Cross-Stage Trainer Restriction",
+      "system_name": "labeling.rlhf.enableCrossStageTrainerRestriction",
+      "description": "When enabled, prevents trainers from claiming the same task in multiple stages. A different team member must complete each stage.",
+      "order": 0,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": false
+      },
+      "default_value": {
+        "value": false
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "5fb6b150-9177-47f4-81d2-d778c5aa1854",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2026-01-26T04:34:26.018035",
+      "updated_at": "2026-01-26T04:34:26.018035",
+      "id": 146,
+      "name": "Email notification logs TTL",
+      "system_name": "emailNotificationLogs.TTLMonths",
+      "description": "Email notification logs older than the specified number of months will be automatically deleted.",
+      "order": 0,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": 3
+      },
+      "default_value": {
+        "value": 3
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "NumberInput",
+            "props": {
+              "min": 1,
+              "precision": 0,
+              "step": 1
+            }
+          }
+        }
+      },
+      "group_id": 1,
+      "scope": "app",
+      "datastream_metadata": {
+        "uuid": "4f0e2b62-8458-439d-ac75-fb233faf94bb",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2026-01-22T04:34:22.216287",
+      "updated_at": "2026-01-26T04:34:25.998152",
+      "id": 145,
+      "name": "Submit unsaved Trainer Questions changes Popup",
+      "system_name": "project.trainerQuestions.unsavedChangesReminderPopup",
+      "description": "Config for a reminder popup for users to submit trainer questions unsaved changes.",
+      "order": 9,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": {
+          "enabled": false,
+          "popUpOptions": {
+            "popUpMessageDescription": "Please save your work to avoid losing progress.",
+            "popUpMessageTitle": "Unsaved trainer question changes detected.",
+            "popUpTime": 5
+          }
+        }
+      },
+      "default_value": {
+        "value": {
+          "enabled": false,
+          "popUpOptions": {
+            "popUpMessageDescription": "Please save your work to avoid losing progress.",
+            "popUpMessageTitle": "Unsaved trainer question changes detected.",
+            "popUpTime": 5
+          }
+        }
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Json",
+            "props": {}
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Pre",
+            "props": {}
+          }
+        }
+      },
+      "group_id": 1,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "6053ebda-1e97-4674-8bf5-72874b7f5867",
+        "source_timestamp": 1769402065000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2026-01-19T04:35:17.242818",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 144,
+      "name": "Enable Manual Time On Completion",
+      "system_name": "labeling.complete.timetracking.enableManualTime",
+      "description": "If enabled, the manual time entry will be available on completion along with tracked time. Time tracking should be enabled for this to work.",
+      "order": 1,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": true
+      },
+      "default_value": {
+        "value": true
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "d880f626-1924-4904-b219-ac2d61e8c111",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2026-01-12T04:33:59.498685",
+      "updated_at": "2026-01-26T04:34:26.245952",
+      "id": 143,
+      "name": "Enable URL to Attachment (LLM Reviewer)",
+      "system_name": "reviews.auto.llm.enableUrlsToAttachments",
+      "description": "When enabled, LLM reviewer passes url_to_attachment to the evaluator config to resolve attachments via URLs",
+      "order": 12,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": false
+      },
+      "default_value": {
+        "value": false
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        }
+      },
+      "group_id": 3,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "9e83ceff-4e8d-45be-ba33-30b3652e04ba",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2026-01-12T04:33:59.297070",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 142,
+      "name": "Disable manual Difficulty level",
+      "system_name": "labeling.projectlevel.difficultyLevel.disable",
+      "description": "This config is to disable the manual set difficulty levels",
+      "order": 2,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": false
+      },
+      "default_value": {
+        "value": false
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "aae9c7c4-131d-40a5-a6f6-21fc4db855ca",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2026-01-08T04:35:56.242563",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 141,
+      "name": "Enable cell Safety ACPS Check Improvements for Data Quality",
+      "system_name": "labeling.editor.enableSafetyProjectImprovement",
+      "description": "Enable/disable safety project improvement for data quality",
+      "order": 54,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": false
+      },
+      "default_value": {
+        "value": false
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "0f77d894-de93-488e-b0e2-dfe571621fb4",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2026-01-01T04:34:12.846722",
+      "updated_at": "2026-01-26T04:34:25.998152",
+      "id": 139,
+      "name": "Enable Label Tab for Form Project",
+      "system_name": "formProject.enableLabelTab",
+      "description": "This config is to enable the label tab for form project",
+      "order": 1,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": false
+      },
+      "default_value": {
+        "value": false
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        }
+      },
+      "group_id": 1,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "80d96078-7abf-4feb-9538-a9dee48201ce",
+        "source_timestamp": 1769402065000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-12-18T04:34:55.142705",
+      "updated_at": "2026-01-26T04:34:25.998152",
+      "id": 138,
+      "name": "Enable Task Locking",
+      "system_name": "taskLocking.enable",
+      "description": "Allow to enable task locking",
+      "order": 2,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": true
+      },
+      "default_value": {
+        "value": true
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        }
+      },
+      "group_id": 1,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "f5e35ea8-d790-4533-870b-1e3499a9016b",
+        "source_timestamp": 1769402065000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-12-15T04:34:31.734619",
+      "updated_at": "2026-01-26T04:34:26.245952",
+      "id": 137,
+      "name": "Maximum Draft Reviews by User per Project",
+      "system_name": "reviews.maxDraftReviewsByUser",
+      "description": "Maximum number of draft reviews allowed per user per project at same time, set to 0 to disable the limit",
+      "order": 19,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": 0
+      },
+      "default_value": {
+        "value": 0
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "NumberInput",
+            "props": {
+              "min": 0,
+              "precision": 0,
+              "step": 1
+            }
+          }
+        }
+      },
+      "group_id": 3,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "f82a0d4d-0fd4-4d16-b413-e428e6157f6f",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-12-11T04:34:22.251084",
+      "updated_at": "2026-01-26T04:34:25.998152",
+      "id": 136,
+      "name": "Pubsub Topic - Conversation Status Change",
+      "system_name": "pubsubTopic.conversationStatusChange",
+      "description": "Pubsub topic for conversation status change",
+      "order": 3,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": null
+      },
+      "default_value": {
+        "value": null
+      },
+      "metadata": {},
+      "group_id": 1,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "f3fc20d7-2233-471a-a6d8-b60f36bc4079",
+        "source_timestamp": 1769402065000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-12-08T04:34:16.766277",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 135,
+      "name": "Show Join Buttons in Task List",
+      "system_name": "labeling.persuasionChat.showJoinButtonsInTaskList",
+      "description": "Show \"Join as Target\" and \"Join as Persuader\" buttons in the task workflow actions. Users can still join from other pages. By default hidden for everyone including admins.",
+      "order": 8,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": false
+      },
+      "default_value": {
+        "value": false
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "907f5455-93e9-4083-95e8-63f35073a90b",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-12-01T04:34:24.983792",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 134,
+      "name": "Minimum Turns Required",
+      "system_name": "labeling.minimumTurnsRequired",
+      "description": "Minimum number of turns required to complete a conversation.",
+      "order": 26,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": 0
+      },
+      "default_value": {
+        "value": 0
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "NumberInput",
+            "props": {
+              "min": 0,
+              "precision": 0,
+              "step": 1
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "6050ad1c-6bb8-4ed2-8632-cd9cd2a24d70",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-12-01T04:34:24.850285",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 133,
+      "name": "Enable Evaluation Toggle",
+      "system_name": "labeling.editor.enableEvaluationToggle",
+      "description": "Enable/disable evaluation toggle functionality",
+      "order": 52,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": false
+      },
+      "default_value": {
+        "value": false
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "5edc3dbe-703e-4d59-9c88-af219a6c5e9c",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-11-27T04:34:12.834367",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 132,
+      "name": "Set MCP Server Execute Tool Endpoint",
+      "system_name": "labeling.editor.MCPServerExecuteToolEndpoint",
+      "description": "Set MCP Server Execute Tool Endpoint for this project",
+      "order": 48,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": "/tool-sessions/execute-tool"
+      },
+      "default_value": {
+        "value": "/tool-sessions/execute-tool"
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Input"
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Redacted",
+            "props": {
+              "options": {
+                "component": {
+                  "name": "Pre",
+                  "props": {}
+                }
+              },
+              "redactedText": "********"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "fe12bd7e-5be6-45f0-99ee-175a58adaa90",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-11-27T04:34:12.802269",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 131,
+      "name": "View Metadata By Participant Role",
+      "system_name": "labeling.metadata.viewMetadataByParticipantRole",
+      "description": "Configure which metadata keys are visible to each participant role (target/persuader) in chat rooms",
+      "order": 21,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": {
+          "persuader": true,
+          "target": true
+        }
+      },
+      "default_value": {
+        "value": {
+          "persuader": true,
+          "target": true
+        }
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Json",
+            "props": {}
+          }
+        },
+        "view": {
+          "component": {
+            "name": "PreCollapsible",
+            "props": {
+              "preProps": {
+                "fontFamily": "'Source Code Pro', monospace",
+                "whiteSpace": "pre-wrap"
+              },
+              "startingHeight": "10vh"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "c385efaa-0ff5-4bb1-a1e4-cdab9aa0f1c6",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-11-20T04:34:22.251289",
+      "updated_at": "2026-01-26T04:34:26.245952",
+      "id": 130,
+      "name": "Review Total Score Computation",
+      "system_name": "reviews.totalScoreComputation",
+      "description": "JSONata formula for computing total review scores. The formula receives a context object with \"review\" array (QDs with score, weight, type)",
+      "order": 21,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": {
+          "enabled": false,
+          "formula": "$round(\n  $sum(review[score != 0].(score * weight)) /\n  $sum(review[score != 0].weight),\n  2\n)\n"
+        }
+      },
+      "default_value": {
+        "value": {
+          "enabled": false,
+          "formula": "$round(\n  $sum(review[score != 0].(score * weight)) /\n  $sum(review[score != 0].weight),\n  2\n)\n"
+        }
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Json",
+            "props": {}
+          }
+        },
+        "view": {
+          "component": {
+            "name": "PreCollapsible",
+            "props": {
+              "preProps": {
+                "fontFamily": "'Source Code Pro', monospace",
+                "whiteSpace": "pre-wrap"
+              },
+              "startingHeight": "10vh"
+            }
+          }
+        }
+      },
+      "group_id": 3,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "88520a47-0d2a-4122-bc57-3cb59ce67194",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-11-06T04:33:55.360795",
+      "updated_at": "2026-01-26T04:34:26.245952",
+      "id": 129,
+      "name": "Request complete approval after auto-review feedback",
+      "system_name": "reviews.requestCompleteApprovalAfterAutoReviewFeedback",
+      "description": "If enabled, after submitting auto-review feedback, user is prompted to request complete approval.",
+      "order": 22,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": false
+      },
+      "default_value": {
+        "value": false
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        }
+      },
+      "group_id": 3,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "477c2d30-4f6d-42e4-9b1d-5b183d906dda",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-11-03T04:34:14.343236",
+      "updated_at": "2026-01-26T04:34:25.998152",
+      "id": 128,
+      "name": "Enable Content Safety",
+      "system_name": "contentSafety.enable",
+      "description": "Allow to enable content safety",
+      "order": 4,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": false
+      },
+      "default_value": {
+        "value": false
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        }
+      },
+      "group_id": 1,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "9bbee8cd-4ecd-47ac-99f5-5b51f5bf8524",
+        "source_timestamp": 1769402065000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-10-16T04:34:10.124386",
+      "updated_at": "2026-01-26T04:34:25.998152",
+      "id": 127,
+      "name": "One time token time to live in minutes",
+      "system_name": "auth.oneTimeToken.TTLMinutes",
+      "description": "One time token time to live in minutes",
+      "order": 6,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": 15
+      },
+      "default_value": {
+        "value": 15
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "NumberInput",
+            "props": {
+              "min": 1,
+              "precision": 0,
+              "step": 1
+            }
+          }
+        }
+      },
+      "group_id": 1,
+      "scope": "app",
+      "datastream_metadata": {
+        "uuid": "fa9df10d-949c-4b7a-b4f6-1a1360ac610a",
+        "source_timestamp": 1769402065000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-10-16T04:34:09.581251",
+      "updated_at": "2026-01-26T04:34:26.089036",
+      "id": 126,
+      "name": "Time tracking config",
+      "system_name": "labeling.timetracking.config",
+      "description": "Time tracking configuration",
+      "order": 13,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": {
+          "enabled": false,
+          "options": {
+            "autostartIfCurrentUser": false,
+            "idleDetectionOptions": {
+              "idleMessage": "Timer paused due to inactivity",
+              "idleTimeout": 300000,
+              "promptMessage": "Timer is about to be auto-paused",
+              "promptTimeout": 240000
+            },
+            "showExpectedTime": true
+          }
+        }
+      },
+      "default_value": {
+        "value": {
+          "enabled": false,
+          "options": {
+            "autostartIfCurrentUser": false,
+            "idleDetectionOptions": {
+              "idleMessage": "Timer paused due to inactivity",
+              "idleTimeout": 300000,
+              "promptMessage": "Timer is about to be auto-paused",
+              "promptTimeout": 240000
+            },
+            "showExpectedTime": true
+          }
+        }
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Rjsf",
+            "props": {
+              "schema": {
+                "properties": {
+                  "enabled": {
+                    "title": "Enable Time Tracking",
+                    "type": "boolean"
+                  },
+                  "options": {
+                    "properties": {
+                      "autostartIfCurrentUser": {
+                        "title": "Auto-start Timer",
+                        "type": "boolean"
+                      },
+                      "blockUIWhenInactive": {
+                        "title": "Block UI When Inactive",
+                        "type": "boolean"
+                      },
+                      "idleDetectionOptions": {
+                        "properties": {
+                          "idleMessage": {
+                            "description": "Message shown when timer is paused due to inactivity",
+                            "title": "Idle Message",
+                            "type": "string"
+                          },
+                          "idleTimeout": {
+                            "description": "Time in milliseconds before timer is paused due to inactivity",
+                            "minimum": 0,
+                            "title": "Idle Timeout (ms)",
+                            "type": "number"
+                          },
+                          "promptMessage": {
+                            "description": "Message shown in inactivity prompt",
+                            "title": "Prompt Message",
+                            "type": "string"
+                          },
+                          "promptTimeout": {
+                            "description": "Time in milliseconds before showing inactivity prompt",
+                            "minimum": 0,
+                            "title": "Prompt Timeout (ms)",
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "idleTimeout",
+                          "idleMessage",
+                          "promptTimeout",
+                          "promptMessage"
+                        ],
+                        "title": "Idle Detection Settings",
+                        "type": "object"
+                      },
+                      "showExpectedTime": {
+                        "title": "Show Expected Time",
+                        "type": "boolean"
+                      }
+                    },
+                    "required": [
+                      "autostartIfCurrentUser",
+                      "showExpectedTime",
+                      "idleDetectionOptions",
+                      "blockUIWhenInactive"
+                    ],
+                    "title": "Time Tracking Options",
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "enabled",
+                  "options"
+                ],
+                "type": "object"
+              },
+              "uiSchema": {
+                "enabled": {
+                  "ui:widget": "checkbox"
+                },
+                "options": {
+                  "autostartIfCurrentUser": {
+                    "ui:widget": "checkbox"
+                  },
+                  "blockUIWhenInactive": {
+                    "ui:widget": "checkbox"
+                  },
+                  "idleDetectionOptions": {
+                    "idleMessage": {
+                      "ui:description": "",
+                      "ui:widget": "textarea"
+                    },
+                    "idleTimeout": {
+                      "ui:description": "",
+                      "ui:help": "Default: 300000 (5 minutes)"
+                    },
+                    "promptMessage": {
+                      "ui:description": "",
+                      "ui:widget": "textarea"
+                    },
+                    "promptTimeout": {
+                      "ui:description": "",
+                      "ui:help": "Default: 240000 (4 minutes)"
+                    },
+                    "ui:order": [
+                      "idleTimeout",
+                      "idleMessage",
+                      "promptTimeout",
+                      "promptMessage"
+                    ]
+                  },
+                  "showExpectedTime": {
+                    "ui:widget": "checkbox"
+                  },
+                  "ui:order": [
+                    "blockUIWhenInactive",
+                    "autostartIfCurrentUser",
+                    "showExpectedTime",
+                    "idleDetectionOptions"
+                  ]
+                },
+                "ui:order": [
+                  "enabled",
+                  "options"
+                ]
+              }
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Pre",
+            "props": {}
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "cf0ee971-cff6-47a6-9416-de94079309cb",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-10-13T04:34:19.031058",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 125,
+      "name": "Enable cell Safety ACPS Check for Apple",
+      "system_name": "labeling.editor.enableMessageCellSafetyACPSCheck",
+      "description": "Enable/disable message cell safety ACPS check",
+      "order": 53,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": false
+      },
+      "default_value": {
+        "value": false
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "71e282ba-62c5-4c86-aba3-3063d4596534",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-10-02T04:32:34.568920",
+      "updated_at": "2026-01-08T04:35:56.202411",
+      "id": 124,
+      "name": "Enable Project Quality Dimension Negative Review Threshold",
+      "system_name": "reviews.pqdNegativeReviewThreshold.enable",
+      "description": "Enable/disable PQD negative review threshold check per quality dimension during auto review",
+      "order": 2,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": false
+      },
+      "default_value": {
+        "value": false
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        }
+      },
+      "group_id": 3,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "3c0bd1e1-ca9e-4d5a-ab1b-f69301000111",
+        "source_timestamp": 1767846956000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-10-02T04:32:34.008667",
+      "updated_at": "2026-01-26T04:34:25.998152",
+      "id": 123,
+      "name": "Enable Task Queuing",
+      "system_name": "taskQueuing.enable",
+      "description": "Allow to enable task queuing",
+      "order": 5,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": false
+      },
+      "default_value": {
+        "value": false
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        }
+      },
+      "group_id": 1,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "ca3e79b2-f4f6-4543-b7e2-833790c535f9",
+        "source_timestamp": 1769402065000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-09-15T04:33:28.937589",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 122,
+      "name": "Audio Collection",
+      "system_name": "labeling.project.audioCollection",
+      "description": "Configure audio collection settings for conversations",
+      "order": 15,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": {
+          "additionalData": {
+            "prepareInitialData": "",
+            "schema": {},
+            "uiSchema": {}
+          },
+          "enabled": false
+        }
+      },
+      "default_value": {
+        "value": {
+          "additionalData": {
+            "prepareInitialData": "",
+            "schema": {},
+            "uiSchema": {}
+          },
+          "enabled": false
+        }
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Json",
+            "props": {}
+          }
+        },
+        "view": {
+          "component": {
+            "name": "PreCollapsible",
+            "props": {
+              "preProps": {
+                "fontFamily": "'Source Code Pro', monospace",
+                "whiteSpace": "pre-wrap"
+              },
+              "startingHeight": "10vh"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "f28f4f16-4d55-4390-ba2f-eb5708778ef6",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-09-11T04:33:43.903309",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 121,
+      "name": "Edit Conversation Metadata By Role",
+      "system_name": "labeling.metadata.editMetadataByRole",
+      "description": "Enable/disable edit conversation metadata for the project by role",
+      "order": 20,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": {}
+      },
+      "default_value": {
+        "value": {}
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Json",
+            "props": {}
+          }
+        },
+        "view": {
+          "component": {
+            "name": "PreCollapsible",
+            "props": {
+              "preProps": {
+                "fontFamily": "'Source Code Pro', monospace",
+                "whiteSpace": "pre-wrap"
+              },
+              "startingHeight": "10vh"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "1a5d6186-014b-44ff-b1b0-4d455f3b547c",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-08-28T04:33:44.201650",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 120,
+      "name": "Set MCP Server API URL",
+      "system_name": "labeling.editor.MCPServerURL",
+      "description": "Set MCP Server URL for this project",
+      "order": 47,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": ""
+      },
+      "default_value": {
+        "value": ""
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Input"
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Redacted",
+            "props": {
+              "options": {
+                "component": {
+                  "name": "Pre",
+                  "props": {}
+                }
+              },
+              "redactedText": "********"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "33076291-0d50-413d-a0a2-3f2f8280b147",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "https://www.loom.com/share/365d2fa3fd70445b85aabf54b9beb482",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-08-28T04:33:44.187969",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 119,
+      "name": "Enable MCP Server Tool Call",
+      "system_name": "labeling.editor.enableMCPServerToolCall",
+      "description": "Enable/disable MCP Server Tool Call for this project",
+      "order": 49,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": false
+      },
+      "default_value": {
+        "value": false
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "c6d41f61-6171-4c58-9ea2-f230a67f537b",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "https://www.loom.com/share/365d2fa3fd70445b85aabf54b9beb482",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-08-14T04:36:01.469387",
+      "updated_at": "2026-01-26T04:34:26.245952",
+      "id": 118,
+      "name": "Enable Async Auto Review",
+      "system_name": "reviews.auto.async.enable",
+      "description": "Enable asynchronous auto review processing for this project",
+      "order": 6,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": "true"
+      },
+      "default_value": {
+        "value": "true"
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        }
+      },
+      "group_id": 3,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "ee4d5c50-2070-449a-91fa-4e1a18a3aef7",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-08-06T19:43:19.646815",
+      "updated_at": "2026-01-26T04:34:25.998152",
+      "id": 117,
+      "name": "Enable Agent Run Selection",
+      "system_name": "enableAgentRunSelection.enable",
+      "description": "Choose whether to run agents.",
+      "order": 7,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": false
+      },
+      "default_value": {
+        "value": false
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        }
+      },
+      "group_id": 1,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "e9ebfc8e-0854-4226-872b-12ef758eb859",
+        "source_timestamp": 1769402065000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-08-06T19:43:19.616781",
+      "updated_at": "2026-01-26T04:34:25.998152",
+      "id": 116,
+      "name": "Edit Conversation Form Stage",
+      "system_name": "editConversationFormStage.enable",
+      "description": "Allow to edit form stage of an in-progress conversation",
+      "order": 8,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": false
+      },
+      "default_value": {
+        "value": false
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        }
+      },
+      "group_id": 1,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "c45748af-73b5-43f0-b923-75c14004201f",
+        "source_timestamp": 1769402065000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-07-09T07:55:23.724547",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 115,
+      "name": "Tool Output Error Keywords",
+      "system_name": "labeling.editor.toolOutputErrorKeywords",
+      "description": "A list of error keywords that will be used to check if the next tool output cell has an error.",
+      "order": 22,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": []
+      },
+      "default_value": {
+        "value": []
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Json",
+            "props": {}
+          }
+        },
+        "view": {
+          "component": {
+            "name": "PreCollapsible",
+            "props": {
+              "preProps": {
+                "fontFamily": "'Source Code Pro', monospace",
+                "whiteSpace": "pre-wrap"
+              },
+              "startingHeight": "10vh"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "7460ed07-9cd7-47d7-be53-c73edce4d9fa",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-06-26T04:32:39.750074",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 114,
+      "name": "Metadata keys to render values as collapsible",
+      "system_name": "labeling.metadata.collapsibleKeys",
+      "description": "Metadata keys to render values as collapsible",
+      "order": 19,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": []
+      },
+      "default_value": {
+        "value": []
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Json",
+            "props": {}
+          }
+        },
+        "view": {
+          "component": {
+            "name": "PreCollapsible",
+            "props": {
+              "preProps": {
+                "fontFamily": "'Source Code Pro', monospace",
+                "whiteSpace": "pre-wrap"
+              },
+              "startingHeight": "10vh"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "12f323b5-0c8e-4b30-8ea8-0be6ed211835",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-06-09T04:32:58.650223",
+      "updated_at": "2026-01-26T04:34:26.245952",
+      "id": 113,
+      "name": "Enable Agent Center Flow",
+      "system_name": "reviews.agentCenterFlow.enable",
+      "description": "Enable/disable agent center flow for the project",
+      "order": 24,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": true
+      },
+      "default_value": {
+        "value": false
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        }
+      },
+      "group_id": 3,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "39ffc498-22c6-4069-9087-a2b86043d1e9",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-06-09T04:32:55.757893",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 112,
+      "name": "LLM Cell Template Model",
+      "system_name": "labeling.editor.llmCellTemplateModel",
+      "description": "The selected LLM model used for generating cell templates.",
+      "order": 61,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": "o1-2024-12-17"
+      },
+      "default_value": {
+        "value": "o1-2024-12-17"
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Input"
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "0505c975-6eb0-4658-9d04-235704ae45e8",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-05-26T04:34:01.044201",
+      "updated_at": "2025-05-26T04:34:01.044201",
+      "id": 111,
+      "name": "RLHF Colab Notebook",
+      "system_name": "rlhfExtraColabNotebook.enable",
+      "description": "Creates a Colab Notebook for each task on import process, a drive folder should be specified",
+      "order": 2,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": false
+      },
+      "default_value": {
+        "value": false
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag"
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Flag"
+          }
+        }
+      },
+      "group_id": 5,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "638da648-4e69-463a-8148-b50d10011001",
+        "source_timestamp": 1748234041000
+      },
+      "video_url": null,
+      "instructions": null
+    },
+    {
+      "created_at": "2025-05-08T04:32:25.952152",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 110,
+      "name": "Additional Text Cell Types",
+      "system_name": "labeling.editor.additionalTextCellTypes",
+      "description": "A list of extra text cell types, which will be available in the editor.",
+      "order": 60,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": []
+      },
+      "default_value": {
+        "value": []
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Json",
+            "props": {}
+          }
+        },
+        "view": {
+          "component": {
+            "name": "PreCollapsible",
+            "props": {
+              "preProps": {
+                "fontFamily": "'Source Code Pro', monospace",
+                "whiteSpace": "pre-wrap"
+              },
+              "startingHeight": "10vh"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "5c9ef0fc-2169-478c-9255-0f6c26a9eb66",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-05-08T04:32:25.583171",
+      "updated_at": "2026-01-26T04:34:26.117920",
+      "id": 109,
+      "name": "Taxonomy Coverage Config",
+      "system_name": "taxonomyCoverage.taxonomyCoverageConfig",
+      "description": "Add keys used in conversation which map to taxonomy hierarchy i.e. [keyCorrespondingLevel1, keyCorrespondingLevel2] ",
+      "order": 23,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": {
+          "enabled": false,
+          "metadataKeys": []
+        }
+      },
+      "default_value": {
+        "value": {
+          "enabled": false,
+          "metadataKeys": []
+        }
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Json",
+            "props": {}
+          }
+        },
+        "view": {
+          "component": {
+            "name": "PreCollapsible",
+            "props": {
+              "preProps": {
+                "fontFamily": "'Source Code Pro', monospace",
+                "whiteSpace": "pre-wrap"
+              },
+              "startingHeight": "10vh"
+            }
+          }
+        }
+      },
+      "group_id": 1,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "e8a48be0-72d6-42a1-a6c3-df07da523bc7",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-05-08T04:32:25.070233",
+      "updated_at": "2026-01-26T04:34:26.245952",
+      "id": 108,
+      "name": "Options for selecting rework reason",
+      "system_name": "reviews.reworkreason",
+      "description": "The list of options to be used in review before moving a task to rework",
+      "order": 23,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": {
+          "enabled": false,
+          "options": []
+        }
+      },
+      "default_value": {
+        "value": {
+          "enabled": false,
+          "options": []
+        }
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Json",
+            "props": {}
+          }
+        },
+        "view": {
+          "component": {
+            "name": "PreCollapsible",
+            "props": {
+              "preProps": {
+                "fontFamily": "'Source Code Pro', monospace",
+                "whiteSpace": "pre-wrap"
+              },
+              "startingHeight": "10vh"
+            }
+          }
+        }
+      },
+      "group_id": 3,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "8c40ca01-7847-4997-b45e-48c5e81e2714",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-04-24T04:33:28.270217",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 106,
+      "name": "Project Request Changes Reasons",
+      "system_name": "labeling.project.requestChangesReasons",
+      "description": "Specify request change reasons for project labeling",
+      "order": 16,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": {
+          "enabled": false,
+          "reasons": []
+        }
+      },
+      "default_value": {
+        "value": {
+          "enabled": false,
+          "reasons": []
+        }
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Json",
+            "props": {}
+          }
+        },
+        "view": {
+          "component": {
+            "name": "PreCollapsible",
+            "props": {
+              "preProps": {
+                "fontFamily": "'Source Code Pro', monospace",
+                "whiteSpace": "pre-wrap"
+              },
+              "startingHeight": "10vh"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "5aa299d3-67fc-4716-ab6d-bdc30770a73f",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-04-24T04:33:28.088228",
+      "updated_at": "2026-01-26T04:34:26.117920",
+      "id": 105,
+      "name": "Comparator mode form project",
+      "system_name": "project.comparatorMode",
+      "description": "Enable comparator mode in form project",
+      "order": 16,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": false
+      },
+      "default_value": {
+        "value": false
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        }
+      },
+      "group_id": 1,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "35e4b812-334d-462f-9fba-076c8aac1e46",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-04-17T04:33:19.708692",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 104,
+      "name": "Enable Tool Call with NanoId",
+      "system_name": "labeling.editor.enableToolCallNanoId",
+      "description": "Tool Call function will have id as call_<nanoid>",
+      "order": 58,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": false
+      },
+      "default_value": {
+        "value": false
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "79dbe760-c430-4c81-9c05-2bfc0a075f57",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-04-10T04:33:18.919713",
+      "updated_at": "2026-01-26T04:34:25.998152",
+      "id": 101,
+      "name": "Executive Tab Sheet Config",
+      "system_name": "executiveTab.sheetSourceConfig",
+      "description": "Collection of spreadsheets links configs",
+      "order": 11,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": {
+          "dashboards": [],
+          "defaultDashBoard": null
+        }
+      },
+      "default_value": {
+        "value": {
+          "dashboards": [],
+          "defaultDashBoard": null
+        }
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Json",
+            "props": {}
+          }
+        },
+        "view": {
+          "component": {
+            "name": "PreCollapsible",
+            "props": {
+              "preProps": {
+                "fontFamily": "'Source Code Pro', monospace",
+                "whiteSpace": "pre-wrap"
+              },
+              "startingHeight": "10vh"
+            }
+          }
+        }
+      },
+      "group_id": 1,
+      "scope": "app",
+      "datastream_metadata": {
+        "uuid": "e8635e97-40dd-43a1-927c-5babe30154db",
+        "source_timestamp": 1769402065000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-04-07T04:33:15.399847",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 99,
+      "name": "Metadata Keys for ranking on recommended tab",
+      "system_name": "labeling.project.rankingConfig",
+      "description": "The Metadata keys to be used in the ranking of conversations for the recommended tab",
+      "order": 12,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": [
+          "Domain",
+          "Subtopic",
+          "Programming Language"
+        ]
+      },
+      "default_value": {
+        "value": [
+          "Domain",
+          "Subtopic",
+          "Programming Language"
+        ]
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Json",
+            "props": {}
+          }
+        },
+        "view": {
+          "component": {
+            "name": "PreCollapsible",
+            "props": {
+              "preProps": {
+                "fontFamily": "'Source Code Pro', monospace",
+                "whiteSpace": "pre-wrap"
+              },
+              "startingHeight": "10vh"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "80ca33be-4bc9-4e2e-ad39-48eb8a630248",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-03-27T04:33:07.957936",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 97,
+      "name": "Enable complete a rework task without creating a new version",
+      "system_name": "labeling.allow.complete.from.rework.noNewVersion",
+      "description": "If enabled, user will be able to complete a task from rework without creating a new version",
+      "order": 4,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": false
+      },
+      "default_value": {
+        "value": false
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "891ab12f-7bf5-4795-9c7e-20915156ab00",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-03-24T04:32:07.723300",
+      "updated_at": "2026-01-26T04:34:25.998152",
+      "id": 96,
+      "name": "Agent Center URL",
+      "system_name": "measurements.agentCenter",
+      "description": "Agent Center URL",
+      "order": 12,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": {
+          "url": "https://agents.turing.com/"
+        }
+      },
+      "default_value": {
+        "value": {
+          "url": "https://agents.turing.com/"
+        }
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Json",
+            "props": {}
+          }
+        },
+        "view": {
+          "component": {
+            "name": "PreCollapsible",
+            "props": {
+              "preProps": {
+                "fontFamily": "'Source Code Pro', monospace",
+                "whiteSpace": "pre-wrap"
+              },
+              "startingHeight": "10vh"
+            }
+          }
+        }
+      },
+      "group_id": 1,
+      "scope": "app",
+      "datastream_metadata": {
+        "uuid": "1709070d-ffb6-41e8-977b-4485a75bbc57",
+        "source_timestamp": 1769402065000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-03-20T04:32:39.758999",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 95,
+      "name": "Project Improper Reasons",
+      "system_name": "labeling.project.improperReasons",
+      "description": "Specify improper reasons for project labeling",
+      "order": 14,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": {
+          "customFeedbackEnabled": false,
+          "enableMarkImproperOnCompleted": false,
+          "enableMultipleSelect": false,
+          "enabled": false,
+          "reasonCategories": []
+        }
+      },
+      "default_value": {
+        "value": {
+          "customFeedbackEnabled": false,
+          "enableMarkImproperOnCompleted": false,
+          "enableMultipleSelect": false,
+          "enabled": false,
+          "reasonCategories": []
+        }
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Json",
+            "props": {}
+          }
+        },
+        "view": {
+          "component": {
+            "name": "PreCollapsible",
+            "props": {
+              "preProps": {
+                "fontFamily": "'Source Code Pro', monospace",
+                "whiteSpace": "pre-wrap"
+              },
+              "startingHeight": "10vh"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "cb9b5d32-99b5-48c2-a5c5-03a52e56b3b5",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-03-17T04:36:33.939904",
+      "updated_at": "2025-03-17T04:36:33.939904",
+      "id": 94,
+      "name": "Enable adding improper conversations to delivery batches",
+      "system_name": "delivery.addImproperConversation",
+      "description": "If enabled, Admins will be able to add improper conversations to delivery batches",
+      "order": 2,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": false
+      },
+      "default_value": {
+        "value": false
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        }
+      },
+      "group_id": 7,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "c8b7dcbc-82a1-4597-a168-776301011101",
+        "source_timestamp": 1742186193000
+      },
+      "video_url": null,
+      "instructions": null
+    },
+    {
+      "created_at": "2025-03-13T04:31:53.693381",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 91,
+      "name": "Enable Editor Image Support",
+      "system_name": "labeling.editor.enableEditorImageSupport",
+      "description": "Allow tool outputs as arrays",
+      "order": 57,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": false
+      },
+      "default_value": {
+        "value": false
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "f8c77d5c-fb3f-4f3d-82df-6db1736237c7",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-03-06T04:33:10.433982",
+      "updated_at": "2026-01-26T04:34:25.998152",
+      "id": 90,
+      "name": "Fetch new announcements time configuration",
+      "system_name": "reloadAnnouncements.config",
+      "description": "Time configuration in milliseconds to refetch new announcements",
+      "order": 13,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": 300000
+      },
+      "default_value": {
+        "value": 300000
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "NumberInput",
+            "props": {
+              "min": 1,
+              "precision": 0,
+              "step": 100
+            }
+          }
+        }
+      },
+      "group_id": 1,
+      "scope": "app",
+      "datastream_metadata": {
+        "uuid": "bf4d2bdd-221c-43ca-8228-d31abfa5323c",
+        "source_timestamp": 1769402065000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-02-27T04:34:10.263673",
+      "updated_at": "2026-01-08T04:35:56.202411",
+      "id": 89,
+      "name": "Minimum Quality Dimension Score Threshold",
+      "system_name": "reviews.minQDScoreThreshold",
+      "description": "The minimum threshold for individual quality dimension scores",
+      "order": 3,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": 3
+      },
+      "default_value": {
+        "value": 3
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Slider",
+            "props": {
+              "marks": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "max": 5,
+              "min": 1,
+              "step": 0.01
+            }
+          }
+        }
+      },
+      "group_id": 3,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "3c0bd1e1-ca9e-4d5a-ab1b-f69301000011",
+        "source_timestamp": 1767846956000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-02-27T04:34:10.239796",
+      "updated_at": "2026-01-26T04:34:25.998152",
+      "id": 88,
+      "name": "Enable AntML parsed XML Preview in Conversation",
+      "system_name": "showAntMLParsedXMLPreview.enable",
+      "description": "Enable AntML parsed XML text Preview in Conversation",
+      "order": 10,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": false
+      },
+      "default_value": {
+        "value": false
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        }
+      },
+      "group_id": 1,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "007b6956-4b50-4b45-99a1-a0b157715d38",
+        "source_timestamp": 1769402065000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-02-24T04:33:11.672954",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 87,
+      "name": "Enable Tool Output Array",
+      "system_name": "labeling.editor.enableToolOutputArray",
+      "description": "Allow tool outputs as arrays",
+      "order": 56,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": false
+      },
+      "default_value": {
+        "value": false
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "e7d222a4-0b98-4956-bb54-36eeecdda52d",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-02-20T04:34:36.601365",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 86,
+      "name": "Show task link to Authorized users",
+      "system_name": "labeling.showTaskLinkToAuthorizedUsers.enable",
+      "description": "Show task link to users with permission viewAnyTaskLink and also trainers working on the task.",
+      "order": 59,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": true
+      },
+      "default_value": {
+        "value": true
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "f8df5a5d-e968-415c-9b3e-01362f883541",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-02-20T04:34:36.543366",
+      "updated_at": "2026-01-26T04:34:26.117920",
+      "id": 85,
+      "name": "Extenal Rater Email Mapping",
+      "system_name": "externalRaterMapping.value",
+      "description": "External Rater Email Id mapping",
+      "order": 38,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": {}
+      },
+      "default_value": {
+        "value": {}
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Json",
+            "props": {}
+          }
+        },
+        "view": {
+          "component": {
+            "name": "PreCollapsible",
+            "props": {
+              "preProps": {
+                "fontFamily": "'Source Code Pro', monospace",
+                "whiteSpace": "pre-wrap"
+              },
+              "startingHeight": "10vh"
+            }
+          }
+        }
+      },
+      "group_id": 1,
+      "scope": "app",
+      "datastream_metadata": {
+        "uuid": "5d1c886e-9e1b-4080-9903-ca01c7d27318",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-02-20T04:34:35.941522",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 84,
+      "name": "Enable dispalying workflow steps",
+      "system_name": "labeling.workflows.stepsDiagram.enable",
+      "description": "If enabled, the User will be able to see the workflow steps diagram.",
+      "order": 25,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": true
+      },
+      "default_value": {
+        "value": true
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "de56c94b-240a-4007-b751-fc9354451f8e",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-02-20T04:34:35.736253",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 83,
+      "name": "Enable SF Turn Editor",
+      "system_name": "labeling.editor.enableSFTurnEditor",
+      "description": "Enable/disable SF turn-based editor in the editor UI",
+      "order": 50,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": false
+      },
+      "default_value": {
+        "value": false
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "26d7d7c5-3a38-4b27-b9c2-e7b2b637292d",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-02-10T04:31:47.825612",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 81,
+      "name": "Refresh metadata on task completion",
+      "system_name": "labeling.complete.refreshMetadata",
+      "description": "If enabled will refresh metadata on task completion",
+      "order": 33,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": false
+      },
+      "default_value": {
+        "value": false
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Do not refresh",
+              "trueText": "Refresh"
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Do not refresh",
+              "trueText": "Refresh"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "e4c0627a-82b2-4346-82d8-db3d887b6dd1",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-02-10T04:31:47.797386",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 80,
+      "name": "Allow task completion with invalid metadata cell",
+      "system_name": "labeling.complete.allowInvalidMetadata",
+      "description": "If denied, trainer won't be able to complete task with invalid metadata",
+      "order": 34,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": true
+      },
+      "default_value": {
+        "value": true
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Deny",
+              "trueText": "Allow"
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Deny",
+              "trueText": "Allow"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "26c87716-89f5-4d52-ad90-0624072764df",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-02-10T04:31:47.757932",
+      "updated_at": "2026-01-26T04:34:26.117920",
+      "id": 79,
+      "name": "Complete Task Duration Default Time",
+      "system_name": "completedDuration.defaultValue",
+      "description": "Default duration of task completed : value is in minutes",
+      "order": 39,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": 60
+      },
+      "default_value": {
+        "value": 60
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "NumberInput",
+            "props": {
+              "min": 0,
+              "precision": 0,
+              "step": 1
+            }
+          }
+        }
+      },
+      "group_id": 1,
+      "scope": "app",
+      "datastream_metadata": {
+        "uuid": "099be33f-3b24-4b44-8efb-6587e2d16897",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-02-10T04:31:47.717859",
+      "updated_at": "2026-01-26T04:34:25.998152",
+      "id": 78,
+      "name": "RLHF Supervision Model Config Defaults",
+      "system_name": "rlhfSupervisionModelConfig.default",
+      "description": "Default model config values for RLHF Supervision projects",
+      "order": 14,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": {
+          "criticize_times_threshold_enable_abandon_btn": 1,
+          "feedback_types": [
+            "CORRECT",
+            "CRITICIZE",
+            "REWRITE"
+          ],
+          "gpt_parsing_prompt": "\n\n\n        If you see, this information is not organized properly. All the information is given together without proper separations, making it difficult to read.\n\n        Please organize this information by structuring it into paragraphs. It needs to be separated into paragraphs such that each paragraph considers an individual thought. It needs to be like steps. But ensure that each step needs to have considerable amount of information. You should not give very less content as part of one step.\n\n        The paragraphs need not have titles.\n\n        The paragraphs need to be separated by the delimiter <br><br><br>.\n\n        If there is any code present, please provide it within code blocks ``` ```.\n\n        Please include each and every line that is present in the original information (including the discussions and dialogues that are given prior to the actual approach, literally each and every line)), in the structured response.\n\n        Please do not make any changes to any of the characters (even a space). Even if there are any mistakes when it might come to spaces or anything in the original information, please do not bother to change that.\n\n        Your only task is to structure the original information into paragraphs, add <br><br><br> between the paragraphs, and give.",
+          "incorrect_system_prompt": "You are an expert problem solver. You are provided with the original problem, a partial solution (consisting of steps up to and including the step that has been criticized), a user critique on the last provided step, and a general hint to help solve the problem. Your task is to update the solution by revising the critiqued step using the hint and generating any subsequent steps needed to complete the solution, while leaving the earlier correct steps unchanged. Do not include explanations; simply output the revised steps and final answer.\n  Your output must be in JSON format following the schema below:\n  {\n    \"solution\": {\n      \"problem_statement\": \"<Restate the original problem briefly>\",\n      \"steps\": [\n        { \"step\": <step_number>, \"text\": \"<Updated description of the step, which may include Markdown or LaTeX>\" },\n        ...\n      ],\n      \"final_answer\": \"<Final answer>\"\n    }\n  }\n  **Important:** Return the JSON output as plain text without any markdown formatting (do not include triple backticks, code fences, or any additional text).\n  Input includes four sections:\n  1. Original_Problem: The complete original problem statement.\n  2. Partial_Solution: The solution steps provided up to and including the critiqued step.\n  3. Critique: The user critique for the specific step.\n  4. Hint: A general hint to help solve the problem.\n  Using these inputs, generate the updated solution.",
+          "model_1": "gemini-1.5-pro",
+          "system_prompt": "You are an expert problem solver who provides clear, step-by-step solutions to programming, science, technology, engineering and mathematics problems. You are provided with the original problem and a general hint to help solve it, your input may also include an image. If an image is provided, analyze it and extract relevant details before solving the problem. Your task is to produce a complete, structured solution using the hint where applicable. Do not include extra commentary; simply provide the solution in the JSON format specified below.\n  Your output must be in JSON format following this schema:\n  {\n    \"solution\": {\n      \"problem_statement\": \"<Restate the original problem briefly>\",\n      \"steps\": [\n        { \"step\": <step_number>, \"text\": \"<Description of the step, which may include markdown or LaTeX>\" },\n        ...\n      ],\n      \"final_answer\": \"<Final answer>\"\n    }\n  }\n  **Important:** Return the JSON output as plain text without any markdown formatting (do not include triple backticks, code fences, or any additional text).\n  Input includes two sections:\n  1. Original_Problem: The complete problem statement.\n  2. Hint: A general hint to help solve the problem.\n  Using these inputs, generate the complete solution.\n  For example:\n  ### Mathematics Example\n  If the original problem is:\n  \"What is the average distance from the origin to a point on the polar curve r(θ) = cos(2θ) * sqrt(θ) for 0 ≤ θ ≤ π?\"\n  And the hint provided is:\n  \"Use the formula for the average value of a function and consider numerical integration for the non-elementary integral.\"\n  Then an acceptable output would be:\n  {\n    \"solution\": {\n      \"problem_statement\": \"What is the average distance from the origin to a point on the polar curve r(θ) = cos(2θ) * sqrt(θ) for 0 ≤ θ ≤ π?\",\n      \"steps\": [\n        { \"step\": 1, \"text\": \"Restate the average value formula: Average = (1/(b-a)) * ∫[a to b] f(θ)dθ, where f(θ) = r(θ).\" },\n        { \"step\": 2, \"text\": \"Substitute r(θ) = cos(2θ) * sqrt(θ) and the interval [0, π] into the formula to obtain (1/π) * ∫₀π cos(2θ) * sqrt(θ)dθ.\" },\n        { \"step\": 3, \"text\": \"Since the integral does not have an elementary antiderivative, approximate it using numerical integration to obtain approximately -0.4617.\" },\n        { \"step\": 4, \"text\": \"Calculate the average distance as (1/π) * (-0.4617) and take the absolute value to get approximately 0.1469.\" }\n      ],\n      \"final_answer\": \"0.1469\"\n    }\n  }\n  ---\n  ### Chemistry Example\n  Problem: \"Calculate the pH of a 0.01 M solution of hydrochloric acid (HCl).\"\n  Hint: \"HCl is a strong acid, so it fully dissociates in water. Use the formula for pH: pH = -log [H+].\"\n  {\n    \"solution\": {\n      \"problem_statement\": \"Calculate the pH of a 0.01 M solution of hydrochloric acid (HCl).\",\n      \"steps\": [\n        { \"step\": 1, \"text\": \"Since HCl is a strong acid, it fully dissociates: HCl → H⁺ + Cl⁻. Thus, the concentration of H⁺ ions is [H⁺] = 0.01 M.\" },\n        { \"step\": 2, \"text\": \"Use the pH formula: pH = -log [H⁺].\" },\n        { \"step\": 3, \"text\": \"Substituting [H⁺] = 0.01, we get pH = -log (0.01) = 2.\" }\n      ],\n      \"final_answer\": \"2\"\n    }\n  }\n  ---\n  ### Physics Example\n  Problem: \"A 2 kg object is dropped from a height of 10 m. Calculate the velocity just before impact. Assume no air resistance.\"\n  Hint: \"Use energy conservation: potential energy converts to kinetic energy. mgh = (1/2) mv².\"\n  {\n    \"solution\": {\n      \"problem_statement\": \"A 2 kg object is dropped from a height of 10 m. Calculate the velocity just before impact.\",\n      \"steps\": [\n        { \"step\": 1, \"text\": \"Apply energy conservation: mgh = (1/2) mv².\" },\n        { \"step\": 2, \"text\": \"Cancel mass m from both sides, leaving gh = (1/2) v².\" },\n        { \"step\": 3, \"text\": \"Substituting g = 9.8 m/s² and h = 10 m, we get (9.8)(10) = (1/2) v².\" },\n        { \"step\": 4, \"text\": \"Solving for v, we get v = sqrt(2 * 9.8 * 10) = sqrt(196) = 14 m/s.\" }\n      ],\n      \"final_answer\": \"14 m/s\"\n    }\n  }\n  ---\n  ### Coding Example\n  Problem: \"Write a Python function to calculate the factorial of a given number recursively.\"\n  Hint: \"Use recursion: n! = n * (n-1)! with a base case of 0! = 1.\"\n  {\n    \"solution\": {\n      \"problem_statement\": \"Write a Python function to calculate the factorial of a given number recursively.\",\n      \"steps\": [\n        { \"step\": 1, \"text\": \"Define a function factorial(n) that takes an integer n as input.\" },\n        { \"step\": 2, \"text\": \"Implement the base case: if n == 0, return 1.\" },\n        { \"step\": 3, \"text\": \"For n > 0, return n * factorial(n-1).\" },\n        { \"step\": 4, \"text\": \"Call the function with n = 5 to test: factorial(5) = 5 × 4 × 3 × 2 × 1 = 120.\" }\n      ],\n      \"final_answer\": \"def factorial(n):\n    if n == 0:\n        return 1\n    return n * factorial(n - 1)\n\nprint(factorial(5))  # Output: 120\"\n    }\n  }",
+          "temperature_1": 1
+        }
+      },
+      "default_value": {
+        "value": {
+          "criticize_times_threshold_enable_abandon_btn": 1,
+          "feedback_types": [
+            "CORRECT",
+            "CRITICIZE",
+            "REWRITE"
+          ],
+          "gpt_parsing_prompt": "\n\n\n        If you see, this information is not organized properly. All the information is given together without proper separations, making it difficult to read.\n\n        Please organize this information by structuring it into paragraphs. It needs to be separated into paragraphs such that each paragraph considers an individual thought. It needs to be like steps. But ensure that each step needs to have considerable amount of information. You should not give very less content as part of one step.\n\n        The paragraphs need not have titles.\n\n        The paragraphs need to be separated by the delimiter <br><br><br>.\n\n        If there is any code present, please provide it within code blocks ``` ```.\n\n        Please include each and every line that is present in the original information (including the discussions and dialogues that are given prior to the actual approach, literally each and every line)), in the structured response.\n\n        Please do not make any changes to any of the characters (even a space). Even if there are any mistakes when it might come to spaces or anything in the original information, please do not bother to change that.\n\n        Your only task is to structure the original information into paragraphs, add <br><br><br> between the paragraphs, and give.",
+          "incorrect_system_prompt": "You are an expert problem solver. You are provided with the original problem, a partial solution (consisting of steps up to and including the step that has been criticized), a user critique on the last provided step, and a general hint to help solve the problem. Your task is to update the solution by revising the critiqued step using the hint and generating any subsequent steps needed to complete the solution, while leaving the earlier correct steps unchanged. Do not include explanations; simply output the revised steps and final answer.\n  Your output must be in JSON format following the schema below:\n  {\n    \"solution\": {\n      \"problem_statement\": \"<Restate the original problem briefly>\",\n      \"steps\": [\n        { \"step\": <step_number>, \"text\": \"<Updated description of the step, which may include Markdown or LaTeX>\" },\n        ...\n      ],\n      \"final_answer\": \"<Final answer>\"\n    }\n  }\n  **Important:** Return the JSON output as plain text without any markdown formatting (do not include triple backticks, code fences, or any additional text).\n  Input includes four sections:\n  1. Original_Problem: The complete original problem statement.\n  2. Partial_Solution: The solution steps provided up to and including the critiqued step.\n  3. Critique: The user critique for the specific step.\n  4. Hint: A general hint to help solve the problem.\n  Using these inputs, generate the updated solution.",
+          "model_1": "gemini-1.5-pro",
+          "system_prompt": "You are an expert problem solver who provides clear, step-by-step solutions to programming, science, technology, engineering and mathematics problems. You are provided with the original problem and a general hint to help solve it, your input may also include an image. If an image is provided, analyze it and extract relevant details before solving the problem. Your task is to produce a complete, structured solution using the hint where applicable. Do not include extra commentary; simply provide the solution in the JSON format specified below.\n  Your output must be in JSON format following this schema:\n  {\n    \"solution\": {\n      \"problem_statement\": \"<Restate the original problem briefly>\",\n      \"steps\": [\n        { \"step\": <step_number>, \"text\": \"<Description of the step, which may include markdown or LaTeX>\" },\n        ...\n      ],\n      \"final_answer\": \"<Final answer>\"\n    }\n  }\n  **Important:** Return the JSON output as plain text without any markdown formatting (do not include triple backticks, code fences, or any additional text).\n  Input includes two sections:\n  1. Original_Problem: The complete problem statement.\n  2. Hint: A general hint to help solve the problem.\n  Using these inputs, generate the complete solution.\n  For example:\n  ### Mathematics Example\n  If the original problem is:\n  \"What is the average distance from the origin to a point on the polar curve r(θ) = cos(2θ) * sqrt(θ) for 0 ≤ θ ≤ π?\"\n  And the hint provided is:\n  \"Use the formula for the average value of a function and consider numerical integration for the non-elementary integral.\"\n  Then an acceptable output would be:\n  {\n    \"solution\": {\n      \"problem_statement\": \"What is the average distance from the origin to a point on the polar curve r(θ) = cos(2θ) * sqrt(θ) for 0 ≤ θ ≤ π?\",\n      \"steps\": [\n        { \"step\": 1, \"text\": \"Restate the average value formula: Average = (1/(b-a)) * ∫[a to b] f(θ)dθ, where f(θ) = r(θ).\" },\n        { \"step\": 2, \"text\": \"Substitute r(θ) = cos(2θ) * sqrt(θ) and the interval [0, π] into the formula to obtain (1/π) * ∫₀π cos(2θ) * sqrt(θ)dθ.\" },\n        { \"step\": 3, \"text\": \"Since the integral does not have an elementary antiderivative, approximate it using numerical integration to obtain approximately -0.4617.\" },\n        { \"step\": 4, \"text\": \"Calculate the average distance as (1/π) * (-0.4617) and take the absolute value to get approximately 0.1469.\" }\n      ],\n      \"final_answer\": \"0.1469\"\n    }\n  }\n  ---\n  ### Chemistry Example\n  Problem: \"Calculate the pH of a 0.01 M solution of hydrochloric acid (HCl).\"\n  Hint: \"HCl is a strong acid, so it fully dissociates in water. Use the formula for pH: pH = -log [H+].\"\n  {\n    \"solution\": {\n      \"problem_statement\": \"Calculate the pH of a 0.01 M solution of hydrochloric acid (HCl).\",\n      \"steps\": [\n        { \"step\": 1, \"text\": \"Since HCl is a strong acid, it fully dissociates: HCl → H⁺ + Cl⁻. Thus, the concentration of H⁺ ions is [H⁺] = 0.01 M.\" },\n        { \"step\": 2, \"text\": \"Use the pH formula: pH = -log [H⁺].\" },\n        { \"step\": 3, \"text\": \"Substituting [H⁺] = 0.01, we get pH = -log (0.01) = 2.\" }\n      ],\n      \"final_answer\": \"2\"\n    }\n  }\n  ---\n  ### Physics Example\n  Problem: \"A 2 kg object is dropped from a height of 10 m. Calculate the velocity just before impact. Assume no air resistance.\"\n  Hint: \"Use energy conservation: potential energy converts to kinetic energy. mgh = (1/2) mv².\"\n  {\n    \"solution\": {\n      \"problem_statement\": \"A 2 kg object is dropped from a height of 10 m. Calculate the velocity just before impact.\",\n      \"steps\": [\n        { \"step\": 1, \"text\": \"Apply energy conservation: mgh = (1/2) mv².\" },\n        { \"step\": 2, \"text\": \"Cancel mass m from both sides, leaving gh = (1/2) v².\" },\n        { \"step\": 3, \"text\": \"Substituting g = 9.8 m/s² and h = 10 m, we get (9.8)(10) = (1/2) v².\" },\n        { \"step\": 4, \"text\": \"Solving for v, we get v = sqrt(2 * 9.8 * 10) = sqrt(196) = 14 m/s.\" }\n      ],\n      \"final_answer\": \"14 m/s\"\n    }\n  }\n  ---\n  ### Coding Example\n  Problem: \"Write a Python function to calculate the factorial of a given number recursively.\"\n  Hint: \"Use recursion: n! = n * (n-1)! with a base case of 0! = 1.\"\n  {\n    \"solution\": {\n      \"problem_statement\": \"Write a Python function to calculate the factorial of a given number recursively.\",\n      \"steps\": [\n        { \"step\": 1, \"text\": \"Define a function factorial(n) that takes an integer n as input.\" },\n        { \"step\": 2, \"text\": \"Implement the base case: if n == 0, return 1.\" },\n        { \"step\": 3, \"text\": \"For n > 0, return n * factorial(n-1).\" },\n        { \"step\": 4, \"text\": \"Call the function with n = 5 to test: factorial(5) = 5 × 4 × 3 × 2 × 1 = 120.\" }\n      ],\n      \"final_answer\": \"def factorial(n):\n    if n == 0:\n        return 1\n    return n * factorial(n - 1)\n\nprint(factorial(5))  # Output: 120\"\n    }\n  }",
+          "temperature_1": 1
+        }
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Json",
+            "props": {}
+          }
+        },
+        "view": {
+          "component": {
+            "name": "PreCollapsible",
+            "props": {
+              "preProps": {
+                "fontFamily": "'Source Code Pro', monospace",
+                "whiteSpace": "pre-wrap"
+              },
+              "startingHeight": "10vh"
+            }
+          }
+        }
+      },
+      "group_id": 1,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "4a970f51-5e44-4bde-b873-b46d5a68b33f",
+        "source_timestamp": 1769402065000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-01-30T04:33:54.488094",
+      "updated_at": "2025-03-17T04:36:33.936190",
+      "id": 76,
+      "name": "Delivery Export Schema Columns Mapper",
+      "system_name": "delivery.export.columnMapper",
+      "description": "Config the mapper to the delivery export format",
+      "order": 3,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": {
+          "conversationFileName": "{{conversationId}}-{{batchName}}-{{projectName}}",
+          "fileName": "batch-{{batchName}}-{{projectName}}",
+          "fileType": "json",
+          "script": "\n//**\n// Instructions:\n// 1) The export value show in the left will be in the `conversations` function parameter\n// 2) Write code in `javascript`\n// 3) Do not change the function name and signature\n// 4) Write inside the function below the script to format the delivery export with custom format\n// 5) The return of the function will be the final custom export\n// 6) You cannot make use of asyncronous functions, any api call will not work\n// 7) make sure the function can be executed\n//  */\n\nfunction runScriptToFormat(conversations) {\n  return conversations;\n}\n",
+          "shouldDividePerConversation": false
+        }
+      },
+      "default_value": {
+        "value": {
+          "conversationFileName": "{{conversationId}}-{{batchName}}-{{projectName}}",
+          "fileName": "batch-{{batchName}}-{{projectName}}",
+          "fileType": "json",
+          "script": "\n//**\n// Instructions:\n// 1) The export value show in the left will be in the `conversations` function parameter\n// 2) Write code in `javascript`\n// 3) Do not change the function name and signature\n// 4) Write inside the function below the script to format the delivery export with custom format\n// 5) The return of the function will be the final custom export\n// 6) You cannot make use of asyncronous functions, any api call will not work\n// 7) make sure the function can be executed\n//  */\n\nfunction runScriptToFormat(conversations) {\n  return conversations;\n}\n",
+          "shouldDividePerConversation": false
+        }
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "DeliveryExportColumnsMapper",
+            "props": {}
+          },
+          "modal": {
+            "size": "6xl"
+          }
+        },
+        "view": {
+          "component": {
+            "name": "PreCollapsible",
+            "props": {
+              "preProps": {
+                "fontFamily": "'Source Code Pro', monospace",
+                "whiteSpace": "pre-wrap"
+              },
+              "startingHeight": "10vh"
+            }
+          }
+        }
+      },
+      "group_id": 7,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "c8b7dcbc-82a1-4597-a168-776301011100",
+        "source_timestamp": 1742186193000
+      },
+      "video_url": null,
+      "instructions": null
+    },
+    {
+      "created_at": "2025-01-27T04:36:25.199934",
+      "updated_at": "2026-01-26T04:34:26.117920",
+      "id": 75,
+      "name": "Response Template Model",
+      "system_name": "responseTemplate.model",
+      "description": "Response Template Model",
+      "order": 18,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": {}
+      },
+      "default_value": {
+        "value": {}
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Json",
+            "props": {}
+          }
+        },
+        "view": {
+          "component": {
+            "name": "PreCollapsible",
+            "props": {
+              "preProps": {
+                "fontFamily": "'Source Code Pro', monospace",
+                "whiteSpace": "pre-wrap"
+              },
+              "startingHeight": "10vh"
+            }
+          }
+        }
+      },
+      "group_id": 1,
+      "scope": "app",
+      "datastream_metadata": {
+        "uuid": "085257b5-d669-45fe-9685-5e4cd9a00829",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-01-23T04:32:39.990397",
+      "updated_at": "2026-01-26T04:34:26.117920",
+      "id": 74,
+      "name": "Response Templates configuration",
+      "system_name": "responseTemplate.config",
+      "description": "Response Templates configuration",
+      "order": 19,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": {
+          "templates": []
+        }
+      },
+      "default_value": {
+        "value": {
+          "templates": []
+        }
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Json",
+            "props": {}
+          }
+        },
+        "view": {
+          "component": {
+            "name": "PreCollapsible",
+            "props": {
+              "preProps": {
+                "fontFamily": "'Source Code Pro', monospace",
+                "whiteSpace": "pre-wrap"
+              },
+              "startingHeight": "10vh"
+            }
+          }
+        }
+      },
+      "group_id": 1,
+      "scope": "app",
+      "datastream_metadata": {
+        "uuid": "ee94142e-c9ec-48d2-b366-72cd89a11b1e",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2025-01-09T04:35:51.098474",
+      "updated_at": "2025-03-17T04:36:33.936190",
+      "id": 73,
+      "name": "Delivery API Rate limit",
+      "system_name": "delivery.rateLimitApiCalls",
+      "description": "Limit concurrent API Calls for the Delivery API per User",
+      "order": 3,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": {
+          "enabled": false,
+          "numberOfRequests": 25,
+          "redisKeyExpirationSeconds": 300
+        }
+      },
+      "default_value": {
+        "value": {
+          "enabled": false,
+          "numberOfRequests": 25,
+          "redisKeyExpirationSeconds": 300
+        }
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Json",
+            "props": {}
+          }
+        },
+        "view": {
+          "component": {
+            "name": "PreCollapsible",
+            "props": {
+              "preProps": {
+                "fontFamily": "'Source Code Pro', monospace",
+                "whiteSpace": "pre-wrap"
+              },
+              "startingHeight": "10vh"
+            }
+          }
+        }
+      },
+      "group_id": 7,
+      "scope": "app",
+      "datastream_metadata": {
+        "uuid": "c8b7dcbc-82a1-4597-a168-776301011011",
+        "source_timestamp": 1742186193000
+      },
+      "video_url": null,
+      "instructions": null
+    },
+    {
+      "created_at": "2025-01-02T04:32:55.261849",
+      "updated_at": "2026-01-26T04:34:26.117920",
+      "id": 72,
+      "name": "Trainer rework limit per workstream",
+      "system_name": "trainer.rework.workstreamLimit",
+      "description": "Maximum number of rework allowed per workstream per trainer",
+      "order": 45,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": {}
+      },
+      "default_value": {
+        "value": {}
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Json",
+            "props": {}
+          }
+        }
+      },
+      "group_id": 1,
+      "scope": "app",
+      "datastream_metadata": {
+        "uuid": "88a05640-cf0a-404b-86d2-a6cae0f06b77",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2024-12-19T04:33:11.954601",
+      "updated_at": "2026-01-26T04:34:26.117920",
+      "id": 71,
+      "name": "Hide Other Conversation Version",
+      "system_name": "hideOtherConversationVersions.enable",
+      "description": "Hide conversation version other than logged in user conversation version",
+      "order": 17,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": false
+      },
+      "default_value": {
+        "value": false
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        }
+      },
+      "group_id": 1,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "98f4e242-76ee-4953-afb3-f1210296fca5",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2024-11-27T09:12:49.570338",
+      "updated_at": "2024-11-27T09:12:49.570338",
+      "id": 69,
+      "name": "Analytics Dashboard Trainer Feedback URL",
+      "system_name": "analytics.feedback",
+      "description": "Analytics Dashboard URL for Trainer Feedback",
+      "order": 1,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": "LOOKER_URL"
+      },
+      "default_value": {
+        "value": "LOOKER_URL"
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Textarea",
+            "props": {
+              "rows": 10
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Collapsible",
+            "props": {
+              "startingHeight": "5vh"
+            }
+          }
+        }
+      },
+      "group_id": 4,
+      "scope": "app",
+      "datastream_metadata": {
+        "uuid": "66e7f5c2-541e-4e6d-a1ca-848211001010",
+        "source_timestamp": 1732698769000
+      },
+      "video_url": null,
+      "instructions": null
+    },
+    {
+      "created_at": "2024-11-22T14:35:49.478113",
+      "updated_at": "2026-01-26T04:34:26.117920",
+      "id": 68,
+      "name": "Trainer Rework Task Limit",
+      "system_name": "trainer.rework.limit",
+      "description": "Maximum number of pending rework tasks allowed per trainer. Set to 0 to disable limit.",
+      "order": 44,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": 7
+      },
+      "default_value": {
+        "value": 7
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "NumberInput",
+            "props": {
+              "min": 0,
+              "precision": 0,
+              "step": 1
+            }
+          }
+        }
+      },
+      "group_id": 1,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "e30335a9-bd55-4d1a-9e44-b2e3b5c7ffca",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2024-11-22T14:35:49.229876",
+      "updated_at": "2026-01-26T04:34:26.117920",
+      "id": 67,
+      "name": "Unclaim Timeout",
+      "system_name": "unclaim.timeout",
+      "description": "Time after which the trainers tasks are unassigned, select 0 to disable the feature",
+      "order": 43,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": 6
+      },
+      "default_value": {
+        "value": 6
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "NumberInput",
+            "props": {
+              "min": 0,
+              "precision": 0,
+              "step": 1
+            }
+          }
+        }
+      },
+      "group_id": 1,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "8416ddca-2b17-4e92-bf7d-1fb19642e302",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2024-11-21T04:31:55.299131",
+      "updated_at": "2026-01-01T04:34:12.955754",
+      "id": 66,
+      "name": "Delivery Schema Selector",
+      "system_name": "delivery.schema",
+      "description": "Select Delivery Schema for the Project.",
+      "order": 1,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": "Default"
+      },
+      "default_value": {
+        "value": "Default"
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Select",
+            "props": {
+              "options": [
+                "Default",
+                "Image",
+                "Multilingual",
+                "Multilingual_Multimodal",
+                "Multilingual_Multimodal_DPO",
+                "DPO_Workstream",
+                "Caption_Rewrite",
+                "v2_STEM_Caption_Rewrite_FIX",
+                "Agentless_SFT",
+                "Multilingual_QA_Extraction",
+                "Medical_Caption_Rewrite",
+                "Iqa_Pair_Extraction",
+                "Agentic_Parser",
+                "Meta_Long_Video_Caption_Eval",
+                "Meta_Engg_QA",
+                "Iqa_Pair_Extraction_V2",
+                "Persuasion_Chat",
+                "Meta_CUA"
+              ]
+            }
+          }
+        }
+      },
+      "group_id": 7,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "9efbd8fe-c0e9-4819-9505-2d5a01101101",
+        "source_timestamp": 1767242052000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2024-11-15T13:41:49.701251",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 65,
+      "name": "Set orchestrator id when using orchestrator API",
+      "system_name": "labeling.editor.orchestratorID",
+      "description": "Set orchestrator id when using orchestrator API",
+      "order": 45,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": "afm-agent-001"
+      },
+      "default_value": {
+        "value": "afm-agent-001"
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Input"
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Redacted",
+            "props": {
+              "options": {
+                "component": {
+                  "name": "Pre",
+                  "props": {}
+                }
+              },
+              "redactedText": "********"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "b7dc0e48-0650-4e18-ab48-4e42a7cf12b2",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2024-11-15T13:41:49.689320",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 64,
+      "name": "Enable workflow using orchestrator API",
+      "system_name": "labeling.editor.enableOrchestratorApi",
+      "description": "Enable/disable cell generation using orchestrator api",
+      "order": 46,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": false
+      },
+      "default_value": {
+        "value": false
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "e5965e97-16c2-48fd-9eda-17ee47734ecd",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2024-11-04T10:32:53.960324",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 63,
+      "name": "Maximum number of tasks per batch",
+      "system_name": "labeling.maxTasksPerBatch",
+      "description": "Maximum allowed number of tasks per batch",
+      "order": 9,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": 750
+      },
+      "default_value": {
+        "value": 750
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "NumberInput",
+            "props": {
+              "min": 1,
+              "precision": 0,
+              "step": 1
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "1d2bbe96-af3b-4e71-8b7a-a4167e37dd45",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2024-10-30T09:20:30.835910",
+      "updated_at": "2026-01-26T04:34:26.245952",
+      "id": 62,
+      "name": "Custom Review Data",
+      "system_name": "reviews.customData.config",
+      "description": "Configuration for custom review data collection. The value has to be a json schema configuration",
+      "order": 20,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": {
+          "enabled": false,
+          "prepareInitialData": "",
+          "schema": {},
+          "uiSchema": {}
+        }
+      },
+      "default_value": {
+        "value": {
+          "enabled": false,
+          "prepareInitialData": "",
+          "schema": {},
+          "uiSchema": {}
+        }
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "CodeEditor",
+            "props": {
+              "defaultLanguage": "json",
+              "height": "80vh"
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "PreCollapsible",
+            "props": {
+              "preProps": {
+                "fontFamily": "'Source Code Pro', monospace",
+                "whiteSpace": "pre-wrap"
+              },
+              "startingHeight": "10vh"
+            }
+          }
+        }
+      },
+      "group_id": 3,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "94fbd89e-edd1-4e13-b40b-146519df5947",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2024-10-18T15:33:14.484008",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 61,
+      "name": "Grammar Checking Prompt",
+      "system_name": "labeling.llm.grammarCheckPrompt",
+      "description": "LLM prompt for checking text grammar",
+      "order": 3,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": "You are a Content Specialist. Your task is to review each provided input text and identify potential issues in the following areas using American English conventions:\n\nGrammar: Ensure proper subject-verb agreement, tense consistency, spelling correctness, and correct use of prepositions, conjunctions, etc.\nPunctuation: Check for correct and consistent use of commas, periods, semicolons, and other punctuation marks.\nArticle Usage: Verify that articles (a, an, the) are used appropriately based on the context.\nStyle Consistency: Assess if the writing maintains a uniform tone, tense, and formal/informal style throughout the text.\nSentence Structure: Evaluate the clarity and readability of each sentence. Ensure sentences are well-structured, avoiding awkward phrasing or overly complex constructions.\n\nPlease review each text and provide your answer in JSON format with a \"reviewResults\" field. Its value should be an array, where each item is an object containing the review results for each input text individually.\n\nFor each area, provide detailed feedback. If no issues are found, respond with \"No changes required\" for that specific area. Provide feedback in the form of suggestions for each of the above flag and then give the final suggested version.\n\nWhen providing corrections, maintain the original structure and essence of the text. Avoid rewording the text or altering the intended meaning.\n\nGuidelines to be followed:\n1. Please use American English conventions during your evaluation (e.g., spelling, punctuation styles, and word choice).\n2. Additionally, ensure that the text aligns with U.S. conventions in the following areas:\na) Currency and Numerical Formats: Use USD as the currency symbol and follow U.S. conventions for numbers (e.g., Mn/Bn for million/billion instead of other conventions like lakh/crore or different symbols).\nb) General U.S. Context: Adapt terminology, units of measurement, and any references to align with U.S. cultural, economic, or geographical scenarios.\n3. Comma Usage in Introductory Clauses: Ensure that a comma is placed after introductory clauses or phrases that precede the main clause (e.g.,\n\"After reviewing the data, the team made a decision\" or \"Given the circumstances, we should reconsider\").\n4. Pay special attention to commonly confused words (e.g.,\n\"if\" vs. \"of,\"\"than\" vs. \"then,\"\"its\" vs. \"it's\"). Carefully assess whether each word is appropriate given the context of the sentence. Ensure that no small word substitutions or misuses are overlooked, as they can significantly impact meaning. Flag it in the output.\n6. Preferably replace the currency symbol (For example: Replacing Lakh/INR with $) and don't try to convert it to USD equivalent (For example: 1L is equivalent to ~1340 $)\n7. Ensure no duplicate punctuation marks are used unless explicitly required by the context. Double-check for cases of multiple periods, commas, question marks, or exclamation points. Verify that all punctuation follows standard usage conventions and eliminate any unnecessary repetitions.\n8. When processing text, do not apply any punctuation corrections to numerical values. Maintain the original formatting of numbers as they are presented.\n\nImportant Note: If the text includes a question, do not provide an answer. Focus solely on reviewing the question from a content, grammar, and style standpoint.\n"
+      },
+      "default_value": {
+        "value": "You are a Content Specialist. Your task is to review each provided input text and identify potential issues in the following areas using American English conventions:\n\nGrammar: Ensure proper subject-verb agreement, tense consistency, spelling correctness, and correct use of prepositions, conjunctions, etc.\nPunctuation: Check for correct and consistent use of commas, periods, semicolons, and other punctuation marks.\nArticle Usage: Verify that articles (a, an, the) are used appropriately based on the context.\nStyle Consistency: Assess if the writing maintains a uniform tone, tense, and formal/informal style throughout the text.\nSentence Structure: Evaluate the clarity and readability of each sentence. Ensure sentences are well-structured, avoiding awkward phrasing or overly complex constructions.\n\nPlease review each text and provide your answer in JSON format with a \"reviewResults\" field. Its value should be an array, where each item is an object containing the review results for a single text.\n\nFor each area, provide detailed feedback. If no issues are found, respond with \"No changes required\" for that specific area. Provide feedback in the form of suggestions for each of the above flag and then give the final suggested version.\n\nWhen providing corrections, maintain the original structure and essence of the text. Avoid rewording the text or altering the intended meaning.\n\nGuidelines to be followed:\n1. Please use American English conventions during your evaluation (e.g., spelling, punctuation styles, and word choice).\n2. Additionally, ensure that the text aligns with U.S. conventions in the following areas:\na) Currency and Numerical Formats: Use USD as the currency symbol and follow U.S. conventions for numbers (e.g., Mn/Bn for million/billion instead of other conventions like lakh/crore or different symbols).\nb) General U.S. Context: Adapt terminology, units of measurement, and any references to align with U.S. cultural, economic, or geographical scenarios.\n3. Comma Usage in Introductory Clauses: Ensure that a comma is placed after introductory clauses or phrases that precede the main clause (e.g.,\n\"After reviewing the data, the team made a decision\" or \"Given the circumstances, we should reconsider\").\n4. Pay special attention to commonly confused words (e.g.,\n\"if\" vs. \"of,\"\"than\" vs. \"then,\"\"its\" vs. \"it's\"). Carefully assess whether each word is appropriate given the context of the sentence. Ensure that no small word substitutions or misuses are overlooked, as they can significantly impact meaning. Flag it in the output.\n6. Preferably replace the currency symbol (For example: Replacing Lakh/INR with $) and don't try to convert it to USD equivalent (For example: 1L is equivalent to ~1340 $)\n7. Ensure no duplicate punctuation marks are used unless explicitly required by the context. Double-check for cases of multiple periods, commas, question marks, or exclamation points. Verify that all punctuation follows standard usage conventions and eliminate any unnecessary repetitions.\n8. When processing text, do not apply any punctuation corrections to numerical values. Maintain the original formatting of numbers as they are presented.\n\nImportant Note: If the text includes a question, do not provide an answer. Focus solely on reviewing the question from a content, grammar, and style standpoint.\n"
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Textarea",
+            "props": {
+              "rows": 10
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Collapsible",
+            "props": {
+              "startingHeight": "5vh"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "bd8772da-97cc-403b-b516-430e9295104f",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2024-10-15T18:45:22.876382",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 59,
+      "name": "Enables context and conversation metadata add/edit",
+      "system_name": "labeling.editContextAndConversationMetadata",
+      "description": "If enabled, user can add/edit conversation_type, user_context and foreground_app metadata/context.",
+      "order": 28,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": false
+      },
+      "default_value": {
+        "value": false
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "5667f210-58cd-4f23-8b0a-76583ce0d312",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2024-10-04T16:29:18.039612",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 58,
+      "name": "Image Hints Generation Prompt",
+      "system_name": "labeling.image.hintsGenerationPrompt",
+      "description": "Provide the AI prompt for generating hints for the image prompt",
+      "order": 5,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": "Analyze the image that gets uploaded by the user and provide the following flags in the output:\n1. Image domain distinction: Examine the image and determine if it is related to any coding domain. If it is, return 'Code'; otherwise, return 'No-code.'\n2. Image Summary:\nProvide a logical summary of the image. Your summary should draw from key elements using deductive reasoning, as if you are an experienced practitioner in the image's relevant domain. Aim for clear, concise insights.\n3. Suggestions for Prompt Creation: Based on your understanding and analysis of the image, offer hints, directions, suggestions, or cues that could help in formulating an appropriate logical prompt. You should draw key elements using deductive reasoning, as if you are an experienced practitioner in the image's relevant domain. Aim for clear, concise suggestions.\na) Avoid providing an actual prompt. Just focus on guiding the prompt creation process by providing hints/directions/suggestions without any examples.\nb) In cases where the image has numbers, the suggestions must be framed while focusing on data interpretation\nc) If the image contains multiple elements, prioritize the most relevant one and make an informed guess.\nGlossary-\nPrompt: A concise, logical question must be relevant to the image provided and not be generic questions that could fit any image."
+      },
+      "default_value": {
+        "value": "Analyze the image that gets uploaded by the user and provide the following flags in the output:\n1. Image domain distinction: Examine the image and determine if it is related to any coding domain. If it is, return 'Code'; otherwise, return 'No-code.'\n2. Image Summary:\nProvide a logical summary of the image. Your summary should draw from key elements using deductive reasoning, as if you are an experienced practitioner in the image's relevant domain. Aim for clear, concise insights.\n3. Suggestions for Prompt Creation: Based on your understanding and analysis of the image, offer hints, directions, suggestions, or cues that could help in formulating an appropriate logical prompt. You should draw key elements using deductive reasoning, as if you are an experienced practitioner in the image's relevant domain. Aim for clear, concise suggestions.\na) Avoid providing an actual prompt. Just focus on guiding the prompt creation process by providing hints/directions/suggestions without any examples.\nb) In cases where the image has numbers, the suggestions must be framed while focusing on data interpretation\nc) If the image contains multiple elements, prioritize the most relevant one and make an informed guess.\nGlossary-\nPrompt: A concise, logical question must be relevant to the image provided and not be generic questions that could fit any image."
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Textarea",
+            "props": {
+              "rows": 10
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Collapsible",
+            "props": {
+              "startingHeight": "5vh"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "bd43f0a7-38f0-4839-8af7-2ca37e213ba4",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2024-09-30T08:05:28.628590",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 57,
+      "name": "Batch claim email threshold percentage",
+      "system_name": "labeling.batch.claimThresholdEmail.percentage",
+      "description": "Use this config to set the claim threshold percentage from (0 - 100). Set 0 to deactivate.",
+      "order": 36,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": 0
+      },
+      "default_value": {
+        "value": 0
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "NumberInput",
+            "props": {
+              "max": 100,
+              "min": 1,
+              "precision": 0,
+              "step": 1
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "67894bdf-9165-4112-9ed0-cd6cd7a47806",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2024-09-30T08:05:28.586422",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 56,
+      "name": "Batch claim threshold email recipients",
+      "system_name": "labeling.batch.claimThresholdEmail.recipients",
+      "description": "Use this config to set whichs emails will receives the claim threshold. Write the emails separated by \";\"",
+      "order": 37,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": ""
+      },
+      "default_value": {
+        "value": ""
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Input"
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "58614d3b-9944-4ae9-9577-f008d966cadf",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2024-09-26T08:03:37.752246",
+      "updated_at": "2026-01-26T04:34:26.245952",
+      "id": 55,
+      "name": "Star Rating",
+      "system_name": "reviews.starRating",
+      "description": "The rating system to be used in reviews",
+      "order": 18,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": "FIVE_STAR"
+      },
+      "default_value": {
+        "value": "FIVE_STAR"
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Radio",
+            "props": {
+              "options": [
+                {
+                  "label": "Five Star Rating",
+                  "value": "FIVE_STAR"
+                },
+                {
+                  "label": "Three Star Rating",
+                  "value": "THREE_STAR"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "group_id": 3,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "5c21ea39-7818-4926-9ee0-d5687a017a72",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2024-09-25T08:48:15.258153",
+      "updated_at": "2026-01-26T04:34:26.117920",
+      "id": 53,
+      "name": "External Project Config",
+      "system_name": "externalProject.config",
+      "description": "External Project Config used for fetch and import external project tasks",
+      "order": 24,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": {
+          "collabLink": "{url}/?i={runId}",
+          "endedAtLabel": "Ended At",
+          "getVersionMethod": "DEFAULT",
+          "instanceId": "Instance ID",
+          "metadata": {
+            "instanceId": "Instance ID",
+            "respository": "Repository",
+            "title": "Title"
+          },
+          "outComeLabel": "Outcome",
+          "processMethod": "DEFAULT",
+          "runIdLabel": "Run ID",
+          "startedAtLabel": "Started At",
+          "url": "https://zettamodels.com",
+          "userIdLabel": "User ID"
+        }
+      },
+      "default_value": {
+        "value": {
+          "collabLink": "{url}/?i={runId}",
+          "endedAtLabel": "Ended At",
+          "getVersionMethod": "DEFAULT",
+          "instanceId": "Instance ID",
+          "metadata": {
+            "instanceId": "Instance ID",
+            "respository": "Repository",
+            "title": "Title"
+          },
+          "outComeLabel": "Outcome",
+          "processMethod": "DEFAULT",
+          "runIdLabel": "Run ID",
+          "startedAtLabel": "Started At",
+          "url": "https://zettamodels.com",
+          "userIdLabel": "User ID"
+        }
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Json",
+            "props": {}
+          }
+        },
+        "view": {
+          "component": {
+            "name": "PreCollapsible",
+            "props": {
+              "preProps": {
+                "fontFamily": "'Source Code Pro', monospace",
+                "whiteSpace": "pre-wrap"
+              },
+              "startingHeight": "10vh"
+            }
+          }
+        }
+      },
+      "group_id": 1,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "6e7022a1-6f46-44b8-811d-e3fe69a02bfc",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2024-09-19T18:37:42.318249",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 51,
+      "name": "Enable category",
+      "system_name": "labeling.tagging.category.enable",
+      "description": "Allow trainers to set manual category for a task",
+      "order": 35,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": false
+      },
+      "default_value": {
+        "value": false
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "a5fe6ed1-3f48-46f4-8f65-a216b0bd30aa",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2024-09-19T18:37:42.279153",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 50,
+      "name": "Category config",
+      "system_name": "labeling.tagging.category.config",
+      "description": "Category configuration",
+      "order": 38,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": {
+          "categories": [
+            {
+              "name": "",
+              "value": ""
+            }
+          ],
+          "required": true
+        }
+      },
+      "default_value": {
+        "value": {
+          "categories": [
+            {
+              "name": "",
+              "value": ""
+            }
+          ],
+          "required": true
+        }
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Json",
+            "props": {}
+          }
+        },
+        "view": {
+          "component": {
+            "name": "PreCollapsible",
+            "props": {
+              "preProps": {
+                "fontFamily": "'Source Code Pro', monospace",
+                "whiteSpace": "pre-wrap"
+              },
+              "startingHeight": "10vh"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "eb78c93f-83c0-435b-af4f-9f4a53d7295a",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2024-09-19T08:06:52.948558",
+      "updated_at": "2026-01-26T04:34:26.245952",
+      "id": 49,
+      "name": "LLM Model Config Override",
+      "system_name": "reviews.auto.llmProviderModel",
+      "description": "LLM Model config override in LLM Evaluator",
+      "order": 10,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": {
+          "model": "default",
+          "provider": "default"
+        }
+      },
+      "default_value": {
+        "value": {
+          "model": "default",
+          "provider": "default"
+        }
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "LlmProviderModelSelector",
+            "props": {}
+          }
+        },
+        "view": {
+          "component": {
+            "name": "PreCollapsible",
+            "props": {
+              "preProps": {
+                "fontFamily": "'Source Code Pro', monospace",
+                "whiteSpace": "pre-wrap"
+              },
+              "startingHeight": "10vh"
+            }
+          }
+        }
+      },
+      "group_id": 3,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "7bcab438-126a-4532-abf6-c4be80d6d841",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2024-09-19T08:06:52.920835",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 48,
+      "name": "Disable available tool edit option",
+      "system_name": "labeling.editor.disable.availableTool.edit",
+      "description": "If disabled, in editor tab the available tool edit option will be hidden",
+      "order": 30,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": false
+      },
+      "default_value": {
+        "value": false
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "b8b2efe0-a2f5-4921-9145-e05e2d434a98",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2024-09-19T08:06:52.843874",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 47,
+      "name": "Disable Human/Assistant claim option",
+      "system_name": "labeling.claim.disableDialog",
+      "description": "If disabled, on claiming, the task will be assigned as Both automatically.",
+      "order": 29,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": true
+      },
+      "default_value": {
+        "value": true
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "29043185-d5c4-49ab-bcbd-38691533c228",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2024-09-17T09:54:09.377003",
+      "updated_at": "2024-09-17T09:54:09.377003",
+      "id": 46,
+      "name": "Language for multilingual projects",
+      "system_name": "multilingual.language",
+      "description": "The language of the project for multilingual tasks",
+      "order": 1,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": "en"
+      },
+      "default_value": {
+        "value": "en"
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Input"
+          }
+        }
+      },
+      "group_id": 6,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "7806466d-6945-44a7-ada0-348300001001",
+        "source_timestamp": 1726566849000
+      },
+      "video_url": null,
+      "instructions": null
+    },
+    {
+      "created_at": "2024-09-13T16:12:14.665118",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 45,
+      "name": "Enable cell generation using openAi and Mistral",
+      "system_name": "labeling.editor.enableCellGeneration",
+      "description": "Enable/disable cell generation button in the editor UI",
+      "order": 43,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": true
+      },
+      "default_value": {
+        "value": true
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "app",
+      "datastream_metadata": {
+        "uuid": "f8c71b19-e6f3-41ae-b055-ec5de584686c",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2024-09-13T16:12:14.643948",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 44,
+      "name": "Apple api hyperparameters",
+      "system_name": "labeling.editor.appleAPIHyperparameters",
+      "description": "Hyperparameters for calling the Apple API",
+      "order": 4,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": {
+          "max_tokens": 4096,
+          "model_id": "afm-text-01",
+          "temperature": 0,
+          "top_p": null
+        }
+      },
+      "default_value": {
+        "value": {
+          "max_tokens": 4096,
+          "model_id": "afm-text-01",
+          "temperature": 0,
+          "top_p": null
+        }
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Json",
+            "props": {}
+          }
+        },
+        "view": {
+          "component": {
+            "name": "PreCollapsible",
+            "props": {
+              "preProps": {
+                "fontFamily": "'Source Code Pro', monospace",
+                "whiteSpace": "pre-wrap"
+              },
+              "startingHeight": "10vh"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "de7ccb37-1486-414f-82aa-734cdf3415fa",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2024-09-13T16:12:14.619648",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 43,
+      "name": "Enable cell generation using Apple",
+      "system_name": "labeling.editor.enableAppleCellGeneration",
+      "description": "Enable/disable apple cell generation button in the editor UI",
+      "order": 51,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": false
+      },
+      "default_value": {
+        "value": false
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "app",
+      "datastream_metadata": {
+        "uuid": "4c444677-580b-4647-99a2-2858dfd5e646",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2024-09-11T15:34:50.190197",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 42,
+      "name": "Enable Notebook Title Valitation",
+      "system_name": "labeling.editor.enableNotebookTitleValidation",
+      "description": "Enable/disable notebook title input-fields and validation on the editor UI",
+      "order": 55,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": true
+      },
+      "default_value": {
+        "value": true
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "app",
+      "datastream_metadata": {
+        "uuid": "1de5b919-4443-4dd8-874d-654c9f274f4f",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2024-09-06T20:00:37.126150",
+      "updated_at": "2026-01-26T04:34:26.117920",
+      "id": 41,
+      "name": "Workflow export configuration",
+      "system_name": "workflowExport.config",
+      "description": "Export configuration for workflow",
+      "order": 21,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": {
+          "collaboratorsType": {
+            "prompt-team": {
+              "headerName": "Prompt Team",
+              "role": "prompt-team"
+            },
+            "qa-team": {
+              "headerName": "QA",
+              "role": "qa-team"
+            },
+            "response-and-explanation-team": {
+              "headerName": "Response Team",
+              "role": "response-and-explanation-team"
+            }
+          },
+          "labelingType": {
+            "explanation": {
+              "headerName": "Explanation Text",
+              "type": "string"
+            },
+            "finalAnswer": {
+              "headerName": "Final Answer",
+              "type": "number"
+            },
+            "prompt": {
+              "headerName": "Prompt Text",
+              "type": "string"
+            },
+            "promptCategory": {
+              "headerName": "Prompt Category",
+              "type": "string"
+            },
+            "promptQA": {
+              "feedback": {
+                "headerName": "Prompt QA Feedback",
+                "type": "string"
+              },
+              "prompt": {
+                "creativity": {
+                  "headerName": "Creativity Score",
+                  "type": "number"
+                },
+                "isCorrect": {
+                  "headerName": "Is Prompt Correct",
+                  "type": "boolean"
+                },
+                "relevance": {
+                  "headerName": "Prompt Relevance",
+                  "type": "number"
+                },
+                "typeOfPrompt": {
+                  "headerName": "Type of Prompt",
+                  "type": "string"
+                }
+              }
+            },
+            "response": {
+              "headerName": "Response Text",
+              "type": "string"
+            },
+            "responseQA": {
+              "explanation": {
+                "coherence": {
+                  "headerName": "Explanation Coherence",
+                  "type": "number"
+                },
+                "compareWithLLM": {
+                  "headerName": "Compare with LLM",
+                  "type": "string"
+                },
+                "correctness": {
+                  "headerName": "Explanation Correctness",
+                  "type": "number"
+                },
+                "helpfulness": {
+                  "headerName": "Explanation Helpfullness",
+                  "type": "number"
+                },
+                "isCorrect": {
+                  "headerName": "Is Explanation Correct",
+                  "type": "boolean"
+                },
+                "quality": {
+                  "headerName": "Explanation Quality",
+                  "type": "number"
+                }
+              },
+              "feedback": {
+                "headerName": "Response QA Feedback",
+                "type": "string"
+              },
+              "resolution": {
+                "reason": {
+                  "headerName": "Resolution Reason",
+                  "type": "string"
+                },
+                "result": {
+                  "headerName": "Resolution Result",
+                  "type": "string"
+                }
+              },
+              "response": {
+                "coherence": {
+                  "headerName": "Response Coherence Score",
+                  "type": "number"
+                },
+                "compareWithLLM": {
+                  "headerName": "Response Compare with LLM",
+                  "type": "string"
+                },
+                "correctness": {
+                  "headerName": "Response Correctness",
+                  "type": "number"
+                },
+                "helpfulness": {
+                  "headerName": "Response Helpfulness Score",
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      },
+      "default_value": {
+        "value": {
+          "collaboratorsType": {
+            "prompt-team": {
+              "headerName": "Prompt Team",
+              "role": "prompt-team"
+            },
+            "qa-team": {
+              "headerName": "QA",
+              "role": "qa-team"
+            },
+            "response-and-explanation-team": {
+              "headerName": "Response Team",
+              "role": "response-and-explanation-team"
+            }
+          },
+          "labelingType": {
+            "finalAnswer": {
+              "headerName": "Final Answer",
+              "type": "number"
+            },
+            "prompt": {
+              "headerName": "Prompt Text",
+              "type": "string"
+            },
+            "promptCategory": {
+              "headerName": "Prompt Category",
+              "type": "string"
+            },
+            "promptQA": {
+              "prompt": {
+                "creativity": {
+                  "headerName": "Creativity Score",
+                  "type": "number"
+                },
+                "isCorrect": {
+                  "headerName": "Is Prompt Correct",
+                  "type": "boolean"
+                }
+              }
+            },
+            "response": {
+              "headerName": "Response Text",
+              "type": "string"
+            },
+            "responseQA": {
+              "feedback": {
+                "headerName": "Response QA Feedback",
+                "type": "string"
+              },
+              "resolution": {
+                "reason": {
+                  "headerName": "Resolution Reason",
+                  "type": "string"
+                },
+                "result": {
+                  "headerName": "Resolution Result",
+                  "type": "string"
+                }
+              },
+              "response": {
+                "coherence": {
+                  "headerName": "Coherence Score",
+                  "type": "number"
+                },
+                "compareWithLLM": {
+                  "headerName": "Compare with LLM",
+                  "type": "string"
+                },
+                "helpfulness": {
+                  "headerName": "Helpfulness Score",
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Json",
+            "props": {}
+          }
+        },
+        "view": {
+          "component": {
+            "name": "PreCollapsible",
+            "props": {
+              "preProps": {
+                "fontFamily": "'Source Code Pro', monospace",
+                "whiteSpace": "pre-wrap"
+              },
+              "startingHeight": "10vh"
+            }
+          }
+        }
+      },
+      "group_id": 1,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "259f95cc-d14c-4dd0-a659-3425655e6f16",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2024-09-04T18:04:10.198046",
+      "updated_at": "2026-01-26T04:34:26.117920",
+      "id": 40,
+      "name": "Conversation Edit Button",
+      "system_name": "editTaskButton.enable",
+      "description": "If enabled, users will be able to see Edit button in view conversation",
+      "order": 26,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": true
+      },
+      "default_value": {
+        "value": true
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        }
+      },
+      "group_id": 1,
+      "scope": "app",
+      "datastream_metadata": {
+        "uuid": "d0c8774f-5552-4798-aa8d-52e1bfb29d1c",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2024-08-27T14:37:57.932703",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 38,
+      "name": "RLHF Checks feedback scores",
+      "system_name": "labeling.rlhfChecks.scores",
+      "description": "Use these config as the weighted value for each feedback type",
+      "order": 17,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": {
+          "noAction": 0,
+          "thumbsDown": -1,
+          "thumbsUp": 1
+        }
+      },
+      "default_value": {
+        "value": {
+          "noAction": 0,
+          "thumbsDown": -1,
+          "thumbsUp": 1
+        }
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Json",
+            "props": {}
+          }
+        },
+        "view": {
+          "component": {
+            "name": "PreCollapsible",
+            "props": {
+              "preProps": {
+                "fontFamily": "'Source Code Pro', monospace",
+                "whiteSpace": "pre-wrap"
+              },
+              "startingHeight": "10vh"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "app",
+      "datastream_metadata": {
+        "uuid": "b17c2dcb-2ca3-4d43-90b9-92d6219f804e",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2024-08-21T21:15:54.419754",
+      "updated_at": "2026-01-26T04:34:26.117920",
+      "id": 37,
+      "name": "Workspace reload tasks time configuration",
+      "system_name": "workspaceReloadTaskTime.config",
+      "description": "Workplace reload time configuration in milliseconds to load the listed task",
+      "order": 22,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": 10000
+      },
+      "default_value": {
+        "value": 10000
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "NumberInput",
+            "props": {
+              "min": 1,
+              "precision": 0,
+              "step": 100
+            }
+          }
+        }
+      },
+      "group_id": 1,
+      "scope": "app",
+      "datastream_metadata": {
+        "uuid": "7b42716b-afda-4195-a967-581adb1bfb80",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2024-08-15T07:45:21.028064",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 36,
+      "name": "Maximum variations per task",
+      "system_name": "labeling.variations.maxVariationsPerTaskPerProject",
+      "description": "Set the Maximum variations per task for this project.",
+      "order": 31,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": 10
+      },
+      "default_value": {
+        "value": 3
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "NumberInput",
+            "props": {
+              "min": 1,
+              "precision": 0,
+              "step": 1
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "f660bde2-2c29-475e-b220-3287ea5f027c",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    },
+    {
+      "created_at": "2024-08-15T07:45:20.971041",
+      "updated_at": "2026-01-26T04:34:26.043132",
+      "id": 35,
+      "name": "Enable create task variation",
+      "system_name": "labeling.variations.enable",
+      "description": "If enabled, the User will be able to create a task variation.",
+      "order": 27,
+      "allow_unauthenticated_read": 0,
+      "value": {
+        "value": true
+      },
+      "default_value": {
+        "value": true
+      },
+      "metadata": {
+        "edit": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        },
+        "view": {
+          "component": {
+            "name": "Flag",
+            "props": {
+              "falseText": "Disabled",
+              "trueText": "Enabled"
+            }
+          }
+        }
+      },
+      "group_id": 2,
+      "scope": "project",
+      "datastream_metadata": {
+        "uuid": "fe37a978-896e-4696-b86c-bb473bc521e9",
+        "source_timestamp": 1769402066000
+      },
+      "video_url": "",
+      "instructions": null
+    }
+  ]
+}

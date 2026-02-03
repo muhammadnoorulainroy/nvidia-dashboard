@@ -1,0 +1,1608 @@
+{
+  "table": "statistics_jobs",
+  "row_count": 6220,
+  "sample_count": 100,
+  "fetched_at": "2026-01-28T23:24:44.567565",
+  "data": [
+    {
+      "id": 19333,
+      "job_type": "project",
+      "project_id": 53,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:05.914214",
+      "start_time": "2026-01-28T00:00:06+00:00",
+      "finish_time": "2026-01-28T00:00:06+00:00",
+      "error": null,
+      "bull_job_id": "6259",
+      "datastream_metadata": {
+        "uuid": "4e6188c6-406a-4a78-8a6e-644caf0471d1",
+        "source_timestamp": 1769558406000
+      }
+    },
+    {
+      "id": 19330,
+      "job_type": "project",
+      "project_id": 52,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:05.856918",
+      "start_time": "2026-01-28T00:00:06+00:00",
+      "finish_time": "2026-01-28T00:00:06+00:00",
+      "error": null,
+      "bull_job_id": "6258",
+      "datastream_metadata": {
+        "uuid": "aab98866-0a21-4210-97e0-bcf4c0bdbcbe",
+        "source_timestamp": 1769558406000
+      }
+    },
+    {
+      "id": 19327,
+      "job_type": "project",
+      "project_id": 51,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:05.623352",
+      "start_time": "2026-01-28T00:00:06+00:00",
+      "finish_time": "2026-01-28T00:00:06+00:00",
+      "error": null,
+      "bull_job_id": "6257",
+      "datastream_metadata": {
+        "uuid": "85b042f0-afbf-4922-98b7-68b50f47c96c",
+        "source_timestamp": 1769558405000
+      }
+    },
+    {
+      "id": 19324,
+      "job_type": "project",
+      "project_id": 50,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:05.601861",
+      "start_time": "2026-01-28T00:00:06+00:00",
+      "finish_time": "2026-01-28T00:00:06+00:00",
+      "error": null,
+      "bull_job_id": "6256",
+      "datastream_metadata": {
+        "uuid": "d911be69-171f-442d-86fa-623b7b19c424",
+        "source_timestamp": 1769558405000
+      }
+    },
+    {
+      "id": 19321,
+      "job_type": "project",
+      "project_id": 49,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:05.579793",
+      "start_time": "2026-01-28T00:00:06+00:00",
+      "finish_time": "2026-01-28T00:00:06+00:00",
+      "error": null,
+      "bull_job_id": "6255",
+      "datastream_metadata": {
+        "uuid": "a915acbb-cdd1-484e-b161-6e7726f5ba65",
+        "source_timestamp": 1769558405000
+      }
+    },
+    {
+      "id": 19318,
+      "job_type": "project",
+      "project_id": 48,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:05.317048",
+      "start_time": "2026-01-28T00:00:05+00:00",
+      "finish_time": "2026-01-28T00:00:06+00:00",
+      "error": null,
+      "bull_job_id": "6254",
+      "datastream_metadata": {
+        "uuid": "2e2db71e-a7bf-4e8e-8aaf-bd4c96f7546d",
+        "source_timestamp": 1769558405000
+      }
+    },
+    {
+      "id": 19315,
+      "job_type": "project",
+      "project_id": 47,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:05.270868",
+      "start_time": "2026-01-28T00:00:05+00:00",
+      "finish_time": "2026-01-28T00:00:06+00:00",
+      "error": null,
+      "bull_job_id": "6253",
+      "datastream_metadata": {
+        "uuid": "6136bc36-8605-4f67-8d21-30b295d429d7",
+        "source_timestamp": 1769558405000
+      }
+    },
+    {
+      "id": 19312,
+      "job_type": "project",
+      "project_id": 46,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:05.249989",
+      "start_time": "2026-01-28T00:00:05+00:00",
+      "finish_time": "2026-01-28T00:00:06+00:00",
+      "error": null,
+      "bull_job_id": "6252",
+      "datastream_metadata": {
+        "uuid": "a4e84cab-7764-42df-b017-3ad9d0ff0d2e",
+        "source_timestamp": 1769558405000
+      }
+    },
+    {
+      "id": 19309,
+      "job_type": "project",
+      "project_id": 45,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:05.004689",
+      "start_time": "2026-01-28T00:00:05+00:00",
+      "finish_time": "2026-01-28T00:00:05+00:00",
+      "error": null,
+      "bull_job_id": "6251",
+      "datastream_metadata": {
+        "uuid": "bd603582-5c10-42b8-97e3-063a16dce655",
+        "source_timestamp": 1769558405000
+      }
+    },
+    {
+      "id": 19306,
+      "job_type": "project",
+      "project_id": 44,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:04.988577",
+      "start_time": "2026-01-28T00:00:05+00:00",
+      "finish_time": "2026-01-28T00:00:05+00:00",
+      "error": null,
+      "bull_job_id": "6250",
+      "datastream_metadata": {
+        "uuid": "65560407-a554-458b-8ba0-aa2e0892f5a3",
+        "source_timestamp": 1769558405000
+      }
+    },
+    {
+      "id": 19303,
+      "job_type": "project",
+      "project_id": 43,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:04.986991",
+      "start_time": "2026-01-28T00:00:05+00:00",
+      "finish_time": "2026-01-28T00:00:05+00:00",
+      "error": null,
+      "bull_job_id": "6249",
+      "datastream_metadata": {
+        "uuid": "563b945f-dfb5-4aa2-b7e6-10d05fe167c2",
+        "source_timestamp": 1769558405000
+      }
+    },
+    {
+      "id": 19300,
+      "job_type": "project",
+      "project_id": 42,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:04.769267",
+      "start_time": "2026-01-28T00:00:05+00:00",
+      "finish_time": "2026-01-28T00:00:05+00:00",
+      "error": null,
+      "bull_job_id": "6248",
+      "datastream_metadata": {
+        "uuid": "e5ab5af1-bbaa-4ed4-b6e5-3edaee995136",
+        "source_timestamp": 1769558405000
+      }
+    },
+    {
+      "id": 19297,
+      "job_type": "project",
+      "project_id": 41,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:04.613836",
+      "start_time": "2026-01-28T00:00:05+00:00",
+      "finish_time": "2026-01-28T00:00:05+00:00",
+      "error": null,
+      "bull_job_id": "6247",
+      "datastream_metadata": {
+        "uuid": "9c4f7f1e-cb4d-4cd1-86f2-1f5b94074a8b",
+        "source_timestamp": 1769558404000
+      }
+    },
+    {
+      "id": 19294,
+      "job_type": "project",
+      "project_id": 39,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:04.389667",
+      "start_time": "2026-01-28T00:00:04+00:00",
+      "finish_time": "2026-01-28T00:00:05+00:00",
+      "error": null,
+      "bull_job_id": "6246",
+      "datastream_metadata": {
+        "uuid": "202548df-2704-4099-a092-bb70ce737ad7",
+        "source_timestamp": 1769558404000
+      }
+    },
+    {
+      "id": 19291,
+      "job_type": "project",
+      "project_id": 38,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:04.307123",
+      "start_time": "2026-01-28T00:00:04+00:00",
+      "finish_time": "2026-01-28T00:00:05+00:00",
+      "error": null,
+      "bull_job_id": "6245",
+      "datastream_metadata": {
+        "uuid": "8376e5e8-8126-4eed-ba31-0b9ffc47b45b",
+        "source_timestamp": 1769558404000
+      }
+    },
+    {
+      "id": 19288,
+      "job_type": "project",
+      "project_id": 37,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:03.938288",
+      "start_time": "2026-01-28T00:00:04+00:00",
+      "finish_time": "2026-01-28T00:00:05+00:00",
+      "error": null,
+      "bull_job_id": "6244",
+      "datastream_metadata": {
+        "uuid": "c7bbcd44-f504-46ba-a144-c1cbbbbd79d7",
+        "source_timestamp": 1769558404000
+      }
+    },
+    {
+      "id": 19285,
+      "job_type": "project",
+      "project_id": 36,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:03.907976",
+      "start_time": "2026-01-28T00:00:04+00:00",
+      "finish_time": "2026-01-28T00:00:04+00:00",
+      "error": null,
+      "bull_job_id": "6243",
+      "datastream_metadata": {
+        "uuid": "3f52a5ad-3125-4317-b3b8-cc908e371edb",
+        "source_timestamp": 1769558404000
+      }
+    },
+    {
+      "id": 19282,
+      "job_type": "project",
+      "project_id": 35,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:03.867918",
+      "start_time": "2026-01-28T00:00:04+00:00",
+      "finish_time": "2026-01-28T00:00:04+00:00",
+      "error": null,
+      "bull_job_id": "6242",
+      "datastream_metadata": {
+        "uuid": "dbbafddc-2f34-426c-93bb-f9b89edea68a",
+        "source_timestamp": 1769558404000
+      }
+    },
+    {
+      "id": 19279,
+      "job_type": "project",
+      "project_id": 34,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:03.828645",
+      "start_time": "2026-01-28T00:00:04+00:00",
+      "finish_time": "2026-01-28T00:00:04+00:00",
+      "error": null,
+      "bull_job_id": "6241",
+      "datastream_metadata": {
+        "uuid": "608d11b6-4b1a-4d46-b961-78fb230e1a8c",
+        "source_timestamp": 1769558403000
+      }
+    },
+    {
+      "id": 19277,
+      "job_type": "project",
+      "project_id": 33,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:03.800886",
+      "start_time": "2026-01-28T00:00:04+00:00",
+      "finish_time": "2026-01-28T00:00:04+00:00",
+      "error": null,
+      "bull_job_id": "6240",
+      "datastream_metadata": {
+        "uuid": "7aef68c3-d267-42c4-812f-2ed7a6df07cb",
+        "source_timestamp": 1769558403000
+      }
+    },
+    {
+      "id": 19273,
+      "job_type": "project",
+      "project_id": 32,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:03.781613",
+      "start_time": "2026-01-28T00:00:04+00:00",
+      "finish_time": "2026-01-28T00:00:04+00:00",
+      "error": null,
+      "bull_job_id": "6239",
+      "datastream_metadata": {
+        "uuid": "e8f06603-e46c-4595-87a7-7261e1a7caa6",
+        "source_timestamp": 1769558403000
+      }
+    },
+    {
+      "id": 19270,
+      "job_type": "project",
+      "project_id": 31,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:03.646585",
+      "start_time": "2026-01-28T00:00:04+00:00",
+      "finish_time": "2026-01-28T00:00:04+00:00",
+      "error": null,
+      "bull_job_id": "6238",
+      "datastream_metadata": {
+        "uuid": "7b3113e7-0604-4a9f-9cc0-cee4474f4a91",
+        "source_timestamp": 1769558403000
+      }
+    },
+    {
+      "id": 19267,
+      "job_type": "project",
+      "project_id": 28,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:03.426253",
+      "start_time": "2026-01-28T00:00:03+00:00",
+      "finish_time": "2026-01-28T00:00:04+00:00",
+      "error": null,
+      "bull_job_id": "6237",
+      "datastream_metadata": {
+        "uuid": "730f6e2f-ddb5-4b8c-9de3-c69e6a7ae81f",
+        "source_timestamp": 1769558403000
+      }
+    },
+    {
+      "id": 19264,
+      "job_type": "project",
+      "project_id": 27,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:03.206772",
+      "start_time": "2026-01-28T00:00:03+00:00",
+      "finish_time": "2026-01-28T00:00:04+00:00",
+      "error": null,
+      "bull_job_id": "6236",
+      "datastream_metadata": {
+        "uuid": "a5324d10-3476-4b0d-ab1a-4c791041c889",
+        "source_timestamp": 1769558403000
+      }
+    },
+    {
+      "id": 19261,
+      "job_type": "project",
+      "project_id": 26,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:03.105848",
+      "start_time": "2026-01-28T00:00:03+00:00",
+      "finish_time": "2026-01-28T00:00:03+00:00",
+      "error": null,
+      "bull_job_id": "6235",
+      "datastream_metadata": {
+        "uuid": "ca6a786d-bc67-49af-8816-aaa7e47a22bc",
+        "source_timestamp": 1769558403000
+      }
+    },
+    {
+      "id": 19258,
+      "job_type": "project",
+      "project_id": 25,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:03.091560",
+      "start_time": "2026-01-28T00:00:03+00:00",
+      "finish_time": "2026-01-28T00:00:03+00:00",
+      "error": null,
+      "bull_job_id": "6234",
+      "datastream_metadata": {
+        "uuid": "e1d576c5-4d2e-422d-86df-768ea0af1466",
+        "source_timestamp": 1769558403000
+      }
+    },
+    {
+      "id": 19255,
+      "job_type": "project",
+      "project_id": 24,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:03.050815",
+      "start_time": "2026-01-28T00:00:03+00:00",
+      "finish_time": "2026-01-28T00:00:04+00:00",
+      "error": null,
+      "bull_job_id": "6233",
+      "datastream_metadata": {
+        "uuid": "9be24b6e-be2e-44e0-87a6-82411bbcb020",
+        "source_timestamp": 1769558403000
+      }
+    },
+    {
+      "id": 19252,
+      "job_type": "project",
+      "project_id": 21,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:02.700025",
+      "start_time": "2026-01-28T00:00:03+00:00",
+      "finish_time": "2026-01-28T00:00:03+00:00",
+      "error": null,
+      "bull_job_id": "6232",
+      "datastream_metadata": {
+        "uuid": "08deab2a-4aaa-44e5-889c-73344b05d942",
+        "source_timestamp": 1769558403000
+      }
+    },
+    {
+      "id": 19249,
+      "job_type": "project",
+      "project_id": 20,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:02.682759",
+      "start_time": "2026-01-28T00:00:03+00:00",
+      "finish_time": "2026-01-28T00:00:03+00:00",
+      "error": null,
+      "bull_job_id": "6231",
+      "datastream_metadata": {
+        "uuid": "b6cd6051-28e8-4b65-848d-550dd4c3b5c3",
+        "source_timestamp": 1769558402000
+      }
+    },
+    {
+      "id": 19246,
+      "job_type": "project",
+      "project_id": 19,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:02.559394",
+      "start_time": "2026-01-28T00:00:03+00:00",
+      "finish_time": "2026-01-28T00:00:03+00:00",
+      "error": null,
+      "bull_job_id": "6230",
+      "datastream_metadata": {
+        "uuid": "92f886f0-ebb5-48da-a31f-e7d77e470d2c",
+        "source_timestamp": 1769558402000
+      }
+    },
+    {
+      "id": 19243,
+      "job_type": "project",
+      "project_id": 18,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:02.486022",
+      "start_time": "2026-01-28T00:00:02+00:00",
+      "finish_time": "2026-01-28T00:00:03+00:00",
+      "error": null,
+      "bull_job_id": "6229",
+      "datastream_metadata": {
+        "uuid": "f121b50b-15c4-480a-a00f-36deb91e5110",
+        "source_timestamp": 1769558403000
+      }
+    },
+    {
+      "id": 19240,
+      "job_type": "project",
+      "project_id": 17,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:02.418892",
+      "start_time": "2026-01-28T00:00:02+00:00",
+      "finish_time": "2026-01-28T00:00:03+00:00",
+      "error": null,
+      "bull_job_id": "6228",
+      "datastream_metadata": {
+        "uuid": "2ade8466-95fa-466c-af87-0749d84eda6b",
+        "source_timestamp": 1769558403000
+      }
+    },
+    {
+      "id": 19237,
+      "job_type": "project",
+      "project_id": 16,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:02.037596",
+      "start_time": "2026-01-28T00:00:02+00:00",
+      "finish_time": "2026-01-28T00:00:03+00:00",
+      "error": null,
+      "bull_job_id": "6227",
+      "datastream_metadata": {
+        "uuid": "f9fffe67-5f96-48b7-942e-e9d28cd9ab3e",
+        "source_timestamp": 1769558402000
+      }
+    },
+    {
+      "id": 19234,
+      "job_type": "project",
+      "project_id": 15,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:01.971174",
+      "start_time": "2026-01-28T00:00:02+00:00",
+      "finish_time": "2026-01-28T00:00:02+00:00",
+      "error": null,
+      "bull_job_id": "6226",
+      "datastream_metadata": {
+        "uuid": "1e12a3c5-8beb-4953-8503-db783229de08",
+        "source_timestamp": 1769558402000
+      }
+    },
+    {
+      "id": 19231,
+      "job_type": "project",
+      "project_id": 12,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:01.784588",
+      "start_time": "2026-01-28T00:00:02+00:00",
+      "finish_time": "2026-01-28T00:00:02+00:00",
+      "error": null,
+      "bull_job_id": "6225",
+      "datastream_metadata": {
+        "uuid": "6c14677b-b699-4f1a-9a89-95eaf85151f4",
+        "source_timestamp": 1769558401000
+      }
+    },
+    {
+      "id": 19228,
+      "job_type": "project",
+      "project_id": 10,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:01.340998",
+      "start_time": "2026-01-28T00:00:01+00:00",
+      "finish_time": "2026-01-28T00:00:02+00:00",
+      "error": null,
+      "bull_job_id": "6224",
+      "datastream_metadata": {
+        "uuid": "0deaac04-3a07-48a2-9e5c-2404d56e7813",
+        "source_timestamp": 1769558402000
+      }
+    },
+    {
+      "id": 19226,
+      "job_type": "project",
+      "project_id": 8,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:01.257197",
+      "start_time": "2026-01-28T00:00:01+00:00",
+      "finish_time": "2026-01-28T00:00:02+00:00",
+      "error": null,
+      "bull_job_id": "6223",
+      "datastream_metadata": {
+        "uuid": "655a6cc3-a327-4d73-a23f-eaaba094b461",
+        "source_timestamp": 1769558402000
+      }
+    },
+    {
+      "id": 19222,
+      "job_type": "project",
+      "project_id": 6,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:00.490312",
+      "start_time": "2026-01-28T00:00:00+00:00",
+      "finish_time": "2026-01-28T00:00:01+00:00",
+      "error": null,
+      "bull_job_id": "6222",
+      "datastream_metadata": {
+        "uuid": "e8eb029c-2c1a-4cf9-975f-6410ec90cac9",
+        "source_timestamp": 1769558401000
+      }
+    },
+    {
+      "id": 19220,
+      "job_type": "project",
+      "project_id": 4,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:00.366248",
+      "start_time": "2026-01-28T00:00:00+00:00",
+      "finish_time": "2026-01-28T00:00:01+00:00",
+      "error": null,
+      "bull_job_id": "6221",
+      "datastream_metadata": {
+        "uuid": "e9fdc93c-9f1a-4670-ae87-8e6431a4b75d",
+        "source_timestamp": 1769558401000
+      }
+    },
+    {
+      "id": 19216,
+      "job_type": "project",
+      "project_id": 2,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:00.342005",
+      "start_time": "2026-01-28T00:00:00+00:00",
+      "finish_time": "2026-01-28T00:00:02+00:00",
+      "error": null,
+      "bull_job_id": "6220",
+      "datastream_metadata": {
+        "uuid": "fdcf00d7-7d31-43b1-8127-8c5a37109e8e",
+        "source_timestamp": 1769558401000
+      }
+    },
+    {
+      "id": 19213,
+      "job_type": "project",
+      "project_id": 1,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:00.303944",
+      "start_time": "2026-01-28T00:00:00+00:00",
+      "finish_time": "2026-01-28T00:00:00+00:00",
+      "error": null,
+      "bull_job_id": "6219",
+      "datastream_metadata": {
+        "uuid": "f19cc47e-ee90-4560-a18d-ad76b9d55a8d",
+        "source_timestamp": 1769558400000
+      }
+    },
+    {
+      "id": 19211,
+      "job_type": "project",
+      "project_id": 30,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:00.284695",
+      "start_time": "2026-01-28T00:00:00+00:00",
+      "finish_time": "2026-01-28T00:00:00+00:00",
+      "error": null,
+      "bull_job_id": "6218",
+      "datastream_metadata": {
+        "uuid": "99deb232-ef07-4f28-9644-91d7b4fc4e2f",
+        "source_timestamp": 1769558400000
+      }
+    },
+    {
+      "id": 19208,
+      "job_type": "project",
+      "project_id": 29,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:00.259782",
+      "start_time": "2026-01-28T00:00:00+00:00",
+      "finish_time": "2026-01-28T00:00:00+00:00",
+      "error": null,
+      "bull_job_id": "6217",
+      "datastream_metadata": {
+        "uuid": "8272219d-9b04-4c20-add5-d0fea82284fd",
+        "source_timestamp": 1769558400000
+      }
+    },
+    {
+      "id": 19204,
+      "job_type": "project",
+      "project_id": 23,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:00.238278",
+      "start_time": "2026-01-28T00:00:00+00:00",
+      "finish_time": "2026-01-28T00:00:00+00:00",
+      "error": null,
+      "bull_job_id": "6216",
+      "datastream_metadata": {
+        "uuid": "507a7427-4fc4-4b7c-9d0e-04498a6801d9",
+        "source_timestamp": 1769558400000
+      }
+    },
+    {
+      "id": 19201,
+      "job_type": "project",
+      "project_id": 13,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:00.115335",
+      "start_time": "2026-01-28T00:00:00+00:00",
+      "finish_time": "2026-01-28T00:00:00+00:00",
+      "error": null,
+      "bull_job_id": "6215",
+      "datastream_metadata": {
+        "uuid": "6e3208c6-4bab-4b71-a646-3815acc5a4ed",
+        "source_timestamp": 1769558400000
+      }
+    },
+    {
+      "id": 19195,
+      "job_type": "project",
+      "project_id": 11,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:00.083580",
+      "start_time": "2026-01-28T00:00:00+00:00",
+      "finish_time": "2026-01-28T00:00:00+00:00",
+      "error": null,
+      "bull_job_id": "6214",
+      "datastream_metadata": {
+        "uuid": "535c3d90-7894-4007-b3a6-3949f23764b0",
+        "source_timestamp": 1769558400000
+      }
+    },
+    {
+      "id": 19192,
+      "job_type": "project",
+      "project_id": 9,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:00.071584",
+      "start_time": "2026-01-28T00:00:00+00:00",
+      "finish_time": "2026-01-28T00:00:00+00:00",
+      "error": null,
+      "bull_job_id": "6213",
+      "datastream_metadata": {
+        "uuid": "437f54f9-5cdf-4a2a-bd33-d46e7941697b",
+        "source_timestamp": 1769558400000
+      }
+    },
+    {
+      "id": 19191,
+      "job_type": "project",
+      "project_id": 3,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:00.060609",
+      "start_time": "2026-01-28T00:00:00+00:00",
+      "finish_time": "2026-01-28T00:00:00+00:00",
+      "error": null,
+      "bull_job_id": "6210",
+      "datastream_metadata": {
+        "uuid": "6a2d7a58-b8b8-45ad-8f59-bb5c31bd129a",
+        "source_timestamp": 1769558400000
+      }
+    },
+    {
+      "id": 19187,
+      "job_type": "project",
+      "project_id": 5,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:00.049893",
+      "start_time": "2026-01-28T00:00:00+00:00",
+      "finish_time": "2026-01-28T00:00:00+00:00",
+      "error": null,
+      "bull_job_id": "6211",
+      "datastream_metadata": {
+        "uuid": "a4cf76d6-d5f1-4959-b3fb-9fb1728e03cf",
+        "source_timestamp": 1769558400000
+      }
+    },
+    {
+      "id": 19186,
+      "job_type": "project",
+      "project_id": 7,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-28T00:00:00.050925",
+      "start_time": "2026-01-28T00:00:00+00:00",
+      "finish_time": "2026-01-28T00:00:00+00:00",
+      "error": null,
+      "bull_job_id": "6212",
+      "datastream_metadata": {
+        "uuid": "bc647ba3-367d-4ce7-aa7e-c1dbe5052269",
+        "source_timestamp": 1769558400000
+      }
+    },
+    {
+      "id": 19183,
+      "job_type": "project",
+      "project_id": 53,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:07.073131",
+      "start_time": "2026-01-27T00:00:07+00:00",
+      "finish_time": "2026-01-27T00:00:07+00:00",
+      "error": null,
+      "bull_job_id": "6209",
+      "datastream_metadata": {
+        "uuid": "d2ed53e6-a0b4-4a83-b846-cb4e154e82bf",
+        "source_timestamp": 1769472007000
+      }
+    },
+    {
+      "id": 19180,
+      "job_type": "project",
+      "project_id": 52,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:07.006228",
+      "start_time": "2026-01-27T00:00:07+00:00",
+      "finish_time": "2026-01-27T00:00:07+00:00",
+      "error": null,
+      "bull_job_id": "6208",
+      "datastream_metadata": {
+        "uuid": "284502ae-3443-4773-8ab5-759c05f2f798",
+        "source_timestamp": 1769472007000
+      }
+    },
+    {
+      "id": 19177,
+      "job_type": "project",
+      "project_id": 51,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:06.996237",
+      "start_time": "2026-01-27T00:00:07+00:00",
+      "finish_time": "2026-01-27T00:00:07+00:00",
+      "error": null,
+      "bull_job_id": "6207",
+      "datastream_metadata": {
+        "uuid": "2c320e9b-25fb-441b-b693-8c633c57073a",
+        "source_timestamp": 1769472007000
+      }
+    },
+    {
+      "id": 19174,
+      "job_type": "project",
+      "project_id": 50,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:06.871476",
+      "start_time": "2026-01-27T00:00:07+00:00",
+      "finish_time": "2026-01-27T00:00:07+00:00",
+      "error": null,
+      "bull_job_id": "6206",
+      "datastream_metadata": {
+        "uuid": "fd17a851-ca31-49ad-8f1f-2fde309004bd",
+        "source_timestamp": 1769472007000
+      }
+    },
+    {
+      "id": 19169,
+      "job_type": "project",
+      "project_id": 49,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:06.796087",
+      "start_time": "2026-01-27T00:00:07+00:00",
+      "finish_time": "2026-01-27T00:00:07+00:00",
+      "error": null,
+      "bull_job_id": "6205",
+      "datastream_metadata": {
+        "uuid": "70934bbe-e5af-4551-ad71-59849d16314d",
+        "source_timestamp": 1769472007000
+      }
+    },
+    {
+      "id": 19168,
+      "job_type": "project",
+      "project_id": 48,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:06.795864",
+      "start_time": "2026-01-27T00:00:07+00:00",
+      "finish_time": "2026-01-27T00:00:07+00:00",
+      "error": null,
+      "bull_job_id": "6204",
+      "datastream_metadata": {
+        "uuid": "c10a923d-f3d6-4bb1-a065-3d09a2680c22",
+        "source_timestamp": 1769472006000
+      }
+    },
+    {
+      "id": 19165,
+      "job_type": "project",
+      "project_id": 47,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:06.685338",
+      "start_time": "2026-01-27T00:00:07+00:00",
+      "finish_time": "2026-01-27T00:00:07+00:00",
+      "error": null,
+      "bull_job_id": "6203",
+      "datastream_metadata": {
+        "uuid": "6f64018f-6100-4c8e-8ee1-b15f350e7141",
+        "source_timestamp": 1769472006000
+      }
+    },
+    {
+      "id": 19162,
+      "job_type": "project",
+      "project_id": 46,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:06.566597",
+      "start_time": "2026-01-27T00:00:07+00:00",
+      "finish_time": "2026-01-27T00:00:07+00:00",
+      "error": null,
+      "bull_job_id": "6202",
+      "datastream_metadata": {
+        "uuid": "802f797b-3d60-423b-a075-454012498b87",
+        "source_timestamp": 1769472006000
+      }
+    },
+    {
+      "id": 19159,
+      "job_type": "project",
+      "project_id": 45,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:06.409865",
+      "start_time": "2026-01-27T00:00:06+00:00",
+      "finish_time": "2026-01-27T00:00:07+00:00",
+      "error": null,
+      "bull_job_id": "6201",
+      "datastream_metadata": {
+        "uuid": "69879de5-4d43-4c3e-9f28-f386b2ab05aa",
+        "source_timestamp": 1769472006000
+      }
+    },
+    {
+      "id": 19156,
+      "job_type": "project",
+      "project_id": 44,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:06.325283",
+      "start_time": "2026-01-27T00:00:06+00:00",
+      "finish_time": "2026-01-27T00:00:07+00:00",
+      "error": null,
+      "bull_job_id": "6200",
+      "datastream_metadata": {
+        "uuid": "133a2bc4-d9b9-4cf4-9995-7b0b62dca10e",
+        "source_timestamp": 1769472006000
+      }
+    },
+    {
+      "id": 19153,
+      "job_type": "project",
+      "project_id": 43,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:06.310054",
+      "start_time": "2026-01-27T00:00:06+00:00",
+      "finish_time": "2026-01-27T00:00:06+00:00",
+      "error": null,
+      "bull_job_id": "6199",
+      "datastream_metadata": {
+        "uuid": "a2e2a366-69a0-4c8f-bd3d-247086ad99dc",
+        "source_timestamp": 1769472006000
+      }
+    },
+    {
+      "id": 19150,
+      "job_type": "project",
+      "project_id": 42,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:06.105855",
+      "start_time": "2026-01-27T00:00:06+00:00",
+      "finish_time": "2026-01-27T00:00:06+00:00",
+      "error": null,
+      "bull_job_id": "6198",
+      "datastream_metadata": {
+        "uuid": "4aa81276-c0f4-4477-804b-73e2f063e0ad",
+        "source_timestamp": 1769472006000
+      }
+    },
+    {
+      "id": 19147,
+      "job_type": "project",
+      "project_id": 41,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:05.999834",
+      "start_time": "2026-01-27T00:00:06+00:00",
+      "finish_time": "2026-01-27T00:00:06+00:00",
+      "error": null,
+      "bull_job_id": "6197",
+      "datastream_metadata": {
+        "uuid": "18f51088-1970-412f-9834-7b2800cc9ddc",
+        "source_timestamp": 1769472006000
+      }
+    },
+    {
+      "id": 19144,
+      "job_type": "project",
+      "project_id": 39,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:05.778286",
+      "start_time": "2026-01-27T00:00:06+00:00",
+      "finish_time": "2026-01-27T00:00:06+00:00",
+      "error": null,
+      "bull_job_id": "6196",
+      "datastream_metadata": {
+        "uuid": "e1d35665-28fa-4182-8fe6-1fc246644a2e",
+        "source_timestamp": 1769472006000
+      }
+    },
+    {
+      "id": 19141,
+      "job_type": "project",
+      "project_id": 38,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:05.632075",
+      "start_time": "2026-01-27T00:00:06+00:00",
+      "finish_time": "2026-01-27T00:00:06+00:00",
+      "error": null,
+      "bull_job_id": "6195",
+      "datastream_metadata": {
+        "uuid": "2ff64432-0e1d-467c-a102-25419186cce9",
+        "source_timestamp": 1769472005000
+      }
+    },
+    {
+      "id": 19138,
+      "job_type": "project",
+      "project_id": 37,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:05.626745",
+      "start_time": "2026-01-27T00:00:06+00:00",
+      "finish_time": "2026-01-27T00:00:07+00:00",
+      "error": null,
+      "bull_job_id": "6194",
+      "datastream_metadata": {
+        "uuid": "6d41ea9e-dfe9-4167-8a51-e25188632c0d",
+        "source_timestamp": 1769472006000
+      }
+    },
+    {
+      "id": 19135,
+      "job_type": "project",
+      "project_id": 36,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:05.289720",
+      "start_time": "2026-01-27T00:00:05+00:00",
+      "finish_time": "2026-01-27T00:00:06+00:00",
+      "error": null,
+      "bull_job_id": "6193",
+      "datastream_metadata": {
+        "uuid": "d6d7ff64-b049-4309-9bba-d2268e621197",
+        "source_timestamp": 1769472005000
+      }
+    },
+    {
+      "id": 19132,
+      "job_type": "project",
+      "project_id": 35,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:05.281082",
+      "start_time": "2026-01-27T00:00:05+00:00",
+      "finish_time": "2026-01-27T00:00:06+00:00",
+      "error": null,
+      "bull_job_id": "6192",
+      "datastream_metadata": {
+        "uuid": "009412c0-f729-4414-8e38-e23a18d163d4",
+        "source_timestamp": 1769472005000
+      }
+    },
+    {
+      "id": 19129,
+      "job_type": "project",
+      "project_id": 34,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:05.149662",
+      "start_time": "2026-01-27T00:00:05+00:00",
+      "finish_time": "2026-01-27T00:00:05+00:00",
+      "error": null,
+      "bull_job_id": "6191",
+      "datastream_metadata": {
+        "uuid": "70808a9a-abca-4b1f-8cf9-e425275a118c",
+        "source_timestamp": 1769472005000
+      }
+    },
+    {
+      "id": 19126,
+      "job_type": "project",
+      "project_id": 33,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:05.146661",
+      "start_time": "2026-01-27T00:00:05+00:00",
+      "finish_time": "2026-01-27T00:00:05+00:00",
+      "error": null,
+      "bull_job_id": "6190",
+      "datastream_metadata": {
+        "uuid": "f71f3805-efab-48ea-9c49-7b8510057b01",
+        "source_timestamp": 1769472005000
+      }
+    },
+    {
+      "id": 19123,
+      "job_type": "project",
+      "project_id": 32,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:05.131283",
+      "start_time": "2026-01-27T00:00:05+00:00",
+      "finish_time": "2026-01-27T00:00:05+00:00",
+      "error": null,
+      "bull_job_id": "6189",
+      "datastream_metadata": {
+        "uuid": "34b10bee-cbd8-4fde-8034-4e0ee44162d3",
+        "source_timestamp": 1769472005000
+      }
+    },
+    {
+      "id": 19120,
+      "job_type": "project",
+      "project_id": 31,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:05.041374",
+      "start_time": "2026-01-27T00:00:05+00:00",
+      "finish_time": "2026-01-27T00:00:05+00:00",
+      "error": null,
+      "bull_job_id": "6188",
+      "datastream_metadata": {
+        "uuid": "941bec3b-9e02-444d-ab52-d2689739d1bc",
+        "source_timestamp": 1769472005000
+      }
+    },
+    {
+      "id": 19117,
+      "job_type": "project",
+      "project_id": 28,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:04.786648",
+      "start_time": "2026-01-27T00:00:05+00:00",
+      "finish_time": "2026-01-27T00:00:05+00:00",
+      "error": null,
+      "bull_job_id": "6187",
+      "datastream_metadata": {
+        "uuid": "9eab7a2f-ceb5-48cc-a679-6f7462a929db",
+        "source_timestamp": 1769472005000
+      }
+    },
+    {
+      "id": 19114,
+      "job_type": "project",
+      "project_id": 27,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:04.685293",
+      "start_time": "2026-01-27T00:00:05+00:00",
+      "finish_time": "2026-01-27T00:00:06+00:00",
+      "error": null,
+      "bull_job_id": "6186",
+      "datastream_metadata": {
+        "uuid": "0befb552-e785-4979-a100-72216b2955f7",
+        "source_timestamp": 1769472005000
+      }
+    },
+    {
+      "id": 19111,
+      "job_type": "project",
+      "project_id": 26,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:04.484880",
+      "start_time": "2026-01-27T00:00:04+00:00",
+      "finish_time": "2026-01-27T00:00:05+00:00",
+      "error": null,
+      "bull_job_id": "6185",
+      "datastream_metadata": {
+        "uuid": "ff7d9fdb-65d1-4fcb-b9b7-517434cf9a7d",
+        "source_timestamp": 1769472004000
+      }
+    },
+    {
+      "id": 19108,
+      "job_type": "project",
+      "project_id": 25,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:04.472062",
+      "start_time": "2026-01-27T00:00:04+00:00",
+      "finish_time": "2026-01-27T00:00:04+00:00",
+      "error": null,
+      "bull_job_id": "6184",
+      "datastream_metadata": {
+        "uuid": "8b9dcc41-be1c-451a-8399-55909fa6ec6d",
+        "source_timestamp": 1769472004000
+      }
+    },
+    {
+      "id": 19105,
+      "job_type": "project",
+      "project_id": 24,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:04.084885",
+      "start_time": "2026-01-27T00:00:04+00:00",
+      "finish_time": "2026-01-27T00:00:05+00:00",
+      "error": null,
+      "bull_job_id": "6183",
+      "datastream_metadata": {
+        "uuid": "8b1aef10-ab15-4dfe-9088-d0346703c477",
+        "source_timestamp": 1769472005000
+      }
+    },
+    {
+      "id": 19102,
+      "job_type": "project",
+      "project_id": 21,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:03.886565",
+      "start_time": "2026-01-27T00:00:04+00:00",
+      "finish_time": "2026-01-27T00:00:05+00:00",
+      "error": null,
+      "bull_job_id": "6182",
+      "datastream_metadata": {
+        "uuid": "2c3ce87c-4364-4a49-9c14-7e97b79c8dba",
+        "source_timestamp": 1769472004000
+      }
+    },
+    {
+      "id": 19099,
+      "job_type": "project",
+      "project_id": 20,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:03.877810",
+      "start_time": "2026-01-27T00:00:04+00:00",
+      "finish_time": "2026-01-27T00:00:04+00:00",
+      "error": null,
+      "bull_job_id": "6181",
+      "datastream_metadata": {
+        "uuid": "8fc132fa-189c-48a0-bd7c-d4afab7a2509",
+        "source_timestamp": 1769472003000
+      }
+    },
+    {
+      "id": 19096,
+      "job_type": "project",
+      "project_id": 19,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:03.757929",
+      "start_time": "2026-01-27T00:00:04+00:00",
+      "finish_time": "2026-01-27T00:00:04+00:00",
+      "error": null,
+      "bull_job_id": "6180",
+      "datastream_metadata": {
+        "uuid": "adb02d5b-1c25-4ce4-9f89-9033550cde1f",
+        "source_timestamp": 1769472004000
+      }
+    },
+    {
+      "id": 19093,
+      "job_type": "project",
+      "project_id": 18,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:03.575670",
+      "start_time": "2026-01-27T00:00:04+00:00",
+      "finish_time": "2026-01-27T00:00:04+00:00",
+      "error": null,
+      "bull_job_id": "6179",
+      "datastream_metadata": {
+        "uuid": "e6ca7e88-fbd0-4168-b368-45bb01dda34e",
+        "source_timestamp": 1769472004000
+      }
+    },
+    {
+      "id": 19090,
+      "job_type": "project",
+      "project_id": 17,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:03.329656",
+      "start_time": "2026-01-27T00:00:03+00:00",
+      "finish_time": "2026-01-27T00:00:04+00:00",
+      "error": null,
+      "bull_job_id": "6178",
+      "datastream_metadata": {
+        "uuid": "ec7b2837-929d-4a51-ac17-8e573fea08d3",
+        "source_timestamp": 1769472003000
+      }
+    },
+    {
+      "id": 19087,
+      "job_type": "project",
+      "project_id": 16,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:02.425029",
+      "start_time": "2026-01-27T00:00:02+00:00",
+      "finish_time": "2026-01-27T00:00:04+00:00",
+      "error": null,
+      "bull_job_id": "6177",
+      "datastream_metadata": {
+        "uuid": "8fb5e0a5-1701-4f14-92e9-a0eef0313e7a",
+        "source_timestamp": 1769472003000
+      }
+    },
+    {
+      "id": 19084,
+      "job_type": "project",
+      "project_id": 15,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:02.178746",
+      "start_time": "2026-01-27T00:00:02+00:00",
+      "finish_time": "2026-01-27T00:00:02+00:00",
+      "error": null,
+      "bull_job_id": "6176",
+      "datastream_metadata": {
+        "uuid": "a3cf97a1-8b01-45e6-b47d-65203a4d945b",
+        "source_timestamp": 1769472002000
+      }
+    },
+    {
+      "id": 19081,
+      "job_type": "project",
+      "project_id": 12,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:02.066174",
+      "start_time": "2026-01-27T00:00:02+00:00",
+      "finish_time": "2026-01-27T00:00:02+00:00",
+      "error": null,
+      "bull_job_id": "6175",
+      "datastream_metadata": {
+        "uuid": "733b62ee-0d49-4594-9379-23d8d2adcdde",
+        "source_timestamp": 1769472002000
+      }
+    },
+    {
+      "id": 19078,
+      "job_type": "project",
+      "project_id": 10,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:02.057169",
+      "start_time": "2026-01-27T00:00:02+00:00",
+      "finish_time": "2026-01-27T00:00:03+00:00",
+      "error": null,
+      "bull_job_id": "6174",
+      "datastream_metadata": {
+        "uuid": "1b1a38d6-4bd8-4668-a7d8-bcebe13941d0",
+        "source_timestamp": 1769472003000
+      }
+    },
+    {
+      "id": 19075,
+      "job_type": "project",
+      "project_id": 8,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:02.035573",
+      "start_time": "2026-01-27T00:00:02+00:00",
+      "finish_time": "2026-01-27T00:00:04+00:00",
+      "error": null,
+      "bull_job_id": "6173",
+      "datastream_metadata": {
+        "uuid": "07efa062-129e-4f86-84ef-bc1ef89e68f2",
+        "source_timestamp": 1769472003000
+      }
+    },
+    {
+      "id": 19072,
+      "job_type": "project",
+      "project_id": 6,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:00.403450",
+      "start_time": "2026-01-27T00:00:00+00:00",
+      "finish_time": "2026-01-27T00:00:02+00:00",
+      "error": null,
+      "bull_job_id": "6172",
+      "datastream_metadata": {
+        "uuid": "f7d29774-b3b8-42c6-bad1-7ccda75d9ab7",
+        "source_timestamp": 1769472002000
+      }
+    },
+    {
+      "id": 19069,
+      "job_type": "project",
+      "project_id": 4,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:00.307961",
+      "start_time": "2026-01-27T00:00:00+00:00",
+      "finish_time": "2026-01-27T00:00:02+00:00",
+      "error": null,
+      "bull_job_id": "6171",
+      "datastream_metadata": {
+        "uuid": "15838706-13a5-47b8-8795-fcf0e1fcdbf7",
+        "source_timestamp": 1769472002000
+      }
+    },
+    {
+      "id": 19066,
+      "job_type": "project",
+      "project_id": 2,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:00.283811",
+      "start_time": "2026-01-27T00:00:00+00:00",
+      "finish_time": "2026-01-27T00:00:02+00:00",
+      "error": null,
+      "bull_job_id": "6170",
+      "datastream_metadata": {
+        "uuid": "1d37c258-2147-4681-9485-068f40dd3868",
+        "source_timestamp": 1769472002000
+      }
+    },
+    {
+      "id": 19063,
+      "job_type": "project",
+      "project_id": 1,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:00.227432",
+      "start_time": "2026-01-27T00:00:00+00:00",
+      "finish_time": "2026-01-27T00:00:00+00:00",
+      "error": null,
+      "bull_job_id": "6169",
+      "datastream_metadata": {
+        "uuid": "f7fcbe7e-dfb2-4fec-9118-ade3bcd985c5",
+        "source_timestamp": 1769472000000
+      }
+    },
+    {
+      "id": 19060,
+      "job_type": "project",
+      "project_id": 30,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:00.214459",
+      "start_time": "2026-01-27T00:00:00+00:00",
+      "finish_time": "2026-01-27T00:00:00+00:00",
+      "error": null,
+      "bull_job_id": "6168",
+      "datastream_metadata": {
+        "uuid": "9ba1255b-e247-48b6-880e-08b777d1d9be",
+        "source_timestamp": 1769472000000
+      }
+    },
+    {
+      "id": 19057,
+      "job_type": "project",
+      "project_id": 29,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:00.196395",
+      "start_time": "2026-01-27T00:00:00+00:00",
+      "finish_time": "2026-01-27T00:00:00+00:00",
+      "error": null,
+      "bull_job_id": "6167",
+      "datastream_metadata": {
+        "uuid": "fcc3a131-f9a1-41f7-bac7-e9de14043ec7",
+        "source_timestamp": 1769472000000
+      }
+    },
+    {
+      "id": 19054,
+      "job_type": "project",
+      "project_id": 23,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:00.176670",
+      "start_time": "2026-01-27T00:00:00+00:00",
+      "finish_time": "2026-01-27T00:00:00+00:00",
+      "error": null,
+      "bull_job_id": "6166",
+      "datastream_metadata": {
+        "uuid": "06682ef1-d927-4a06-8dcf-73442845e840",
+        "source_timestamp": 1769472000000
+      }
+    },
+    {
+      "id": 19051,
+      "job_type": "project",
+      "project_id": 13,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:00.106522",
+      "start_time": "2026-01-27T00:00:00+00:00",
+      "finish_time": "2026-01-27T00:00:00+00:00",
+      "error": null,
+      "bull_job_id": "6165",
+      "datastream_metadata": {
+        "uuid": "ef048fc4-1750-4f6d-ad15-c2fd5168719d",
+        "source_timestamp": 1769472000000
+      }
+    },
+    {
+      "id": 19045,
+      "job_type": "project",
+      "project_id": 11,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:00.060580",
+      "start_time": "2026-01-27T00:00:00+00:00",
+      "finish_time": "2026-01-27T00:00:00+00:00",
+      "error": null,
+      "bull_job_id": "6164",
+      "datastream_metadata": {
+        "uuid": "b66ee745-b08d-42d7-9a26-23cdc206fbe4",
+        "source_timestamp": 1769472000000
+      }
+    },
+    {
+      "id": 19042,
+      "job_type": "project",
+      "project_id": 9,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:00.063313",
+      "start_time": "2026-01-27T00:00:00+00:00",
+      "finish_time": "2026-01-27T00:00:00+00:00",
+      "error": null,
+      "bull_job_id": "6163",
+      "datastream_metadata": {
+        "uuid": "b0f8c3f5-3f30-425d-ae50-153702d254d0",
+        "source_timestamp": 1769472000000
+      }
+    },
+    {
+      "id": 19041,
+      "job_type": "project",
+      "project_id": 7,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:00.048572",
+      "start_time": "2026-01-27T00:00:00+00:00",
+      "finish_time": "2026-01-27T00:00:00+00:00",
+      "error": null,
+      "bull_job_id": "6162",
+      "datastream_metadata": {
+        "uuid": "1519baac-d745-42da-a689-fd7fd0114eb7",
+        "source_timestamp": 1769472000000
+      }
+    },
+    {
+      "id": 19039,
+      "job_type": "project",
+      "project_id": 5,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:00.046049",
+      "start_time": "2026-01-27T00:00:00+00:00",
+      "finish_time": "2026-01-27T00:00:00+00:00",
+      "error": null,
+      "bull_job_id": "6161",
+      "datastream_metadata": {
+        "uuid": "6e60ce96-036d-46ef-a37c-1d30937dec31",
+        "source_timestamp": 1769472000000
+      }
+    },
+    {
+      "id": 19037,
+      "job_type": "project",
+      "project_id": 3,
+      "contributor_id": null,
+      "status": "success",
+      "enqueue_time": "2026-01-27T00:00:00.043638",
+      "start_time": "2026-01-27T00:00:00+00:00",
+      "finish_time": "2026-01-27T00:00:00+00:00",
+      "error": null,
+      "bull_job_id": "6160",
+      "datastream_metadata": {
+        "uuid": "2a9ed19e-575b-440e-93bd-01b069caeda7",
+        "source_timestamp": 1769472000000
+      }
+    }
+  ]
+}

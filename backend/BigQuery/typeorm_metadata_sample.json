@@ -1,0 +1,255 @@
+{
+  "table": "typeorm_metadata",
+  "row_count": 19,
+  "sample_count": 19,
+  "fetched_at": "2026-01-28T23:25:12.879129",
+  "data": [
+    {
+      "type": "VIEW",
+      "database": null,
+      "schema": "labeling-tool-n",
+      "table": null,
+      "name": "latest_manual_review",
+      "value": "SELECT MAX(id) AS `review_id`, conversation_id FROM `review` `review` WHERE `review`.`review_type` = 'manual' AND `review`.`status` = 'published' GROUP BY `review`.`conversation_id`",
+      "datastream_metadata": {
+        "uuid": "25e478e8-510b-4624-bf24-a76800000000",
+        "source_timestamp": 1721939922000,
+        "is_deleted": false
+      }
+    },
+    {
+      "type": "VIEW",
+      "database": null,
+      "schema": "labeling-tool-n",
+      "table": null,
+      "name": "latest_auto_review",
+      "value": "SELECT MAX(id) AS `review_id`, conversation_id FROM `review` `review` WHERE `review`.`review_type` = 'auto' AND `review`.`status` = 'published' GROUP BY `review`.`conversation_id`",
+      "datastream_metadata": {
+        "uuid": "25e478e8-510b-4624-bf24-a76800000001",
+        "source_timestamp": 1721939922000,
+        "is_deleted": false
+      }
+    },
+    {
+      "type": "VIEW",
+      "database": null,
+      "schema": "labeling-tool-n",
+      "table": null,
+      "name": "difficulty_level_name",
+      "value": "SELECT levels.*\n  FROM app_config\n  JOIN JSON_TABLE(\n    app_config.value,\n    \"$.value.levels[*]\" COLUMNS (\n      `ordering` FOR ORDINALITY,\n      `value` VARCHAR(255) PATH \"$.value\",\n      `name` VARCHAR(255) PATH \"$.name\"\n    )\n  ) AS levels\n  WHERE app_config.system_name = 'labeling.tagging.difficultyLevel.config'",
+      "datastream_metadata": {
+        "uuid": "25e478e8-510b-4624-bf24-a76800000010",
+        "source_timestamp": 1721939922000,
+        "is_deleted": false
+      }
+    },
+    {
+      "type": "VIEW",
+      "database": null,
+      "schema": "labeling-tool-n",
+      "table": null,
+      "name": "conversation_details",
+      "value": "SELECT p.name AS workstream, b.name AS batch_name, contributor.turing_email AS assigned_to_email, c.id, c.batch_id, c.colab_link, c.completed_at as completion_date, c.conversation_seed_id, c.created_at, c.duration_minutes, c.maximum_turns, c.minimum_turns, c.number_of_turns, c.project_id, c.statement, c.status, c.updated_at, (SELECT COUNT(*) FROM conversation_version cv WHERE cv.conversation_id = c.id AND cv.status = 'published') AS version_count, s.metadata as seed_metadata,JSON_VALUE(s.metadata, '$.\"Project / Action\"') AS seed_project,JSON_VALUE(s.metadata, '$.\"Technical Domain\"') AS seed_technical_domain, ar.id AS auto_review_id, ar.status AS auto_review_status, ar.score AS auto_review_score, ar.feedback AS auto_review_feedback, ar.followup_required AS auto_review_followup_required, ar.duration_minutes AS auto_review_duration_minutes, ar.submitted_at AS auto_review_submitted_at, ar.reviewer_id AS auto_review_reviewer_id, mr.id AS manual_review_id, mr.status AS manual_review_status, mr.score AS manual_review_score, mr.feedback AS manual_review_feedback, mr.followup_Required AS manual_review_followup_required, mr.duration_minutes AS manual_review_duration_minutes, mr.submitted_at AS manual_review_submitted_at, mr.reviewer_id AS manual_review_reviewer_id, mrc.turing_email AS manual_review_reviewer_email FROM conversation c LEFT JOIN project p ON p.id = c.project_id LEFT JOIN batch b ON b.id = c.batch_id LEFT JOIN conversation_seed s ON s.id = c.conversation_seed_id LEFT JOIN contributor contributor ON contributor.id = c.llm_role_id LEFT JOIN (SELECT *, ROW_NUMBER() OVER ( PARTITION BY conversation_id ORDER BY created_at DESC ) AS row_num FROM review WHERE review_type = 'auto') ar ON ar.conversation_id = c.id AND ar.row_num = 1 LEFT JOIN (SELECT *, ROW_NUMBER() OVER ( PARTITION BY conversation_id ORDER BY created_at DESC ) AS row_num FROM review WHERE review_type = 'manual') mr ON mr.conversation_id = c.id AND mr.row_num = 1 LEFT JOIN contributor mrc ON mrc.id = mr.reviewer_id;",
+      "datastream_metadata": {
+        "uuid": "25e478e8-510b-4624-bf24-a76800000011",
+        "source_timestamp": 1721939922000,
+        "is_deleted": false
+      }
+    },
+    {
+      "type": "VIEW",
+      "database": null,
+      "schema": "labeling-tool-n",
+      "table": null,
+      "name": "latest_completed_labeling_workflow",
+      "value": "SELECT MAX(id) AS `workflow_id`, task_id FROM `task_labeling_workflow` `workflow` WHERE `workflow`.`status` = \"completed\" GROUP BY `workflow`.`task_id`",
+      "datastream_metadata": {
+        "uuid": "25e478e8-510b-4624-bf24-a76800000100",
+        "source_timestamp": 1721939922000,
+        "is_deleted": false
+      }
+    },
+    {
+      "type": "VIEW",
+      "database": null,
+      "schema": "labeling-tool-n",
+      "table": null,
+      "name": "latest_labeling_workflow",
+      "value": "SELECT MAX(id) AS `workflow_id`, task_id FROM `task_labeling_workflow` `workflow` WHERE `workflow`.`status` != \"deleted\" GROUP BY `workflow`.`task_id`",
+      "datastream_metadata": {
+        "uuid": "25e478e8-510b-4624-bf24-a76800000101",
+        "source_timestamp": 1721939922000,
+        "is_deleted": false
+      }
+    },
+    {
+      "type": "VIEW",
+      "database": null,
+      "schema": "labeling-tool-n",
+      "table": null,
+      "name": "latest_delivery_batch",
+      "value": "SELECT task_id, MAX(delivery_batch_id) AS `delivery_batch_id` FROM `delivery_batch_task` `delivery_batch_task` GROUP BY `delivery_batch_task`.`task_id`",
+      "datastream_metadata": {
+        "uuid": "25e478e8-510b-4624-bf24-a76800000110",
+        "source_timestamp": 1721939922000,
+        "is_deleted": false
+      }
+    },
+    {
+      "type": "VIEW",
+      "database": null,
+      "schema": "labeling-tool-n",
+      "table": null,
+      "name": "batch_stats",
+      "value": "SELECT c.batch_id as batch_id, COUNT(c.id) as total_conversations, COUNT(CASE WHEN c.status = \"draft\" THEN 1 END) as draft, COUNT(CASE WHEN c.status = \"pending\" THEN 1 END) as pending, COUNT(CASE WHEN c.status = \"labeling-approval\" THEN 1 END) as labeling_approval, COUNT(CASE WHEN c.status = \"labeling\" THEN 1 END) as labeling, COUNT(CASE WHEN c.status = \"completed-approval\" THEN 1 END) as completed_approval, COUNT(CASE WHEN c.status = \"completed\" THEN 1 END) as completed, COUNT(CASE WHEN c.status = \"validating\" THEN 1 END) as validating, COUNT(CASE WHEN c.status = \"validated\" THEN 1 END) as validated, COUNT(CASE WHEN c.status = \"rework\" THEN 1 END) as rework, COUNT(CASE WHEN c.status = \"improper\" THEN 1 END) as improper FROM conversation c GROUP BY c.batch_id;",
+      "datastream_metadata": {
+        "uuid": "1cfb4a54-4089-47c8-9673-74ea00111011",
+        "source_timestamp": 1729756919000,
+        "is_deleted": false
+      }
+    },
+    {
+      "type": "VIEW",
+      "database": null,
+      "schema": "labeling-tool-n",
+      "table": null,
+      "name": "batch_stats",
+      "value": "SELECT c.batch_id as batch_id, COUNT(c.id) as total_conversations, COUNT(CASE WHEN c.status = \"draft\" THEN 1 END) as draft, COUNT(CASE WHEN c.status = \"pending\" THEN 1 END) as pending, COUNT(CASE WHEN c.status = \"labeling-approval\" THEN 1 END) as labeling_approval, COUNT(CASE WHEN c.status = \"labeling\" THEN 1 END) as labeling, COUNT(CASE WHEN c.status = \"completed-approval\" THEN 1 END) as completed_approval, COUNT(CASE WHEN c.status = \"completed\" THEN 1 END) as completed, COUNT(CASE WHEN c.status = \"validating\" THEN 1 END) as validating, COUNT(CASE WHEN c.status = \"validated\" THEN 1 END) as validated, COUNT(CASE WHEN c.status = \"rework\" THEN 1 END) as rework, COUNT(CASE WHEN c.status = \"improper\" THEN 1 END) as improper FROM conversation c GROUP BY c.batch_id;",
+      "datastream_metadata": {
+        "uuid": "1cfb4a54-4089-47c8-9673-74ea01000001",
+        "source_timestamp": 1729756919000,
+        "is_deleted": true
+      }
+    },
+    {
+      "type": "VIEW",
+      "database": null,
+      "schema": "labeling-tool-n",
+      "table": null,
+      "name": "batch_stats",
+      "value": "SELECT\n  c.batch_id as batch_id,\n  COUNT(c.id) as total_conversations,\n  COUNT(CASE WHEN c.status = \"draft\" THEN 1 END) as draft,\n  COUNT(CASE WHEN c.status = \"pending\" THEN 1 END) as pending,\n  COUNT(CASE WHEN c.status = \"labeling-approval\" THEN 1 END) as labeling_approval,\n  COUNT(CASE WHEN c.status = \"labeling\" THEN 1 END) as labeling,\n  COUNT(CASE WHEN c.status = \"completed-approval\" THEN 1 END) as completed_approval,\n  COUNT(CASE WHEN c.status = \"completed\" THEN 1 END) as completed,\n  COUNT(CASE WHEN c.status = \"validating\" THEN 1 END) as validating,\n  COUNT(CASE WHEN c.status = \"validated\" THEN 1 END) as validated,\n  COUNT(CASE WHEN c.status = \"rework\" THEN 1 END) as rework,\n  COUNT(CASE WHEN c.status = \"improper\" THEN 1 END) as improper\nFROM conversation c\nGROUP BY c.batch_id;",
+      "datastream_metadata": {
+        "uuid": "1cfb4a54-4089-47c8-9673-74ea01000010",
+        "source_timestamp": 1729756919000,
+        "is_deleted": false
+      }
+    },
+    {
+      "type": "VIEW",
+      "database": null,
+      "schema": "labeling-tool-n",
+      "table": null,
+      "name": "delivery_batch_stats",
+      "value": "SELECT dbt.delivery_batch_id as delivery_batch_id, COUNT(dbt.id) as total_tasks FROM delivery_batch_task dbt GROUP BY dbt.delivery_batch_id;",
+      "datastream_metadata": {
+        "uuid": "6cb553f1-1837-470a-88a6-fca701001110",
+        "source_timestamp": 1730954079000,
+        "is_deleted": false
+      }
+    },
+    {
+      "type": "VIEW",
+      "database": null,
+      "schema": "labeling-tool-n",
+      "table": null,
+      "name": "delivery_batch_stats",
+      "value": "SELECT dbt.delivery_batch_id as delivery_batch_id, COUNT(dbt.id) as total_tasks FROM delivery_batch_task dbt GROUP BY dbt.delivery_batch_id;",
+      "datastream_metadata": {
+        "uuid": "823538c4-9e6b-41da-9eb0-37ef01101010",
+        "source_timestamp": 1734323636000,
+        "is_deleted": true
+      }
+    },
+    {
+      "type": "VIEW",
+      "database": null,
+      "schema": "labeling-tool-n",
+      "table": null,
+      "name": "delivery_batch_stats",
+      "value": "SELECT\n    dbt.delivery_batch_id as delivery_batch_id,\n    COUNT(dbt.id) as total_tasks\n    FROM delivery_batch_task dbt\n    GROUP BY dbt.delivery_batch_id;",
+      "datastream_metadata": {
+        "uuid": "823538c4-9e6b-41da-9eb0-37ef01101011",
+        "source_timestamp": 1734323636000,
+        "is_deleted": false
+      }
+    },
+    {
+      "type": "VIEW",
+      "database": null,
+      "schema": "labeling-tool-n",
+      "table": null,
+      "name": "delivery_batch_stats",
+      "value": "SELECT\n    dbt.delivery_batch_id as delivery_batch_id,\n    COUNT(dbt.id) as total_tasks\n    FROM delivery_batch_task dbt\n    GROUP BY dbt.delivery_batch_id;",
+      "datastream_metadata": {
+        "uuid": "3a7825b4-a648-4243-bf8f-748310000000",
+        "source_timestamp": 1738816472000,
+        "is_deleted": true
+      }
+    },
+    {
+      "type": "VIEW",
+      "database": null,
+      "schema": "labeling-tool-n",
+      "table": null,
+      "name": "delivery_batch_stats",
+      "value": "SELECT\n    dbt.delivery_batch_id as delivery_batch_id,\n    COUNT(dbt.id) as total_tasks,\n    SUM(c.number_of_turns) as total_turns\n    FROM delivery_batch_task dbt\n    INNER JOIN conversation c ON c.id = dbt.task_id\n    GROUP BY dbt.delivery_batch_id;",
+      "datastream_metadata": {
+        "uuid": "3a7825b4-a648-4243-bf8f-748310000011",
+        "source_timestamp": 1738816472000,
+        "is_deleted": false
+      }
+    },
+    {
+      "type": "GENERATED_COLUMN",
+      "database": null,
+      "schema": "labeling-tool-n",
+      "table": "timer",
+      "name": "synthetic_unique_key",
+      "value": "CONCAT(\n      LPAD(contributor_id, 10, '0'),\n      LPAD(conversation_id, 10, '0'),\n      LPAD(IFNULL(conversation_version_id, 0), 10, '0')\n    )",
+      "datastream_metadata": {
+        "uuid": "cc90b2a6-7293-4de4-81e9-eca401001010",
+        "source_timestamp": 1745210004000,
+        "is_deleted": false
+      }
+    },
+    {
+      "type": "VIEW",
+      "database": null,
+      "schema": "labeling-tool-n",
+      "table": null,
+      "name": "project_stats",
+      "value": "SELECT c.project_id AS project_id, COUNT(c.id) AS total_conversations, COUNT(CASE WHEN c.status = \"draft\" THEN 1 END) AS draft, COUNT(CASE WHEN c.status = \"pending\" THEN 1 END) AS pending, COUNT(CASE WHEN c.status = \"labeling-approval\" THEN 1 END) AS labeling_approval, COUNT(CASE WHEN c.status = \"labeling\" THEN 1 END) AS labeling, COUNT(CASE WHEN c.status = \"completed-approval\" THEN 1 END) AS completed_approval, COUNT(CASE WHEN c.status = \"completed\" THEN 1 END) AS completed, COUNT(CASE WHEN c.status = \"validating\" THEN 1 END) AS validating, COUNT(CASE WHEN c.status = \"validated\" THEN 1 END) AS validated, COUNT(CASE WHEN c.status = \"rework\" THEN 1 END) AS rework, COUNT(CASE WHEN c.status = \"improper\" THEN 1 END) AS improper FROM conversation c GROUP BY c.project_id",
+      "datastream_metadata": {
+        "uuid": "87209d63-0d6c-42d6-9b95-323900111110",
+        "source_timestamp": 1746723381000,
+        "is_deleted": false
+      }
+    },
+    {
+      "type": "VIEW",
+      "database": null,
+      "schema": "labeling-tool-n",
+      "table": null,
+      "name": "project_stats",
+      "value": "SELECT c.project_id AS project_id, COUNT(c.id) AS total_conversations, COUNT(CASE WHEN c.status = \"draft\" THEN 1 END) AS draft, COUNT(CASE WHEN c.status = \"pending\" THEN 1 END) AS pending, COUNT(CASE WHEN c.status = \"labeling-approval\" THEN 1 END) AS labeling_approval, COUNT(CASE WHEN c.status = \"labeling\" THEN 1 END) AS labeling, COUNT(CASE WHEN c.status = \"completed-approval\" THEN 1 END) AS completed_approval, COUNT(CASE WHEN c.status = \"completed\" THEN 1 END) AS completed, COUNT(CASE WHEN c.status = \"validating\" THEN 1 END) AS validating, COUNT(CASE WHEN c.status = \"validated\" THEN 1 END) AS validated, COUNT(CASE WHEN c.status = \"rework\" THEN 1 END) AS rework, COUNT(CASE WHEN c.status = \"improper\" THEN 1 END) AS improper FROM conversation c GROUP BY c.project_id",
+      "datastream_metadata": {
+        "uuid": "8fdea04e-c11a-4294-8bd3-79f700001110",
+        "source_timestamp": 1752467621000,
+        "is_deleted": true
+      }
+    },
+    {
+      "type": "VIEW",
+      "database": null,
+      "schema": "labeling-tool-n",
+      "table": null,
+      "name": "project_stats",
+      "value": "SELECT c.project_id AS project_id, COUNT(c.id) AS total_conversations, COUNT(CASE WHEN c.status = \"draft\" THEN 1 END) AS draft, COUNT(CASE WHEN c.status = \"pending\" THEN 1 END) AS pending, COUNT(CASE WHEN c.status = \"labeling-approval\" THEN 1 END) AS labeling_approval, COUNT(CASE WHEN c.status = \"labeling\" THEN 1 END) AS labeling, COUNT(CASE WHEN c.status = \"completed-approval\" THEN 1 END) AS completed_approval, COUNT(CASE WHEN c.status = \"completed\" THEN 1 END) AS completed, COUNT(CASE WHEN c.status = \"validating\" THEN 1 END) AS validating, COUNT(CASE WHEN c.status = \"validated\" THEN 1 END) AS validated, COUNT(CASE WHEN c.status = \"rework\" THEN 1 END) AS rework, COUNT(CASE WHEN c.status = \"improper\" THEN 1 END) AS improper FROM conversation c GROUP BY c.project_id",
+      "datastream_metadata": {
+        "uuid": "8fdea04e-c11a-4294-8bd3-79f700001111",
+        "source_timestamp": 1752467622000,
+        "is_deleted": false
+      }
+    }
+  ]
+}

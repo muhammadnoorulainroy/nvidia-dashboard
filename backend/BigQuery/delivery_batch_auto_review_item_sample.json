@@ -1,0 +1,1308 @@
+{
+  "table": "delivery_batch_auto_review_item",
+  "row_count": 4887,
+  "sample_count": 100,
+  "fetched_at": "2026-01-28T23:23:15.044169",
+  "data": [
+    {
+      "created_at": "2026-01-28T17:39:49.906176",
+      "updated_at": "2026-01-28T17:40:06",
+      "id": 4887,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 55377,
+      "review_id": 25957,
+      "datastream_metadata": {
+        "uuid": "7ce442b9-e7da-47b3-95ef-bd3c228fefec",
+        "source_timestamp": 1769622006000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:49.895479",
+      "updated_at": "2026-01-28T17:40:09",
+      "id": 4886,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 62738,
+      "review_id": 25961,
+      "datastream_metadata": {
+        "uuid": "d9323f68-60ff-4083-a37f-869170201c17",
+        "source_timestamp": 1769622009000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:49.794132",
+      "updated_at": "2026-01-28T17:40:10",
+      "id": 4885,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 55680,
+      "review_id": 25962,
+      "datastream_metadata": {
+        "uuid": "c348d2c0-5ad1-48b5-a1e2-5876582679aa",
+        "source_timestamp": 1769622010000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:49.334754",
+      "updated_at": "2026-01-28T17:40:08",
+      "id": 4884,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 55675,
+      "review_id": 25960,
+      "datastream_metadata": {
+        "uuid": "f51cd972-d2a6-41b9-b0de-72747f0420dd",
+        "source_timestamp": 1769622008000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:49.132444",
+      "updated_at": "2026-01-28T17:40:07",
+      "id": 4883,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54835,
+      "review_id": 25958,
+      "datastream_metadata": {
+        "uuid": "ee71a987-3bda-4dd4-97e0-0474cd42fb22",
+        "source_timestamp": 1769622007000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:49.080791",
+      "updated_at": "2026-01-28T17:39:56",
+      "id": 4882,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 55216,
+      "review_id": 25956,
+      "datastream_metadata": {
+        "uuid": "6e859cc4-f3a6-402e-b9aa-d07c369b0929",
+        "source_timestamp": 1769621996000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:48.755476",
+      "updated_at": "2026-01-28T17:39:48.755476",
+      "id": 4881,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 0,
+      "conversation_id": 55465,
+      "review_id": null,
+      "datastream_metadata": {
+        "uuid": "62ecf262-8991-448b-bf5d-f398edd8619e",
+        "source_timestamp": 1769621988000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:47.952746",
+      "updated_at": "2026-01-28T17:39:47.952746",
+      "id": 4880,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 0,
+      "conversation_id": 54984,
+      "review_id": null,
+      "datastream_metadata": {
+        "uuid": "0844a990-d857-40e4-ad34-3a15349cfcc6",
+        "source_timestamp": 1769621987000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:47.812480",
+      "updated_at": "2026-01-28T17:39:47.812480",
+      "id": 4879,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 0,
+      "conversation_id": 55679,
+      "review_id": null,
+      "datastream_metadata": {
+        "uuid": "80a5a9e2-b502-43a7-b216-4328db59f3fd",
+        "source_timestamp": 1769621987000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:46.230369",
+      "updated_at": "2026-01-28T17:39:54",
+      "id": 4878,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54650,
+      "review_id": 25953,
+      "datastream_metadata": {
+        "uuid": "bf9e6005-f08d-4cfd-8a7e-e1c186a50bd4",
+        "source_timestamp": 1769621994000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:43.451449",
+      "updated_at": "2026-01-28T17:39:53",
+      "id": 4877,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54685,
+      "review_id": 25952,
+      "datastream_metadata": {
+        "uuid": "55819289-5dad-41e6-8486-5833b477afb1",
+        "source_timestamp": 1769621993000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:42.954471",
+      "updated_at": "2026-01-28T17:39:49",
+      "id": 4876,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54536,
+      "review_id": 25943,
+      "datastream_metadata": {
+        "uuid": "aef018aa-0106-4a44-9e08-379dce429372",
+        "source_timestamp": 1769621989000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:42.808623",
+      "updated_at": "2026-01-28T17:39:50",
+      "id": 4875,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54533,
+      "review_id": 25945,
+      "datastream_metadata": {
+        "uuid": "2e3b38a7-1366-456d-8dc5-b5b4346370f8",
+        "source_timestamp": 1769621990000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:42.256095",
+      "updated_at": "2026-01-28T17:39:50",
+      "id": 4874,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54556,
+      "review_id": 25944,
+      "datastream_metadata": {
+        "uuid": "00bd0ecf-931c-4a86-bf47-b7785c7dd5b1",
+        "source_timestamp": 1769621990000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:42.246333",
+      "updated_at": "2026-01-28T17:40:13",
+      "id": 4873,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54709,
+      "review_id": 25963,
+      "datastream_metadata": {
+        "uuid": "f66b1af6-3b84-4a3c-9e6f-6d2f4f19003e",
+        "source_timestamp": 1769622013000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:42.185395",
+      "updated_at": "2026-01-28T17:39:50",
+      "id": 4872,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54626,
+      "review_id": 25946,
+      "datastream_metadata": {
+        "uuid": "a4063497-2230-4692-9883-b3eb87cd4763",
+        "source_timestamp": 1769621990000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:41.065172",
+      "updated_at": "2026-01-28T17:39:41.065172",
+      "id": 4871,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 0,
+      "conversation_id": 54561,
+      "review_id": null,
+      "datastream_metadata": {
+        "uuid": "662172e9-d1aa-4f37-abe4-76009521687d",
+        "source_timestamp": 1769621981000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:40.858843",
+      "updated_at": "2026-01-28T17:39:40.858843",
+      "id": 4870,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 0,
+      "conversation_id": 54689,
+      "review_id": null,
+      "datastream_metadata": {
+        "uuid": "9c3d431a-be93-4900-be35-dee8d31751bc",
+        "source_timestamp": 1769621980000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:40.445185",
+      "updated_at": "2026-01-28T17:39:40.445185",
+      "id": 4869,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 0,
+      "conversation_id": 54535,
+      "review_id": null,
+      "datastream_metadata": {
+        "uuid": "b1d0ca60-e19c-4fff-8828-46c943a595ad",
+        "source_timestamp": 1769621980000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:39.128749",
+      "updated_at": "2026-01-28T17:39:47",
+      "id": 4868,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54444,
+      "review_id": 25941,
+      "datastream_metadata": {
+        "uuid": "4e353724-a97e-4b26-affa-7e0993d30c21",
+        "source_timestamp": 1769621987000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:39.070825",
+      "updated_at": "2026-01-28T17:39:48",
+      "id": 4867,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54511,
+      "review_id": 25942,
+      "datastream_metadata": {
+        "uuid": "26b7cdde-93ed-4c89-968a-1c8e7c7b6db8",
+        "source_timestamp": 1769621988000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:39.032566",
+      "updated_at": "2026-01-28T17:39:53",
+      "id": 4866,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54510,
+      "review_id": 25950,
+      "datastream_metadata": {
+        "uuid": "f8c0f393-6b74-468c-b7a9-b5c61e1dce44",
+        "source_timestamp": 1769621993000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:38.331786",
+      "updated_at": "2026-01-28T17:39:54",
+      "id": 4865,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54460,
+      "review_id": 25954,
+      "datastream_metadata": {
+        "uuid": "94e21a5f-6474-48d4-be83-3e4b3a1c0d2c",
+        "source_timestamp": 1769621994000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:38.297241",
+      "updated_at": "2026-01-28T17:39:53",
+      "id": 4864,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54434,
+      "review_id": 25951,
+      "datastream_metadata": {
+        "uuid": "a0f20d13-2f15-49f6-8760-309c0f91368a",
+        "source_timestamp": 1769621993000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:38.070363",
+      "updated_at": "2026-01-28T17:39:44",
+      "id": 4863,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54466,
+      "review_id": 25937,
+      "datastream_metadata": {
+        "uuid": "8b6e9eba-d7eb-4944-9cd7-53436858b97a",
+        "source_timestamp": 1769621984000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:37.890107",
+      "updated_at": "2026-01-28T17:39:52",
+      "id": 4862,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54503,
+      "review_id": 25949,
+      "datastream_metadata": {
+        "uuid": "5e423f72-05fa-4681-8666-72bf9c6eb87c",
+        "source_timestamp": 1769621992000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:37.796713",
+      "updated_at": "2026-01-28T17:40:07",
+      "id": 4861,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54514,
+      "review_id": 25959,
+      "datastream_metadata": {
+        "uuid": "d37ffe0d-1b41-4951-b9a2-3aff07ce9c1d",
+        "source_timestamp": 1769622007000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:36.649210",
+      "updated_at": "2026-01-28T17:39:36.649210",
+      "id": 4860,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 0,
+      "conversation_id": 54495,
+      "review_id": null,
+      "datastream_metadata": {
+        "uuid": "242012e2-b92d-495e-b60f-019ab5773413",
+        "source_timestamp": 1769621976000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:36.648564",
+      "updated_at": "2026-01-28T17:39:36.648564",
+      "id": 4859,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 0,
+      "conversation_id": 54523,
+      "review_id": null,
+      "datastream_metadata": {
+        "uuid": "c67a7df4-1a74-489e-9314-6f17a4bdf3e1",
+        "source_timestamp": 1769621976000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:34.778291",
+      "updated_at": "2026-01-28T17:39:46",
+      "id": 4858,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54395,
+      "review_id": 25939,
+      "datastream_metadata": {
+        "uuid": "0b9f963a-98d0-4010-bade-c17c80f6d6fc",
+        "source_timestamp": 1769621986000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:31.636743",
+      "updated_at": "2026-01-28T17:39:52",
+      "id": 4857,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54405,
+      "review_id": 25947,
+      "datastream_metadata": {
+        "uuid": "966bb2e0-4996-4aaf-a8b8-762a6d91b960",
+        "source_timestamp": 1769621992000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:30.593332",
+      "updated_at": "2026-01-28T17:39:38",
+      "id": 4856,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54383,
+      "review_id": 25932,
+      "datastream_metadata": {
+        "uuid": "1edc3fba-6aac-4812-9efe-1ad82465c30b",
+        "source_timestamp": 1769621978000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:30.588117",
+      "updated_at": "2026-01-28T17:39:39",
+      "id": 4855,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54424,
+      "review_id": 25934,
+      "datastream_metadata": {
+        "uuid": "2e423afb-4c0a-4d59-bb53-590de1db9a0c",
+        "source_timestamp": 1769621979000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:30.267300",
+      "updated_at": "2026-01-28T17:39:46",
+      "id": 4854,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54402,
+      "review_id": 25940,
+      "datastream_metadata": {
+        "uuid": "bfaa50a4-f4e1-4b5f-8abd-bbd91f797259",
+        "source_timestamp": 1769621986000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:29.782242",
+      "updated_at": "2026-01-28T17:39:45",
+      "id": 4853,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54387,
+      "review_id": 25938,
+      "datastream_metadata": {
+        "uuid": "290a31b4-ca57-44d5-8ebf-74e9b9ea0b7d",
+        "source_timestamp": 1769621985000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:28.939333",
+      "updated_at": "2026-01-28T17:39:28.939333",
+      "id": 4852,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 0,
+      "conversation_id": 54391,
+      "review_id": null,
+      "datastream_metadata": {
+        "uuid": "f20e22e2-06eb-4f7e-82cb-9ed0ea09e44a",
+        "source_timestamp": 1769621968000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:28.827471",
+      "updated_at": "2026-01-28T17:39:28.827471",
+      "id": 4851,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 0,
+      "conversation_id": 54384,
+      "review_id": null,
+      "datastream_metadata": {
+        "uuid": "9fa97e22-a3d6-493a-9e53-f976544e8308",
+        "source_timestamp": 1769621968000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:28.603634",
+      "updated_at": "2026-01-28T17:39:28.603634",
+      "id": 4850,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 0,
+      "conversation_id": 54401,
+      "review_id": null,
+      "datastream_metadata": {
+        "uuid": "dd21a3a5-57eb-4ff6-981f-fec221475aeb",
+        "source_timestamp": 1769621968000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:28.486852",
+      "updated_at": "2026-01-28T17:39:28.486852",
+      "id": 4849,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 0,
+      "conversation_id": 54389,
+      "review_id": null,
+      "datastream_metadata": {
+        "uuid": "ad303483-660c-466e-9212-fcd7d98da40b",
+        "source_timestamp": 1769621968000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:27.087474",
+      "updated_at": "2026-01-28T17:39:35",
+      "id": 4848,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54351,
+      "review_id": 25928,
+      "datastream_metadata": {
+        "uuid": "4234ade2-b0f9-4602-9e5a-668ecfb72546",
+        "source_timestamp": 1769621975000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:25.836791",
+      "updated_at": "2026-01-28T17:39:25.836791",
+      "id": 4847,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 0,
+      "conversation_id": 54373,
+      "review_id": null,
+      "datastream_metadata": {
+        "uuid": "4547d184-acc4-4626-bc31-3b3f826c3538",
+        "source_timestamp": 1769621965000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:22.585950",
+      "updated_at": "2026-01-28T17:39:30",
+      "id": 4846,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54358,
+      "review_id": 25924,
+      "datastream_metadata": {
+        "uuid": "e2c2a7ba-4b65-4847-b52e-a9afb4e72d0c",
+        "source_timestamp": 1769621970000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:22.133314",
+      "updated_at": "2026-01-28T17:39:29",
+      "id": 4845,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54376,
+      "review_id": 25922,
+      "datastream_metadata": {
+        "uuid": "346317cf-4b6f-40cc-aec1-c8fd9d33ca64",
+        "source_timestamp": 1769621969000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:21.429727",
+      "updated_at": "2026-01-28T17:39:37",
+      "id": 4844,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54349,
+      "review_id": 25931,
+      "datastream_metadata": {
+        "uuid": "bf87c505-ffb3-4c25-b3a6-eaa37dc584cd",
+        "source_timestamp": 1769621977000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:21.136463",
+      "updated_at": "2026-01-28T17:39:39",
+      "id": 4843,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54356,
+      "review_id": 25933,
+      "datastream_metadata": {
+        "uuid": "f5e2950a-191c-4336-aac7-55ddd104da6c",
+        "source_timestamp": 1769621979000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:20.294754",
+      "updated_at": "2026-01-28T17:39:27",
+      "id": 4842,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54357,
+      "review_id": 25921,
+      "datastream_metadata": {
+        "uuid": "47b5ae0b-7590-47a2-8d5c-a8dbc8b28cef",
+        "source_timestamp": 1769621967000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:19.937562",
+      "updated_at": "2026-01-28T17:39:27",
+      "id": 4841,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54368,
+      "review_id": 25920,
+      "datastream_metadata": {
+        "uuid": "35598fe1-a8f0-4a57-aac6-8f2c7640b75d",
+        "source_timestamp": 1769621967000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:19.692391",
+      "updated_at": "2026-01-28T17:39:29",
+      "id": 4840,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54379,
+      "review_id": 25923,
+      "datastream_metadata": {
+        "uuid": "a12a5a19-0e4a-43ab-83fc-7a710b57c84f",
+        "source_timestamp": 1769621969000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:18.791516",
+      "updated_at": "2026-01-28T17:39:18.791516",
+      "id": 4839,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 0,
+      "conversation_id": 54344,
+      "review_id": null,
+      "datastream_metadata": {
+        "uuid": "751bf401-bdc1-4225-b84b-00346c53b2b7",
+        "source_timestamp": 1769621958000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:17.032060",
+      "updated_at": "2026-01-28T17:39:31",
+      "id": 4838,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54339,
+      "review_id": 25926,
+      "datastream_metadata": {
+        "uuid": "c8dad583-9cbe-46d6-927b-d00e4563230c",
+        "source_timestamp": 1769621971000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:16.758669",
+      "updated_at": "2026-01-28T17:40:13",
+      "id": 4837,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54342,
+      "review_id": 25964,
+      "datastream_metadata": {
+        "uuid": "13262490-f6c6-41ee-ac0d-fdcdd4eae065",
+        "source_timestamp": 1769622013000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:16.636528",
+      "updated_at": "2026-01-28T17:39:41",
+      "id": 4836,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54331,
+      "review_id": 25935,
+      "datastream_metadata": {
+        "uuid": "5dac1511-a825-485e-bf53-88c3a4017a10",
+        "source_timestamp": 1769621981000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:16.369857",
+      "updated_at": "2026-01-28T17:39:25",
+      "id": 4835,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54341,
+      "review_id": 25918,
+      "datastream_metadata": {
+        "uuid": "dbbd3da4-48dd-4b04-a3bc-52617ef3b951",
+        "source_timestamp": 1769621965000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:16.366646",
+      "updated_at": "2026-01-28T17:39:36",
+      "id": 4834,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54333,
+      "review_id": 25929,
+      "datastream_metadata": {
+        "uuid": "5b2a7d7b-2b85-41af-b928-d6f7fe38ebee",
+        "source_timestamp": 1769621976000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:15.607529",
+      "updated_at": "2026-01-28T17:39:54",
+      "id": 4833,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54323,
+      "review_id": 25955,
+      "datastream_metadata": {
+        "uuid": "050baf50-2d9b-4a18-a785-001633ef99a6",
+        "source_timestamp": 1769621994000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:15.152803",
+      "updated_at": "2026-01-28T17:39:31",
+      "id": 4832,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54338,
+      "review_id": 25925,
+      "datastream_metadata": {
+        "uuid": "57584977-626f-44e0-87bb-351896e77346",
+        "source_timestamp": 1769621971000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:14.769564",
+      "updated_at": "2026-01-28T17:39:52",
+      "id": 4831,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54336,
+      "review_id": 25948,
+      "datastream_metadata": {
+        "uuid": "5aa4861f-f585-411c-8ee3-3290eaf05b92",
+        "source_timestamp": 1769621992000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:13.925277",
+      "updated_at": "2026-01-28T17:39:13.925277",
+      "id": 4830,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 0,
+      "conversation_id": 54328,
+      "review_id": null,
+      "datastream_metadata": {
+        "uuid": "4e3c8c33-5607-4f8d-af7b-e06fcb417a09",
+        "source_timestamp": 1769621953000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:13.136532",
+      "updated_at": "2026-01-28T17:39:13.136532",
+      "id": 4829,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 0,
+      "conversation_id": 54314,
+      "review_id": null,
+      "datastream_metadata": {
+        "uuid": "ea2dbf63-c73e-49ba-8b79-c4ad2327c7f7",
+        "source_timestamp": 1769621953000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:11.898042",
+      "updated_at": "2026-01-28T17:39:36",
+      "id": 4828,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54286,
+      "review_id": 25930,
+      "datastream_metadata": {
+        "uuid": "efa8fc4c-d4e7-4f9b-8c1a-f8264b7a8c47",
+        "source_timestamp": 1769621976000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:06.751497",
+      "updated_at": "2026-01-28T17:39:14",
+      "id": 4827,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54303,
+      "review_id": 25913,
+      "datastream_metadata": {
+        "uuid": "f6b35a04-a8a1-4406-966e-a14731044368",
+        "source_timestamp": 1769621954000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:05.922878",
+      "updated_at": "2026-01-28T17:39:17",
+      "id": 4826,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54270,
+      "review_id": 25915,
+      "datastream_metadata": {
+        "uuid": "2162aa64-d7a4-44e6-9d69-1663ce64ea30",
+        "source_timestamp": 1769621957000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:05.493696",
+      "updated_at": "2026-01-28T17:39:26",
+      "id": 4825,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54311,
+      "review_id": 25919,
+      "datastream_metadata": {
+        "uuid": "c476cd5e-30f7-4438-ae98-754e6f93ee89",
+        "source_timestamp": 1769621966000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:05.045517",
+      "updated_at": "2026-01-28T17:39:14",
+      "id": 4824,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54265,
+      "review_id": 25914,
+      "datastream_metadata": {
+        "uuid": "9b086bed-fd27-4d31-8490-83f4db7d4bbf",
+        "source_timestamp": 1769621954000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:04.219509",
+      "updated_at": "2026-01-28T17:39:04.219509",
+      "id": 4823,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 0,
+      "conversation_id": 54290,
+      "review_id": null,
+      "datastream_metadata": {
+        "uuid": "2f6bc5f8-2601-4ca6-a324-9ace4cad6033",
+        "source_timestamp": 1769621944000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:03.900339",
+      "updated_at": "2026-01-28T17:39:03.900339",
+      "id": 4822,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 0,
+      "conversation_id": 54266,
+      "review_id": null,
+      "datastream_metadata": {
+        "uuid": "005e12a4-3235-45c5-be82-9b6f338d1df3",
+        "source_timestamp": 1769621943000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:03.855498",
+      "updated_at": "2026-01-28T17:39:03.855498",
+      "id": 4821,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 0,
+      "conversation_id": 54283,
+      "review_id": null,
+      "datastream_metadata": {
+        "uuid": "92d52c0c-837d-454d-ac17-3d071e70a934",
+        "source_timestamp": 1769621943000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:03.667666",
+      "updated_at": "2026-01-28T17:39:03.667666",
+      "id": 4820,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 0,
+      "conversation_id": 54281,
+      "review_id": null,
+      "datastream_metadata": {
+        "uuid": "3e161aee-f8d1-40fe-98c2-2c5f231e84a5",
+        "source_timestamp": 1769621943000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:03.570206",
+      "updated_at": "2026-01-28T17:39:03.570206",
+      "id": 4819,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 0,
+      "conversation_id": 54268,
+      "review_id": null,
+      "datastream_metadata": {
+        "uuid": "bc73dbb4-feaa-47f3-8b67-9a1859461bfd",
+        "source_timestamp": 1769621943000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:02.158219",
+      "updated_at": "2026-01-28T17:39:32",
+      "id": 4818,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54247,
+      "review_id": 25927,
+      "datastream_metadata": {
+        "uuid": "3a46fd76-88f4-4355-a5d6-b8823cf462a2",
+        "source_timestamp": 1769621972000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:39:00.463572",
+      "updated_at": "2026-01-28T17:39:08",
+      "id": 4817,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54242,
+      "review_id": 25909,
+      "datastream_metadata": {
+        "uuid": "672d2427-8e46-4971-81a8-b91da5237c15",
+        "source_timestamp": 1769621948000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:38:59.814866",
+      "updated_at": "2026-01-28T17:39:11",
+      "id": 4816,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54239,
+      "review_id": 25911,
+      "datastream_metadata": {
+        "uuid": "1c748b2d-2f63-4353-8cc7-4b437e4a2739",
+        "source_timestamp": 1769621951000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:38:59.555580",
+      "updated_at": "2026-01-28T17:39:19",
+      "id": 4815,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54253,
+      "review_id": 25917,
+      "datastream_metadata": {
+        "uuid": "f95801b5-9c53-4d2c-866c-6c74e72a557b",
+        "source_timestamp": 1769621959000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:38:59.185487",
+      "updated_at": "2026-01-28T17:39:08",
+      "id": 4814,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54234,
+      "review_id": 25907,
+      "datastream_metadata": {
+        "uuid": "9bfb5386-4bf7-4d0e-aa1b-8ddc9b25b8a0",
+        "source_timestamp": 1769621948000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:38:58.708563",
+      "updated_at": "2026-01-28T17:39:07",
+      "id": 4813,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54235,
+      "review_id": 25905,
+      "datastream_metadata": {
+        "uuid": "0609ca68-1ed7-472a-a636-a343e6ec0f50",
+        "source_timestamp": 1769621947000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:38:58.573326",
+      "updated_at": "2026-01-28T17:39:06",
+      "id": 4812,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54241,
+      "review_id": 25902,
+      "datastream_metadata": {
+        "uuid": "1584cbf7-d41d-4711-bc8c-2e39f75b6a21",
+        "source_timestamp": 1769621946000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:38:57.802118",
+      "updated_at": "2026-01-28T17:39:07",
+      "id": 4811,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54256,
+      "review_id": 25906,
+      "datastream_metadata": {
+        "uuid": "da74b3f2-12e3-4357-8e79-bac6841a5e75",
+        "source_timestamp": 1769621947000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:38:56.491588",
+      "updated_at": "2026-01-28T17:38:56.491588",
+      "id": 4810,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 0,
+      "conversation_id": 54238,
+      "review_id": null,
+      "datastream_metadata": {
+        "uuid": "30b621d1-a1b3-4875-8644-15c80350da52",
+        "source_timestamp": 1769621936000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:38:56.484763",
+      "updated_at": "2026-01-28T17:38:56.484763",
+      "id": 4809,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 0,
+      "conversation_id": 54251,
+      "review_id": null,
+      "datastream_metadata": {
+        "uuid": "3f43844e-bec8-44ab-b050-ec2b2dec92e8",
+        "source_timestamp": 1769621936000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:38:54.963875",
+      "updated_at": "2026-01-28T17:39:05",
+      "id": 4808,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54214,
+      "review_id": 25901,
+      "datastream_metadata": {
+        "uuid": "e126c8c3-0477-4320-a72d-ca95a98281b0",
+        "source_timestamp": 1769621945000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:38:54.827571",
+      "updated_at": "2026-01-28T17:39:09",
+      "id": 4807,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54232,
+      "review_id": 25910,
+      "datastream_metadata": {
+        "uuid": "36833f6e-bdb6-485f-a6c9-eab5c386938e",
+        "source_timestamp": 1769621949000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:38:54.676171",
+      "updated_at": "2026-01-28T17:39:12",
+      "id": 4806,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54226,
+      "review_id": 25912,
+      "datastream_metadata": {
+        "uuid": "f8b13b8c-971d-453a-98a4-d8a6926200ef",
+        "source_timestamp": 1769621952000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:38:51.786072",
+      "updated_at": "2026-01-28T17:39:18",
+      "id": 4805,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54222,
+      "review_id": 25916,
+      "datastream_metadata": {
+        "uuid": "c4cd9653-caac-4052-ae22-070e349cbb4e",
+        "source_timestamp": 1769621958000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:38:51.607963",
+      "updated_at": "2026-01-28T17:38:51.607963",
+      "id": 4804,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 0,
+      "conversation_id": 54233,
+      "review_id": null,
+      "datastream_metadata": {
+        "uuid": "88e78114-4042-4024-952e-d682f6007143",
+        "source_timestamp": 1769621931000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:38:51.235856",
+      "updated_at": "2026-01-28T17:39:01",
+      "id": 4803,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54219,
+      "review_id": 25899,
+      "datastream_metadata": {
+        "uuid": "cd09f9b9-e737-471f-a4b9-0b8d9664f455",
+        "source_timestamp": 1769621941000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:38:50.882534",
+      "updated_at": "2026-01-28T17:39:00",
+      "id": 4802,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54210,
+      "review_id": 25898,
+      "datastream_metadata": {
+        "uuid": "e56d586e-71e0-467e-9acd-2641fdcc8df6",
+        "source_timestamp": 1769621940000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:38:50.766367",
+      "updated_at": "2026-01-28T17:39:00",
+      "id": 4801,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54218,
+      "review_id": 25897,
+      "datastream_metadata": {
+        "uuid": "43f34cf1-30be-4414-a9fd-a0e443406a50",
+        "source_timestamp": 1769621940000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:38:50.364865",
+      "updated_at": "2026-01-28T17:39:07",
+      "id": 4800,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54212,
+      "review_id": 25904,
+      "datastream_metadata": {
+        "uuid": "02bd2b9b-f839-409d-aac2-637138364762",
+        "source_timestamp": 1769621947000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:38:50.351900",
+      "updated_at": "2026-01-28T17:38:50.351900",
+      "id": 4799,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 0,
+      "conversation_id": 54224,
+      "review_id": null,
+      "datastream_metadata": {
+        "uuid": "3683cd47-1a1a-4b5a-84dd-64a53bbdc5ea",
+        "source_timestamp": 1769621930000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:38:47.446786",
+      "updated_at": "2026-01-28T17:39:06",
+      "id": 4798,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54190,
+      "review_id": 25903,
+      "datastream_metadata": {
+        "uuid": "9c2ea90f-dcb3-4aad-a2cd-528905e0147e",
+        "source_timestamp": 1769621946000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:38:47.211258",
+      "updated_at": "2026-01-28T17:38:47.211258",
+      "id": 4797,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 0,
+      "conversation_id": 54197,
+      "review_id": null,
+      "datastream_metadata": {
+        "uuid": "3b54a9f3-57c2-49c9-8190-af0585f986df",
+        "source_timestamp": 1769621927000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:38:46.272272",
+      "updated_at": "2026-01-28T17:38:56",
+      "id": 4796,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54192,
+      "review_id": 25896,
+      "datastream_metadata": {
+        "uuid": "7d9deeff-b954-47ed-9d23-af4ce41a400a",
+        "source_timestamp": 1769621936000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:38:45.821576",
+      "updated_at": "2026-01-28T17:38:55",
+      "id": 4795,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54193,
+      "review_id": 25895,
+      "datastream_metadata": {
+        "uuid": "85646310-ef33-455e-9e9c-fab56709bd92",
+        "source_timestamp": 1769621935000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:38:45.643615",
+      "updated_at": "2026-01-28T17:38:53",
+      "id": 4794,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54202,
+      "review_id": 25893,
+      "datastream_metadata": {
+        "uuid": "9ee4ef0f-2d57-4790-8e96-30e5f11d0539",
+        "source_timestamp": 1769621933000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:38:45.509387",
+      "updated_at": "2026-01-28T17:38:53",
+      "id": 4793,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 1,
+      "conversation_id": 54187,
+      "review_id": 25894,
+      "datastream_metadata": {
+        "uuid": "96857d81-2ef2-4de0-9d12-5b82bd13d50c",
+        "source_timestamp": 1769621933000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:38:44.224564",
+      "updated_at": "2026-01-28T17:38:44.224564",
+      "id": 4792,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 0,
+      "conversation_id": 54196,
+      "review_id": null,
+      "datastream_metadata": {
+        "uuid": "72292274-feb6-4a5f-aa9c-1c62a3bda0eb",
+        "source_timestamp": 1769621924000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:38:43.690093",
+      "updated_at": "2026-01-28T17:38:43.690093",
+      "id": 4791,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 0,
+      "conversation_id": 54209,
+      "review_id": null,
+      "datastream_metadata": {
+        "uuid": "a3376fa5-67d2-419c-bac8-abc63d16acd0",
+        "source_timestamp": 1769621923000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:38:43.531053",
+      "updated_at": "2026-01-28T17:38:43.531053",
+      "id": 4790,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 0,
+      "conversation_id": 54198,
+      "review_id": null,
+      "datastream_metadata": {
+        "uuid": "913bb0ff-d4e3-47ab-937a-682083c19fce",
+        "source_timestamp": 1769621923000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:38:43.293616",
+      "updated_at": "2026-01-28T17:38:43.293616",
+      "id": 4789,
+      "delivery_batch_auto_review_id": 29,
+      "review_success": 0,
+      "conversation_id": 54200,
+      "review_id": null,
+      "datastream_metadata": {
+        "uuid": "1cdd3733-8288-4e6a-8e74-e87afc8b4f22",
+        "source_timestamp": 1769621923000
+      }
+    },
+    {
+      "created_at": "2026-01-28T17:35:29.917246",
+      "updated_at": "2026-01-28T17:35:40",
+      "id": 4788,
+      "delivery_batch_auto_review_id": 27,
+      "review_success": 1,
+      "conversation_id": 62753,
+      "review_id": 25888,
+      "datastream_metadata": {
+        "uuid": "fcb1688c-f68d-433e-a38f-24963d17971d",
+        "source_timestamp": 1769621740000
+      }
+    }
+  ]
+}

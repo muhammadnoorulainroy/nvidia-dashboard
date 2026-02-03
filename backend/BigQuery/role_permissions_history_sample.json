@@ -1,0 +1,638 @@
+{
+  "table": "role_permissions_history",
+  "row_count": 42,
+  "sample_count": 42,
+  "fetched_at": "2026-01-28T23:24:39.842280",
+  "data": [
+    {
+      "created_at": "2025-08-21T19:33:21.957195",
+      "updated_at": "2025-08-21T19:33:21.957195",
+      "id": 42,
+      "old_value": "unset",
+      "new_value": "allow",
+      "comment": "Role permissions is set",
+      "role_id": 2,
+      "permission_id": 246,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "4d183c14-a95e-473c-85f5-e0da01111010",
+        "source_timestamp": 1755804801000
+      }
+    },
+    {
+      "created_at": "2025-08-21T19:31:12.532770",
+      "updated_at": "2025-08-21T19:31:12.532770",
+      "id": 41,
+      "old_value": "deny",
+      "new_value": "unset",
+      "comment": "Role permissions is unset",
+      "role_id": 2,
+      "permission_id": 246,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "aaf92ccb-cee5-4df0-b31e-5bd200010000",
+        "source_timestamp": 1755804672000
+      }
+    },
+    {
+      "created_at": "2025-08-21T19:31:07.944131",
+      "updated_at": "2025-08-21T19:31:07.944131",
+      "id": 40,
+      "old_value": "allow",
+      "new_value": "deny",
+      "comment": null,
+      "role_id": 2,
+      "permission_id": 246,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "89260650-2124-414c-bdc9-e48e01111101",
+        "source_timestamp": 1755804667000
+      }
+    },
+    {
+      "created_at": "2025-08-21T19:25:47.454897",
+      "updated_at": "2025-08-21T19:25:47.454897",
+      "id": 39,
+      "old_value": "unset",
+      "new_value": "allow",
+      "comment": "Role permissions is set",
+      "role_id": 2,
+      "permission_id": 353,
+      "author_id": 110,
+      "datastream_metadata": {
+        "uuid": "84d0bc35-dd7d-471b-952c-b24300101011",
+        "source_timestamp": 1755804347000
+      }
+    },
+    {
+      "created_at": "2025-08-11T15:21:18.990343",
+      "updated_at": "2025-08-11T15:21:18.990343",
+      "id": 38,
+      "old_value": "unset",
+      "new_value": "allow",
+      "comment": "Role permissions is set",
+      "role_id": 2,
+      "permission_id": 291,
+      "author_id": 16,
+      "datastream_metadata": {
+        "uuid": "9191c07b-f190-4a71-b648-9ab601101001",
+        "source_timestamp": 1754925678000
+      }
+    },
+    {
+      "created_at": "2025-08-11T15:21:18.086688",
+      "updated_at": "2025-08-11T15:21:18.086688",
+      "id": 37,
+      "old_value": "unset",
+      "new_value": "allow",
+      "comment": "Role permissions is set",
+      "role_id": 3,
+      "permission_id": 291,
+      "author_id": 16,
+      "datastream_metadata": {
+        "uuid": "9191c07b-f190-4a71-b648-9ab601100011",
+        "source_timestamp": 1754925678000
+      }
+    },
+    {
+      "created_at": "2025-08-11T15:21:16.988237",
+      "updated_at": "2025-08-11T15:21:16.988237",
+      "id": 36,
+      "old_value": "unset",
+      "new_value": "allow",
+      "comment": "Role permissions is set",
+      "role_id": 4,
+      "permission_id": 291,
+      "author_id": 16,
+      "datastream_metadata": {
+        "uuid": "9191c07b-f190-4a71-b648-9ab601011111",
+        "source_timestamp": 1754925676000
+      }
+    },
+    {
+      "created_at": "2025-08-11T15:20:26.136322",
+      "updated_at": "2025-08-11T15:20:26.136322",
+      "id": 35,
+      "old_value": "unset",
+      "new_value": "allow",
+      "comment": "Role permissions is set",
+      "role_id": 2,
+      "permission_id": 331,
+      "author_id": 16,
+      "datastream_metadata": {
+        "uuid": "6f45f0b1-3a52-4960-afb5-49e510110101",
+        "source_timestamp": 1754925626000
+      }
+    },
+    {
+      "created_at": "2025-08-11T15:20:26.078872",
+      "updated_at": "2025-08-11T15:20:26.078872",
+      "id": 34,
+      "old_value": "deny",
+      "new_value": "unset",
+      "comment": "Role permissions is unset",
+      "role_id": 2,
+      "permission_id": 331,
+      "author_id": 16,
+      "datastream_metadata": {
+        "uuid": "6f45f0b1-3a52-4960-afb5-49e510110010",
+        "source_timestamp": 1754925626000
+      }
+    },
+    {
+      "created_at": "2025-08-11T15:20:24.882503",
+      "updated_at": "2025-08-11T15:20:24.882503",
+      "id": 33,
+      "old_value": "allow",
+      "new_value": "deny",
+      "comment": null,
+      "role_id": 2,
+      "permission_id": 331,
+      "author_id": 16,
+      "datastream_metadata": {
+        "uuid": "6f45f0b1-3a52-4960-afb5-49e510110000",
+        "source_timestamp": 1754925624000
+      }
+    },
+    {
+      "created_at": "2025-08-11T15:20:24.834727",
+      "updated_at": "2025-08-11T15:20:24.834727",
+      "id": 32,
+      "old_value": "unset",
+      "new_value": "allow",
+      "comment": "Role permissions is set",
+      "role_id": 2,
+      "permission_id": 331,
+      "author_id": 16,
+      "datastream_metadata": {
+        "uuid": "6f45f0b1-3a52-4960-afb5-49e510101111",
+        "source_timestamp": 1754925624000
+      }
+    },
+    {
+      "created_at": "2025-08-11T15:20:24.277710",
+      "updated_at": "2025-08-11T15:20:24.277710",
+      "id": 31,
+      "old_value": "deny",
+      "new_value": "unset",
+      "comment": "Role permissions is unset",
+      "role_id": 2,
+      "permission_id": 331,
+      "author_id": 16,
+      "datastream_metadata": {
+        "uuid": "6f45f0b1-3a52-4960-afb5-49e510101011",
+        "source_timestamp": 1754925624000
+      }
+    },
+    {
+      "created_at": "2025-08-11T15:20:23.750530",
+      "updated_at": "2025-08-11T15:20:23.750530",
+      "id": 30,
+      "old_value": "allow",
+      "new_value": "deny",
+      "comment": null,
+      "role_id": 2,
+      "permission_id": 331,
+      "author_id": 16,
+      "datastream_metadata": {
+        "uuid": "6f45f0b1-3a52-4960-afb5-49e510100111",
+        "source_timestamp": 1754925623000
+      }
+    },
+    {
+      "created_at": "2025-08-11T15:20:23.233520",
+      "updated_at": "2025-08-11T15:20:23.233520",
+      "id": 29,
+      "old_value": "unset",
+      "new_value": "allow",
+      "comment": "Role permissions is set",
+      "role_id": 2,
+      "permission_id": 331,
+      "author_id": 16,
+      "datastream_metadata": {
+        "uuid": "6f45f0b1-3a52-4960-afb5-49e510100110",
+        "source_timestamp": 1754925623000
+      }
+    },
+    {
+      "created_at": "2025-08-11T15:20:01.792217",
+      "updated_at": "2025-08-11T15:20:01.792217",
+      "id": 28,
+      "old_value": "deny",
+      "new_value": "unset",
+      "comment": "Role permissions is unset",
+      "role_id": 2,
+      "permission_id": 331,
+      "author_id": 16,
+      "datastream_metadata": {
+        "uuid": "0b775e62-7102-4b2d-a791-3dd901100011",
+        "source_timestamp": 1754925601000
+      }
+    },
+    {
+      "created_at": "2025-08-11T15:20:00.466110",
+      "updated_at": "2025-08-11T15:20:00.466110",
+      "id": 27,
+      "old_value": "allow",
+      "new_value": "deny",
+      "comment": null,
+      "role_id": 2,
+      "permission_id": 331,
+      "author_id": 16,
+      "datastream_metadata": {
+        "uuid": "0b775e62-7102-4b2d-a791-3dd901011001",
+        "source_timestamp": 1754925600000
+      }
+    },
+    {
+      "created_at": "2025-08-11T15:19:52.969588",
+      "updated_at": "2025-08-11T15:19:52.969588",
+      "id": 26,
+      "old_value": "unset",
+      "new_value": "allow",
+      "comment": "Role permissions is set",
+      "role_id": 2,
+      "permission_id": 331,
+      "author_id": 16,
+      "datastream_metadata": {
+        "uuid": "0b775e62-7102-4b2d-a791-3dd901000001",
+        "source_timestamp": 1754925592000
+      }
+    },
+    {
+      "created_at": "2025-08-11T15:19:32.294759",
+      "updated_at": "2025-08-11T15:19:32.294759",
+      "id": 25,
+      "old_value": "unset",
+      "new_value": "allow",
+      "comment": "Role permissions is set",
+      "role_id": 4,
+      "permission_id": 331,
+      "author_id": 16,
+      "datastream_metadata": {
+        "uuid": "09fa9b88-5894-4d98-af46-3b6d11010100",
+        "source_timestamp": 1754925572000
+      }
+    },
+    {
+      "created_at": "2025-08-11T15:15:55.809449",
+      "updated_at": "2025-08-11T15:15:55.809449",
+      "id": 24,
+      "old_value": "deny",
+      "new_value": "unset",
+      "comment": "Role permissions is unset",
+      "role_id": 3,
+      "permission_id": 374,
+      "author_id": 16,
+      "datastream_metadata": {
+        "uuid": "ffd95490-83fc-4370-8c31-002110111101",
+        "source_timestamp": 1754925355000
+      }
+    },
+    {
+      "created_at": "2025-08-11T15:15:54.876291",
+      "updated_at": "2025-08-11T15:15:54.876291",
+      "id": 23,
+      "old_value": "deny",
+      "new_value": "unset",
+      "comment": "Role permissions is unset",
+      "role_id": 4,
+      "permission_id": 374,
+      "author_id": 16,
+      "datastream_metadata": {
+        "uuid": "ffd95490-83fc-4370-8c31-002110111011",
+        "source_timestamp": 1754925354000
+      }
+    },
+    {
+      "created_at": "2025-08-11T15:15:53.785412",
+      "updated_at": "2025-08-11T15:15:53.785412",
+      "id": 22,
+      "old_value": "allow",
+      "new_value": "deny",
+      "comment": null,
+      "role_id": 4,
+      "permission_id": 374,
+      "author_id": 16,
+      "datastream_metadata": {
+        "uuid": "ffd95490-83fc-4370-8c31-002110101011",
+        "source_timestamp": 1754925353000
+      }
+    },
+    {
+      "created_at": "2025-08-11T15:15:36.002739",
+      "updated_at": "2025-08-11T15:15:36.002739",
+      "id": 21,
+      "old_value": "unset",
+      "new_value": "allow",
+      "comment": "Role permissions is set",
+      "role_id": 2,
+      "permission_id": 290,
+      "author_id": 16,
+      "datastream_metadata": {
+        "uuid": "ffd95490-83fc-4370-8c31-002101101000",
+        "source_timestamp": 1754925336000
+      }
+    },
+    {
+      "created_at": "2025-08-11T15:15:34.658148",
+      "updated_at": "2025-08-11T15:15:34.658148",
+      "id": 20,
+      "old_value": "unset",
+      "new_value": "allow",
+      "comment": "Role permissions is set",
+      "role_id": 3,
+      "permission_id": 290,
+      "author_id": 16,
+      "datastream_metadata": {
+        "uuid": "ffd95490-83fc-4370-8c31-002101100110",
+        "source_timestamp": 1754925334000
+      }
+    },
+    {
+      "created_at": "2025-08-11T15:15:33.530548",
+      "updated_at": "2025-08-11T15:15:33.530548",
+      "id": 19,
+      "old_value": "unset",
+      "new_value": "allow",
+      "comment": "Role permissions is set",
+      "role_id": 4,
+      "permission_id": 290,
+      "author_id": 16,
+      "datastream_metadata": {
+        "uuid": "ffd95490-83fc-4370-8c31-002101100100",
+        "source_timestamp": 1754925333000
+      }
+    },
+    {
+      "created_at": "2025-08-11T15:15:27.408384",
+      "updated_at": "2025-08-11T15:15:27.408384",
+      "id": 18,
+      "old_value": "unset",
+      "new_value": "allow",
+      "comment": "Role permissions is set",
+      "role_id": 4,
+      "permission_id": 374,
+      "author_id": 16,
+      "datastream_metadata": {
+        "uuid": "ffd95490-83fc-4370-8c31-002101010100",
+        "source_timestamp": 1754925327000
+      }
+    },
+    {
+      "created_at": "2025-08-11T15:15:26.506858",
+      "updated_at": "2025-08-11T15:15:26.506858",
+      "id": 17,
+      "old_value": "deny",
+      "new_value": "unset",
+      "comment": "Role permissions is unset",
+      "role_id": 4,
+      "permission_id": 374,
+      "author_id": 16,
+      "datastream_metadata": {
+        "uuid": "ffd95490-83fc-4370-8c31-002101001101",
+        "source_timestamp": 1754925326000
+      }
+    },
+    {
+      "created_at": "2025-08-07T14:52:19.610723",
+      "updated_at": "2025-08-07T14:52:19.610723",
+      "id": 16,
+      "old_value": "unset",
+      "new_value": "allow",
+      "comment": "Role permissions is set",
+      "role_id": 1,
+      "permission_id": 489,
+      "author_id": 290,
+      "datastream_metadata": {
+        "uuid": "bf8f2be9-f074-4310-8a75-8c6a10000001",
+        "source_timestamp": 1754578339000
+      }
+    },
+    {
+      "created_at": "2025-08-07T14:51:53.602458",
+      "updated_at": "2025-08-07T14:51:53.602458",
+      "id": 15,
+      "old_value": "unset",
+      "new_value": "allow",
+      "comment": "Role permissions is set",
+      "role_id": 1,
+      "permission_id": 488,
+      "author_id": 290,
+      "datastream_metadata": {
+        "uuid": "bf8f2be9-f074-4310-8a75-8c6a00000110",
+        "source_timestamp": 1754578313000
+      }
+    },
+    {
+      "created_at": "2025-08-07T14:28:44.958608",
+      "updated_at": "2025-08-07T14:28:44.958608",
+      "id": 14,
+      "old_value": "unset",
+      "new_value": "allow",
+      "comment": "Role permissions is set",
+      "role_id": 1,
+      "permission_id": 487,
+      "author_id": 290,
+      "datastream_metadata": {
+        "uuid": "d0dd267b-a95e-4857-b03d-1d9210000111",
+        "source_timestamp": 1754576924000
+      }
+    },
+    {
+      "created_at": "2025-08-07T14:27:12.714619",
+      "updated_at": "2025-08-07T14:27:12.714619",
+      "id": 13,
+      "old_value": "unset",
+      "new_value": "allow",
+      "comment": "Role permissions is set",
+      "role_id": 1,
+      "permission_id": 213,
+      "author_id": 290,
+      "datastream_metadata": {
+        "uuid": "3225d9cd-fd3f-4a5a-8c09-b9ba01100001",
+        "source_timestamp": 1754576832000
+      }
+    },
+    {
+      "created_at": "2025-08-07T14:27:10.926950",
+      "updated_at": "2025-08-07T14:27:10.926950",
+      "id": 12,
+      "old_value": "unset",
+      "new_value": "allow",
+      "comment": "Role permissions is set",
+      "role_id": 1,
+      "permission_id": 212,
+      "author_id": 290,
+      "datastream_metadata": {
+        "uuid": "3225d9cd-fd3f-4a5a-8c09-b9ba00110011",
+        "source_timestamp": 1754576830000
+      }
+    },
+    {
+      "created_at": "2025-08-07T14:26:58.876179",
+      "updated_at": "2025-08-07T14:26:58.876179",
+      "id": 11,
+      "old_value": "unset",
+      "new_value": "allow",
+      "comment": "Role permissions is set",
+      "role_id": 1,
+      "permission_id": 288,
+      "author_id": 290,
+      "datastream_metadata": {
+        "uuid": "3225d9cd-fd3f-4a5a-8c09-b9ba00010101",
+        "source_timestamp": 1754576818000
+      }
+    },
+    {
+      "created_at": "2025-08-07T14:26:55.918914",
+      "updated_at": "2025-08-07T14:26:55.918914",
+      "id": 10,
+      "old_value": "unset",
+      "new_value": "allow",
+      "comment": "Role permissions is set",
+      "role_id": 1,
+      "permission_id": 290,
+      "author_id": 290,
+      "datastream_metadata": {
+        "uuid": "3225d9cd-fd3f-4a5a-8c09-b9ba00001111",
+        "source_timestamp": 1754576815000
+      }
+    },
+    {
+      "created_at": "2025-08-07T14:26:54.683425",
+      "updated_at": "2025-08-07T14:26:54.683425",
+      "id": 9,
+      "old_value": "unset",
+      "new_value": "allow",
+      "comment": "Role permissions is set",
+      "role_id": 1,
+      "permission_id": 289,
+      "author_id": 290,
+      "datastream_metadata": {
+        "uuid": "3225d9cd-fd3f-4a5a-8c09-b9ba00001101",
+        "source_timestamp": 1754576814000
+      }
+    },
+    {
+      "created_at": "2025-08-07T14:26:53.651148",
+      "updated_at": "2025-08-07T14:26:53.651148",
+      "id": 8,
+      "old_value": "unset",
+      "new_value": "allow",
+      "comment": "Role permissions is set",
+      "role_id": 1,
+      "permission_id": 386,
+      "author_id": 290,
+      "datastream_metadata": {
+        "uuid": "3225d9cd-fd3f-4a5a-8c09-b9ba00001011",
+        "source_timestamp": 1754576813000
+      }
+    },
+    {
+      "created_at": "2025-08-07T14:15:51.697175",
+      "updated_at": "2025-08-07T14:15:51.697175",
+      "id": 7,
+      "old_value": "unset",
+      "new_value": "allow",
+      "comment": "Role permissions is set",
+      "role_id": 1,
+      "permission_id": 331,
+      "author_id": 290,
+      "datastream_metadata": {
+        "uuid": "f86ad676-cb15-4574-a959-04fd11010011",
+        "source_timestamp": 1754576151000
+      }
+    },
+    {
+      "created_at": "2025-08-07T14:15:45.437730",
+      "updated_at": "2025-08-07T14:15:45.437730",
+      "id": 6,
+      "old_value": "unset",
+      "new_value": "allow",
+      "comment": "Role permissions is set",
+      "role_id": 1,
+      "permission_id": 291,
+      "author_id": 290,
+      "datastream_metadata": {
+        "uuid": "f86ad676-cb15-4574-a959-04fd10111100",
+        "source_timestamp": 1754576145000
+      }
+    },
+    {
+      "created_at": "2025-08-07T14:15:35.594716",
+      "updated_at": "2025-08-07T14:15:35.594716",
+      "id": 5,
+      "old_value": "unset",
+      "new_value": "allow",
+      "comment": "Role permissions is set",
+      "role_id": 1,
+      "permission_id": 287,
+      "author_id": 290,
+      "datastream_metadata": {
+        "uuid": "f86ad676-cb15-4574-a959-04fd10011101",
+        "source_timestamp": 1754576135000
+      }
+    },
+    {
+      "created_at": "2025-08-07T14:15:28.676001",
+      "updated_at": "2025-08-07T14:15:28.676001",
+      "id": 4,
+      "old_value": "allow",
+      "new_value": "deny",
+      "comment": null,
+      "role_id": 4,
+      "permission_id": 374,
+      "author_id": 290,
+      "datastream_metadata": {
+        "uuid": "f86ad676-cb15-4574-a959-04fd10000011",
+        "source_timestamp": 1754576128000
+      }
+    },
+    {
+      "created_at": "2025-08-07T14:15:27.023711",
+      "updated_at": "2025-08-07T14:15:27.023711",
+      "id": 3,
+      "old_value": "allow",
+      "new_value": "deny",
+      "comment": null,
+      "role_id": 3,
+      "permission_id": 374,
+      "author_id": 290,
+      "datastream_metadata": {
+        "uuid": "f86ad676-cb15-4574-a959-04fd01111010",
+        "source_timestamp": 1754576127000
+      }
+    },
+    {
+      "created_at": "2025-08-07T14:15:25.753855",
+      "updated_at": "2025-08-07T14:15:25.753855",
+      "id": 2,
+      "old_value": "unset",
+      "new_value": "allow",
+      "comment": "Role permissions is set",
+      "role_id": 3,
+      "permission_id": 374,
+      "author_id": 290,
+      "datastream_metadata": {
+        "uuid": "f86ad676-cb15-4574-a959-04fd01110101",
+        "source_timestamp": 1754576125000
+      }
+    },
+    {
+      "created_at": "2025-08-07T14:15:24.671172",
+      "updated_at": "2025-08-07T14:15:24.671172",
+      "id": 1,
+      "old_value": "unset",
+      "new_value": "allow",
+      "comment": "Role permissions is set",
+      "role_id": 4,
+      "permission_id": 374,
+      "author_id": 290,
+      "datastream_metadata": {
+        "uuid": "f86ad676-cb15-4574-a959-04fd01100111",
+        "source_timestamp": 1754576124000
+      }
+    }
+  ]
+}

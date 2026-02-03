@@ -1,0 +1,246 @@
+{
+  "table": "timer_state_history",
+  "row_count": 14,
+  "sample_count": 14,
+  "fetched_at": "2026-01-28T23:25:07.916903",
+  "data": [
+    {
+      "created_at": "2025-10-16T07:36:58.456028",
+      "updated_at": "2025-10-16T07:36:58.456028",
+      "id": 14,
+      "timer_id": "158fc6a9-6665-448f-9a71-4473f27dd1cc",
+      "old_state": "running",
+      "new_state": "idle",
+      "timer_session_id": null,
+      "author_id": 1,
+      "notes": "Setting timer idle",
+      "metadata": null,
+      "total_tracked_time_seconds": 903,
+      "datastream_metadata": {
+        "uuid": "41456030-c090-43c8-ad8e-b44c10111100",
+        "source_timestamp": 1760600218000
+      }
+    },
+    {
+      "created_at": "2025-10-16T07:22:01.843674",
+      "updated_at": "2025-10-16T07:22:01.843674",
+      "id": 13,
+      "timer_id": "158fc6a9-6665-448f-9a71-4473f27dd1cc",
+      "old_state": "paused",
+      "new_state": "running",
+      "timer_session_id": 6,
+      "author_id": 1,
+      "notes": "Resuming timer",
+      "metadata": null,
+      "total_tracked_time_seconds": 6,
+      "datastream_metadata": {
+        "uuid": "84447c83-1e21-4696-b73a-854d11011110",
+        "source_timestamp": 1760599321000
+      }
+    },
+    {
+      "created_at": "2025-10-16T07:21:38.701985",
+      "updated_at": "2025-10-16T07:21:38.701985",
+      "id": 12,
+      "timer_id": "158fc6a9-6665-448f-9a71-4473f27dd1cc",
+      "old_state": "running",
+      "new_state": "paused",
+      "timer_session_id": null,
+      "author_id": 1,
+      "notes": "Terminating timer",
+      "metadata": null,
+      "total_tracked_time_seconds": 6,
+      "datastream_metadata": {
+        "uuid": "84447c83-1e21-4696-b73a-854d01001010",
+        "source_timestamp": 1760599298000
+      }
+    },
+    {
+      "created_at": "2025-10-16T07:21:31.737137",
+      "updated_at": "2025-10-16T07:21:31.737137",
+      "id": 11,
+      "timer_id": "158fc6a9-6665-448f-9a71-4473f27dd1cc",
+      "old_state": "paused",
+      "new_state": "running",
+      "timer_session_id": 5,
+      "author_id": 1,
+      "notes": "Resuming timer",
+      "metadata": null,
+      "total_tracked_time_seconds": 0,
+      "datastream_metadata": {
+        "uuid": "84447c83-1e21-4696-b73a-854d00011001",
+        "source_timestamp": 1760599291000
+      }
+    },
+    {
+      "created_at": "2025-10-16T07:21:08.305922",
+      "updated_at": "2025-10-16T07:21:08.305922",
+      "id": 10,
+      "timer_id": "158fc6a9-6665-448f-9a71-4473f27dd1cc",
+      "old_state": null,
+      "new_state": "paused",
+      "timer_session_id": null,
+      "author_id": 1,
+      "notes": "Creating a new timer for user",
+      "metadata": null,
+      "total_tracked_time_seconds": 0,
+      "datastream_metadata": {
+        "uuid": "86b3ea06-13b3-4c35-ac94-363900010001",
+        "source_timestamp": 1760599268000
+      }
+    },
+    {
+      "created_at": "2025-09-04T14:35:54.339736",
+      "updated_at": "2025-09-04T14:35:54.339736",
+      "id": 9,
+      "timer_id": "b250d3cf-bc0f-4b41-a30e-d413e18e9f86",
+      "old_state": "running",
+      "new_state": "idle",
+      "timer_session_id": null,
+      "author_id": 176,
+      "notes": "Setting timer idle",
+      "metadata": null,
+      "total_tracked_time_seconds": 1561,
+      "datastream_metadata": {
+        "uuid": "58b2fe1d-567d-4eb6-be66-09ce11111001",
+        "source_timestamp": 1756996554000
+      }
+    },
+    {
+      "created_at": "2025-09-04T14:25:16.737443",
+      "updated_at": "2025-09-04T14:25:16.737443",
+      "id": 8,
+      "timer_id": "b250d3cf-bc0f-4b41-a30e-d413e18e9f86",
+      "old_state": "paused",
+      "new_state": "running",
+      "timer_session_id": 4,
+      "author_id": 176,
+      "notes": "Autostarting paused timer",
+      "metadata": null,
+      "total_tracked_time_seconds": 924,
+      "datastream_metadata": {
+        "uuid": "2a046141-d48b-488a-8b1c-c6d311111000",
+        "source_timestamp": 1756995916000
+      }
+    },
+    {
+      "created_at": "2025-09-04T14:25:14.366738",
+      "updated_at": "2025-09-04T14:25:14.366738",
+      "id": 7,
+      "timer_id": "b250d3cf-bc0f-4b41-a30e-d413e18e9f86",
+      "old_state": "running",
+      "new_state": "paused",
+      "timer_session_id": null,
+      "author_id": 176,
+      "notes": "Terminating timer",
+      "metadata": null,
+      "total_tracked_time_seconds": 924,
+      "datastream_metadata": {
+        "uuid": "2a046141-d48b-488a-8b1c-c6d311101100",
+        "source_timestamp": 1756995914000
+      }
+    },
+    {
+      "created_at": "2025-09-04T14:24:54.513955",
+      "updated_at": "2025-09-04T14:24:54.513955",
+      "id": 6,
+      "timer_id": "b250d3cf-bc0f-4b41-a30e-d413e18e9f86",
+      "old_state": "paused",
+      "new_state": "running",
+      "timer_session_id": 3,
+      "author_id": 176,
+      "notes": "Autostarting idle timer",
+      "metadata": null,
+      "total_tracked_time_seconds": 903,
+      "datastream_metadata": {
+        "uuid": "2a046141-d48b-488a-8b1c-c6d310001001",
+        "source_timestamp": 1756995894000
+      }
+    },
+    {
+      "created_at": "2025-09-04T13:53:55.959222",
+      "updated_at": "2025-09-04T13:53:55.959222",
+      "id": 5,
+      "timer_id": "b250d3cf-bc0f-4b41-a30e-d413e18e9f86",
+      "old_state": "running",
+      "new_state": "idle",
+      "timer_session_id": null,
+      "author_id": 176,
+      "notes": "Setting timer idle",
+      "metadata": null,
+      "total_tracked_time_seconds": 903,
+      "datastream_metadata": {
+        "uuid": "02a62fcb-eae8-4187-8d08-903210000000",
+        "source_timestamp": 1756994035000
+      }
+    },
+    {
+      "created_at": "2025-09-04T13:43:17.018931",
+      "updated_at": "2025-09-04T13:43:17.018931",
+      "id": 4,
+      "timer_id": "b250d3cf-bc0f-4b41-a30e-d413e18e9f86",
+      "old_state": "paused",
+      "new_state": "running",
+      "timer_session_id": 2,
+      "author_id": 176,
+      "notes": "Autostarting paused timer",
+      "metadata": null,
+      "total_tracked_time_seconds": 264,
+      "datastream_metadata": {
+        "uuid": "12170e32-8eb8-4fd1-abc1-77d801101001",
+        "source_timestamp": 1756993397000
+      }
+    },
+    {
+      "created_at": "2025-09-04T13:43:03.728880",
+      "updated_at": "2025-09-04T13:43:03.728880",
+      "id": 3,
+      "timer_id": "b250d3cf-bc0f-4b41-a30e-d413e18e9f86",
+      "old_state": "running",
+      "new_state": "paused",
+      "timer_session_id": null,
+      "author_id": 176,
+      "notes": "Terminating timer",
+      "metadata": null,
+      "total_tracked_time_seconds": 264,
+      "datastream_metadata": {
+        "uuid": "12170e32-8eb8-4fd1-abc1-77d800101100",
+        "source_timestamp": 1756993383000
+      }
+    },
+    {
+      "created_at": "2025-09-04T13:38:38.822748",
+      "updated_at": "2025-09-04T13:38:38.822748",
+      "id": 2,
+      "timer_id": "b250d3cf-bc0f-4b41-a30e-d413e18e9f86",
+      "old_state": "paused",
+      "new_state": "running",
+      "timer_session_id": 1,
+      "author_id": 176,
+      "notes": "Autostarting paused timer",
+      "metadata": null,
+      "total_tracked_time_seconds": 0,
+      "datastream_metadata": {
+        "uuid": "cfc2f770-37f1-4388-8346-8ce001111110",
+        "source_timestamp": 1756993118000
+      }
+    },
+    {
+      "created_at": "2025-09-04T13:38:38.738964",
+      "updated_at": "2025-09-04T13:38:38.738964",
+      "id": 1,
+      "timer_id": "b250d3cf-bc0f-4b41-a30e-d413e18e9f86",
+      "old_state": null,
+      "new_state": "paused",
+      "timer_session_id": null,
+      "author_id": 176,
+      "notes": "Creating a new timer for user",
+      "metadata": null,
+      "total_tracked_time_seconds": 0,
+      "datastream_metadata": {
+        "uuid": "cfc2f770-37f1-4388-8346-8ce001111010",
+        "source_timestamp": 1756993118000
+      }
+    }
+  ]
+}

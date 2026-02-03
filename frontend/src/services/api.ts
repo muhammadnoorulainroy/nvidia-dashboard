@@ -516,7 +516,27 @@ export const getPodLeadStats = async (
   return response.data
 }
 
-// POD Lead under Project (simplified version for project view)
+// Trainer under POD Lead (for 3-level hierarchy)
+export interface TrainerUnderPodLead {
+  trainer_name: string
+  trainer_email: string
+  unique_tasks: number
+  new_tasks: number
+  rework: number
+  total_reviews: number
+  delivered: number
+  in_queue: number
+  avg_rework: number | null
+  rework_percent: number | null
+  avg_rating: number | null
+  merged_exp_aht: number | null
+  jibble_hours: number
+  accounted_hours: number
+  efficiency: number | null
+  status: string
+}
+
+// POD Lead under Project (with trainers for 3-level hierarchy)
 export interface PodLeadUnderProject {
   pod_lead_name: string
   pod_lead_email: string
@@ -525,11 +545,17 @@ export interface PodLeadUnderProject {
   new_tasks: number
   rework: number
   total_reviews: number
+  delivered: number
+  in_queue: number
   avg_rework: number | null
   rework_percent: number | null
+  avg_rating: number | null
   merged_exp_aht: number | null
   pod_jibble_hours: number
   trainer_jibble_hours: number
+  accounted_hours: number
+  efficiency: number | null
+  trainers: TrainerUnderPodLead[]
 }
 
 // Project Stats with POD Leads
@@ -542,11 +568,16 @@ export interface ProjectStats {
   new_tasks: number
   rework: number
   total_reviews: number
+  delivered: number
+  in_queue: number
   avg_rework: number | null
   rework_percent: number | null
+  avg_rating: number | null
   merged_exp_aht: number | null
   logged_hours: number
   total_pod_hours: number
+  accounted_hours: number
+  efficiency: number | null
   pod_leads: PodLeadUnderProject[]
 }
 

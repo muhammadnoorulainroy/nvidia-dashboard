@@ -1,0 +1,35 @@
+{
+  "table": "project_form_stages",
+  "row_count": 1,
+  "sample_count": 1,
+  "fetched_at": "2026-01-28T23:24:12.660918",
+  "data": [
+    {
+      "created_at": "2025-08-12T00:46:37.665281",
+      "updated_at": "2025-08-12T00:53:17",
+      "id": 1,
+      "project_id": 31,
+      "form_stages": [
+        {
+          "key": "trainerA",
+          "name": " Trainer A",
+          "order": 1
+        },
+        {
+          "key": "trainerB",
+          "name": " Trainer B",
+          "order": 2
+        },
+        {
+          "key": "trainerC",
+          "name": " Trainer C",
+          "order": 3
+        }
+      ],
+      "datastream_metadata": {
+        "uuid": "3cbc0d82-a660-48c5-a589-cd6400101000",
+        "source_timestamp": 1754959997000
+      }
+    }
+  ]
+}

@@ -1,0 +1,1608 @@
+{
+  "table": "project_contributor",
+  "row_count": 1401,
+  "sample_count": 100,
+  "fetched_at": "2026-01-28T23:24:11.040959",
+  "data": [
+    {
+      "created_at": "2026-01-28T13:32:58.351146",
+      "updated_at": "2026-01-28T13:32:58.351146",
+      "id": 1639,
+      "project_id": 52,
+      "contributor_id": 987,
+      "is_active": 1,
+      "start_date": "2026-01-28",
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "b83759c0-21d0-4005-bf12-24d7b73ee2b8",
+        "source_timestamp": 1769607178000
+      },
+      "expertise_level": "proficient",
+      "chat_role": "target"
+    },
+    {
+      "created_at": "2026-01-27T17:58:53.027146",
+      "updated_at": "2026-01-28T12:32:31.779096",
+      "id": 1637,
+      "project_id": 36,
+      "contributor_id": 426,
+      "is_active": 1,
+      "start_date": "2026-01-28",
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "da427d71-4f41-4d50-926a-dae534e458e9",
+        "source_timestamp": 1769603551000
+      },
+      "expertise_level": "proficient",
+      "chat_role": "target"
+    },
+    {
+      "created_at": "2026-01-23T21:20:38.589135",
+      "updated_at": "2026-01-23T21:20:38.589135",
+      "id": 1636,
+      "project_id": 42,
+      "contributor_id": 1190,
+      "is_active": 1,
+      "start_date": "2026-01-23",
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "96a6390d-e38e-4b3b-bee7-c60cf4c0a1fd",
+        "source_timestamp": 1769203238000
+      },
+      "expertise_level": "proficient",
+      "chat_role": "target"
+    },
+    {
+      "created_at": "2026-01-21T17:23:13.541720",
+      "updated_at": "2026-01-21T17:23:13.541720",
+      "id": 1635,
+      "project_id": 42,
+      "contributor_id": 1237,
+      "is_active": 1,
+      "start_date": "2026-01-21",
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "7c9aca53-8a4d-4c1d-90d7-901a8031961a",
+        "source_timestamp": 1769016193000
+      },
+      "expertise_level": "proficient",
+      "chat_role": "target"
+    },
+    {
+      "created_at": "2026-01-21T17:22:34.632420",
+      "updated_at": "2026-01-21T17:22:34.632420",
+      "id": 1634,
+      "project_id": 38,
+      "contributor_id": 1237,
+      "is_active": 1,
+      "start_date": "2026-01-21",
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "7ad6c326-fe55-44ee-bead-28fd493e7653",
+        "source_timestamp": 1769016154000
+      },
+      "expertise_level": "proficient",
+      "chat_role": "target"
+    },
+    {
+      "created_at": "2026-01-20T14:10:31.580517",
+      "updated_at": "2026-01-20T14:10:31.580517",
+      "id": 1633,
+      "project_id": 39,
+      "contributor_id": 1165,
+      "is_active": 1,
+      "start_date": "2026-01-20",
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "fffe5f39-d2dc-4922-afe2-e4351021fa24",
+        "source_timestamp": 1768918231000
+      },
+      "expertise_level": "proficient",
+      "chat_role": "target"
+    },
+    {
+      "created_at": "2026-01-20T08:07:53.177682",
+      "updated_at": "2026-01-20T08:07:53.177682",
+      "id": 1632,
+      "project_id": 42,
+      "contributor_id": 805,
+      "is_active": 1,
+      "start_date": "2026-01-20",
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "0a1b8576-f265-48ad-a6c2-f1186706fd11",
+        "source_timestamp": 1768896473000
+      },
+      "expertise_level": "proficient",
+      "chat_role": "target"
+    },
+    {
+      "created_at": "2026-01-19T18:04:25.528739",
+      "updated_at": "2026-01-19T18:04:25.528739",
+      "id": 1631,
+      "project_id": 42,
+      "contributor_id": 1193,
+      "is_active": 1,
+      "start_date": "2026-01-19",
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "ee0e18bf-fa22-4925-8672-55bd57cd56e5",
+        "source_timestamp": 1768845865000
+      },
+      "expertise_level": "proficient",
+      "chat_role": "target"
+    },
+    {
+      "created_at": "2026-01-19T18:04:09.701486",
+      "updated_at": "2026-01-19T18:04:09.701486",
+      "id": 1630,
+      "project_id": 42,
+      "contributor_id": 948,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "d42317bf-6d6c-475f-9678-b7f18f93106c",
+        "source_timestamp": 1768845849000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T18:04:09.690631",
+      "updated_at": "2026-01-19T18:04:09.690631",
+      "id": 1629,
+      "project_id": 42,
+      "contributor_id": 916,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "83e806dc-bb06-45bb-be42-ed67c8e48064",
+        "source_timestamp": 1768845849000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T18:04:09.677571",
+      "updated_at": "2026-01-19T18:04:09.677571",
+      "id": 1628,
+      "project_id": 42,
+      "contributor_id": 907,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "57fe8272-96d0-4598-b3fa-916423983504",
+        "source_timestamp": 1768845849000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T18:04:09.665378",
+      "updated_at": "2026-01-19T18:04:09.665378",
+      "id": 1627,
+      "project_id": 42,
+      "contributor_id": 905,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "68fac291-bdc4-43eb-af38-97a0eb6ce696",
+        "source_timestamp": 1768845849000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T18:04:09.653305",
+      "updated_at": "2026-01-19T18:04:09.653305",
+      "id": 1626,
+      "project_id": 42,
+      "contributor_id": 891,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "db1ca5d8-2ec9-4951-b1cd-e538736cfeb9",
+        "source_timestamp": 1768845849000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T18:04:09.640909",
+      "updated_at": "2026-01-19T18:04:09.640909",
+      "id": 1625,
+      "project_id": 42,
+      "contributor_id": 937,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "c878675e-aed8-4086-956c-9a2ef11b651e",
+        "source_timestamp": 1768845849000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T18:04:09.628281",
+      "updated_at": "2026-01-19T18:04:09.628281",
+      "id": 1624,
+      "project_id": 42,
+      "contributor_id": 908,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "65bf2a11-74d4-415a-a61b-e75a7511a9f9",
+        "source_timestamp": 1768845849000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T18:04:09.613945",
+      "updated_at": "2026-01-19T18:04:09.613945",
+      "id": 1623,
+      "project_id": 42,
+      "contributor_id": 880,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "9556cad6-f51f-4199-9a66-70e7ca9f85e4",
+        "source_timestamp": 1768845849000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T18:04:09.601284",
+      "updated_at": "2026-01-19T18:04:09.601284",
+      "id": 1622,
+      "project_id": 42,
+      "contributor_id": 911,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "89f615da-9b6a-4e17-b98b-27986a9bf55c",
+        "source_timestamp": 1768845849000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T18:04:09.584453",
+      "updated_at": "2026-01-19T18:04:09.584453",
+      "id": 1621,
+      "project_id": 42,
+      "contributor_id": 886,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "5236f7a8-5e01-4a9d-9bc2-8c4baf0d40e0",
+        "source_timestamp": 1768845849000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T18:04:09.573303",
+      "updated_at": "2026-01-19T18:04:09.573303",
+      "id": 1620,
+      "project_id": 42,
+      "contributor_id": 923,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "5c56b0a7-6345-4104-9b9d-e9e779cfc0d9",
+        "source_timestamp": 1768845849000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T18:04:09.562605",
+      "updated_at": "2026-01-19T18:04:09.562605",
+      "id": 1619,
+      "project_id": 42,
+      "contributor_id": 896,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "0571dc2b-9789-412b-aa06-156f954ef598",
+        "source_timestamp": 1768845849000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T18:04:09.552167",
+      "updated_at": "2026-01-19T18:04:09.552167",
+      "id": 1618,
+      "project_id": 42,
+      "contributor_id": 933,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "4bf47ec3-dbba-43db-9fa7-abdd5bcbd405",
+        "source_timestamp": 1768845849000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T18:04:09.538265",
+      "updated_at": "2026-01-19T18:04:09.538265",
+      "id": 1617,
+      "project_id": 42,
+      "contributor_id": 900,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "71ed2ead-c9e3-4c0f-80d2-4724c996c0c6",
+        "source_timestamp": 1768845849000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T18:04:09.528174",
+      "updated_at": "2026-01-19T18:04:09.528174",
+      "id": 1616,
+      "project_id": 42,
+      "contributor_id": 940,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "380c26ad-7964-45fb-ad15-a1b1e720bfc4",
+        "source_timestamp": 1768845849000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T18:04:09.517799",
+      "updated_at": "2026-01-19T18:04:09.517799",
+      "id": 1615,
+      "project_id": 42,
+      "contributor_id": 946,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "3c7d5f15-018a-4750-ad31-db6fe2c2d512",
+        "source_timestamp": 1768845849000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T18:04:09.507508",
+      "updated_at": "2026-01-19T18:04:09.507508",
+      "id": 1614,
+      "project_id": 42,
+      "contributor_id": 871,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "761d5bd9-fd08-46a9-ae67-35eeed2d6ba8",
+        "source_timestamp": 1768845849000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T18:04:09.495292",
+      "updated_at": "2026-01-19T18:04:09.495292",
+      "id": 1613,
+      "project_id": 42,
+      "contributor_id": 876,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "952977f2-9984-40a3-989d-3826152dec0d",
+        "source_timestamp": 1768845849000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T18:04:09.484512",
+      "updated_at": "2026-01-19T18:04:09.484512",
+      "id": 1612,
+      "project_id": 42,
+      "contributor_id": 884,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "dc6505fa-b583-4091-88ad-2ea75132868d",
+        "source_timestamp": 1768845849000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T18:04:09.472121",
+      "updated_at": "2026-01-19T18:04:09.472121",
+      "id": 1611,
+      "project_id": 42,
+      "contributor_id": 904,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "3d29ca9a-2752-4a9c-b197-f371f681a547",
+        "source_timestamp": 1768845849000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T18:04:09.460916",
+      "updated_at": "2026-01-19T18:04:09.460916",
+      "id": 1610,
+      "project_id": 42,
+      "contributor_id": 870,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "36e809bd-1df0-4bb1-a646-10ee71e7619e",
+        "source_timestamp": 1768845849000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T18:04:09.449674",
+      "updated_at": "2026-01-19T18:04:09.449674",
+      "id": 1609,
+      "project_id": 42,
+      "contributor_id": 945,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "6af51c4e-aa0b-4a45-807f-3acb572a0d01",
+        "source_timestamp": 1768845849000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T18:04:09.438907",
+      "updated_at": "2026-01-19T18:04:09.438907",
+      "id": 1608,
+      "project_id": 42,
+      "contributor_id": 943,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "18628891-59cb-44c7-b32b-8540b6bc619c",
+        "source_timestamp": 1768845849000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T18:04:09.427723",
+      "updated_at": "2026-01-19T18:04:09.427723",
+      "id": 1607,
+      "project_id": 42,
+      "contributor_id": 868,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "5350ed44-7173-4037-a40e-4f747df9c2d3",
+        "source_timestamp": 1768845849000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T18:04:09.415557",
+      "updated_at": "2026-01-19T18:04:09.415557",
+      "id": 1606,
+      "project_id": 42,
+      "contributor_id": 951,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "94c37a6b-80a5-4e78-844d-1180478cfad6",
+        "source_timestamp": 1768845849000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T18:04:09.403961",
+      "updated_at": "2026-01-19T18:04:09.403961",
+      "id": 1605,
+      "project_id": 42,
+      "contributor_id": 874,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "29866e5e-36aa-453a-bff3-a527fc67f6eb",
+        "source_timestamp": 1768845849000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T18:04:09.393266",
+      "updated_at": "2026-01-19T18:04:09.393266",
+      "id": 1604,
+      "project_id": 42,
+      "contributor_id": 894,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "ccc3d3e9-086d-46f9-9db1-8982093c537c",
+        "source_timestamp": 1768845849000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T18:04:09.381770",
+      "updated_at": "2026-01-19T18:04:09.381770",
+      "id": 1603,
+      "project_id": 42,
+      "contributor_id": 903,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "e02d1a65-c539-4496-9595-4f08cbe24bdc",
+        "source_timestamp": 1768845849000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T18:04:09.370841",
+      "updated_at": "2026-01-19T18:04:09.370841",
+      "id": 1602,
+      "project_id": 42,
+      "contributor_id": 875,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "65da57da-7d1d-4a43-8627-d66960636199",
+        "source_timestamp": 1768845849000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T18:04:09.359270",
+      "updated_at": "2026-01-19T18:04:09.359270",
+      "id": 1601,
+      "project_id": 42,
+      "contributor_id": 1216,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "bc406c1a-8b5e-49c4-ba36-3a9f0cc5ad0c",
+        "source_timestamp": 1768845849000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T18:04:09.347498",
+      "updated_at": "2026-01-19T18:04:09.347498",
+      "id": 1600,
+      "project_id": 42,
+      "contributor_id": 914,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "3b6b6322-0832-4485-a092-f3f41b71cd6b",
+        "source_timestamp": 1768845849000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T18:04:09.336686",
+      "updated_at": "2026-01-19T18:04:09.336686",
+      "id": 1599,
+      "project_id": 42,
+      "contributor_id": 909,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "71c0e7b2-9f61-4131-bbb4-2ed8df6a69f3",
+        "source_timestamp": 1768845849000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T18:04:09.325848",
+      "updated_at": "2026-01-19T18:04:09.325848",
+      "id": 1598,
+      "project_id": 42,
+      "contributor_id": 910,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "6c0cea9e-ccca-4af6-841e-f2ec80f40d6e",
+        "source_timestamp": 1768845849000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T18:04:09.315000",
+      "updated_at": "2026-01-19T18:04:09.315000",
+      "id": 1597,
+      "project_id": 42,
+      "contributor_id": 947,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "4cfbaf2b-4aa9-4258-845a-3bf01255b716",
+        "source_timestamp": 1768845849000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T18:04:09.302608",
+      "updated_at": "2026-01-19T18:04:09.302608",
+      "id": 1596,
+      "project_id": 42,
+      "contributor_id": 878,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "39ec68c6-8e01-4f06-bf47-4650ea611d3d",
+        "source_timestamp": 1768845849000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T18:04:09.289349",
+      "updated_at": "2026-01-19T18:04:09.289349",
+      "id": 1595,
+      "project_id": 42,
+      "contributor_id": 938,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "9e76d454-e3da-4885-9923-13cdd2838821",
+        "source_timestamp": 1768845849000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:35:03.905412",
+      "updated_at": "2026-01-19T11:35:03.905412",
+      "id": 1594,
+      "project_id": 53,
+      "contributor_id": 1224,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "70b3a664-62d0-4586-9193-f206191039f6",
+        "source_timestamp": 1768822503000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:35:03.891080",
+      "updated_at": "2026-01-19T11:35:03.891080",
+      "id": 1593,
+      "project_id": 53,
+      "contributor_id": 1008,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "c9bd7947-4c7d-4c26-97c7-6404adff8a16",
+        "source_timestamp": 1768822503000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:35:03.879116",
+      "updated_at": "2026-01-19T11:35:03.879116",
+      "id": 1592,
+      "project_id": 53,
+      "contributor_id": 1069,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "9ba97652-4b69-4369-b543-3ce1d8c0acad",
+        "source_timestamp": 1768822503000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:35:03.865397",
+      "updated_at": "2026-01-19T11:35:03.865397",
+      "id": 1591,
+      "project_id": 53,
+      "contributor_id": 1144,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "a8a2eca1-ebe4-4666-9463-3b0b62e0d0f5",
+        "source_timestamp": 1768822503000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:35:03.851656",
+      "updated_at": "2026-01-19T11:35:03.851656",
+      "id": 1590,
+      "project_id": 53,
+      "contributor_id": 1156,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "952e0aa6-d650-4310-af49-a1dc6ac58d78",
+        "source_timestamp": 1768822503000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:35:03.838814",
+      "updated_at": "2026-01-19T11:35:03.838814",
+      "id": 1589,
+      "project_id": 53,
+      "contributor_id": 990,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "a4619cb3-c4bb-4335-a260-6f3ae677b592",
+        "source_timestamp": 1768822503000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:35:03.826518",
+      "updated_at": "2026-01-19T11:35:03.826518",
+      "id": 1588,
+      "project_id": 53,
+      "contributor_id": 1057,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "2c0c1f19-9de9-4bfc-8a14-00354dda7a36",
+        "source_timestamp": 1768822503000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:35:03.813683",
+      "updated_at": "2026-01-19T11:35:03.813683",
+      "id": 1587,
+      "project_id": 53,
+      "contributor_id": 833,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "0151df89-cb64-46d3-a196-90875cd9aafa",
+        "source_timestamp": 1768822503000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:35:03.800608",
+      "updated_at": "2026-01-19T11:35:03.800608",
+      "id": 1586,
+      "project_id": 53,
+      "contributor_id": 995,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "833c8818-44c7-4b4f-adcc-711ca0f6e7c2",
+        "source_timestamp": 1768822503000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:35:03.788336",
+      "updated_at": "2026-01-19T11:35:03.788336",
+      "id": 1585,
+      "project_id": 53,
+      "contributor_id": 519,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "05b51aa1-e8ef-4782-8af9-7a8e292c4a17",
+        "source_timestamp": 1768822503000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:35:03.774985",
+      "updated_at": "2026-01-19T11:35:03.774985",
+      "id": 1584,
+      "project_id": 53,
+      "contributor_id": 1164,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "cc647e09-e975-45f8-9d26-c1d27c2ba58b",
+        "source_timestamp": 1768822503000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:35:03.761252",
+      "updated_at": "2026-01-19T11:35:03.761252",
+      "id": 1583,
+      "project_id": 53,
+      "contributor_id": 1028,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "1e6317e8-17b3-4473-a95c-a97d88e87cff",
+        "source_timestamp": 1768822503000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:34:12.217092",
+      "updated_at": "2026-01-19T11:34:12.217092",
+      "id": 1582,
+      "project_id": 52,
+      "contributor_id": 839,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "34d38c99-b13f-44a6-95c5-368a9838966e",
+        "source_timestamp": 1768822452000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:34:12.205312",
+      "updated_at": "2026-01-19T11:34:12.205312",
+      "id": 1581,
+      "project_id": 52,
+      "contributor_id": 979,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "2bb96f81-4420-42a9-9cad-ba04119c3907",
+        "source_timestamp": 1768822452000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:34:12.192790",
+      "updated_at": "2026-01-19T11:34:12.192790",
+      "id": 1580,
+      "project_id": 52,
+      "contributor_id": 1022,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "6a0bfd98-6e42-4dd4-b055-d1580c629af4",
+        "source_timestamp": 1768822452000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:34:12.179194",
+      "updated_at": "2026-01-19T11:34:12.179194",
+      "id": 1579,
+      "project_id": 52,
+      "contributor_id": 970,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "1dce6dde-a79b-4cf2-aa35-7f79cf7a8a6d",
+        "source_timestamp": 1768822452000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:34:12.166257",
+      "updated_at": "2026-01-19T11:34:12.166257",
+      "id": 1578,
+      "project_id": 52,
+      "contributor_id": 850,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "239d708b-6878-462c-939a-9dc4b56128c0",
+        "source_timestamp": 1768822452000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:34:12.152781",
+      "updated_at": "2026-01-19T11:34:12.152781",
+      "id": 1577,
+      "project_id": 52,
+      "contributor_id": 848,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "f20a8972-69a5-4d56-9a41-821cc957ff9f",
+        "source_timestamp": 1768822452000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:34:12.139742",
+      "updated_at": "2026-01-19T11:34:12.139742",
+      "id": 1576,
+      "project_id": 52,
+      "contributor_id": 954,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "2df29aeb-4bb2-4d06-b51d-d6043683a275",
+        "source_timestamp": 1768822452000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:34:12.127124",
+      "updated_at": "2026-01-19T11:34:12.127124",
+      "id": 1575,
+      "project_id": 52,
+      "contributor_id": 1037,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "e336a743-2a8f-45ed-9e6c-0b65690659e1",
+        "source_timestamp": 1768822452000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:34:12.114375",
+      "updated_at": "2026-01-19T11:34:12.114375",
+      "id": 1574,
+      "project_id": 52,
+      "contributor_id": 969,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "f5ae0892-842a-4931-9503-204fd4732045",
+        "source_timestamp": 1768822452000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:34:12.101721",
+      "updated_at": "2026-01-19T11:34:12.101721",
+      "id": 1573,
+      "project_id": 52,
+      "contributor_id": 519,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "298a29ea-fac9-44f8-92e3-b66ad52702b6",
+        "source_timestamp": 1768822452000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:34:12.088168",
+      "updated_at": "2026-01-19T11:34:12.088168",
+      "id": 1572,
+      "project_id": 52,
+      "contributor_id": 1164,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "5d10f2c2-6794-40e4-b042-3ab93cf111fb",
+        "source_timestamp": 1768822452000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:34:12.072883",
+      "updated_at": "2026-01-19T11:34:12.072883",
+      "id": 1571,
+      "project_id": 52,
+      "contributor_id": 1028,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "26d6a9b4-e0fe-48fe-bc0f-a8eedc606629",
+        "source_timestamp": 1768822452000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:33:01.610310",
+      "updated_at": "2026-01-19T11:33:01.610310",
+      "id": 1570,
+      "project_id": 51,
+      "contributor_id": 1170,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "1329589a-41cc-4c79-a85c-8f407f47a1c8",
+        "source_timestamp": 1768822381000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:33:01.597770",
+      "updated_at": "2026-01-19T11:33:01.597770",
+      "id": 1569,
+      "project_id": 51,
+      "contributor_id": 1172,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "f97f7360-c8df-4f88-938c-a9c527cfff20",
+        "source_timestamp": 1768822381000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:33:01.584552",
+      "updated_at": "2026-01-19T11:33:01.584552",
+      "id": 1568,
+      "project_id": 51,
+      "contributor_id": 1039,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "b21bab76-895c-4d93-b0f2-f7b0d3fe6d51",
+        "source_timestamp": 1768822381000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:33:01.571673",
+      "updated_at": "2026-01-19T11:33:01.571673",
+      "id": 1567,
+      "project_id": 51,
+      "contributor_id": 1195,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "fa0df7a2-d727-4599-9cb9-bcc233ac0522",
+        "source_timestamp": 1768822381000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:33:01.558508",
+      "updated_at": "2026-01-19T11:33:01.558508",
+      "id": 1566,
+      "project_id": 51,
+      "contributor_id": 974,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "7d52a06f-b5c3-4b74-bbb3-9a7d6ae83780",
+        "source_timestamp": 1768822381000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:33:01.544697",
+      "updated_at": "2026-01-19T11:33:01.544697",
+      "id": 1565,
+      "project_id": 51,
+      "contributor_id": 1189,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "0c4169ce-2983-4d37-9976-3b05b84e9ced",
+        "source_timestamp": 1768822381000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:33:01.532015",
+      "updated_at": "2026-01-19T11:33:01.532015",
+      "id": 1564,
+      "project_id": 51,
+      "contributor_id": 845,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "09b19661-95df-4ad3-ace9-12dc71f1db51",
+        "source_timestamp": 1768822381000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:33:01.518811",
+      "updated_at": "2026-01-19T11:33:01.518811",
+      "id": 1563,
+      "project_id": 51,
+      "contributor_id": 1038,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "8ad5b02f-77bf-4f48-9e15-7f2e233fce32",
+        "source_timestamp": 1768822381000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:33:01.504972",
+      "updated_at": "2026-01-19T11:33:01.504972",
+      "id": 1562,
+      "project_id": 51,
+      "contributor_id": 519,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "c6cab426-97c1-46cb-b20f-e61eb0dd606e",
+        "source_timestamp": 1768822381000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:33:01.491769",
+      "updated_at": "2026-01-19T11:33:01.491769",
+      "id": 1561,
+      "project_id": 51,
+      "contributor_id": 1164,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "9816bbde-8f13-468d-8c1b-04de3f56c9d9",
+        "source_timestamp": 1768822381000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:33:01.477322",
+      "updated_at": "2026-01-19T11:33:01.477322",
+      "id": 1560,
+      "project_id": 51,
+      "contributor_id": 1028,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "1f89a531-49d5-44cb-9983-8d1c336b2c83",
+        "source_timestamp": 1768822381000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:31:58.642981",
+      "updated_at": "2026-01-19T11:31:58.642981",
+      "id": 1559,
+      "project_id": 50,
+      "contributor_id": 1010,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "cf203678-51f6-4d9d-aace-4318b15fcba1",
+        "source_timestamp": 1768822318000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:31:58.630263",
+      "updated_at": "2026-01-19T11:31:58.630263",
+      "id": 1558,
+      "project_id": 50,
+      "contributor_id": 1047,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "cdab9781-1140-42e8-b056-10987ca23e3f",
+        "source_timestamp": 1768822318000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:31:58.616054",
+      "updated_at": "2026-01-19T11:31:58.616054",
+      "id": 1557,
+      "project_id": 50,
+      "contributor_id": 985,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "75eb1525-42ea-4fd2-a648-d0551672896b",
+        "source_timestamp": 1768822318000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:31:58.602400",
+      "updated_at": "2026-01-19T11:31:58.602400",
+      "id": 1556,
+      "project_id": 50,
+      "contributor_id": 1213,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "6b1ea2ba-86e8-41d2-9208-f833ecc22850",
+        "source_timestamp": 1768822318000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:31:58.587711",
+      "updated_at": "2026-01-19T11:31:58.587711",
+      "id": 1555,
+      "project_id": 50,
+      "contributor_id": 978,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "c1023305-8b89-425d-9ec1-e83477ccf17c",
+        "source_timestamp": 1768822318000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:31:58.574342",
+      "updated_at": "2026-01-19T11:31:58.574342",
+      "id": 1554,
+      "project_id": 50,
+      "contributor_id": 1000,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "1745ca8b-6b2e-4c0d-a10d-2aaf57fe381c",
+        "source_timestamp": 1768822318000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:31:58.560153",
+      "updated_at": "2026-01-19T11:31:58.560153",
+      "id": 1553,
+      "project_id": 50,
+      "contributor_id": 861,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "e0ed10d3-3c7a-429c-9e3f-1bed48ee15b5",
+        "source_timestamp": 1768822318000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:31:58.545969",
+      "updated_at": "2026-01-19T11:31:58.545969",
+      "id": 1552,
+      "project_id": 50,
+      "contributor_id": 973,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "d2f0726a-03da-4566-b2a4-44db0d3aaa49",
+        "source_timestamp": 1768822318000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:31:58.532472",
+      "updated_at": "2026-01-19T11:31:58.532472",
+      "id": 1551,
+      "project_id": 50,
+      "contributor_id": 519,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "4b7e414e-7647-4fd1-8236-4bce26a5438c",
+        "source_timestamp": 1768822318000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:31:58.513639",
+      "updated_at": "2026-01-19T11:31:58.513639",
+      "id": 1550,
+      "project_id": 50,
+      "contributor_id": 1164,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "8b9f4ab0-24fb-4942-bff0-ab17288c3e55",
+        "source_timestamp": 1768822318000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:31:58.496249",
+      "updated_at": "2026-01-19T11:31:58.496249",
+      "id": 1549,
+      "project_id": 50,
+      "contributor_id": 1028,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "10973646-0a4a-439e-9619-41473b79008a",
+        "source_timestamp": 1768822318000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:31:03.191166",
+      "updated_at": "2026-01-19T11:31:03.191166",
+      "id": 1548,
+      "project_id": 49,
+      "contributor_id": 857,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "57d7db36-0920-4b2f-b94f-68b652c791c9",
+        "source_timestamp": 1768822263000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:31:03.177561",
+      "updated_at": "2026-01-19T11:31:03.177561",
+      "id": 1547,
+      "project_id": 49,
+      "contributor_id": 837,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "e718b0f2-4a0d-466a-804e-ec21f4cf2a83",
+        "source_timestamp": 1768822263000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:31:03.162597",
+      "updated_at": "2026-01-19T11:31:03.162597",
+      "id": 1546,
+      "project_id": 49,
+      "contributor_id": 958,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "10f9a20c-eb33-4ade-a728-aabd87479c0c",
+        "source_timestamp": 1768822263000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:31:03.150059",
+      "updated_at": "2026-01-19T11:31:03.150059",
+      "id": 1545,
+      "project_id": 49,
+      "contributor_id": 1206,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "26a8404f-5c3a-4a52-a320-4ec581c8f823",
+        "source_timestamp": 1768822263000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:31:03.138365",
+      "updated_at": "2026-01-19T11:31:03.138365",
+      "id": 1544,
+      "project_id": 49,
+      "contributor_id": 1048,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "82f5e716-ee4d-42f2-a94e-8a2e1ffaf307",
+        "source_timestamp": 1768822263000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:31:03.126521",
+      "updated_at": "2026-01-19T11:31:03.126521",
+      "id": 1543,
+      "project_id": 49,
+      "contributor_id": 996,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "8445f2d5-0684-493a-a97d-f2a36dbb5fb1",
+        "source_timestamp": 1768822263000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:31:03.114251",
+      "updated_at": "2026-01-19T11:31:03.114251",
+      "id": 1542,
+      "project_id": 49,
+      "contributor_id": 963,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "1b860e78-7343-48f9-967b-22cc454d5e6d",
+        "source_timestamp": 1768822263000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:31:03.101161",
+      "updated_at": "2026-01-19T11:31:03.101161",
+      "id": 1541,
+      "project_id": 49,
+      "contributor_id": 1018,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "eee42a7d-83f3-4f46-af90-25ec4e298d02",
+        "source_timestamp": 1768822263000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:31:03.087946",
+      "updated_at": "2026-01-19T11:31:03.087946",
+      "id": 1540,
+      "project_id": 49,
+      "contributor_id": 519,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "d753ee0c-e299-4016-9984-368f85e48cdb",
+        "source_timestamp": 1768822263000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    },
+    {
+      "created_at": "2026-01-19T11:31:03.072733",
+      "updated_at": "2026-01-19T11:31:03.072733",
+      "id": 1539,
+      "project_id": 49,
+      "contributor_id": 1164,
+      "is_active": 1,
+      "start_date": null,
+      "end_date": null,
+      "datastream_metadata": {
+        "uuid": "899b7cf2-3d70-4701-88d1-845b84a17786",
+        "source_timestamp": 1768822263000
+      },
+      "expertise_level": "proficient",
+      "chat_role": null
+    }
+  ]
+}

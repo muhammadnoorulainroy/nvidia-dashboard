@@ -1,0 +1,53 @@
+{
+  "table": "batch_auto_review",
+  "row_count": 3,
+  "sample_count": 3,
+  "fetched_at": "2026-01-28T23:22:33.583968",
+  "data": [
+    {
+      "created_at": "2026-01-22T05:11:50.563289",
+      "updated_at": "2026-01-22T05:20:14",
+      "id": 3,
+      "status": "done",
+      "started_at": "2026-01-22T05:11:51",
+      "completed_at": "2026-01-22T05:20:14",
+      "success_count": 903,
+      "failure_count": 2,
+      "batch_id": 416,
+      "datastream_metadata": {
+        "uuid": "fb483744-7131-43a5-baf8-39b61974ed29",
+        "source_timestamp": 1769059214000
+      }
+    },
+    {
+      "created_at": "2026-01-22T05:10:59.106560",
+      "updated_at": "2026-01-22T05:12:18",
+      "id": 2,
+      "status": "done",
+      "started_at": "2026-01-22T05:10:59",
+      "completed_at": "2026-01-22T05:12:19",
+      "success_count": 171,
+      "failure_count": 0,
+      "batch_id": 429,
+      "datastream_metadata": {
+        "uuid": "e3802932-a93d-4209-a3fb-7e0d01e48069",
+        "source_timestamp": 1769058738000
+      }
+    },
+    {
+      "created_at": "2026-01-06T17:45:01.416230",
+      "updated_at": "2026-01-06T17:45:01",
+      "id": 1,
+      "status": "done",
+      "started_at": "2026-01-06T17:45:01",
+      "completed_at": "2026-01-06T17:45:01",
+      "success_count": 0,
+      "failure_count": 0,
+      "batch_id": 426,
+      "datastream_metadata": {
+        "uuid": "8b4ec8cb-f014-48e5-96d2-4db601000100",
+        "source_timestamp": 1767721501000
+      }
+    }
+  ]
+}

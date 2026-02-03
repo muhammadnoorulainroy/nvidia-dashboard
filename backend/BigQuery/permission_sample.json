@@ -1,0 +1,1108 @@
+{
+  "table": "permission",
+  "row_count": 559,
+  "sample_count": 100,
+  "fetched_at": "2026-01-28T23:24:03.378746",
+  "data": [
+    {
+      "id": 576,
+      "name": "deliverybatchtasks.unlockAll",
+      "description": "Allow an admin to unlock all the tasks in a delivery batch",
+      "created_at": "2026-01-26T04:34:26.217124",
+      "updated_at": "2026-01-26T04:34:26.217124",
+      "datastream_metadata": {
+        "uuid": "9ff97703-fc8a-42bc-808b-abb3ea732b9f",
+        "source_timestamp": 1769402066000
+      }
+    },
+    {
+      "id": 575,
+      "name": "taxonomy.copilot",
+      "description": "Access to AI-powered taxonomy copilot",
+      "created_at": "2026-01-26T04:34:26.178457",
+      "updated_at": "2026-01-26T04:34:26.178457",
+      "datastream_metadata": {
+        "uuid": "ee9eb8d0-b6e3-440e-8b78-2ed0d05c10c3",
+        "source_timestamp": 1769402066000
+      }
+    },
+    {
+      "id": 574,
+      "name": "emailnotificationlog.deleteOne",
+      "description": "Can call deleteOne of emailnotificationlog",
+      "created_at": "2026-01-26T04:34:25.946629",
+      "updated_at": "2026-01-26T04:34:25.946629",
+      "datastream_metadata": {
+        "uuid": "038ecd13-8fd5-46a0-ad66-d6b4a25cb0b0",
+        "source_timestamp": 1769402065000
+      }
+    },
+    {
+      "id": 573,
+      "name": "emailnotificationlog.replaceOne",
+      "description": "Can call replaceOne of emailnotificationlog",
+      "created_at": "2026-01-26T04:34:25.935900",
+      "updated_at": "2026-01-26T04:34:25.935900",
+      "datastream_metadata": {
+        "uuid": "0d417ad7-ea45-440c-ae7d-e7cf01250094",
+        "source_timestamp": 1769402065000
+      }
+    },
+    {
+      "id": 572,
+      "name": "emailnotificationlog.updateOne",
+      "description": "Can call updateOne of emailnotificationlog",
+      "created_at": "2026-01-26T04:34:25.926934",
+      "updated_at": "2026-01-26T04:34:25.926934",
+      "datastream_metadata": {
+        "uuid": "f2b7cfef-300d-47e8-928b-bbbbd1b3201a",
+        "source_timestamp": 1769402065000
+      }
+    },
+    {
+      "id": 571,
+      "name": "emailnotificationlog.createMany",
+      "description": "Can call createMany of emailnotificationlog",
+      "created_at": "2026-01-26T04:34:25.915088",
+      "updated_at": "2026-01-26T04:34:25.915088",
+      "datastream_metadata": {
+        "uuid": "9b427b37-a719-436c-a1ce-fd0d272bb8db",
+        "source_timestamp": 1769402065000
+      }
+    },
+    {
+      "id": 570,
+      "name": "emailnotificationlog.createOne",
+      "description": "Can call createOne of emailnotificationlog",
+      "created_at": "2026-01-26T04:34:25.899956",
+      "updated_at": "2026-01-26T04:34:25.899956",
+      "datastream_metadata": {
+        "uuid": "b38c8305-9eee-4339-ae3b-90298bab4626",
+        "source_timestamp": 1769402065000
+      }
+    },
+    {
+      "id": 569,
+      "name": "emailnotificationlog.getOne",
+      "description": "Can call getOne of emailnotificationlog",
+      "created_at": "2026-01-26T04:34:25.881564",
+      "updated_at": "2026-01-26T04:34:25.881564",
+      "datastream_metadata": {
+        "uuid": "b4eb04f2-9359-45fe-8cb2-be4ec5123742",
+        "source_timestamp": 1769402065000
+      }
+    },
+    {
+      "id": 568,
+      "name": "emailnotificationlog.getMany",
+      "description": "Can call getMany of emailnotificationlog",
+      "created_at": "2026-01-26T04:34:25.871429",
+      "updated_at": "2026-01-26T04:34:25.871429",
+      "datastream_metadata": {
+        "uuid": "c124c281-4993-4a54-a7f8-77b70ee3f2bd",
+        "source_timestamp": 1769402065000
+      }
+    },
+    {
+      "id": 567,
+      "name": "emailnotificationlog.*",
+      "description": "Can call all actions of emailnotificationlog",
+      "created_at": "2026-01-26T04:34:25.858271",
+      "updated_at": "2026-01-26T04:34:25.858271",
+      "datastream_metadata": {
+        "uuid": "7a65c3b6-6e58-4435-843c-0ced0026a881",
+        "source_timestamp": 1769402065000
+      }
+    },
+    {
+      "id": 566,
+      "name": "notifications.deleteMany",
+      "description": "Delete multiple notifications",
+      "created_at": "2026-01-22T04:34:22.177592",
+      "updated_at": "2026-01-22T04:34:22.177592",
+      "datastream_metadata": {
+        "uuid": "9241d908-1788-4053-9787-bb0e7b7e0f94",
+        "source_timestamp": 1769056462000
+      }
+    },
+    {
+      "id": 565,
+      "name": "notifications.deleteOne",
+      "description": "Delete a single notification",
+      "created_at": "2026-01-22T04:34:22.161381",
+      "updated_at": "2026-01-22T04:34:22.161381",
+      "datastream_metadata": {
+        "uuid": "cd6214d8-678d-47bf-bb2d-c3139d8fa042",
+        "source_timestamp": 1769056462000
+      }
+    },
+    {
+      "id": 564,
+      "name": "notifications.updateOne",
+      "description": "Update a single notification",
+      "created_at": "2026-01-22T04:34:22.144930",
+      "updated_at": "2026-01-22T04:34:22.144930",
+      "datastream_metadata": {
+        "uuid": "03847df2-3878-4cf4-9fee-0c2e818a9ff7",
+        "source_timestamp": 1769056462000
+      }
+    },
+    {
+      "id": 563,
+      "name": "notifications.getMyNotifications",
+      "description": "Get user’s notifications",
+      "created_at": "2026-01-22T04:34:22.117437",
+      "updated_at": "2026-01-22T04:34:22.117437",
+      "datastream_metadata": {
+        "uuid": "99e13626-e4bc-4976-a7f7-efc9d2683aa0",
+        "source_timestamp": 1769056462000
+      }
+    },
+    {
+      "id": 562,
+      "name": "chat-rooms.deleteMidCheckForm",
+      "description": "Allows deleting mid-check forms from chat rooms",
+      "created_at": "2026-01-12T04:33:59.303816",
+      "updated_at": "2026-01-12T04:33:59.303816",
+      "datastream_metadata": {
+        "uuid": "99b1c1cc-27f4-4859-9dba-780a10001001",
+        "source_timestamp": 1768192439000
+      }
+    },
+    {
+      "id": 561,
+      "name": "chat-rooms.copyPaste",
+      "description": "Allow user to copy and paste in chat rooms",
+      "created_at": "2026-01-01T04:34:12.909832",
+      "updated_at": "2026-01-01T04:34:12.909832",
+      "datastream_metadata": {
+        "uuid": "9efbd8fe-c0e9-4819-9505-2d5a01100111",
+        "source_timestamp": 1767242052000
+      }
+    },
+    {
+      "id": 560,
+      "name": "projectintegrationconfiguration.getProjectIntegrationConfigData",
+      "description": "Allow to get project integration configuration data",
+      "created_at": "2025-12-18T04:34:59.506024",
+      "updated_at": "2025-12-18T04:34:59.506024",
+      "datastream_metadata": {
+        "uuid": "eafa6a7e-3979-4a7b-9f81-6ec900010100",
+        "source_timestamp": 1766032499000
+      }
+    },
+    {
+      "id": 559,
+      "name": "chat-rooms.edit",
+      "description": "Allow to edit a chat room",
+      "created_at": "2025-12-18T04:34:59.480846",
+      "updated_at": "2025-12-18T04:34:59.480846",
+      "datastream_metadata": {
+        "uuid": "eafa6a7e-3979-4a7b-9f81-6ec900010001",
+        "source_timestamp": 1766032499000
+      }
+    },
+    {
+      "id": 558,
+      "name": "chat-rooms.editMyPostChat",
+      "description": "Allow user to edit own post-chat form evaluations",
+      "created_at": "2025-12-18T04:34:56.299275",
+      "updated_at": "2025-12-18T04:34:56.299275",
+      "datastream_metadata": {
+        "uuid": "575afec6-5d8b-4870-a343-080c10000010",
+        "source_timestamp": 1766032496000
+      }
+    },
+    {
+      "id": 557,
+      "name": "chat-rooms.editMyPreChat",
+      "description": "Allow user to edit own pre-chat form evaluations",
+      "created_at": "2025-12-18T04:34:56.283864",
+      "updated_at": "2025-12-18T04:34:56.283864",
+      "datastream_metadata": {
+        "uuid": "575afec6-5d8b-4870-a343-080c01010010",
+        "source_timestamp": 1766032496000
+      }
+    },
+    {
+      "id": 556,
+      "name": "chat-rooms.editMyMidChat",
+      "description": "Allow user to edit own mid-chat form evaluations",
+      "created_at": "2025-12-11T04:34:22.260710",
+      "updated_at": "2025-12-11T04:34:22.260710",
+      "datastream_metadata": {
+        "uuid": "a4c93fe9-31f7-4e85-bb9e-eef000111001",
+        "source_timestamp": 1765427662000
+      }
+    },
+    {
+      "id": 555,
+      "name": "ui.chats.viewConversationId",
+      "description": "Allow viewing conversation IDs in persuasion chat project room cards",
+      "created_at": "2025-12-01T04:34:24.805813",
+      "updated_at": "2025-12-01T04:34:24.805813",
+      "datastream_metadata": {
+        "uuid": "abc62317-4793-48c8-9591-6d1f00100000",
+        "source_timestamp": 1764563664000
+      }
+    },
+    {
+      "id": 554,
+      "name": "accent.deleteOne",
+      "description": "Can call deleteOne of accent",
+      "created_at": "2025-11-20T04:34:17.564325",
+      "updated_at": "2025-11-20T04:34:17.564325",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06500110001",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 553,
+      "name": "accent.replaceOne",
+      "description": "Can call replaceOne of accent",
+      "created_at": "2025-11-20T04:34:17.556198",
+      "updated_at": "2025-11-20T04:34:17.556198",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06500101111",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 552,
+      "name": "accent.updateOne",
+      "description": "Can call updateOne of accent",
+      "created_at": "2025-11-20T04:34:17.546696",
+      "updated_at": "2025-11-20T04:34:17.546696",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06500101101",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 551,
+      "name": "accent.createMany",
+      "description": "Can call createMany of accent",
+      "created_at": "2025-11-20T04:34:17.537354",
+      "updated_at": "2025-11-20T04:34:17.537354",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06500101011",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 550,
+      "name": "accent.createOne",
+      "description": "Can call createOne of accent",
+      "created_at": "2025-11-20T04:34:17.509696",
+      "updated_at": "2025-11-20T04:34:17.509696",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06500101000",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 549,
+      "name": "accent.getOne",
+      "description": "Can call getOne of accent",
+      "created_at": "2025-11-20T04:34:17.498488",
+      "updated_at": "2025-11-20T04:34:17.498488",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06500100110",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 548,
+      "name": "accent.getMany",
+      "description": "Can call getMany of accent",
+      "created_at": "2025-11-20T04:34:17.486823",
+      "updated_at": "2025-11-20T04:34:17.486823",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06500100101",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 547,
+      "name": "accent.*",
+      "description": "Can call all actions of accent",
+      "created_at": "2025-11-20T04:34:17.461272",
+      "updated_at": "2025-11-20T04:34:17.461272",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06500100011",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 546,
+      "name": "language.deleteOne",
+      "description": "Can call deleteOne of language",
+      "created_at": "2025-11-20T04:34:17.261300",
+      "updated_at": "2025-11-20T04:34:17.261300",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06500011101",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 545,
+      "name": "language.replaceOne",
+      "description": "Can call replaceOne of language",
+      "created_at": "2025-11-20T04:34:17.252828",
+      "updated_at": "2025-11-20T04:34:17.252828",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06500011100",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 544,
+      "name": "language.updateOne",
+      "description": "Can call updateOne of language",
+      "created_at": "2025-11-20T04:34:17.245529",
+      "updated_at": "2025-11-20T04:34:17.245529",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06500011011",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 543,
+      "name": "language.createMany",
+      "description": "Can call createMany of language",
+      "created_at": "2025-11-20T04:34:17.237360",
+      "updated_at": "2025-11-20T04:34:17.237360",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06500011010",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 542,
+      "name": "language.createOne",
+      "description": "Can call createOne of language",
+      "created_at": "2025-11-20T04:34:17.228293",
+      "updated_at": "2025-11-20T04:34:17.228293",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06500011001",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 541,
+      "name": "language.getOne",
+      "description": "Can call getOne of language",
+      "created_at": "2025-11-20T04:34:17.219522",
+      "updated_at": "2025-11-20T04:34:17.219522",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06500011000",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 540,
+      "name": "language.getMany",
+      "description": "Can call getMany of language",
+      "created_at": "2025-11-20T04:34:17.209071",
+      "updated_at": "2025-11-20T04:34:17.209071",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06500010111",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 539,
+      "name": "language.*",
+      "description": "Can call all actions of language",
+      "created_at": "2025-11-20T04:34:17.175010",
+      "updated_at": "2025-11-20T04:34:17.175010",
+      "datastream_metadata": {
+        "uuid": "cac1a1ba-79aa-4a70-8c64-f06500010110",
+        "source_timestamp": 1763613257000
+      }
+    },
+    {
+      "id": 538,
+      "name": "chat-rooms.viewHistory",
+      "description": "Allow to view history tab for PersuasionChat projects",
+      "created_at": "2025-11-13T04:35:11.282600",
+      "updated_at": "2025-11-13T04:35:11.282600",
+      "datastream_metadata": {
+        "uuid": "6044a1dc-9aab-4407-8728-c2c500000101",
+        "source_timestamp": 1763008511000
+      }
+    },
+    {
+      "id": 537,
+      "name": "chat-rooms.preview",
+      "description": "Can view chat room preview for admin oversight",
+      "created_at": "2025-11-13T04:35:05.790291",
+      "updated_at": "2025-11-13T04:35:05.790291",
+      "datastream_metadata": {
+        "uuid": "a9295d98-1707-4a17-9765-823010001011",
+        "source_timestamp": 1763008505000
+      }
+    },
+    {
+      "id": 536,
+      "name": "chat-rooms.showMetadata",
+      "description": "Allow to show metadata in chat room",
+      "created_at": "2025-11-10T04:35:18.746939",
+      "updated_at": "2025-11-10T04:35:18.746939",
+      "datastream_metadata": {
+        "uuid": "9b2dab81-c03a-41cc-a169-074b11011110",
+        "source_timestamp": 1762749318000
+      }
+    },
+    {
+      "id": 535,
+      "name": "chat-room-form-evaluation.manage",
+      "description": "Allow to manage chat room form evaluations",
+      "created_at": "2025-11-10T04:35:16.247241",
+      "updated_at": "2025-11-10T04:35:16.247241",
+      "datastream_metadata": {
+        "uuid": "9b2dab81-c03a-41cc-a169-074b11010101",
+        "source_timestamp": 1762749316000
+      }
+    },
+    {
+      "id": 534,
+      "name": "chat-rooms.end",
+      "description": "Allow to end a chat room",
+      "created_at": "2025-11-10T04:35:16.174972",
+      "updated_at": "2025-11-10T04:35:16.174972",
+      "datastream_metadata": {
+        "uuid": "9b2dab81-c03a-41cc-a169-074b11010000",
+        "source_timestamp": 1762749316000
+      }
+    },
+    {
+      "id": 533,
+      "name": "ui.menu.chats.*",
+      "description": "human persuasion chats menu access",
+      "created_at": "2025-11-10T04:34:56.205798",
+      "updated_at": "2025-11-10T04:34:56.205798",
+      "datastream_metadata": {
+        "uuid": "2d7851e0-7eb5-4a19-bfee-3ed600011010",
+        "source_timestamp": 1762749296000
+      }
+    },
+    {
+      "id": 532,
+      "name": "ui.pages.chats",
+      "description": "human persuasion chats access",
+      "created_at": "2025-11-10T04:34:56.186999",
+      "updated_at": "2025-11-10T04:34:56.186999",
+      "datastream_metadata": {
+        "uuid": "2d7851e0-7eb5-4a19-bfee-3ed600011000",
+        "source_timestamp": 1762749296000
+      }
+    },
+    {
+      "id": 531,
+      "name": "chat-rooms.leave",
+      "description": "Allow to leave a chat room",
+      "created_at": "2025-11-10T04:34:56.147019",
+      "updated_at": "2025-11-10T04:34:56.147019",
+      "datastream_metadata": {
+        "uuid": "2d7851e0-7eb5-4a19-bfee-3ed600010100",
+        "source_timestamp": 1762749296000
+      }
+    },
+    {
+      "id": 530,
+      "name": "chat-rooms.join",
+      "description": "Allow to join a chat room",
+      "created_at": "2025-11-10T04:34:56.118753",
+      "updated_at": "2025-11-10T04:34:56.118753",
+      "datastream_metadata": {
+        "uuid": "2d7851e0-7eb5-4a19-bfee-3ed600010001",
+        "source_timestamp": 1762749296000
+      }
+    },
+    {
+      "id": 529,
+      "name": "chat-rooms.delete",
+      "description": "Allow to delete a chat room",
+      "created_at": "2025-11-10T04:34:56.099682",
+      "updated_at": "2025-11-10T04:34:56.099682",
+      "datastream_metadata": {
+        "uuid": "2d7851e0-7eb5-4a19-bfee-3ed600001111",
+        "source_timestamp": 1762749296000
+      }
+    },
+    {
+      "id": 528,
+      "name": "chat-rooms.update",
+      "description": "Allow to update a chat room",
+      "created_at": "2025-11-10T04:34:56.070928",
+      "updated_at": "2025-11-10T04:34:56.070928",
+      "datastream_metadata": {
+        "uuid": "2d7851e0-7eb5-4a19-bfee-3ed600001100",
+        "source_timestamp": 1762749296000
+      }
+    },
+    {
+      "id": 527,
+      "name": "chat-rooms.getOne",
+      "description": "Allow to get a single chat room",
+      "created_at": "2025-11-10T04:34:56.043708",
+      "updated_at": "2025-11-10T04:34:56.043708",
+      "datastream_metadata": {
+        "uuid": "2d7851e0-7eb5-4a19-bfee-3ed600001001",
+        "source_timestamp": 1762749296000
+      }
+    },
+    {
+      "id": 526,
+      "name": "chat-rooms.getMany",
+      "description": "Allow to get many chat rooms",
+      "created_at": "2025-11-10T04:34:56.014998",
+      "updated_at": "2025-11-10T04:34:56.014998",
+      "datastream_metadata": {
+        "uuid": "2d7851e0-7eb5-4a19-bfee-3ed600000110",
+        "source_timestamp": 1762749296000
+      }
+    },
+    {
+      "id": 525,
+      "name": "chat-rooms.create",
+      "description": "Allow to create a chat room",
+      "created_at": "2025-11-10T04:34:55.996580",
+      "updated_at": "2025-11-10T04:34:55.996580",
+      "datastream_metadata": {
+        "uuid": "2d7851e0-7eb5-4a19-bfee-3ed600000100",
+        "source_timestamp": 1762749295000
+      }
+    },
+    {
+      "id": 524,
+      "name": "chat-rooms.*",
+      "description": "Allow all chat room actions",
+      "created_at": "2025-11-10T04:34:55.965502",
+      "updated_at": "2025-11-10T04:34:55.965502",
+      "datastream_metadata": {
+        "uuid": "2d7851e0-7eb5-4a19-bfee-3ed600000010",
+        "source_timestamp": 1762749295000
+      }
+    },
+    {
+      "id": 523,
+      "name": "external.deliveryPDFData",
+      "description": "Allow user to get the pdfFinalOutput from conversations (conversation.labeling.pdfFinalOutput).",
+      "created_at": "2025-11-03T04:34:15.074395",
+      "updated_at": "2025-11-03T04:34:15.074395",
+      "datastream_metadata": {
+        "uuid": "3cda0440-1d90-4a62-bb7a-b63610001001",
+        "source_timestamp": 1762144455000
+      }
+    },
+    {
+      "id": 522,
+      "name": "reviews.getLatestQdvIndex",
+      "description": "Allow a user to get the latest review QDV index",
+      "created_at": "2025-11-03T04:34:14.270247",
+      "updated_at": "2025-11-03T04:34:14.270247",
+      "datastream_metadata": {
+        "uuid": "3cda0440-1d90-4a62-bb7a-b63600110000",
+        "source_timestamp": 1762144454000
+      }
+    },
+    {
+      "id": 521,
+      "name": "reviews.backfillLatestQdvIndex",
+      "description": "Allow a user to backfill the latest review QDV index",
+      "created_at": "2025-11-03T04:34:14.257793",
+      "updated_at": "2025-11-03T04:34:14.257793",
+      "datastream_metadata": {
+        "uuid": "3cda0440-1d90-4a62-bb7a-b63600101111",
+        "source_timestamp": 1762144454000
+      }
+    },
+    {
+      "id": 520,
+      "name": "sso.allowRemoteMembershipManagement",
+      "description": "Allow contributor project memberships to be managed by remote source",
+      "created_at": "2025-10-09T04:34:15.969144",
+      "updated_at": "2025-10-09T04:34:15.969144",
+      "datastream_metadata": {
+        "uuid": "dacbbb62-6b69-4424-a10c-630401011001",
+        "source_timestamp": 1759984455000
+      }
+    },
+    {
+      "id": 519,
+      "name": "sso.allowRemoteInvite",
+      "description": "Allow contributor to be invited by remote source",
+      "created_at": "2025-10-09T04:34:15.956831",
+      "updated_at": "2025-10-09T04:34:15.956831",
+      "datastream_metadata": {
+        "uuid": "dacbbb62-6b69-4424-a10c-630401010101",
+        "source_timestamp": 1759984455000
+      }
+    },
+    {
+      "id": 518,
+      "name": "sso.allowRemoteSignOut",
+      "description": "Allow contributor to be signed out by remote source",
+      "created_at": "2025-10-09T04:34:15.944512",
+      "updated_at": "2025-10-09T04:34:15.944512",
+      "datastream_metadata": {
+        "uuid": "dacbbb62-6b69-4424-a10c-630401010001",
+        "source_timestamp": 1759984455000
+      }
+    },
+    {
+      "id": 517,
+      "name": "sso.allowRemoteBlock",
+      "description": "Allow contributor to be blocked by remote source",
+      "created_at": "2025-10-09T04:34:15.932678",
+      "updated_at": "2025-10-09T04:34:15.932678",
+      "datastream_metadata": {
+        "uuid": "dacbbb62-6b69-4424-a10c-630401001101",
+        "source_timestamp": 1759984455000
+      }
+    },
+    {
+      "id": 516,
+      "name": "sso.allowRemoteUpdate",
+      "description": "Allow contributor to be updated from remote source",
+      "created_at": "2025-10-09T04:34:15.909076",
+      "updated_at": "2025-10-09T04:34:15.909076",
+      "datastream_metadata": {
+        "uuid": "dacbbb62-6b69-4424-a10c-630401001001",
+        "source_timestamp": 1759984455000
+      }
+    },
+    {
+      "id": 515,
+      "name": "ui.workspace.taskDrawer",
+      "description": "Allow access to task drawer in workspace",
+      "created_at": "2025-10-06T04:33:56.226198",
+      "updated_at": "2025-10-06T04:33:56.226198",
+      "datastream_metadata": {
+        "uuid": "11d9fa9e-62e4-4608-8a29-63f900000110",
+        "source_timestamp": 1759725236000
+      }
+    },
+    {
+      "id": 514,
+      "name": "ui.pages.taskQueue",
+      "description": "Start task queue UI access",
+      "created_at": "2025-10-02T04:32:34.341848",
+      "updated_at": "2025-10-02T04:32:34.341848",
+      "datastream_metadata": {
+        "uuid": "025addbb-9757-4218-8a4f-fe4600100010",
+        "source_timestamp": 1759379554000
+      }
+    },
+    {
+      "id": 513,
+      "name": "conversations.skipConversation",
+      "description": "Skip conversation api access",
+      "created_at": "2025-10-02T04:32:34.312208",
+      "updated_at": "2025-10-02T04:32:34.312208",
+      "datastream_metadata": {
+        "uuid": "025addbb-9757-4218-8a4f-fe4600011111",
+        "source_timestamp": 1759379554000
+      }
+    },
+    {
+      "id": 512,
+      "name": "conversations.autoAssignConversation",
+      "description": "Auto assign conversation api access",
+      "created_at": "2025-10-02T04:32:34.283125",
+      "updated_at": "2025-10-02T04:32:34.283125",
+      "datastream_metadata": {
+        "uuid": "025addbb-9757-4218-8a4f-fe4600011100",
+        "source_timestamp": 1759379554000
+      }
+    },
+    {
+      "id": 511,
+      "name": "ui.menu.task-queue",
+      "description": "Access task queue menu",
+      "created_at": "2025-10-02T04:32:34.252167",
+      "updated_at": "2025-10-02T04:32:34.252167",
+      "datastream_metadata": {
+        "uuid": "025addbb-9757-4218-8a4f-fe4600011001",
+        "source_timestamp": 1759379554000
+      }
+    },
+    {
+      "id": 510,
+      "name": "sso.useOneTimeLinkForSignIn",
+      "description": "Allow to use one time link for sign in",
+      "created_at": "2025-09-25T04:34:17.598738",
+      "updated_at": "2025-09-25T04:34:17.598738",
+      "datastream_metadata": {
+        "uuid": "e72d8727-cacf-4bdc-9837-f7c800110110",
+        "source_timestamp": 1758774857000
+      }
+    },
+    {
+      "id": 509,
+      "name": "userpropagation.signOut",
+      "description": "Sign out a user",
+      "created_at": "2025-09-25T04:34:17.582786",
+      "updated_at": "2025-09-25T04:34:17.582786",
+      "datastream_metadata": {
+        "uuid": "e72d8727-cacf-4bdc-9837-f7c800110001",
+        "source_timestamp": 1758774857000
+      }
+    },
+    {
+      "id": 508,
+      "name": "userpropagation.signIn",
+      "description": "Sign in a user",
+      "created_at": "2025-09-25T04:34:17.581057",
+      "updated_at": "2025-09-25T04:34:17.581057",
+      "datastream_metadata": {
+        "uuid": "e72d8727-cacf-4bdc-9837-f7c800110000",
+        "source_timestamp": 1758774857000
+      }
+    },
+    {
+      "id": 507,
+      "name": "userpropagation.removeProjectMember",
+      "description": "Remove a project member",
+      "created_at": "2025-09-25T04:34:17.579062",
+      "updated_at": "2025-09-25T04:34:17.579062",
+      "datastream_metadata": {
+        "uuid": "e72d8727-cacf-4bdc-9837-f7c800101111",
+        "source_timestamp": 1758774857000
+      }
+    },
+    {
+      "id": 506,
+      "name": "userpropagation.addProjectMember",
+      "description": "Add a project member",
+      "created_at": "2025-09-25T04:34:17.577685",
+      "updated_at": "2025-09-25T04:34:17.577685",
+      "datastream_metadata": {
+        "uuid": "e72d8727-cacf-4bdc-9837-f7c800101110",
+        "source_timestamp": 1758774857000
+      }
+    },
+    {
+      "id": 505,
+      "name": "userpropagation.*",
+      "description": "Access all user propagation actions",
+      "created_at": "2025-09-25T04:34:17.575643",
+      "updated_at": "2025-09-25T04:34:17.575643",
+      "datastream_metadata": {
+        "uuid": "e72d8727-cacf-4bdc-9837-f7c800101101",
+        "source_timestamp": 1758774857000
+      }
+    },
+    {
+      "id": 504,
+      "name": "plagiarismchecker.delete",
+      "description": "Allow user to delete plagiarism checks",
+      "created_at": "2025-09-18T04:33:58.659646",
+      "updated_at": "2025-09-18T04:33:58.659646",
+      "datastream_metadata": {
+        "uuid": "4b194114-fb36-4437-b95d-606c10010101",
+        "source_timestamp": 1758170038000
+      }
+    },
+    {
+      "id": 503,
+      "name": "plagiarismchecker.get",
+      "description": "Allow user to get plagiarism checks",
+      "created_at": "2025-09-18T04:33:58.645747",
+      "updated_at": "2025-09-18T04:33:58.645747",
+      "datastream_metadata": {
+        "uuid": "4b194114-fb36-4437-b95d-606c10010010",
+        "source_timestamp": 1758170038000
+      }
+    },
+    {
+      "id": 502,
+      "name": "plagiarismchecker.start",
+      "description": "Allow user to start plagiarism checks",
+      "created_at": "2025-09-18T04:33:58.631812",
+      "updated_at": "2025-09-18T04:33:58.631812",
+      "datastream_metadata": {
+        "uuid": "4b194114-fb36-4437-b95d-606c10001111",
+        "source_timestamp": 1758170038000
+      }
+    },
+    {
+      "id": 501,
+      "name": "plagiarismchecker.initialize",
+      "description": "Allow user to initialize plagiarism checks",
+      "created_at": "2025-09-18T04:33:58.613718",
+      "updated_at": "2025-09-18T04:33:58.613718",
+      "datastream_metadata": {
+        "uuid": "4b194114-fb36-4437-b95d-606c10001100",
+        "source_timestamp": 1758170038000
+      }
+    },
+    {
+      "id": 500,
+      "name": "plagiarismchecker.*",
+      "description": "Allow user to check plagiarism",
+      "created_at": "2025-09-18T04:33:58.580803",
+      "updated_at": "2025-09-18T04:33:58.580803",
+      "datastream_metadata": {
+        "uuid": "4b194114-fb36-4437-b95d-606c10001010",
+        "source_timestamp": 1758170038000
+      }
+    },
+    {
+      "id": 499,
+      "name": "conversations.recordAudio",
+      "description": "Allow to record audio for conversation prompts",
+      "created_at": "2025-09-15T04:33:28.944051",
+      "updated_at": "2025-09-15T04:33:28.944051",
+      "datastream_metadata": {
+        "uuid": "6aa4d4fa-5aca-4462-9882-acfe11000010",
+        "source_timestamp": 1757910808000
+      }
+    },
+    {
+      "id": 498,
+      "name": "deliverybatchtasks.downloadAzureFoundryJSONL",
+      "description": "Allow a user to download delivery batches tasks in Azure Foundry JSONL format",
+      "created_at": "2025-09-11T04:33:43.920571",
+      "updated_at": "2025-09-11T04:33:43.920571",
+      "datastream_metadata": {
+        "uuid": "8cc1b2da-9680-41ae-a298-ef7911000110",
+        "source_timestamp": 1757565223000
+      }
+    },
+    {
+      "id": 497,
+      "name": "config.listPublicConfigs",
+      "description": "List all public backend configurations",
+      "created_at": "2025-09-11T04:33:43.916056",
+      "updated_at": "2025-09-11T04:33:43.916056",
+      "datastream_metadata": {
+        "uuid": "8cc1b2da-9680-41ae-a298-ef7911000100",
+        "source_timestamp": 1757565223000
+      }
+    },
+    {
+      "id": 496,
+      "name": "config.*",
+      "description": "Provide all permissions of backend-config",
+      "created_at": "2025-09-11T04:33:43.906766",
+      "updated_at": "2025-09-11T04:33:43.906766",
+      "datastream_metadata": {
+        "uuid": "8cc1b2da-9680-41ae-a298-ef7911000010",
+        "source_timestamp": 1757565223000
+      }
+    },
+    {
+      "id": 495,
+      "name": "conversations.canBypassEditMetadataConfig",
+      "description": "Allow to bypass edit metadata config",
+      "created_at": "2025-09-11T04:33:43.878442",
+      "updated_at": "2025-09-11T04:33:43.878442",
+      "datastream_metadata": {
+        "uuid": "8cc1b2da-9680-41ae-a298-ef7910011100",
+        "source_timestamp": 1757565223000
+      }
+    },
+    {
+      "id": 494,
+      "name": "contributors.myReviewees",
+      "description": "List current user's reviewees",
+      "created_at": "2025-08-28T04:33:44.209970",
+      "updated_at": "2025-08-28T04:33:44.209970",
+      "datastream_metadata": {
+        "uuid": "d4900be1-371c-4f6f-9907-777801101100",
+        "source_timestamp": 1756355624000
+      }
+    },
+    {
+      "id": 493,
+      "name": "conversationversions.markOldDraftsAsAbandoned",
+      "description": "Mark all old drafts as abandoned",
+      "created_at": "2025-08-25T04:37:19.192714",
+      "updated_at": "2025-08-25T04:37:19.192714",
+      "datastream_metadata": {
+        "uuid": "7221b75b-5b75-4918-9448-866d00010000",
+        "source_timestamp": 1756096639000
+      }
+    },
+    {
+      "id": 492,
+      "name": "conversationversions.restore",
+      "description": "Restore an abandoned conversation version",
+      "created_at": "2025-08-25T04:37:19.168749",
+      "updated_at": "2025-08-25T04:37:19.168749",
+      "datastream_metadata": {
+        "uuid": "7221b75b-5b75-4918-9448-866d00001010",
+        "source_timestamp": 1756096639000
+      }
+    },
+    {
+      "id": 491,
+      "name": "conversationversions.*",
+      "description": "Full access to conversation versions API",
+      "created_at": "2025-08-25T04:37:19.122700",
+      "updated_at": "2025-08-25T04:37:19.122700",
+      "datastream_metadata": {
+        "uuid": "7221b75b-5b75-4918-9448-866d00000000",
+        "source_timestamp": 1756096639000
+      }
+    },
+    {
+      "id": 490,
+      "name": "conversationversions.abandon",
+      "description": "Abandon a draft conversation version",
+      "created_at": "2025-08-25T04:37:19.102650",
+      "updated_at": "2025-08-25T04:37:19.102650",
+      "datastream_metadata": {
+        "uuid": "46b5c124-acdd-402b-a0d9-c3cd11111100",
+        "source_timestamp": 1756096639000
+      }
+    },
+    {
+      "id": 489,
+      "name": "my-team.update-manager",
+      "description": "",
+      "created_at": "2025-08-07T14:52:14.623043",
+      "updated_at": "2025-08-07T14:52:14.623043",
+      "datastream_metadata": {
+        "uuid": "bf8f2be9-f074-4310-8a75-8c6a01111110",
+        "source_timestamp": 1754578334000
+      }
+    },
+    {
+      "id": 488,
+      "name": "my-team.*",
+      "description": "",
+      "created_at": "2025-08-07T14:51:46.338271",
+      "updated_at": "2025-08-07T14:51:46.338271",
+      "datastream_metadata": {
+        "uuid": "b3c2b117-fe09-4e3f-bab7-86fe10101100",
+        "source_timestamp": 1754578306000
+      }
+    },
+    {
+      "id": 487,
+      "name": "my-team.get-my-team",
+      "description": "",
+      "created_at": "2025-08-07T14:28:38.966390",
+      "updated_at": "2025-08-07T14:28:38.966390",
+      "datastream_metadata": {
+        "uuid": "d0dd267b-a95e-4857-b03d-1d9201111110",
+        "source_timestamp": 1754576918000
+      }
+    },
+    {
+      "id": 486,
+      "name": "rolepermissionshistory.getOne",
+      "description": "Allow to get single role permissions history",
+      "created_at": "2025-08-06T19:43:19.571283",
+      "updated_at": "2025-08-06T19:43:19.571283",
+      "datastream_metadata": {
+        "uuid": "a402728e-49c5-4980-a71d-532511000011",
+        "source_timestamp": 1754509399000
+      }
+    },
+    {
+      "id": 485,
+      "name": "rolepermissionshistory.getMany",
+      "description": "Allow to get role permissions history",
+      "created_at": "2025-08-06T19:43:19.553687",
+      "updated_at": "2025-08-06T19:43:19.553687",
+      "datastream_metadata": {
+        "uuid": "a402728e-49c5-4980-a71d-532511000001",
+        "source_timestamp": 1754509399000
+      }
+    },
+    {
+      "id": 484,
+      "name": "rolepermissionshistory.*",
+      "description": "Allow admins to have all permissions for project history",
+      "created_at": "2025-08-06T19:43:19.531150",
+      "updated_at": "2025-08-06T19:43:19.531150",
+      "datastream_metadata": {
+        "uuid": "a402728e-49c5-4980-a71d-532510111111",
+        "source_timestamp": 1754509399000
+      }
+    },
+    {
+      "id": 483,
+      "name": "conversations.manuallyUpdateTaskStatus",
+      "description": "Manually Update Task Status",
+      "created_at": "2025-08-06T19:43:19.146949",
+      "updated_at": "2025-08-06T19:43:19.146949",
+      "datastream_metadata": {
+        "uuid": "a402728e-49c5-4980-a71d-532510111100",
+        "source_timestamp": 1754509399000
+      }
+    },
+    {
+      "id": 482,
+      "name": "projecthistory.getOne",
+      "description": "Allow to get single project history",
+      "created_at": "2025-07-15T08:40:37.480182",
+      "updated_at": "2025-07-15T08:40:37.480182",
+      "datastream_metadata": {
+        "uuid": "125b46ca-28c6-47ea-8eae-c2a910011101",
+        "source_timestamp": 1752568837000
+      }
+    },
+    {
+      "id": 481,
+      "name": "projecthistory.getMany",
+      "description": "Allow to get project history",
+      "created_at": "2025-07-15T08:40:37.465283",
+      "updated_at": "2025-07-15T08:40:37.465283",
+      "datastream_metadata": {
+        "uuid": "125b46ca-28c6-47ea-8eae-c2a910011011",
+        "source_timestamp": 1752568837000
+      }
+    },
+    {
+      "id": 480,
+      "name": "projecthistory.*",
+      "description": "Allow admins to have all permissions for project history",
+      "created_at": "2025-07-15T08:40:37.450087",
+      "updated_at": "2025-07-15T08:40:37.450087",
+      "datastream_metadata": {
+        "uuid": "125b46ca-28c6-47ea-8eae-c2a910011001",
+        "source_timestamp": 1752568837000
+      }
+    },
+    {
+      "id": 479,
+      "name": "batches.updateHealth",
+      "description": "Update batch health column",
+      "created_at": "2025-07-14T04:33:42.517076",
+      "updated_at": "2025-07-14T04:33:42.517076",
+      "datastream_metadata": {
+        "uuid": "8fdea04e-c11a-4294-8bd3-79f700010011",
+        "source_timestamp": 1752467622000
+      }
+    },
+    {
+      "id": 478,
+      "name": "projects.updateHealth",
+      "description": "Update project health column",
+      "created_at": "2025-07-14T04:33:42.505527",
+      "updated_at": "2025-07-14T04:33:42.505527",
+      "datastream_metadata": {
+        "uuid": "8fdea04e-c11a-4294-8bd3-79f700010010",
+        "source_timestamp": 1752467622000
+      }
+    },
+    {
+      "id": 477,
+      "name": "statistics.refreshProjects",
+      "description": "Allow to trigger project statistics refresh",
+      "created_at": "2025-07-10T04:32:16.833942",
+      "updated_at": "2025-07-10T04:32:16.833942",
+      "datastream_metadata": {
+        "uuid": "8f1e76c5-8016-456d-b152-c14100011010",
+        "source_timestamp": 1752121936000
+      }
+    }
+  ]
+}

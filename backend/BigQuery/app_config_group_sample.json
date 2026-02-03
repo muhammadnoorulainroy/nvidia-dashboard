@@ -1,0 +1,92 @@
+{
+  "table": "app_config_group",
+  "row_count": 7,
+  "sample_count": 7,
+  "fetched_at": "2026-01-28T23:22:22.506346",
+  "data": [
+    {
+      "created_at": "2024-11-21T04:31:55.272701",
+      "updated_at": "2024-11-21T04:31:55.272701",
+      "id": 7,
+      "name": "Delivery",
+      "description": "Delivery project options",
+      "order": 5,
+      "datastream_metadata": {
+        "uuid": "cea0f419-b1d0-42d5-bb3b-4d0e01101000",
+        "source_timestamp": 1732163515000
+      }
+    },
+    {
+      "created_at": "2024-09-17T09:54:09.368330",
+      "updated_at": "2024-09-17T09:54:09.368330",
+      "id": 6,
+      "name": "Multilingual",
+      "description": "Multilingual project options",
+      "order": 4,
+      "datastream_metadata": {
+        "uuid": "7806466d-6945-44a7-ada0-348300001000",
+        "source_timestamp": 1726566849000
+      }
+    },
+    {
+      "created_at": "2024-07-04T08:05:02.384124",
+      "updated_at": "2024-07-04T08:05:02.384124",
+      "id": 5,
+      "name": "Tasks Generation",
+      "description": "Task generation options",
+      "order": 1,
+      "datastream_metadata": {
+        "uuid": "2e1de200-568c-45ab-85f7-d92900000100",
+        "source_timestamp": 1721939922000
+      }
+    },
+    {
+      "created_at": "2024-06-28T06:53:39.482857",
+      "updated_at": "2024-11-21T04:31:55.260558",
+      "id": 4,
+      "name": "Analytics",
+      "description": "Analytics dashboard settings",
+      "order": 6,
+      "datastream_metadata": {
+        "uuid": "cea0f419-b1d0-42d5-bb3b-4d0e01100111",
+        "source_timestamp": 1732163515000
+      }
+    },
+    {
+      "created_at": "2024-06-28T06:53:37.926357",
+      "updated_at": "2024-07-04T08:05:02.381935",
+      "id": 3,
+      "name": "Review",
+      "description": "Review process settings",
+      "order": 3,
+      "datastream_metadata": {
+        "uuid": "2e1de200-568c-45ab-85f7-d92900000010",
+        "source_timestamp": 1721939922000
+      }
+    },
+    {
+      "created_at": "2024-06-28T06:53:37.913877",
+      "updated_at": "2024-07-04T08:05:02.381935",
+      "id": 2,
+      "name": "Labeling",
+      "description": "Labeling settings",
+      "order": 2,
+      "datastream_metadata": {
+        "uuid": "2e1de200-568c-45ab-85f7-d92900000001",
+        "source_timestamp": 1721939922000
+      }
+    },
+    {
+      "created_at": "2024-06-28T06:53:37.899722",
+      "updated_at": "2024-06-28T06:53:37.899722",
+      "id": 1,
+      "name": "General",
+      "description": "General application settings",
+      "order": 0,
+      "datastream_metadata": {
+        "uuid": "2e1de200-568c-45ab-85f7-d92900000000",
+        "source_timestamp": 1721939922000
+      }
+    }
+  ]
+}

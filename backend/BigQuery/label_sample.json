@@ -1,0 +1,50 @@
+{
+  "table": "label",
+  "row_count": 3,
+  "sample_count": 3,
+  "fetched_at": "2026-01-28T23:23:36.391413",
+  "data": [
+    {
+      "created_at": "2024-11-27T10:14:56.587406",
+      "updated_at": "2024-11-27T10:14:56.587406",
+      "id": 3,
+      "name": "Test",
+      "description": "Test",
+      "color": "orange",
+      "project_id": 8,
+      "author_id": 69,
+      "datastream_metadata": {
+        "uuid": "f5cbac2d-f4a1-463a-8423-dec601001001",
+        "source_timestamp": 1732702496000
+      }
+    },
+    {
+      "created_at": "2024-11-27T09:31:15.748297",
+      "updated_at": "2024-11-27T09:31:15.748297",
+      "id": 2,
+      "name": "charts",
+      "description": "tag for charts",
+      "color": "purple",
+      "project_id": 1,
+      "author_id": 1,
+      "datastream_metadata": {
+        "uuid": "24394a75-1d9c-47b2-a9e9-408510000001",
+        "source_timestamp": 1732699875000
+      }
+    },
+    {
+      "created_at": "2024-11-27T09:27:45.779801",
+      "updated_at": "2024-11-27T09:27:45.779801",
+      "id": 1,
+      "name": "graphs",
+      "description": "graphs label",
+      "color": "orange",
+      "project_id": 1,
+      "author_id": 1,
+      "datastream_metadata": {
+        "uuid": "5dd369f8-4e23-4995-aebb-ea1c11001110",
+        "source_timestamp": 1732699665000
+      }
+    }
+  ]
+}

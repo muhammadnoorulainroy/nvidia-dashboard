@@ -1,0 +1,88 @@
+{
+  "table": "accent",
+  "row_count": 8,
+  "sample_count": 8,
+  "fetched_at": "2026-01-28T23:22:18.272363",
+  "data": [
+    {
+      "id": 8,
+      "name": "Welsh English",
+      "description": "",
+      "language_id": 3,
+      "datastream_metadata": {
+        "uuid": "911353da-9a37-4386-bfe1-760700110000",
+        "source_timestamp": 1763958848000
+      }
+    },
+    {
+      "id": 7,
+      "name": "Irish English",
+      "description": "",
+      "language_id": 3,
+      "datastream_metadata": {
+        "uuid": "911353da-9a37-4386-bfe1-760700101111",
+        "source_timestamp": 1763958848000
+      }
+    },
+    {
+      "id": 6,
+      "name": "Indian English",
+      "description": "",
+      "language_id": 3,
+      "datastream_metadata": {
+        "uuid": "911353da-9a37-4386-bfe1-760700101110",
+        "source_timestamp": 1763958848000
+      }
+    },
+    {
+      "id": 5,
+      "name": "Scottish English",
+      "description": "",
+      "language_id": 3,
+      "datastream_metadata": {
+        "uuid": "911353da-9a37-4386-bfe1-760700101101",
+        "source_timestamp": 1763958848000
+      }
+    },
+    {
+      "id": 4,
+      "name": "Australian English",
+      "description": "",
+      "language_id": 3,
+      "datastream_metadata": {
+        "uuid": "911353da-9a37-4386-bfe1-760700101100",
+        "source_timestamp": 1763958848000
+      }
+    },
+    {
+      "id": 3,
+      "name": "Canadian English",
+      "description": "",
+      "language_id": 3,
+      "datastream_metadata": {
+        "uuid": "911353da-9a37-4386-bfe1-760700101011",
+        "source_timestamp": 1763958848000
+      }
+    },
+    {
+      "id": 2,
+      "name": "British English",
+      "description": "",
+      "language_id": 3,
+      "datastream_metadata": {
+        "uuid": "911353da-9a37-4386-bfe1-760700101010",
+        "source_timestamp": 1763958848000
+      }
+    },
+    {
+      "id": 1,
+      "name": "American English",
+      "description": "",
+      "language_id": 3,
+      "datastream_metadata": {
+        "uuid": "911353da-9a37-4386-bfe1-760700101001",
+        "source_timestamp": 1763958848000
+      }
+    }
+  ]
+}

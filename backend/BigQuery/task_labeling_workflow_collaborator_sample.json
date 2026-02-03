@@ -1,0 +1,1408 @@
+{
+  "table": "task_labeling_workflow_collaborator",
+  "row_count": 140306,
+  "sample_count": 100,
+  "fetched_at": "2026-01-28T23:24:59.700871",
+  "data": [
+    {
+      "created_at": "2025-09-04T19:53:12.289008",
+      "updated_at": "2025-09-04T19:53:12.289008",
+      "id": 140855,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47400,
+      "collaborator_id": 460,
+      "datastream_metadata": {
+        "uuid": "100dbaa9-08f8-4959-b543-7a5f10000101",
+        "source_timestamp": 1757015592000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-09-04T19:45:44.785336",
+      "updated_at": "2025-09-04T19:45:44.785336",
+      "id": 140854,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47399,
+      "collaborator_id": 460,
+      "datastream_metadata": {
+        "uuid": "013ab480-43ae-457c-8734-f68000001100",
+        "source_timestamp": 1757015144000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-09-04T19:03:34.457045",
+      "updated_at": "2025-09-04T19:03:34.457045",
+      "id": 140853,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47396,
+      "collaborator_id": 432,
+      "datastream_metadata": {
+        "uuid": "4aceaa7a-729d-4eff-b2ef-22cb00001000",
+        "source_timestamp": 1757012614000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-09-04T19:01:00.172550",
+      "updated_at": "2025-09-04T19:01:00.172550",
+      "id": 140852,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47394,
+      "collaborator_id": 460,
+      "datastream_metadata": {
+        "uuid": "b334a72b-78e2-4762-b0f2-386100100000",
+        "source_timestamp": 1757012460000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-09-04T18:48:16.548766",
+      "updated_at": "2025-09-04T18:48:16.548766",
+      "id": 140851,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47397,
+      "collaborator_id": 432,
+      "datastream_metadata": {
+        "uuid": "e76cad1e-2225-4921-bc4e-712000100010",
+        "source_timestamp": 1757011696000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-09-04T18:34:12.672665",
+      "updated_at": "2025-09-04T18:34:12.672665",
+      "id": 140850,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47395,
+      "collaborator_id": 176,
+      "datastream_metadata": {
+        "uuid": "04aa6ee6-5772-4f02-9886-278611001010",
+        "source_timestamp": 1757010852000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-09-04T18:27:29.802960",
+      "updated_at": "2025-09-04T18:27:29.802960",
+      "id": 140849,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47398,
+      "collaborator_id": 432,
+      "datastream_metadata": {
+        "uuid": "805faa46-0c36-445e-a104-9f5801000101",
+        "source_timestamp": 1757010449000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-09-04T18:20:51.121087",
+      "updated_at": "2025-09-04T18:20:51.121087",
+      "id": 140848,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47393,
+      "collaborator_id": 176,
+      "datastream_metadata": {
+        "uuid": "0e2a4474-d385-4cd0-bd7e-461c00011000",
+        "source_timestamp": 1757010051000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-09-04T17:16:30.110373",
+      "updated_at": "2025-09-04T17:25:20",
+      "id": 140847,
+      "role": "trainer",
+      "metadata": null,
+      "task_workflow_id": 47400,
+      "collaborator_id": 432,
+      "datastream_metadata": {
+        "uuid": "b08f57c1-3d55-476a-8889-235c11011111",
+        "source_timestamp": 1757006720000
+      },
+      "duration_minutes": 10
+    },
+    {
+      "created_at": "2025-09-04T16:57:13.668780",
+      "updated_at": "2025-09-04T16:57:13.668780",
+      "id": 140846,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47392,
+      "collaborator_id": 176,
+      "datastream_metadata": {
+        "uuid": "47489542-8ab0-4663-96de-b96810110001",
+        "source_timestamp": 1757005033000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-09-04T16:37:00.124981",
+      "updated_at": "2025-09-04T17:15:54",
+      "id": 140845,
+      "role": "trainer",
+      "metadata": null,
+      "task_workflow_id": 47399,
+      "collaborator_id": 432,
+      "datastream_metadata": {
+        "uuid": "748d5683-3ca2-46cb-ab58-6ecd01001101",
+        "source_timestamp": 1757006154000
+      },
+      "duration_minutes": 10
+    },
+    {
+      "created_at": "2025-09-04T14:56:16.944559",
+      "updated_at": "2025-09-04T19:08:16",
+      "id": 140844,
+      "role": "trainer",
+      "metadata": null,
+      "task_workflow_id": 47398,
+      "collaborator_id": 176,
+      "datastream_metadata": {
+        "uuid": "8493ed64-4dd0-4184-a59a-3ede00111101",
+        "source_timestamp": 1757012896000
+      },
+      "duration_minutes": 135
+    },
+    {
+      "created_at": "2025-09-04T14:18:31.947733",
+      "updated_at": "2025-09-04T16:26:13",
+      "id": 140843,
+      "role": "trainer",
+      "metadata": null,
+      "task_workflow_id": 47397,
+      "collaborator_id": 176,
+      "datastream_metadata": {
+        "uuid": "e822b49d-04cd-48be-8d83-368400101101",
+        "source_timestamp": 1757003173000
+      },
+      "duration_minutes": 180
+    },
+    {
+      "created_at": "2025-09-04T10:54:48.236754",
+      "updated_at": "2025-09-04T20:21:15",
+      "id": 140842,
+      "role": "trainer",
+      "metadata": null,
+      "task_workflow_id": 47396,
+      "collaborator_id": 176,
+      "datastream_metadata": {
+        "uuid": "c06c9e01-352c-4cc5-ac3a-7cd711100001",
+        "source_timestamp": 1757017275000
+      },
+      "duration_minutes": 285
+    },
+    {
+      "created_at": "2025-09-03T16:57:43.777456",
+      "updated_at": "2025-09-04T19:18:34",
+      "id": 140841,
+      "role": "trainer",
+      "metadata": null,
+      "task_workflow_id": 47395,
+      "collaborator_id": 432,
+      "datastream_metadata": {
+        "uuid": "3c68cf66-bb01-4050-ab0b-4d9510100110",
+        "source_timestamp": 1757013514000
+      },
+      "duration_minutes": 130
+    },
+    {
+      "created_at": "2025-09-03T10:00:07.160257",
+      "updated_at": "2025-09-04T19:12:11",
+      "id": 140840,
+      "role": "trainer",
+      "metadata": null,
+      "task_workflow_id": 47394,
+      "collaborator_id": 176,
+      "datastream_metadata": {
+        "uuid": "8c825ac9-6825-4a8b-8d1e-0dc211100010",
+        "source_timestamp": 1757013131000
+      },
+      "duration_minutes": 245
+    },
+    {
+      "created_at": "2025-09-02T13:20:38.490759",
+      "updated_at": "2025-09-04T16:53:16",
+      "id": 140839,
+      "role": "trainer",
+      "metadata": null,
+      "task_workflow_id": 47393,
+      "collaborator_id": 460,
+      "datastream_metadata": {
+        "uuid": "077ec54b-4e05-4f50-a00e-a40100011110",
+        "source_timestamp": 1757004796000
+      },
+      "duration_minutes": 300
+    },
+    {
+      "created_at": "2025-09-02T13:03:59.295609",
+      "updated_at": "2025-09-04T17:09:01",
+      "id": 140838,
+      "role": "trainer",
+      "metadata": null,
+      "task_workflow_id": 47392,
+      "collaborator_id": 460,
+      "datastream_metadata": {
+        "uuid": "0f5d8d91-46a3-40b0-9751-cd8611000110",
+        "source_timestamp": 1757005741000
+      },
+      "duration_minutes": 300
+    },
+    {
+      "created_at": "2025-08-20T21:38:59.477027",
+      "updated_at": "2025-08-20T21:38:59.477027",
+      "id": 140837,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47230,
+      "collaborator_id": 432,
+      "datastream_metadata": {
+        "uuid": "fc3efc3c-7ddc-4332-ae11-68fe00111110",
+        "source_timestamp": 1755725939000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-20T15:45:26.979786",
+      "updated_at": "2025-08-20T15:45:26.979786",
+      "id": 140836,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47373,
+      "collaborator_id": 315,
+      "datastream_metadata": {
+        "uuid": "b2fdafd5-8300-48fa-bfb1-ca0911010110",
+        "source_timestamp": 1755704726000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-20T15:37:28.807017",
+      "updated_at": "2025-08-20T15:37:28.807017",
+      "id": 140835,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47382,
+      "collaborator_id": 315,
+      "datastream_metadata": {
+        "uuid": "dc69b6ac-9c4b-4366-ba8f-474901111000",
+        "source_timestamp": 1755704248000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-20T09:18:02.618310",
+      "updated_at": "2025-08-20T09:18:02.618310",
+      "id": 140834,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47363,
+      "collaborator_id": 433,
+      "datastream_metadata": {
+        "uuid": "638a4858-ecdf-45cb-b016-870b00101100",
+        "source_timestamp": 1755681482000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-20T08:58:28.695775",
+      "updated_at": "2025-08-20T08:58:28.695775",
+      "id": 140833,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47329,
+      "collaborator_id": 433,
+      "datastream_metadata": {
+        "uuid": "bf05b7e8-309f-4db1-a534-bd1801010001",
+        "source_timestamp": 1755680308000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-20T08:36:10.385576",
+      "updated_at": "2025-08-20T08:36:10.385576",
+      "id": 140832,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47387,
+      "collaborator_id": 431,
+      "datastream_metadata": {
+        "uuid": "01bb1357-ba35-4977-be2e-6df200000001",
+        "source_timestamp": 1755678970000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-20T08:29:22.435100",
+      "updated_at": "2025-08-20T08:29:22.435100",
+      "id": 140831,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47327,
+      "collaborator_id": 433,
+      "datastream_metadata": {
+        "uuid": "15e4f75f-0f6b-4903-8781-03f100111110",
+        "source_timestamp": 1755678562000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-19T19:46:41.887092",
+      "updated_at": "2025-08-19T19:46:41.887092",
+      "id": 140830,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47330,
+      "collaborator_id": 433,
+      "datastream_metadata": {
+        "uuid": "a7aa7958-9444-4ac3-b79d-874500010001",
+        "source_timestamp": 1755632801000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-19T18:41:27.393955",
+      "updated_at": "2025-08-19T18:41:27.393955",
+      "id": 140829,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47356,
+      "collaborator_id": 433,
+      "datastream_metadata": {
+        "uuid": "26bc3fe6-d0bb-41ba-b2b7-5d2e00000100",
+        "source_timestamp": 1755628887000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-19T18:26:04.322380",
+      "updated_at": "2025-08-19T18:26:04.322380",
+      "id": 140828,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47378,
+      "collaborator_id": 311,
+      "datastream_metadata": {
+        "uuid": "289e5e39-9ea7-407d-8a19-520601000000",
+        "source_timestamp": 1755627964000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-19T18:24:07.842609",
+      "updated_at": "2025-08-19T18:24:07.842609",
+      "id": 140827,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47155,
+      "collaborator_id": 431,
+      "datastream_metadata": {
+        "uuid": "6accab9e-b885-4b4f-996e-b16301010110",
+        "source_timestamp": 1755627847000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-19T18:18:16.105236",
+      "updated_at": "2025-08-19T18:18:16.105236",
+      "id": 140826,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47377,
+      "collaborator_id": 311,
+      "datastream_metadata": {
+        "uuid": "1f60f3cf-902c-46b3-8f5e-2af501010101",
+        "source_timestamp": 1755627496000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-19T17:57:38.865049",
+      "updated_at": "2025-08-19T17:57:38.865049",
+      "id": 140825,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47365,
+      "collaborator_id": 311,
+      "datastream_metadata": {
+        "uuid": "72b91130-05b4-4444-a18b-1dbf01000111",
+        "source_timestamp": 1755626258000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-19T17:51:12.710569",
+      "updated_at": "2025-08-19T17:51:12.710569",
+      "id": 140824,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47376,
+      "collaborator_id": 311,
+      "datastream_metadata": {
+        "uuid": "5a8afe68-69e8-4cd0-9d36-0f8d10111101",
+        "source_timestamp": 1755625872000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-19T17:36:31.545362",
+      "updated_at": "2025-08-19T17:36:31.545362",
+      "id": 140823,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47302,
+      "collaborator_id": 431,
+      "datastream_metadata": {
+        "uuid": "275c3e8e-fc71-4c72-9640-849b10000001",
+        "source_timestamp": 1755624991000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-19T17:36:31.538707",
+      "updated_at": "2025-08-19T17:36:31.538707",
+      "id": 140822,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47302,
+      "collaborator_id": 431,
+      "datastream_metadata": {
+        "uuid": "275c3e8e-fc71-4c72-9640-849b10000000",
+        "source_timestamp": 1755624991000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-19T17:32:50.681839",
+      "updated_at": "2025-08-19T17:32:50.681839",
+      "id": 140821,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47364,
+      "collaborator_id": 311,
+      "datastream_metadata": {
+        "uuid": "05a4ec12-e227-4dbf-a53b-24d901000110",
+        "source_timestamp": 1755624770000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-19T17:26:35.470894",
+      "updated_at": "2025-08-19T17:26:35.470894",
+      "id": 140820,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47340,
+      "collaborator_id": 311,
+      "datastream_metadata": {
+        "uuid": "bf1de678-0947-4337-aa91-c38d00101011",
+        "source_timestamp": 1755624395000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-19T17:04:59.721903",
+      "updated_at": "2025-08-19T17:04:59.721903",
+      "id": 140819,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47339,
+      "collaborator_id": 311,
+      "datastream_metadata": {
+        "uuid": "25bfafe6-39ac-4a30-a1fe-e75311101011",
+        "source_timestamp": 1755623099000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-19T16:50:33.223195",
+      "updated_at": "2025-08-19T16:50:33.223195",
+      "id": 140818,
+      "role": "trainer",
+      "metadata": null,
+      "task_workflow_id": 47391,
+      "collaborator_id": 437,
+      "datastream_metadata": {
+        "uuid": "1971f4a9-8cc1-4f95-9d5e-f1db00000101",
+        "source_timestamp": 1755622233000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-19T16:35:24.671892",
+      "updated_at": "2025-08-19T16:35:24.671892",
+      "id": 140817,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47323,
+      "collaborator_id": 311,
+      "datastream_metadata": {
+        "uuid": "90528323-2506-4ab2-840a-acc711110100",
+        "source_timestamp": 1755621324000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-19T15:59:19.781497",
+      "updated_at": "2025-08-19T15:59:19.781497",
+      "id": 140816,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47333,
+      "collaborator_id": 431,
+      "datastream_metadata": {
+        "uuid": "fff89cf5-6800-47f0-a790-5f3101100011",
+        "source_timestamp": 1755619159000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-19T15:53:07.025344",
+      "updated_at": "2025-08-19T15:53:07.025344",
+      "id": 140815,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47337,
+      "collaborator_id": 315,
+      "datastream_metadata": {
+        "uuid": "2bb807dd-cb8f-4d9b-aec7-9a4210010000",
+        "source_timestamp": 1755618787000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-19T15:51:21.125228",
+      "updated_at": "2025-08-19T15:51:21.125228",
+      "id": 140814,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47303,
+      "collaborator_id": 431,
+      "datastream_metadata": {
+        "uuid": "18cca1a0-9cf5-4241-8a1e-b86f01100000",
+        "source_timestamp": 1755618681000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-19T15:45:25.658705",
+      "updated_at": "2025-08-19T15:45:25.658705",
+      "id": 140813,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47345,
+      "collaborator_id": 311,
+      "datastream_metadata": {
+        "uuid": "4293fc2f-d8ce-4f0c-b064-d8c910110100",
+        "source_timestamp": 1755618325000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-19T15:42:34.244970",
+      "updated_at": "2025-08-19T15:42:34.244970",
+      "id": 140812,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47336,
+      "collaborator_id": 315,
+      "datastream_metadata": {
+        "uuid": "022c55f7-9543-4665-a8d2-e22001111110",
+        "source_timestamp": 1755618154000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-19T15:42:25.981353",
+      "updated_at": "2025-08-19T15:42:25.981353",
+      "id": 140811,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47390,
+      "collaborator_id": 431,
+      "datastream_metadata": {
+        "uuid": "022c55f7-9543-4665-a8d2-e22001001100",
+        "source_timestamp": 1755618145000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-19T15:38:45.829375",
+      "updated_at": "2025-08-19T15:38:45.829375",
+      "id": 140810,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47335,
+      "collaborator_id": 315,
+      "datastream_metadata": {
+        "uuid": "29d062ef-b9c2-46e7-af86-f40500101110",
+        "source_timestamp": 1755617925000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-19T15:22:53.734892",
+      "updated_at": "2025-08-19T15:22:53.734892",
+      "id": 140809,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47381,
+      "collaborator_id": 311,
+      "datastream_metadata": {
+        "uuid": "e5fdd979-b137-4f68-9e4a-34ee01101111",
+        "source_timestamp": 1755616973000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-19T14:43:14.436776",
+      "updated_at": "2025-08-19T14:43:14.436776",
+      "id": 140808,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47347,
+      "collaborator_id": 315,
+      "datastream_metadata": {
+        "uuid": "35b79b24-ef97-46ac-9fa3-40c900111101",
+        "source_timestamp": 1755614594000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-19T14:22:31.772188",
+      "updated_at": "2025-08-19T14:22:31.772188",
+      "id": 140807,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47384,
+      "collaborator_id": 315,
+      "datastream_metadata": {
+        "uuid": "3e627732-33d8-4488-94c4-553a00110011",
+        "source_timestamp": 1755613351000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-19T13:38:46.109212",
+      "updated_at": "2025-08-19T17:41:26",
+      "id": 140806,
+      "role": "trainer",
+      "metadata": null,
+      "task_workflow_id": 47390,
+      "collaborator_id": 430,
+      "datastream_metadata": {
+        "uuid": "ab0de496-daa5-44fd-8c3c-b3fa11000011",
+        "source_timestamp": 1755625286000
+      },
+      "duration_minutes": 50
+    },
+    {
+      "created_at": "2025-08-19T13:11:14.759050",
+      "updated_at": "2025-08-19T13:11:14.759050",
+      "id": 140805,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47286,
+      "collaborator_id": 315,
+      "datastream_metadata": {
+        "uuid": "280968da-00d6-4f97-b16d-7e3001010110",
+        "source_timestamp": 1755609074000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-19T13:01:48.672497",
+      "updated_at": "2025-08-19T13:01:48.672497",
+      "id": 140804,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47359,
+      "collaborator_id": 315,
+      "datastream_metadata": {
+        "uuid": "d19ef34c-e3e1-4cc3-829e-c5e000100001",
+        "source_timestamp": 1755608508000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-19T09:05:32.641563",
+      "updated_at": "2025-08-19T09:05:32.641563",
+      "id": 140803,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47371,
+      "collaborator_id": 431,
+      "datastream_metadata": {
+        "uuid": "2325a104-a43f-4353-aad7-bdf800000001",
+        "source_timestamp": 1755594332000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-19T08:58:50.328378",
+      "updated_at": "2025-08-19T08:58:50.328378",
+      "id": 140802,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47374,
+      "collaborator_id": 431,
+      "datastream_metadata": {
+        "uuid": "4aa82f6a-ad6a-4e0d-bbdb-dd5d10000001",
+        "source_timestamp": 1755593930000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-18T21:29:08.537887",
+      "updated_at": "2025-08-18T21:29:08.537887",
+      "id": 140801,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47388,
+      "collaborator_id": 29,
+      "datastream_metadata": {
+        "uuid": "e929caab-b6e7-43bd-8aa1-f60200010101",
+        "source_timestamp": 1755552548000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-18T21:27:57.240131",
+      "updated_at": "2025-08-18T21:29:21",
+      "id": 140800,
+      "role": "trainer-three",
+      "metadata": null,
+      "task_workflow_id": 47388,
+      "collaborator_id": 29,
+      "datastream_metadata": {
+        "uuid": "e929caab-b6e7-43bd-8aa1-f60201000001",
+        "source_timestamp": 1755552561000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-18T21:27:33.918635",
+      "updated_at": "2025-08-18T21:27:42",
+      "id": 140799,
+      "role": "trainer-two",
+      "metadata": null,
+      "task_workflow_id": 47388,
+      "collaborator_id": 110,
+      "datastream_metadata": {
+        "uuid": "f29f3701-e41c-4c2b-a413-f7c700001110",
+        "source_timestamp": 1755552462000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-18T21:27:02.335456",
+      "updated_at": "2025-08-18T21:27:17",
+      "id": 140798,
+      "role": "trainer-one",
+      "metadata": null,
+      "task_workflow_id": 47388,
+      "collaborator_id": 4,
+      "datastream_metadata": {
+        "uuid": "f29f3701-e41c-4c2b-a413-f7c700000000",
+        "source_timestamp": 1755552437000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-18T20:25:05.367728",
+      "updated_at": "2025-08-18T20:25:05.367728",
+      "id": 140797,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47297,
+      "collaborator_id": 433,
+      "datastream_metadata": {
+        "uuid": "5a1b3eb2-997f-42b3-b87b-bc2a10011101",
+        "source_timestamp": 1755548705000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-18T20:02:36.234343",
+      "updated_at": "2025-08-18T20:02:36.234343",
+      "id": 140796,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47332,
+      "collaborator_id": 433,
+      "datastream_metadata": {
+        "uuid": "18a7fb7c-14ad-4126-98a0-2ad101000111",
+        "source_timestamp": 1755547356000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-18T19:19:01.447371",
+      "updated_at": "2025-08-18T19:19:01.447371",
+      "id": 140795,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47360,
+      "collaborator_id": 433,
+      "datastream_metadata": {
+        "uuid": "46bf09ad-befc-4001-afd7-69e311001010",
+        "source_timestamp": 1755544741000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-18T19:11:29.820014",
+      "updated_at": "2025-08-20T07:27:35",
+      "id": 140794,
+      "role": "trainer",
+      "metadata": null,
+      "task_workflow_id": 47387,
+      "collaborator_id": 437,
+      "datastream_metadata": {
+        "uuid": "7000021c-eb3f-4c2e-8de0-d42800010000",
+        "source_timestamp": 1755674855000
+      },
+      "duration_minutes": 480
+    },
+    {
+      "created_at": "2025-08-18T18:39:00.231304",
+      "updated_at": "2025-08-18T18:39:00.231304",
+      "id": 140793,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47353,
+      "collaborator_id": 433,
+      "datastream_metadata": {
+        "uuid": "b63bb9f6-4f57-4f50-a93a-9ec800010001",
+        "source_timestamp": 1755542340000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-18T18:27:51.187352",
+      "updated_at": "2025-08-18T18:27:51.187352",
+      "id": 140792,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47322,
+      "collaborator_id": 311,
+      "datastream_metadata": {
+        "uuid": "6f612e4b-7e8d-4060-b287-cc2b01110111",
+        "source_timestamp": 1755541671000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-18T18:10:26.056393",
+      "updated_at": "2025-08-18T18:10:26.056393",
+      "id": 140791,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47372,
+      "collaborator_id": 431,
+      "datastream_metadata": {
+        "uuid": "12a6cae1-5831-46d8-a43d-334710010000",
+        "source_timestamp": 1755540626000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-18T18:10:11.129417",
+      "updated_at": "2025-08-18T18:10:11.129417",
+      "id": 140790,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47338,
+      "collaborator_id": 311,
+      "datastream_metadata": {
+        "uuid": "12a6cae1-5831-46d8-a43d-334701010111",
+        "source_timestamp": 1755540611000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-18T17:45:12.270883",
+      "updated_at": "2025-08-18T17:45:12.270883",
+      "id": 140789,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47355,
+      "collaborator_id": 431,
+      "datastream_metadata": {
+        "uuid": "69503f2b-ac64-49f8-8de6-f32900101000",
+        "source_timestamp": 1755539112000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-18T17:43:01.086388",
+      "updated_at": "2025-08-18T17:43:01.086388",
+      "id": 140788,
+      "role": "trainer",
+      "metadata": null,
+      "task_workflow_id": 47386,
+      "collaborator_id": 439,
+      "datastream_metadata": {
+        "uuid": "e7fbfb41-9c62-49dd-82c2-da4700101100",
+        "source_timestamp": 1755538981000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-18T17:41:48.914262",
+      "updated_at": "2025-08-18T17:41:48.914262",
+      "id": 140787,
+      "role": "trainer",
+      "metadata": null,
+      "task_workflow_id": 47385,
+      "collaborator_id": 439,
+      "datastream_metadata": {
+        "uuid": "91654cb7-395e-4f90-9200-95b200010010",
+        "source_timestamp": 1755538908000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-18T17:40:40.962487",
+      "updated_at": "2025-08-18T17:40:40.962487",
+      "id": 140786,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47370,
+      "collaborator_id": 431,
+      "datastream_metadata": {
+        "uuid": "a3b076b6-c68d-4f5b-be56-908800011100",
+        "source_timestamp": 1755538840000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-18T17:25:17.921703",
+      "updated_at": "2025-08-18T17:25:17.921703",
+      "id": 140785,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47321,
+      "collaborator_id": 311,
+      "datastream_metadata": {
+        "uuid": "e3f0f3bd-6b48-4300-9524-f58400000001",
+        "source_timestamp": 1755537917000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-18T17:18:58.146742",
+      "updated_at": "2025-08-20T18:22:24",
+      "id": 140784,
+      "role": "trainer",
+      "metadata": null,
+      "task_workflow_id": 47384,
+      "collaborator_id": 439,
+      "datastream_metadata": {
+        "uuid": "71e6a15f-64f8-43d5-9778-c53500011111",
+        "source_timestamp": 1755714144000
+      },
+      "duration_minutes": 622
+    },
+    {
+      "created_at": "2025-08-18T16:39:35.814577",
+      "updated_at": "2025-08-18T16:39:35.814577",
+      "id": 140783,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47344,
+      "collaborator_id": 311,
+      "datastream_metadata": {
+        "uuid": "5df7d3ea-0447-491a-ba51-a2e000000110",
+        "source_timestamp": 1755535175000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-18T15:32:58.870839",
+      "updated_at": "2025-08-18T15:32:58.870839",
+      "id": 140782,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47255,
+      "collaborator_id": 311,
+      "datastream_metadata": {
+        "uuid": "e7d9cf36-f540-4b66-99a5-2ea510000001",
+        "source_timestamp": 1755531178000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-18T14:27:10.873093",
+      "updated_at": "2025-08-18T14:27:10.873093",
+      "id": 140781,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47368,
+      "collaborator_id": 315,
+      "datastream_metadata": {
+        "uuid": "6c13646f-dace-4a0f-b739-b76600001110",
+        "source_timestamp": 1755527230000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-18T14:10:24.095913",
+      "updated_at": "2025-08-18T14:10:24.095913",
+      "id": 140780,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47324,
+      "collaborator_id": 315,
+      "datastream_metadata": {
+        "uuid": "6816c306-2ee3-43c1-a01c-bfd300000101",
+        "source_timestamp": 1755526224000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-18T13:49:40.091833",
+      "updated_at": "2025-08-20T08:51:29",
+      "id": 140778,
+      "role": "trainer",
+      "metadata": null,
+      "task_workflow_id": 47382,
+      "collaborator_id": 312,
+      "datastream_metadata": {
+        "uuid": "f7fa37da-fef2-4523-946c-abbf10000011",
+        "source_timestamp": 1755679889000
+      },
+      "duration_minutes": 300
+    },
+    {
+      "created_at": "2025-08-18T13:42:05.720652",
+      "updated_at": "2025-08-25T15:30:59",
+      "id": 140777,
+      "role": "trainer",
+      "metadata": null,
+      "task_workflow_id": 47381,
+      "collaborator_id": 228,
+      "datastream_metadata": {
+        "uuid": "2de398d6-df39-495b-8eac-06a800110011",
+        "source_timestamp": 1756135859000
+      },
+      "duration_minutes": 40
+    },
+    {
+      "created_at": "2025-08-18T13:40:45.795028",
+      "updated_at": "2025-08-18T13:40:45.795028",
+      "id": 140776,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47312,
+      "collaborator_id": 311,
+      "datastream_metadata": {
+        "uuid": "09de0af4-ab59-4fb0-b978-fbca00000001",
+        "source_timestamp": 1755524445000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-18T13:39:57.055640",
+      "updated_at": "2025-08-18T13:39:57.055640",
+      "id": 140775,
+      "role": "trainer",
+      "metadata": null,
+      "task_workflow_id": 47380,
+      "collaborator_id": 316,
+      "datastream_metadata": {
+        "uuid": "0f74e700-1226-4ac6-ba78-088901111010",
+        "source_timestamp": 1755524397000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-18T13:37:45.555244",
+      "updated_at": "2025-08-19T13:44:22",
+      "id": 140773,
+      "role": "trainer",
+      "metadata": null,
+      "task_workflow_id": 47378,
+      "collaborator_id": 175,
+      "datastream_metadata": {
+        "uuid": "38548919-7c79-491b-986b-8eff00111011",
+        "source_timestamp": 1755611062000
+      },
+      "duration_minutes": 150
+    },
+    {
+      "created_at": "2025-08-18T13:35:38.550528",
+      "updated_at": "2025-08-25T14:57:09",
+      "id": 140772,
+      "role": "trainer",
+      "metadata": null,
+      "task_workflow_id": 47377,
+      "collaborator_id": 175,
+      "datastream_metadata": {
+        "uuid": "ecc72c81-4691-44d6-944e-359e01011011",
+        "source_timestamp": 1756133829000
+      },
+      "duration_minutes": 330
+    },
+    {
+      "created_at": "2025-08-18T13:35:34.960574",
+      "updated_at": "2025-08-25T15:02:14",
+      "id": 140771,
+      "role": "trainer",
+      "metadata": null,
+      "task_workflow_id": 47376,
+      "collaborator_id": 175,
+      "datastream_metadata": {
+        "uuid": "eb1e8bfe-c0d3-4a0e-9e42-329200001010",
+        "source_timestamp": 1756134134000
+      },
+      "duration_minutes": 360
+    },
+    {
+      "created_at": "2025-08-18T13:13:18.430131",
+      "updated_at": "2025-08-18T13:13:18.430131",
+      "id": 140770,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47342,
+      "collaborator_id": 433,
+      "datastream_metadata": {
+        "uuid": "7da8cf77-3050-46e0-84cd-cf8800001001",
+        "source_timestamp": 1755522798000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-18T13:11:16.473253",
+      "updated_at": "2025-08-18T13:11:16.473253",
+      "id": 140769,
+      "role": "trainer",
+      "metadata": null,
+      "task_workflow_id": 47375,
+      "collaborator_id": 316,
+      "datastream_metadata": {
+        "uuid": "503db537-80cf-4f79-a247-ffc010100000",
+        "source_timestamp": 1755522676000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-18T13:01:11.288663",
+      "updated_at": "2025-08-19T18:02:06",
+      "id": 140768,
+      "role": "trainer",
+      "metadata": null,
+      "task_workflow_id": 47374,
+      "collaborator_id": 435,
+      "datastream_metadata": {
+        "uuid": "e7014e42-9507-4c2a-8746-ee0100100000",
+        "source_timestamp": 1755626526000
+      },
+      "duration_minutes": 270
+    },
+    {
+      "created_at": "2025-08-18T13:00:46.261639",
+      "updated_at": "2025-08-20T08:49:24",
+      "id": 140767,
+      "role": "trainer",
+      "metadata": null,
+      "task_workflow_id": 47373,
+      "collaborator_id": 312,
+      "datastream_metadata": {
+        "uuid": "44ac0f90-8ca3-4093-8323-b2c800010010",
+        "source_timestamp": 1755679764000
+      },
+      "duration_minutes": 300
+    },
+    {
+      "created_at": "2025-08-18T12:47:20.368358",
+      "updated_at": "2025-08-25T09:00:43",
+      "id": 140766,
+      "role": "trainer",
+      "metadata": null,
+      "task_workflow_id": 47372,
+      "collaborator_id": 435,
+      "datastream_metadata": {
+        "uuid": "f935b878-fe98-427c-8a72-a78600100100",
+        "source_timestamp": 1756112443000
+      },
+      "duration_minutes": 250
+    },
+    {
+      "created_at": "2025-08-18T12:47:07.801802",
+      "updated_at": "2025-08-25T08:59:46",
+      "id": 140765,
+      "role": "trainer",
+      "metadata": null,
+      "task_workflow_id": 47371,
+      "collaborator_id": 435,
+      "datastream_metadata": {
+        "uuid": "0539a509-40cf-4c07-b96c-73a900011101",
+        "source_timestamp": 1756112386000
+      },
+      "duration_minutes": 220
+    },
+    {
+      "created_at": "2025-08-18T12:32:24.286269",
+      "updated_at": "2025-08-28T14:12:31",
+      "id": 140764,
+      "role": "trainer",
+      "metadata": null,
+      "task_workflow_id": 47370,
+      "collaborator_id": 435,
+      "datastream_metadata": {
+        "uuid": "1040c4bf-bae6-41d0-8653-fa6201100001",
+        "source_timestamp": 1756390351000
+      },
+      "duration_minutes": 285
+    },
+    {
+      "created_at": "2025-08-18T10:39:13.128302",
+      "updated_at": "2025-08-18T10:39:13.128302",
+      "id": 140763,
+      "role": "trainer",
+      "metadata": null,
+      "task_workflow_id": 47369,
+      "collaborator_id": 438,
+      "datastream_metadata": {
+        "uuid": "4d10d9cf-b6c3-460f-b5d5-3bac00101111",
+        "source_timestamp": 1755513553000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-18T06:37:18.421998",
+      "updated_at": "2025-08-18T17:32:32",
+      "id": 140762,
+      "role": "trainer",
+      "metadata": null,
+      "task_workflow_id": 47368,
+      "collaborator_id": 439,
+      "datastream_metadata": {
+        "uuid": "129c39f1-aa5b-4369-8b8a-ac9800101000",
+        "source_timestamp": 1755538352000
+      },
+      "duration_minutes": 660
+    },
+    {
+      "created_at": "2025-08-18T04:03:18.435607",
+      "updated_at": "2025-08-18T04:03:18.435607",
+      "id": 140761,
+      "role": "trainer",
+      "metadata": null,
+      "task_workflow_id": 47367,
+      "collaborator_id": 174,
+      "datastream_metadata": {
+        "uuid": "52683257-33f5-46ad-b829-c06100010011",
+        "source_timestamp": 1755489798000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-18T04:03:11.660307",
+      "updated_at": "2025-08-18T04:03:11.660307",
+      "id": 140760,
+      "role": "trainer",
+      "metadata": null,
+      "task_workflow_id": 47366,
+      "collaborator_id": 174,
+      "datastream_metadata": {
+        "uuid": "52683257-33f5-46ad-b829-c06100000011",
+        "source_timestamp": 1755489791000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-18T04:02:36.338848",
+      "updated_at": "2025-08-20T09:08:35",
+      "id": 140759,
+      "role": "trainer",
+      "metadata": null,
+      "task_workflow_id": 47365,
+      "collaborator_id": 174,
+      "datastream_metadata": {
+        "uuid": "ae387bb2-9374-4d91-a0e0-880900101110",
+        "source_timestamp": 1755680915000
+      },
+      "duration_minutes": 270
+    },
+    {
+      "created_at": "2025-08-18T04:02:20.849704",
+      "updated_at": "2025-08-20T09:13:00",
+      "id": 140758,
+      "role": "trainer",
+      "metadata": null,
+      "task_workflow_id": 47364,
+      "collaborator_id": 174,
+      "datastream_metadata": {
+        "uuid": "f334ed09-395c-419b-8778-04cc00011000",
+        "source_timestamp": 1755681180000
+      },
+      "duration_minutes": 180
+    },
+    {
+      "created_at": "2025-08-17T14:01:58.317542",
+      "updated_at": "2025-08-20T15:28:29",
+      "id": 140757,
+      "role": "trainer",
+      "metadata": null,
+      "task_workflow_id": 47363,
+      "collaborator_id": 452,
+      "datastream_metadata": {
+        "uuid": "cade6c3b-44c7-4c17-a2ec-eac901100011",
+        "source_timestamp": 1755703709000
+      },
+      "duration_minutes": 300
+    },
+    {
+      "created_at": "2025-08-15T23:14:44.020671",
+      "updated_at": "2025-08-15T23:14:44.020671",
+      "id": 140756,
+      "role": "trainer",
+      "metadata": null,
+      "task_workflow_id": 47362,
+      "collaborator_id": 436,
+      "datastream_metadata": {
+        "uuid": "524550cb-2417-41e4-a830-d89300110000",
+        "source_timestamp": 1755299684000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-15T23:14:18.338363",
+      "updated_at": "2025-08-15T23:14:18.338363",
+      "id": 140755,
+      "role": "trainer",
+      "metadata": null,
+      "task_workflow_id": 47361,
+      "collaborator_id": 436,
+      "datastream_metadata": {
+        "uuid": "524550cb-2417-41e4-a830-d89300001010",
+        "source_timestamp": 1755299658000
+      },
+      "duration_minutes": 0
+    },
+    {
+      "created_at": "2025-08-15T20:55:24.504341",
+      "updated_at": "2025-08-15T20:55:24.504341",
+      "id": 140754,
+      "role": "reviewer",
+      "metadata": null,
+      "task_workflow_id": 47349,
+      "collaborator_id": 315,
+      "datastream_metadata": {
+        "uuid": "c2ac23c5-86ae-41b2-84b1-500b00000010",
+        "source_timestamp": 1755291324000
+      },
+      "duration_minutes": 0
+    }
+  ]
+}

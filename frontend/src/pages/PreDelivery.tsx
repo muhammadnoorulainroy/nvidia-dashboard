@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useCallback } from 'react'
 import {
   Box,
   Tabs,
@@ -6,7 +6,7 @@ import {
   Typography,
   Grid,
   Card,
-  CircularProgress,
+  Skeleton,
 } from '@mui/material'
 import {
   Business as BusinessIcon,
@@ -14,8 +14,6 @@ import {
   VerifiedUser as CalibratorIcon,
   Assignment as AssignmentIcon,
   RateReview as ReviewIcon,
-  Category as CategoryIcon,
-  Public as DomainIcon,
   SupervisorAccount as PodLeadIcon,
   Timeline as TimelineIcon,
   Folder as FolderIcon,
@@ -26,8 +24,6 @@ import PodLeadTab from '../components/predelivery/PodLeadTab'
 import ProjectsTab from '../components/predelivery/ProjectsTab'
 import TaskWise from '../components/predelivery/TaskWise'
 import RatingTrends from '../components/predelivery/RatingTrends'
-import { getOverallStats, getDomainStats } from '../services/api'
-import type { OverallAggregation, DomainAggregation } from '../types'
 
 interface TabPanelProps {
   children?: React.ReactNode
@@ -56,9 +52,10 @@ interface SummaryCardProps {
   value: string
   icon: React.ReactNode
   color: string
+  loading?: boolean
 }
 
-function SummaryCard({ title, value, icon, color }: SummaryCardProps) {
+function SummaryCard({ title, value, icon, color, loading = false }: SummaryCardProps) {
   return (
     <Card
       sx={{
@@ -108,49 +105,56 @@ function SummaryCard({ title, value, icon, color }: SummaryCardProps) {
           {icon}
         </Box>
       </Box>
-      <Typography 
-        variant="h4" 
-        sx={{ 
-          fontWeight: 700, 
-          color: '#0F172A',
-          fontSize: '2rem',
-          letterSpacing: '-0.025em',
-          lineHeight: 1,
-        }}
-      >
-        {value}
-      </Typography>
+      {loading ? (
+        <Skeleton variant="text" width="60%" height={40} />
+      ) : (
+        <Typography 
+          variant="h4" 
+          sx={{ 
+            fontWeight: 700, 
+            color: '#0F172A',
+            fontSize: '2rem',
+            letterSpacing: '-0.025em',
+            lineHeight: 1,
+          }}
+        >
+          {value}
+        </Typography>
+      )}
     </Card>
   )
 }
 
+// Summary stats interface that tabs can report
+export interface TabSummaryStats {
+  totalTasks: number
+  totalTrainers: number
+  totalPodLeads: number
+  totalProjects: number
+  totalReviews: number
+  newTasks: number
+  rework: number
+}
+
 export default function PreDelivery() {
   const [activeTab, setActiveTab] = useState(0)
-  const [overallData, setOverallData] = useState<OverallAggregation | null>(null)
-  const [domainData, setDomainData] = useState<DomainAggregation[]>([])
-  const [loading, setLoading] = useState(true)
+  const [summaryStats, setSummaryStats] = useState<TabSummaryStats | null>(null)
+  const [summaryLoading, setSummaryLoading] = useState(true)
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true)
-        const [overall, domains] = await Promise.all([
-          getOverallStats(),
-          getDomainStats()
-        ])
-        setOverallData(overall)
-        setDomainData(domains)
-      } catch (error) {
-        console.error('Failed to fetch pre-delivery summary data:', error)
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchData()
+  // Callback for tabs to report their summary stats
+  const onSummaryUpdate = useCallback((stats: TabSummaryStats) => {
+    setSummaryStats(stats)
+    setSummaryLoading(false)
+  }, [])
+
+  // Called when tab data is loading
+  const onSummaryLoading = useCallback(() => {
+    setSummaryLoading(true)
   }, [])
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue)
+    setSummaryLoading(true) // Show loading when switching tabs
   }
 
   return (
@@ -169,55 +173,63 @@ export default function PreDelivery() {
         </Typography>
       </Box>
 
-      {/* Summary Cards */}
-      {loading ? (
-        <Box sx={{ display: 'flex', justifyContent: 'center', py: 6 }}>
-          <CircularProgress size={40} thickness={4} />
-        </Box>
-      ) : overallData && (
-        <Grid container spacing={2} sx={{ mb: 3 }}>
-          <Grid item xs={12} sm={6} md={2.4}>
-            <SummaryCard
-              title="Total Tasks"
-              value={overallData.task_count.toLocaleString()}
-              icon={<AssignmentIcon />}
-              color="#475569"
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={2.4}>
-            <SummaryCard
-              title="Total Trainers"
-              value={overallData.trainer_count.toLocaleString()}
-              icon={<SchoolIcon />}
-              color="#2563EB"
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={2.4}>
-            <SummaryCard
-              title="Total Reviewers"
-              value={overallData.reviewer_count.toLocaleString()}
-              icon={<ReviewIcon />}
-              color="#7C3AED"
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={2.4}>
-            <SummaryCard
-              title="Total Domains"
-              value={overallData.domain_count.toLocaleString()}
-              icon={<DomainIcon />}
-              color="#EA580C"
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={2.4}>
-            <SummaryCard
-              title="Quality Dimensions"
-              value={overallData.quality_dimensions.length.toLocaleString()}
-              icon={<CategoryIcon />}
-              color="#059669"
-            />
-          </Grid>
+      {/* Summary Cards - Dynamic based on active tab */}
+      <Grid container spacing={2} sx={{ mb: 3 }}>
+        <Grid item xs={12} sm={6} md={2}>
+          <SummaryCard
+            title="Projects"
+            value={summaryStats?.totalProjects.toLocaleString() ?? '-'}
+            icon={<FolderIcon />}
+            color="#10B981"
+            loading={summaryLoading}
+          />
         </Grid>
-      )}
+        <Grid item xs={12} sm={6} md={2}>
+          <SummaryCard
+            title="POD Leads"
+            value={summaryStats?.totalPodLeads.toLocaleString() ?? '-'}
+            icon={<PodLeadIcon />}
+            color="#8B5CF6"
+            loading={summaryLoading}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6} md={2}>
+          <SummaryCard
+            title="Trainers"
+            value={summaryStats?.totalTrainers.toLocaleString() ?? '-'}
+            icon={<SchoolIcon />}
+            color="#2563EB"
+            loading={summaryLoading}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6} md={2}>
+          <SummaryCard
+            title="Total Tasks"
+            value={summaryStats?.totalTasks.toLocaleString() ?? '-'}
+            icon={<AssignmentIcon />}
+            color="#475569"
+            loading={summaryLoading}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6} md={2}>
+          <SummaryCard
+            title="New Tasks"
+            value={summaryStats?.newTasks.toLocaleString() ?? '-'}
+            icon={<AssignmentIcon />}
+            color="#059669"
+            loading={summaryLoading}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6} md={2}>
+          <SummaryCard
+            title="Reviews"
+            value={summaryStats?.totalReviews.toLocaleString() ?? '-'}
+            icon={<ReviewIcon />}
+            color="#F59E0B"
+            loading={summaryLoading}
+          />
+        </Grid>
+      </Grid>
 
       <Box 
         sx={{ 
@@ -314,24 +326,23 @@ export default function PreDelivery() {
       </Box>
 
       <TabPanel value={activeTab} index={0}>
-        <ProjectsTab />
+        <ProjectsTab onSummaryUpdate={onSummaryUpdate} onSummaryLoading={onSummaryLoading} />
       </TabPanel>
       <TabPanel value={activeTab} index={1}>
-        <DomainWise />
+        <DomainWise onSummaryUpdate={onSummaryUpdate} onSummaryLoading={onSummaryLoading} />
       </TabPanel>
       <TabPanel value={activeTab} index={2}>
-        <TrainerWise />
+        <TrainerWise onSummaryUpdate={onSummaryUpdate} onSummaryLoading={onSummaryLoading} />
       </TabPanel>
       <TabPanel value={activeTab} index={3}>
-        <PodLeadTab />
+        <PodLeadTab onSummaryUpdate={onSummaryUpdate} onSummaryLoading={onSummaryLoading} />
       </TabPanel>
       <TabPanel value={activeTab} index={4}>
-        <TaskWise />
+        <TaskWise onSummaryUpdate={onSummaryUpdate} onSummaryLoading={onSummaryLoading} />
       </TabPanel>
       <TabPanel value={activeTab} index={5}>
-        <RatingTrends />
+        <RatingTrends onSummaryUpdate={onSummaryUpdate} onSummaryLoading={onSummaryLoading} />
       </TabPanel>
     </Box>
   )
 }
-
