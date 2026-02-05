@@ -1,6 +1,6 @@
 """
 Data synchronization service to sync CTE results from BigQuery to PostgreSQL
-For nvidia: prod_labeling_tool_n, project_id 39
+For nvidia: prod_labeling_tool_n
 """
 import os
 import logging
@@ -12,6 +12,7 @@ from google.cloud import bigquery
 from app.config import get_settings
 from app.services.db_service import get_db_service
 from app.models.db_models import ReviewDetail, Task, Contributor, DataSyncLog, TaskReviewedInfo, TaskAHT, ContributorTaskStats, ContributorDailyStats, ReviewerDailyStats, TaskRaw, TaskHistoryRaw, PodLeadMapping, ReviewerTrainerDailyStats, TrainerReviewStats
+from app.constants import get_constants
 
 logger = logging.getLogger(__name__)
 
@@ -45,6 +46,20 @@ class DataSyncService:
         self.settings = get_settings()
         self.db_service = get_db_service()
         self.bq_client = None
+        self._constants = get_constants()
+    
+    @property
+    def _batch_exclusion_sql(self) -> str:
+        """Get SQL clause for excluded batch names."""
+        excluded = self._constants.batches.EXCLUDED_BATCH_NAMES
+        names = ", ".join(f"'{name}'" for name in excluded)
+        return f"b.name NOT IN ({names})"
+    
+    @property
+    def _project_ids_sql(self) -> str:
+        """Get SQL clause for project IDs."""
+        ids = self._constants.projects.PRIMARY_PROJECT_IDS
+        return ", ".join(str(id) for id in ids)
     
     def initialize_bigquery_client(self):
         """Initialize BigQuery client"""
@@ -121,19 +136,19 @@ class DataSyncService:
                     cb.name,
                     (
                         SELECT MIN(csh_inner.updated_at)
-                        FROM `turing-gpt.{self.settings.bigquery_dataset}.conversation_status_history` csh_inner
+                        FROM `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.conversation_status_history` csh_inner
                         WHERE csh_inner.conversation_id = c.id
                             AND csh_inner.old_status = 'labeling'
                             AND csh_inner.new_status = 'completed'
                     ) AS annotation_date
-                FROM `turing-gpt.{self.settings.bigquery_dataset}.conversation` c
-                INNER JOIN `turing-gpt.{self.settings.bigquery_dataset}.review` r
+                FROM `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.conversation` c
+                INNER JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.review` r
                     ON c.id = r.conversation_id
-                INNER JOIN `turing-gpt.{self.settings.bigquery_dataset}.batch` b
+                INNER JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.batch` b
                     ON c.project_id = b.project_id
-                LEFT JOIN `turing-gpt.{self.settings.bigquery_dataset}.delivery_batch_task` bt
+                LEFT JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.delivery_batch_task` bt
                     ON bt.task_id = c.id
-                LEFT JOIN `turing-gpt.{self.settings.bigquery_dataset}.contributor` cb
+                LEFT JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.contributor` cb
                     ON cb.id = c.current_user_id
                 WHERE c.project_id = {self.settings.project_id_filter}
                     AND c.status IN ('completed', 'validated')
@@ -141,7 +156,7 @@ class DataSyncService:
                     AND r.followup_required = 0
                     AND r.id = (
                         SELECT MAX(rn.id)
-                        FROM `turing-gpt.{self.settings.bigquery_dataset}.review` rn
+                        FROM `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.review` rn
                         WHERE rn.conversation_id = r.conversation_id
                             AND rn.review_type = 'manual'
                             AND rn.status = 'published'
@@ -243,19 +258,19 @@ class DataSyncService:
                     cb.name,
                     (
                         SELECT MIN(csh_inner.updated_at)
-                        FROM `turing-gpt.{self.settings.bigquery_dataset}.conversation_status_history` csh_inner
+                        FROM `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.conversation_status_history` csh_inner
                         WHERE csh_inner.conversation_id = c.id
                             AND csh_inner.old_status = 'labeling'
                             AND csh_inner.new_status = 'completed'
                     ) AS annotation_date
-                FROM `turing-gpt.{self.settings.bigquery_dataset}.conversation` c
-                INNER JOIN `turing-gpt.{self.settings.bigquery_dataset}.review` r
+                FROM `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.conversation` c
+                INNER JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.review` r
                     ON c.id = r.conversation_id
-                INNER JOIN `turing-gpt.{self.settings.bigquery_dataset}.batch` b
+                INNER JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.batch` b
                     ON c.project_id = b.project_id
-                LEFT JOIN `turing-gpt.{self.settings.bigquery_dataset}.delivery_batch_task` bt
+                LEFT JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.delivery_batch_task` bt
                     ON bt.task_id = c.id
-                LEFT JOIN `turing-gpt.{self.settings.bigquery_dataset}.contributor` cb
+                LEFT JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.contributor` cb
                     ON cb.id = c.current_user_id
                 WHERE c.project_id = {self.settings.project_id_filter}
                     AND c.status IN ('completed', 'validated')
@@ -263,7 +278,7 @@ class DataSyncService:
                     AND r.followup_required = 0
                     AND r.id = (
                         SELECT MAX(rn.id)
-                        FROM `turing-gpt.{self.settings.bigquery_dataset}.review` rn
+                        FROM `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.review` rn
                         WHERE rn.conversation_id = r.conversation_id
                             AND rn.review_type = 'manual'
                             AND rn.status = 'published'
@@ -274,7 +289,7 @@ class DataSyncService:
                     conversation_id,
                     -- Count only transitions INTO rework status (times task was sent to rework)
                     COUNTIF(new_status = 'rework') AS rework_count
-                FROM `turing-gpt.{self.settings.bigquery_dataset}.conversation_status_history`
+                FROM `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.conversation_status_history`
                 WHERE conversation_id IN (SELECT r_id FROM task_reviewed_info)
                 GROUP BY conversation_id
             ),
@@ -432,19 +447,19 @@ class DataSyncService:
                         cb.name,
                         (
                             SELECT DATE(MIN(csh_inner.updated_at))
-                            FROM `turing-gpt.{self.settings.bigquery_dataset}.conversation_status_history` csh_inner
+                            FROM `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.conversation_status_history` csh_inner
                             WHERE csh_inner.conversation_id = c.id
                                 AND csh_inner.old_status = 'labeling'
                                 AND csh_inner.new_status = 'completed'
                         ) AS annotation_date
-                    FROM `turing-gpt.{self.settings.bigquery_dataset}.conversation` c
-                    INNER JOIN `turing-gpt.{self.settings.bigquery_dataset}.review` r
+                    FROM `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.conversation` c
+                    INNER JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.review` r
                         ON c.id = r.conversation_id
-                    INNER JOIN `turing-gpt.{self.settings.bigquery_dataset}.batch` b
+                    INNER JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.batch` b
                         ON c.project_id = b.project_id
-                    LEFT JOIN `turing-gpt.{self.settings.bigquery_dataset}.delivery_batch_task` bt
+                    LEFT JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.delivery_batch_task` bt
                         ON bt.task_id = c.id
-                    LEFT JOIN `turing-gpt.{self.settings.bigquery_dataset}.contributor` cb
+                    LEFT JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.contributor` cb
                         ON cb.id = c.current_user_id
                     WHERE c.project_id = {self.settings.project_id_filter}
                         AND c.status IN ('completed', 'validated')
@@ -452,7 +467,7 @@ class DataSyncService:
                         AND r.followup_required = 0
                         AND r.id = (
                             SELECT MAX(rn.id)
-                            FROM `turing-gpt.{self.settings.bigquery_dataset}.review` rn
+                            FROM `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.review` rn
                             WHERE rn.conversation_id = r.conversation_id
                                 AND rn.review_type = 'manual'
                                 AND rn.status = 'published'
@@ -529,10 +544,10 @@ class DataSyncService:
                         PARTITION BY csh.conversation_id, csh.author_id, csh.old_status, csh.new_status
                         ORDER BY csh.created_at
                     ) AS transition_order
-                FROM `turing-gpt.{self.settings.bigquery_dataset}.conversation_status_history` csh
-                JOIN `turing-gpt.{self.settings.bigquery_dataset}.conversation` cs
+                FROM `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.conversation_status_history` csh
+                JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.conversation` cs
                     ON csh.conversation_id = cs.id
-                JOIN `turing-gpt.{self.settings.bigquery_dataset}.contributor` c
+                JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.contributor` c
                     ON c.id = csh.author_id
                 WHERE cs.project_id = {project_id}
                     AND cs.batch_id NOT IN (177)
@@ -663,14 +678,14 @@ class DataSyncService:
                         ORDER BY csh.created_at
                         ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
                     ) AS completed_status_count
-                FROM `turing-gpt.{self.settings.bigquery_dataset}.conversation_status_history` csh
-                INNER JOIN `turing-gpt.{self.settings.bigquery_dataset}.conversation` cs 
+                FROM `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.conversation_status_history` csh
+                INNER JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.conversation` cs 
                     ON csh.conversation_id = cs.id
-                INNER JOIN `turing-gpt.{self.settings.bigquery_dataset}.batch` b
+                INNER JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.batch` b
                     ON cs.batch_id = b.id
                 WHERE cs.project_id = {project_id}
                   AND b.status != 'draft'
-                  AND b.name NOT IN ('sft-mcb-vanilla-batch-1', 'sft-mcb-advance-batch-1')
+                  AND {self._batch_exclusion_sql}
             ),
             -- Filter to only completed transitions (matching spreadsheet filter)
             completed_events AS (
@@ -685,14 +700,14 @@ class DataSyncService:
                 SELECT 
                     c.id as trainer_id,
                     SUM(cs.number_of_turns) as sum_turns
-                FROM `turing-gpt.{self.settings.bigquery_dataset}.conversation` cs
-                INNER JOIN `turing-gpt.{self.settings.bigquery_dataset}.batch` b
+                FROM `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.conversation` cs
+                INNER JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.batch` b
                     ON cs.batch_id = b.id
-                LEFT JOIN `turing-gpt.{self.settings.bigquery_dataset}.contributor` c 
+                LEFT JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.contributor` c 
                     ON cs.current_user_id = c.id
                 WHERE cs.project_id = {project_id}
                   AND b.status != 'draft'
-                  AND b.name NOT IN ('sft-mcb-vanilla-batch-1', 'sft-mcb-advance-batch-1')
+                  AND {self._batch_exclusion_sql}
                   AND LOWER(cs.status) IN ('completed', 'reviewed', 'rework', 'validated')
                   AND cs.completed_at IS NOT NULL
                 GROUP BY c.id
@@ -780,14 +795,14 @@ class DataSyncService:
                         ORDER BY csh.created_at
                         ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
                     ) AS completed_status_count
-                FROM `turing-gpt.{self.settings.bigquery_dataset}.conversation_status_history` csh
-                INNER JOIN `turing-gpt.{self.settings.bigquery_dataset}.conversation` cs 
+                FROM `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.conversation_status_history` csh
+                INNER JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.conversation` cs 
                     ON csh.conversation_id = cs.id
-                INNER JOIN `turing-gpt.{self.settings.bigquery_dataset}.batch` b
+                INNER JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.batch` b
                     ON cs.batch_id = b.id
                 WHERE cs.project_id = {project_id}
                   AND b.status != 'draft'
-                  AND b.name NOT IN ('sft-mcb-vanilla-batch-1', 'sft-mcb-advance-batch-1')
+                  AND {self._batch_exclusion_sql}
             ),
             -- Filter to only completed transitions (matching spreadsheet filter)
             completed_events AS (
@@ -804,12 +819,12 @@ class DataSyncService:
                     DATE(cs.completed_at) as last_completed_date,
                     cs.id as task_id,
                     cs.number_of_turns
-                FROM `turing-gpt.{self.settings.bigquery_dataset}.conversation` cs
-                INNER JOIN `turing-gpt.{self.settings.bigquery_dataset}.batch` b
+                FROM `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.conversation` cs
+                INNER JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.batch` b
                     ON cs.batch_id = b.id
                 WHERE cs.project_id = {project_id}
                   AND b.status != 'draft'
-                  AND b.name NOT IN ('sft-mcb-vanilla-batch-1', 'sft-mcb-advance-batch-1')
+                  AND {self._batch_exclusion_sql}
                   AND LOWER(cs.status) IN ('completed', 'reviewed', 'rework', 'validated')
                   AND cs.completed_at IS NOT NULL
             ),
@@ -944,14 +959,14 @@ class DataSyncService:
                         ORDER BY csh.created_at
                         ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
                     ) AS completed_status_count
-                FROM `turing-gpt.{self.settings.bigquery_dataset}.conversation_status_history` csh
-                INNER JOIN `turing-gpt.{self.settings.bigquery_dataset}.conversation` cs 
+                FROM `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.conversation_status_history` csh
+                INNER JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.conversation` cs 
                     ON csh.conversation_id = cs.id
-                INNER JOIN `turing-gpt.{self.settings.bigquery_dataset}.batch` b
+                INNER JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.batch` b
                     ON cs.batch_id = b.id
                 WHERE cs.project_id = {project_id}
                   AND b.status != 'draft'
-                  AND b.name NOT IN ('sft-mcb-vanilla-batch-1', 'sft-mcb-advance-batch-1')
+                  AND {self._batch_exclusion_sql}
                   AND csh.new_status = 'completed'
             ),
             -- Get the latest completion count for each task
@@ -978,15 +993,15 @@ class DataSyncService:
                         WHEN COALESCE(tlc.total_completions, 0) > 1 THEN 1 
                         ELSE 0 
                     END as is_rework
-                FROM `turing-gpt.{self.settings.bigquery_dataset}.review` r
-                INNER JOIN `turing-gpt.{self.settings.bigquery_dataset}.conversation` cs 
+                FROM `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.review` r
+                INNER JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.conversation` cs 
                     ON r.conversation_id = cs.id
-                INNER JOIN `turing-gpt.{self.settings.bigquery_dataset}.batch` b
+                INNER JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.batch` b
                     ON cs.batch_id = b.id
                 LEFT JOIN task_latest_count tlc ON r.conversation_id = tlc.task_id
                 WHERE cs.project_id = {project_id}
                   AND b.status != 'draft'
-                  AND b.name NOT IN ('sft-mcb-vanilla-batch-1', 'sft-mcb-advance-batch-1')
+                  AND {self._batch_exclusion_sql}
                   AND r.review_type = 'manual'
                   AND r.status = 'published'
                   AND r.submitted_at IS NOT NULL
@@ -1000,7 +1015,7 @@ class DataSyncService:
                 COUNT(*) as total_reviews,
                 SUM(COALESCE(tr.number_of_turns, 0)) as sum_number_of_turns
             FROM reviews_with_task_info rwti
-            LEFT JOIN `turing-gpt.{self.settings.bigquery_dataset}.conversation` tr ON rwti.task_id = tr.id
+            LEFT JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.conversation` tr ON rwti.task_id = tr.id
             WHERE rwti.reviewer_id IS NOT NULL AND rwti.review_date IS NOT NULL
             GROUP BY rwti.reviewer_id, rwti.review_date
             ORDER BY rwti.reviewer_id, rwti.review_date
@@ -1093,14 +1108,14 @@ class DataSyncService:
                         ORDER BY csh.created_at
                         ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
                     ) AS completed_status_count
-                FROM `turing-gpt.{self.settings.bigquery_dataset}.conversation_status_history` csh
-                INNER JOIN `turing-gpt.{self.settings.bigquery_dataset}.conversation` cs 
+                FROM `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.conversation_status_history` csh
+                INNER JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.conversation` cs 
                     ON csh.conversation_id = cs.id
-                INNER JOIN `turing-gpt.{self.settings.bigquery_dataset}.batch` b
+                INNER JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.batch` b
                     ON cs.batch_id = b.id
                 WHERE cs.project_id = {project_id}
                   AND b.status != 'draft'
-                  AND b.name NOT IN ('sft-mcb-vanilla-batch-1', 'sft-mcb-advance-batch-1')
+                  AND {self._batch_exclusion_sql}
                   AND csh.new_status = 'completed'
             ),
             -- Get the latest completion count for each task
@@ -1133,15 +1148,15 @@ class DataSyncService:
                         WHEN cs.status = 'reviewed' AND COALESCE(tlc.total_completions, 0) <= 1 THEN 1
                         ELSE 0
                     END as is_ready_for_delivery
-                FROM `turing-gpt.{self.settings.bigquery_dataset}.review` r
-                INNER JOIN `turing-gpt.{self.settings.bigquery_dataset}.conversation` cs 
+                FROM `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.review` r
+                INNER JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.conversation` cs 
                     ON r.conversation_id = cs.id
-                INNER JOIN `turing-gpt.{self.settings.bigquery_dataset}.batch` b
+                INNER JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.batch` b
                     ON cs.batch_id = b.id
                 LEFT JOIN task_latest_count tlc ON r.conversation_id = tlc.task_id
                 WHERE cs.project_id = {project_id}
                   AND b.status != 'draft'
-                  AND b.name NOT IN ('sft-mcb-vanilla-batch-1', 'sft-mcb-advance-batch-1')
+                  AND {self._batch_exclusion_sql}
                   AND r.review_type = 'manual'
                   AND r.status = 'published'
                   AND r.submitted_at IS NOT NULL
@@ -1240,15 +1255,15 @@ class DataSyncService:
                     ) AS last_completed_date,
                 pr.project_id, 
                 pr.batch_name
-            FROM `turing-gpt.{self.settings.bigquery_dataset}.conversation_status_history` th
-            LEFT JOIN `turing-gpt.{self.settings.bigquery_dataset}.contributor` c ON th.author_id = c.id
+            FROM `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.conversation_status_history` th
+            LEFT JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.contributor` c ON th.author_id = c.id
             INNER JOIN (
                 SELECT t.id, t.project_id, b.name AS batch_name
-                FROM `turing-gpt.{self.settings.bigquery_dataset}.conversation` t
-                INNER JOIN `turing-gpt.{self.settings.bigquery_dataset}.batch` b ON t.batch_id = b.id
-                WHERE t.project_id IN (36, 37, 38, 39)
+                FROM `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.conversation` t
+                INNER JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.batch` b ON t.batch_id = b.id
+                WHERE t.project_id IN ({self._project_ids_sql})
                   AND b.status != 'draft'
-                  AND b.name NOT IN ('sft-mcb-vanilla-batch-1', 'sft-mcb-advance-batch-1')
+                  AND {self._batch_exclusion_sql}
             ) pr ON pr.id = th.conversation_id
             ORDER BY th.conversation_id, th.created_at
             """
@@ -1317,7 +1332,7 @@ class DataSyncService:
                     SUM(reflected_score) AS sum_ref_score,
                     SUM(duration_minutes) AS sum_duration, 
                     SUM(followup_required) AS sum_followup_required
-                FROM `turing-gpt.{self.settings.bigquery_dataset}.review`
+                FROM `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.review`
                 WHERE review_type IN ('manual') AND status = 'published'
                 GROUP BY 1
             ),
@@ -1338,8 +1353,8 @@ class DataSyncService:
                     r.submitted_at AS r_submitted_at,
                     DATE(TIMESTAMP(r.submitted_at)) AS r_submitted_date,
                     ROW_NUMBER() OVER (PARTITION BY r.conversation_id ORDER BY r.created_at DESC) AS rn
-                FROM `turing-gpt.{self.settings.bigquery_dataset}.review` r
-                LEFT JOIN `turing-gpt.{self.settings.bigquery_dataset}.contributor` c ON r.reviewer_id = c.id
+                FROM `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.review` r
+                LEFT JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.contributor` c ON r.reviewer_id = c.id
                 WHERE r.review_type IN ('manual') AND r.status = 'published'
                 QUALIFY rn = 1
             ),
@@ -1349,8 +1364,8 @@ class DataSyncService:
                     DATE(TIMESTAMP(t.created_at)) AS first_completion_date, 
                     c.turing_email AS first_completer,
                     ROW_NUMBER() OVER (PARTITION BY t.conversation_id ORDER BY t.created_at ASC) AS rn
-                FROM `turing-gpt.{self.settings.bigquery_dataset}.conversation_status_history` t
-                LEFT JOIN `turing-gpt.{self.settings.bigquery_dataset}.contributor` c ON t.author_id = c.id
+                FROM `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.conversation_status_history` t
+                LEFT JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.contributor` c ON t.author_id = c.id
                 WHERE new_status = 'completed'
                 QUALIFY rn = 1
             ),
@@ -1363,9 +1378,9 @@ class DataSyncService:
                     db.open_date, 
                     db.close_date,
                     ROW_NUMBER() OVER (PARTITION BY dbt.task_id ORDER BY dbt.updated_at DESC) AS rn
-                FROM `turing-gpt.{self.settings.bigquery_dataset}.delivery_batch_task` dbt 
-                LEFT JOIN `turing-gpt.{self.settings.bigquery_dataset}.delivery_batch` db ON db.id = dbt.delivery_batch_id
-                LEFT JOIN `turing-gpt.{self.settings.bigquery_dataset}.contributor` c ON db.author_id = c.id
+                FROM `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.delivery_batch_task` dbt 
+                LEFT JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.delivery_batch` db ON db.id = dbt.delivery_batch_id
+                LEFT JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.contributor` c ON db.author_id = c.id
                 QUALIFY rn = 1
             )
             SELECT 
@@ -1408,9 +1423,9 @@ class DataSyncService:
                 lr.r_submitted_at,
                 lr.r_submitted_date,
                 t.project_id
-            FROM `turing-gpt.{self.settings.bigquery_dataset}.conversation` t
-            INNER JOIN `turing-gpt.{self.settings.bigquery_dataset}.batch` b ON t.batch_id = b.id
-            LEFT JOIN `turing-gpt.{self.settings.bigquery_dataset}.contributor` c ON t.current_user_id = c.id
+            FROM `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.conversation` t
+            INNER JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.batch` b ON t.batch_id = b.id
+            LEFT JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.contributor` c ON t.current_user_id = c.id
             LEFT JOIN first_completion fc ON fc.conversation_id = t.id
             LEFT JOIN task_delivery td ON td.task_id = t.id
             LEFT JOIN (
@@ -1420,9 +1435,9 @@ class DataSyncService:
             ) r ON r.task_id_r = t.id
             LEFT JOIN review_stats rs ON rs.conversation_id_rs = t.id
             LEFT JOIN latest_reviews lr ON lr.task_id_r = t.id
-            WHERE t.project_id IN (36, 37, 38, 39)
+            WHERE t.project_id IN ({self._project_ids_sql})
               AND b.status != 'draft'
-              AND b.name NOT IN ('sft-mcb-vanilla-batch-1', 'sft-mcb-advance-batch-1')
+              AND {self._batch_exclusion_sql}
             """
             
             logger.info("Executing task_raw query...")
@@ -1570,15 +1585,15 @@ class DataSyncService:
                 ) AS last_completed_date,
                 pr.project_id,
                 pr.batch_name
-            FROM `turing-gpt.{self.settings.bigquery_dataset}.conversation_status_history` th
-            LEFT JOIN `turing-gpt.{self.settings.bigquery_dataset}.contributor` c ON th.author_id = c.id
+            FROM `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.conversation_status_history` th
+            LEFT JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.contributor` c ON th.author_id = c.id
             INNER JOIN (
                 SELECT t.id, t.project_id, b.name AS batch_name
-                FROM `turing-gpt.{self.settings.bigquery_dataset}.conversation` t
-                INNER JOIN `turing-gpt.{self.settings.bigquery_dataset}.batch` b ON t.batch_id = b.id
-                WHERE t.project_id IN (36, 37, 38, 39)
+                FROM `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.conversation` t
+                INNER JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.batch` b ON t.batch_id = b.id
+                WHERE t.project_id IN ({self._project_ids_sql})
                   AND b.status != 'draft'
-                  AND b.name NOT IN ('sft-mcb-vanilla-batch-1', 'sft-mcb-advance-batch-1')
+                  AND {self._batch_exclusion_sql}
             ) pr ON pr.id = th.conversation_id
             ORDER BY task_id, time_stamp
             """
@@ -1740,14 +1755,8 @@ class DataSyncService:
             
             logger.info(f"Loaded POD Lead mapping from {source}")
             
-            # Include all Nvidia projects (36, 37, 38, 39)
-            nvidia_projects = [
-                'Nvidia - SysBench',           # 36
-                'Nvidia - CFBench Multilingual', # 37
-                'Nvidia - InverseIFEval',      # 38
-                'Nvidia - Multichallenge',     # 39
-                'Nvidia - Multichallenge Advanced',  # May also be 39
-            ]
+            # Include all Nvidia projects using constants
+            nvidia_projects = list(self._constants.projects.PROJECT_ID_TO_NAME.values())
             df = df[df['Jibble Project'].isin(nvidia_projects)]
             
             # Only include records with POD Lead assigned
@@ -1823,7 +1832,11 @@ class DataSyncService:
         
         try:
             # Query BigQuery for Jibble hours
-            query = """
+            # Get project names from centralized constants
+            jibble_project_names = list(self._constants.jibble.JIBBLE_UUID_TO_NAME.values())
+            project_names_sql = ", ".join(f'"{name}"' for name in jibble_project_names)
+            
+            query = f"""
             SELECT 
                 MEMBER_CODE as member_code, 
                 Jibble_DATE as entry_date,
@@ -1831,15 +1844,7 @@ class DataSyncService:
                 FULL_NAME as full_name,
                 SUM(TRACKED_HRS) as logged_hours
             FROM `turing-230020.test.Jibblelogs`
-            WHERE Jibble_PROJECT IN (
-                "Nvidia - ICPC", 
-                "Nvidia - CFBench Multilingual", 
-                "Nvidia - InverseIFEval", 
-                "Nvidia - Multichallenge", 
-                "Nvidia - Multichallenge Advanced", 
-                "Nvidia - SysBench", 
-                "NVIDIA_STEM Math_Eval"
-            )
+            WHERE Jibble_PROJECT IN ({project_names_sql})
             GROUP BY 1, 2, 3, 4
             ORDER BY entry_date DESC
             """
@@ -2356,8 +2361,8 @@ class DataSyncService:
             elif isinstance(project_ids, str):
                 project_ids = [int(p.strip()) for p in project_ids.split(',')]
             
-            # Add all Nvidia project IDs
-            all_project_ids = list(set(project_ids + [36, 37, 38, 39]))
+            # Add all Nvidia project IDs from constants
+            all_project_ids = list(set(project_ids + self._constants.projects.PRIMARY_PROJECT_IDS))
             project_filter = ','.join(map(str, all_project_ids))
             
             logger.info(f"Syncing trainer_review_stats for projects: {all_project_ids}")
@@ -2374,28 +2379,29 @@ class DataSyncService:
                         PARTITION BY csh.conversation_id 
                         ORDER BY csh.created_at
                     ) as completion_number
-                FROM `turing-gpt.{self.settings.bigquery_dataset}.conversation_status_history` csh
-                JOIN `turing-gpt.{self.settings.bigquery_dataset}.contributor` c 
+                FROM `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.conversation_status_history` csh
+                JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.contributor` c 
                     ON csh.author_id = c.id
-                JOIN `turing-gpt.{self.settings.bigquery_dataset}.conversation` conv 
+                JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.conversation` conv 
                     ON conv.id = csh.conversation_id
                 WHERE csh.new_status = 'completed'
                 AND csh.old_status != 'completed-approval'
                 AND conv.project_id IN ({project_filter})
             ),
             reviews AS (
-                -- All published manual reviews
+                -- All published reviews (manual and auto/agentic)
                 SELECT 
                     r.id as review_id,
                     r.conversation_id,
                     r.score,
                     r.followup_required,
                     r.created_at as review_time,
+                    r.review_type,
                     conv.project_id
-                FROM `turing-gpt.{self.settings.bigquery_dataset}.review` r
-                JOIN `turing-gpt.{self.settings.bigquery_dataset}.conversation` conv 
+                FROM `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.review` r
+                JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.conversation` conv 
                     ON conv.id = r.conversation_id
-                WHERE r.review_type = 'manual'
+                WHERE r.review_type IN ('manual', 'auto')
                 AND r.status = 'published'
                 AND conv.project_id IN ({project_filter})
             ),
@@ -2407,6 +2413,7 @@ class DataSyncService:
                     r.score,
                     r.followup_required,
                     r.review_time,
+                    r.review_type,
                     r.project_id,
                     c.trainer_email,
                     c.completion_time,
@@ -2429,6 +2436,7 @@ class DataSyncService:
                 DATE(review_time) as review_date,
                 score,
                 followup_required,
+                review_type,
                 project_id
             FROM review_completion_match
             WHERE rn = 1 
@@ -2453,6 +2461,7 @@ class DataSyncService:
                     'review_date': row_dict.get('review_date'),
                     'score': float(row_dict.get('score')) if row_dict.get('score') is not None else None,
                     'followup_required': int(row_dict.get('followup_required', 0)),
+                    'review_type': row_dict.get('review_type', 'manual'),  # 'manual' or 'auto' (agentic)
                     'project_id': row_dict.get('project_id')
                 })
             

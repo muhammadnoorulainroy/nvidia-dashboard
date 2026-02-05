@@ -30,6 +30,7 @@ import {
   ArrowDownward as ArrowDownwardIcon,
   Folder as FolderIcon,
   Sort as SortIcon,
+  Info as InfoIcon,
 } from '@mui/icons-material'
 import { getTooltipForHeader } from '../../utils/columnTooltips'
 import { getProjectStats, ProjectStats, PodLeadUnderProject, TrainerUnderPodLead } from '../../services/api'
@@ -218,6 +219,24 @@ function TrainerRow({
           {trainer.total_reviews}
         </Typography>
       </TableCell>
+      {/* RATE - COLOR CODED: >4.8 Green, 4-4.8 Yellow, <4 Red */}
+      <TableCell align="center" sx={{ ...cellStyle, ...getRatingStyle(trainer.avg_rating) }}>
+        <Typography sx={{ fontSize: '0.7rem', fontWeight: 600 }}>
+          {trainer.avg_rating !== null ? trainer.avg_rating.toFixed(2) : '-'}
+        </Typography>
+      </TableCell>
+      {/* AGT REV - Agentic Reviews */}
+      <TableCell align="center" sx={{ ...cellStyle }}>
+        <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#7C3AED' }}>
+          {trainer.agentic_reviews ?? 0}
+        </Typography>
+      </TableCell>
+      {/* AGT RATE - Agentic Rating */}
+      <TableCell align="center" sx={{ ...cellStyle, ...getRatingStyle(trainer.agentic_rating) }}>
+        <Typography sx={{ fontSize: '0.7rem', fontWeight: 600 }}>
+          {trainer.agentic_rating !== null ? trainer.agentic_rating.toFixed(2) : '-'}
+        </Typography>
+      </TableCell>
       {/* AVGR - COLOR CODED: <1 Green, 1-2.5 Yellow, >2.5 Red */}
       <TableCell align="center" sx={{ ...cellStyle, ...getAvgReworkStyle(trainer.avg_rework) }}>
         <Typography sx={{ fontSize: '0.7rem', fontWeight: 600 }}>
@@ -225,15 +244,9 @@ function TrainerRow({
         </Typography>
       </TableCell>
       {/* R% - COLOR CODED: <=10% Green, 10-30% Yellow, >30% Red (lower is better) */}
-      <TableCell align="center" sx={{ ...cellStyle, ...getReworkPercentStyle(trainer.rework_percent) }}>
+      <TableCell align="center" sx={{ ...cellStyle, borderRight: `1px solid ${COLUMN_GROUPS.quality.borderColor}`, ...getReworkPercentStyle(trainer.rework_percent) }}>
         <Typography sx={{ fontSize: '0.7rem', fontWeight: 600 }}>
           {trainer.rework_percent !== null ? `${trainer.rework_percent}%` : '-'}
-        </Typography>
-      </TableCell>
-      {/* RATE - COLOR CODED: >4.8 Green, 4-4.8 Yellow, <4 Red */}
-      <TableCell align="center" sx={{ ...cellStyle, borderRight: `1px solid ${COLUMN_GROUPS.quality.borderColor}`, ...getRatingStyle(trainer.avg_rating) }}>
-        <Typography sx={{ fontSize: '0.7rem', fontWeight: 600 }}>
-          {trainer.avg_rating !== null ? trainer.avg_rating.toFixed(2) : '-'}
         </Typography>
       </TableCell>
 
@@ -310,14 +323,27 @@ function PodLeadRow({
                 {open ? <KeyboardArrowUp sx={{ fontSize: 12 }} /> : <KeyboardArrowDown sx={{ fontSize: 12 }} />}
               </IconButton>
             ) : <Box sx={{ width: 18 }} />}
-            <Box sx={{ width: 5, height: 5, borderRadius: '50%', bgcolor: '#8B5CF6', flexShrink: 0 }} />
+            <Box sx={{ width: 5, height: 5, borderRadius: '50%', bgcolor: podLead.pod_lead_email === 'no_pod_lead' ? '#F59E0B' : '#8B5CF6', flexShrink: 0 }} />
             <Box sx={{ minWidth: 0, flex: 1 }}>
-              <Typography sx={{ fontSize: '0.7rem', color: '#475569', fontWeight: 600, lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                {podLead.pod_lead_name}
-              </Typography>
-              <Typography sx={{ fontSize: '0.55rem', color: '#94A3B8', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                {podLead.pod_lead_email}
-              </Typography>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                <Typography sx={{ fontSize: '0.7rem', color: podLead.pod_lead_email === 'no_pod_lead' ? '#B45309' : '#475569', fontWeight: 600, lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {podLead.pod_lead_name}
+                </Typography>
+                {podLead.pod_lead_email === 'no_pod_lead' && (
+                  <Tooltip 
+                    title="These trainers are not mapped to any POD Lead in the mapping sheet. Please assign them a POD Lead to organize them under the correct team."
+                    arrow
+                    placement="right"
+                  >
+                    <InfoIcon sx={{ fontSize: 12, color: '#F59E0B', cursor: 'help' }} />
+                  </Tooltip>
+                )}
+              </Box>
+              {podLead.pod_lead_email !== 'no_pod_lead' && (
+                <Typography sx={{ fontSize: '0.55rem', color: '#94A3B8', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {podLead.pod_lead_email}
+                </Typography>
+              )}
             </Box>
           </Box>
         </TableCell>
@@ -359,6 +385,24 @@ function PodLeadRow({
             {podLead.total_reviews}
           </Typography>
         </TableCell>
+        {/* RATE - COLOR CODED: >4.8 Green, 4-4.8 Yellow, <4 Red */}
+        <TableCell align="center" sx={{ ...cellStyle, ...getRatingStyle(podLead.avg_rating) }}>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 600 }}>
+            {podLead.avg_rating !== null ? podLead.avg_rating.toFixed(2) : '-'}
+          </Typography>
+        </TableCell>
+        {/* AGT REV - Agentic Reviews */}
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: '#7C3AED' }}>
+            {podLead.agentic_reviews ?? 0}
+          </Typography>
+        </TableCell>
+        {/* AGT RATE - Agentic Rating */}
+        <TableCell align="center" sx={{ ...cellStyle, ...getRatingStyle(podLead.agentic_rating) }}>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 600 }}>
+            {podLead.agentic_rating !== null ? podLead.agentic_rating.toFixed(2) : '-'}
+          </Typography>
+        </TableCell>
         {/* AVGR - COLOR CODED: <1 Green, 1-2.5 Yellow, >2.5 Red */}
         <TableCell align="center" sx={{ ...cellStyle, ...getAvgReworkStyle(podLead.avg_rework) }}>
           <Typography sx={{ fontSize: '0.75rem', fontWeight: 600 }}>
@@ -366,15 +410,9 @@ function PodLeadRow({
           </Typography>
         </TableCell>
         {/* R% - COLOR CODED: <=10% Green, 10-30% Yellow, >30% Red (lower is better) */}
-        <TableCell align="center" sx={{ ...cellStyle, ...getReworkPercentStyle(podLead.rework_percent) }}>
+        <TableCell align="center" sx={{ ...cellStyle, borderRight: `1px solid ${COLUMN_GROUPS.quality.borderColor}`, ...getReworkPercentStyle(podLead.rework_percent) }}>
           <Typography sx={{ fontSize: '0.75rem', fontWeight: 600 }}>
             {podLead.rework_percent !== null ? `${podLead.rework_percent}%` : '-'}
-          </Typography>
-        </TableCell>
-        {/* RATE - COLOR CODED: >4.8 Green, 4-4.8 Yellow, <4 Red */}
-        <TableCell align="center" sx={{ ...cellStyle, borderRight: `1px solid ${COLUMN_GROUPS.quality.borderColor}`, ...getRatingStyle(podLead.avg_rating) }}>
-          <Typography sx={{ fontSize: '0.75rem', fontWeight: 600 }}>
-            {podLead.avg_rating !== null ? podLead.avg_rating.toFixed(2) : '-'}
           </Typography>
         </TableCell>
 
@@ -517,6 +555,24 @@ function ProjectRow({
             {project.total_reviews}
           </Typography>
         </TableCell>
+        {/* RATE - COLOR CODED: >4.8 Green, 4-4.8 Yellow, <4 Red */}
+        <TableCell align="center" sx={{ ...cellStyle, ...getRatingStyle(project.avg_rating) }}>
+          <Typography sx={{ fontSize: '0.8rem', fontWeight: 700 }}>
+            {project.avg_rating !== null ? project.avg_rating.toFixed(2) : '-'}
+          </Typography>
+        </TableCell>
+        {/* AGT REV - Agentic Reviews */}
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: '0.8rem', fontWeight: 700, color: '#7C3AED' }}>
+            {project.agentic_reviews ?? 0}
+          </Typography>
+        </TableCell>
+        {/* AGT RATE - Agentic Rating */}
+        <TableCell align="center" sx={{ ...cellStyle, ...getRatingStyle(project.agentic_rating) }}>
+          <Typography sx={{ fontSize: '0.8rem', fontWeight: 700 }}>
+            {project.agentic_rating !== null ? project.agentic_rating.toFixed(2) : '-'}
+          </Typography>
+        </TableCell>
         {/* AVGR - COLOR CODED: <1 Green, 1-2.5 Yellow, >2.5 Red */}
         <TableCell align="center" sx={{ ...cellStyle, ...getAvgReworkStyle(project.avg_rework) }}>
           <Typography sx={{ fontSize: '0.8rem', fontWeight: 700 }}>
@@ -524,15 +580,9 @@ function ProjectRow({
           </Typography>
         </TableCell>
         {/* R% - COLOR CODED: <=10% Green, 10-30% Yellow, >30% Red (lower is better) */}
-        <TableCell align="center" sx={{ ...cellStyle, ...getReworkPercentStyle(project.rework_percent) }}>
+        <TableCell align="center" sx={{ ...cellStyle, borderRight: `1px solid ${COLUMN_GROUPS.quality.borderColor}`, ...getReworkPercentStyle(project.rework_percent) }}>
           <Typography sx={{ fontSize: '0.8rem', fontWeight: 700 }}>
             {project.rework_percent !== null ? `${project.rework_percent}%` : '-'}
-          </Typography>
-        </TableCell>
-        {/* RATE - COLOR CODED: >4.8 Green, 4-4.8 Yellow, <4 Red */}
-        <TableCell align="center" sx={{ ...cellStyle, borderRight: `1px solid ${COLUMN_GROUPS.quality.borderColor}`, ...getRatingStyle(project.avg_rating) }}>
-          <Typography sx={{ fontSize: '0.8rem', fontWeight: 700 }}>
-            {project.avg_rating !== null ? project.avg_rating.toFixed(2) : '-'}
           </Typography>
         </TableCell>
 
@@ -664,13 +714,28 @@ export function ProjectsTab({ onSummaryUpdate, onSummaryLoading }: ProjectsTabPr
     if (!sortColumn) return 0
     let aVal: any, bVal: any
     switch (sortColumn) {
+      // Overview
       case 'project_name': aVal = a.project_name || ''; bVal = b.project_name || ''; break
+      case 'size': aVal = a.pod_lead_count ?? 0; bVal = b.pod_lead_count ?? 0; break
+      // Tasks
       case 'unique_tasks': aVal = a.unique_tasks ?? 0; bVal = b.unique_tasks ?? 0; break
       case 'new_tasks': aVal = a.new_tasks ?? 0; bVal = b.new_tasks ?? 0; break
       case 'rework': aVal = a.rework ?? 0; bVal = b.rework ?? 0; break
+      case 'delivered': aVal = a.delivered ?? 0; bVal = b.delivered ?? 0; break
+      case 'in_queue': aVal = a.in_queue ?? 0; bVal = b.in_queue ?? 0; break
+      // Quality
       case 'total_reviews': aVal = a.total_reviews ?? 0; bVal = b.total_reviews ?? 0; break
+      case 'avg_rating': aVal = a.avg_rating ?? -Infinity; bVal = b.avg_rating ?? -Infinity; break
+      case 'agentic_reviews': aVal = a.agentic_reviews ?? 0; bVal = b.agentic_reviews ?? 0; break
+      case 'agentic_rating': aVal = a.agentic_rating ?? -Infinity; bVal = b.agentic_rating ?? -Infinity; break
+      case 'avg_rework': aVal = a.avg_rework ?? -Infinity; bVal = b.avg_rework ?? -Infinity; break
       case 'rework_percent': aVal = a.rework_percent ?? -Infinity; bVal = b.rework_percent ?? -Infinity; break
+      // Time & Efficiency
+      case 'merged_exp_aht': aVal = a.merged_exp_aht ?? 0; bVal = b.merged_exp_aht ?? 0; break
       case 'logged_hours': aVal = a.logged_hours ?? 0; bVal = b.logged_hours ?? 0; break
+      case 'accounted_hours': aVal = a.accounted_hours ?? 0; bVal = b.accounted_hours ?? 0; break
+      case 'efficiency': aVal = a.efficiency ?? -Infinity; bVal = b.efficiency ?? -Infinity; break
+      case 'total_pod_hours': aVal = a.total_pod_hours ?? 0; bVal = b.total_pod_hours ?? 0; break
       default: return 0
     }
     if (typeof aVal === 'string') return sortDirection === 'asc' ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal)
@@ -678,7 +743,14 @@ export function ProjectsTab({ onSummaryUpdate, onSummaryLoading }: ProjectsTabPr
   })
 
   // Sub-header cell renderer with tooltip
-  const SubHeader = ({ label, columnKey, group, tooltipKey }: { label: string; columnKey: string; group: keyof typeof COLUMN_GROUPS; tooltipKey?: string }) => {
+  const SubHeader = ({ label, columnKey, group, tooltipKey, isLastInGroup = false, customColor }: { 
+    label: string; 
+    columnKey: string; 
+    group: keyof typeof COLUMN_GROUPS; 
+    tooltipKey?: string;
+    isLastInGroup?: boolean;
+    customColor?: string;
+  }) => {
     const tooltipText = getTooltipForHeader(tooltipKey || label)
     
     return (
@@ -688,11 +760,12 @@ export function ProjectsTab({ onSummaryUpdate, onSummaryLoading }: ProjectsTabPr
           sx={{ 
             ...headerCellStyle,
             bgcolor: COLUMN_GROUPS[group].bgSubHeader,
-            color: COLUMN_GROUPS[group].textColor,
+            color: customColor || COLUMN_GROUPS[group].textColor,
             borderBottom: `2px solid ${COLUMN_GROUPS[group].borderColor}`,
+            borderRight: isLastInGroup ? `2px solid ${COLUMN_GROUPS[group].borderColor}` : undefined,
             cursor: 'pointer',
             width: 50,
-            '&:hover': { opacity: 0.8 },
+            '&:hover': { bgcolor: 'rgba(0,0,0,0.04)' },
           }}
           onClick={(e) => { 
             e.stopPropagation()
@@ -821,7 +894,7 @@ export function ProjectsTab({ onSummaryUpdate, onSummaryLoading }: ProjectsTabPr
                   <Typography sx={{ fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.03em' }}>TASKS</Typography>
                 </TableCell>
                 <TableCell 
-                  colSpan={4} 
+                  colSpan={6} 
                   align="center"
                   sx={{ 
                     ...headerCellStyle, 
@@ -864,72 +937,29 @@ export function ProjectsTab({ onSummaryUpdate, onSummaryLoading }: ProjectsTabPr
                     <Typography sx={{ fontSize: '0.6rem', fontWeight: 600 }}>Name</Typography>
                   </TableCell>
                 </Tooltip>
-                <Tooltip title="Number of POD Leads (for projects) or Trainers (for POD Leads)" arrow placement="top">
-                  <TableCell align="center" sx={{ 
-                    ...headerCellStyle, 
-                    bgcolor: COLUMN_GROUPS.overview.bgSubHeader, 
-                    color: COLUMN_GROUPS.overview.textColor,
-                    borderBottom: `2px solid ${COLUMN_GROUPS.overview.borderColor}`,
-                    borderRight: `2px solid ${COLUMN_GROUPS.overview.borderColor}`,
-                    width: 45,
-                  }}>
-                    <Typography sx={{ fontSize: '0.6rem', fontWeight: 600 }}>Size</Typography>
-                  </TableCell>
-                </Tooltip>
+                <SubHeader label="Size" columnKey="size" group="overview" tooltipKey="Size" isLastInGroup />
 
-                {/* Tasks */}
-                <SubHeader label="Uniq" columnKey="unique_tasks" group="tasks" tooltipKey="Unique Tasks" />
-                <SubHeader label="New" columnKey="new_tasks" group="tasks" tooltipKey="New Tasks" />
-                <SubHeader label="Rwk" columnKey="rework" group="tasks" tooltipKey="Rework" />
-                <SubHeader label="Del" columnKey="delivered" group="tasks" tooltipKey="Delivered" />
-                <Tooltip title="Tasks in delivery queue, pending delivery to the client" arrow placement="top">
-                  <TableCell align="center" sx={{ 
-                    ...headerCellStyle, 
-                    bgcolor: COLUMN_GROUPS.tasks.bgSubHeader, 
-                    color: COLUMN_GROUPS.tasks.textColor,
-                    borderBottom: `2px solid ${COLUMN_GROUPS.tasks.borderColor}`,
-                    borderRight: `2px solid ${COLUMN_GROUPS.tasks.borderColor}`,
-                    width: 45,
-                  }}>
-                    <Typography sx={{ fontSize: '0.6rem', fontWeight: 600 }}>Queue</Typography>
-                  </TableCell>
-                </Tooltip>
+                {/* Tasks - All sortable */}
+                <SubHeader label="Uniq" columnKey="unique_tasks" group="tasks" tooltipKey="Uniq" />
+                <SubHeader label="New" columnKey="new_tasks" group="tasks" tooltipKey="New" />
+                <SubHeader label="Rwk" columnKey="rework" group="tasks" tooltipKey="Rwk" />
+                <SubHeader label="Del" columnKey="delivered" group="tasks" tooltipKey="Del" />
+                <SubHeader label="Queue" columnKey="in_queue" group="tasks" tooltipKey="Queue" isLastInGroup />
 
-                {/* Quality */}
-                <SubHeader label="Rev" columnKey="total_reviews" group="quality" tooltipKey="Total Reviews" />
-                <SubHeader label="AvgR" columnKey="avg_rework" group="quality" tooltipKey="Avg Rework" />
-                <SubHeader label="R%" columnKey="rework_percent" group="quality" tooltipKey="Rework %" />
-                <Tooltip title="Average review rating (>4.8 Green, 4-4.8 Yellow, <4 Red)" arrow placement="top">
-                  <TableCell align="center" sx={{ 
-                    ...headerCellStyle, 
-                    bgcolor: COLUMN_GROUPS.quality.bgSubHeader, 
-                    color: COLUMN_GROUPS.quality.textColor,
-                    borderBottom: `2px solid ${COLUMN_GROUPS.quality.borderColor}`,
-                    borderRight: `2px solid ${COLUMN_GROUPS.quality.borderColor}`,
-                    width: 40,
-                  }}>
-                    <Typography sx={{ fontSize: '0.6rem', fontWeight: 600 }}>Rate</Typography>
-                  </TableCell>
-                </Tooltip>
+                {/* Quality - All sortable */}
+                <SubHeader label="Rev" columnKey="total_reviews" group="quality" tooltipKey="Rev" />
+                <SubHeader label="Rate" columnKey="avg_rating" group="quality" tooltipKey="Rate" />
+                <SubHeader label="Agt" columnKey="agentic_reviews" group="quality" tooltipKey="Agt" customColor="#7C3AED" />
+                <SubHeader label="AgtR" columnKey="agentic_rating" group="quality" tooltipKey="AgtR" customColor="#7C3AED" />
+                <SubHeader label="AvgR" columnKey="avg_rework" group="quality" tooltipKey="AvgR" />
+                <SubHeader label="R%" columnKey="rework_percent" group="quality" tooltipKey="R%" isLastInGroup />
 
-                {/* Time & Efficiency */}
-                <SubHeader label="AHT" columnKey="merged_exp_aht" group="time" tooltipKey="Merged Exp. AHT" />
-                <SubHeader label="Jib" columnKey="logged_hours" group="time" tooltipKey="Logged Hours" />
-                <Tooltip title="Accounted Hours = (New Tasks × 10) + (Rework × 4)" arrow placement="top">
-                  <TableCell align="center" sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.time.bgSubHeader, color: COLUMN_GROUPS.time.textColor, borderBottom: `2px solid ${COLUMN_GROUPS.time.borderColor}`, width: 45 }}>
-                    <Typography sx={{ fontSize: '0.6rem', fontWeight: 600 }}>Acct</Typography>
-                  </TableCell>
-                </Tooltip>
-                <Tooltip title="Efficiency = (Accounted Hours / Jibble Hours) × 100 (≥90% Green, 70-90% Yellow, <70% Red)" arrow placement="top">
-                  <TableCell align="center" sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.time.bgSubHeader, color: COLUMN_GROUPS.time.textColor, borderBottom: `2px solid ${COLUMN_GROUPS.time.borderColor}`, width: 40 }}>
-                    <Typography sx={{ fontSize: '0.6rem', fontWeight: 600 }}>Eff%</Typography>
-                  </TableCell>
-                </Tooltip>
-                <Tooltip title="POD Lead's own logged hours from Jibble" arrow placement="top">
-                  <TableCell align="center" sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.time.bgSubHeader, color: COLUMN_GROUPS.time.textColor, borderBottom: `2px solid ${COLUMN_GROUPS.time.borderColor}`, width: 50 }}>
-                    <Typography sx={{ fontSize: '0.6rem', fontWeight: 600 }}>POD</Typography>
-                  </TableCell>
-                </Tooltip>
+                {/* Time & Efficiency - All sortable */}
+                <SubHeader label="AHT" columnKey="merged_exp_aht" group="time" tooltipKey="AHT" />
+                <SubHeader label="Jib" columnKey="logged_hours" group="time" tooltipKey="Jib" />
+                <SubHeader label="Acct" columnKey="accounted_hours" group="time" tooltipKey="Acct" />
+                <SubHeader label="Eff%" columnKey="efficiency" group="time" tooltipKey="Eff%" />
+                <SubHeader label="POD" columnKey="total_pod_hours" group="time" tooltipKey="POD" />
               </TableRow>
             </TableHead>
             <TableBody>

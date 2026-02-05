@@ -21,6 +21,7 @@ from datetime import datetime, date
 from ..services.db_service import get_db_service
 from ..services.configuration_service import get_configuration_service, ConfigType
 from ..models.db_models import AHTConfiguration
+from ..constants import get_constants
 from sqlalchemy import text
 
 import logging
@@ -63,12 +64,11 @@ class AHTConfigCreate(BaseModel):
 
 def initialize_default_configs(session):
     """Initialize default AHT configurations for all projects if they don't exist."""
-    # Default projects
+    # Get default projects from centralized constants
+    constants = get_constants()
     default_projects = [
-        {"project_id": 36, "project_name": "Nvidia - SysBench"},
-        {"project_id": 37, "project_name": "Nvidia - CFBench Multilingual"},
-        {"project_id": 38, "project_name": "Nvidia - InverseIFEval"},
-        {"project_id": 39, "project_name": "Nvidia - Multichallenge"},
+        {"project_id": pid, "project_name": constants.projects.get_project_name(pid)}
+        for pid in constants.projects.PRIMARY_PROJECT_IDS
     ]
     
     for proj in default_projects:

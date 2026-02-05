@@ -100,19 +100,19 @@ class BigQueryService:
                         cb.name,
                         (
                             SELECT DATE(MIN(csh_inner.updated_at))
-                            FROM `turing-gpt.{self.settings.bigquery_dataset}.conversation_status_history` csh_inner
+                            FROM `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.conversation_status_history` csh_inner
                             WHERE csh_inner.conversation_id = c.id
                                 AND csh_inner.old_status = 'labeling'
                                 AND csh_inner.new_status = 'completed'
                         ) AS annotation_date
-                    FROM `turing-gpt.{self.settings.bigquery_dataset}.conversation` c
-                    INNER JOIN `turing-gpt.{self.settings.bigquery_dataset}.review` r
+                    FROM `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.conversation` c
+                    INNER JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.review` r
                         ON c.id = r.conversation_id
-                    INNER JOIN `turing-gpt.{self.settings.bigquery_dataset}.batch` b
+                    INNER JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.batch` b
                         ON c.project_id = b.project_id
-                    LEFT JOIN `turing-gpt.{self.settings.bigquery_dataset}.delivery_batch_task` bt
+                    LEFT JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.delivery_batch_task` bt
                         ON bt.task_id = c.id
-                    LEFT JOIN `turing-gpt.{self.settings.bigquery_dataset}.contributor` cb
+                    LEFT JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.contributor` cb
                         ON cb.id = c.current_user_id
                     WHERE c.project_id = {self.settings.project_id_filter}
                         -- AND c.batch_id IN (772, 805)
@@ -122,7 +122,7 @@ class BigQueryService:
                         -- AND b.status != 'draft'
                         AND r.id = (
                             SELECT MAX(rn.id)
-                            FROM `turing-gpt.{self.settings.bigquery_dataset}.review` rn
+                            FROM `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.review` rn
                             WHERE rn.conversation_id = r.conversation_id
                                 AND rn.review_type = 'manual'
                                 AND rn.status = 'published'

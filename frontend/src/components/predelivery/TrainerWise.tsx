@@ -119,14 +119,9 @@ interface TrainerWiseProps {
 
 type TimeframeOption = Timeframe // Alias for backward compatibility
 
-// Project options for dropdown
-const projectOptions = [
-  { id: undefined, name: 'All Projects' },
-  { id: 36, name: 'Nvidia - SysBench' },
-  { id: 37, name: 'Nvidia - CFBench Multilingual' },
-  { id: 38, name: 'Nvidia - InverseIFEval' },
-  { id: 39, name: 'Nvidia - Multichallenge' },
-]
+// Project options for dropdown - imported from centralized constants
+import { PROJECT_OPTIONS_WITH_ALL } from '../../constants'
+const projectOptions = PROJECT_OPTIONS_WITH_ALL
 
 // Aggregated trainer data type for Overall view
 interface AggregatedTrainerStats {

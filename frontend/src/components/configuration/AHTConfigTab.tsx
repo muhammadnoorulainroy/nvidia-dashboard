@@ -30,10 +30,7 @@ import WarningIcon from '@mui/icons-material/Warning'
 import SettingsBackupRestoreIcon from '@mui/icons-material/SettingsBackupRestore'
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
 import { getAHTConfigurations, updateAHTConfiguration, type AHTConfiguration } from '../../services/api'
-
-// Default AHT values
-const DEFAULT_NEW_TASK_AHT = 10.0
-const DEFAULT_REWORK_AHT = 4.0
+import { DEFAULT_NEW_TASK_AHT, DEFAULT_REWORK_AHT } from '../../constants'
 
 interface ProjectAHTState {
   newTaskAht: string

@@ -310,12 +310,25 @@ function PodLeadRow({
             )}
             {!hasTrainers && <Box sx={{ width: 20 }} />}
             <Box sx={{ minWidth: 0, flex: 1 }}>
-              <Typography sx={{ fontSize: '0.7rem', fontWeight: 700, color: '#1E293B', lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                {podLead.pod_lead_name}
-              </Typography>
-              <Typography sx={{ fontSize: '0.55rem', color: '#94A3B8', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                {podLead.pod_lead_email}
-              </Typography>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                <Typography sx={{ fontSize: '0.7rem', fontWeight: 700, color: podLead.pod_lead_email === 'no_pod_lead' ? '#B45309' : '#1E293B', lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {podLead.pod_lead_name}
+                </Typography>
+                {podLead.pod_lead_email === 'no_pod_lead' && (
+                  <Tooltip 
+                    title="These trainers are not mapped to any POD Lead in the mapping sheet. Please assign them a POD Lead to organize them under the correct team."
+                    arrow
+                    placement="right"
+                  >
+                    <InfoOutlinedIcon sx={{ fontSize: 12, color: '#F59E0B', cursor: 'help' }} />
+                  </Tooltip>
+                )}
+              </Box>
+              {podLead.pod_lead_email !== 'no_pod_lead' && (
+                <Typography sx={{ fontSize: '0.55rem', color: '#94A3B8', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {podLead.pod_lead_email}
+                </Typography>
+              )}
             </Box>
           </Box>
         </TableCell>
@@ -401,14 +414,9 @@ interface NumericFilter {
 // Sort direction type
 type SortDirection = 'asc' | 'desc' | null
 
-// Project options for dropdown
-const projectOptions = [
-  { id: undefined, name: 'All Projects' },
-  { id: 36, name: 'Nvidia - SysBench' },
-  { id: 37, name: 'Nvidia - CFBench Multilingual' },
-  { id: 38, name: 'Nvidia - InverseIFEval' },
-  { id: 39, name: 'Nvidia - Multichallenge' },
-]
+// Project options for dropdown - imported from centralized constants
+import { PROJECT_OPTIONS_WITH_ALL } from '../../constants'
+const projectOptions = PROJECT_OPTIONS_WITH_ALL
 
 // Import TabSummaryStats type from PreDelivery
 import type { TabSummaryStats } from '../../pages/PreDelivery'

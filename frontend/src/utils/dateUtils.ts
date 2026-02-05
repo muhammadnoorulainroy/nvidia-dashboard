@@ -11,10 +11,15 @@ export interface DateRange {
 }
 
 /**
- * Format date as YYYY-MM-DD
+ * Format date as YYYY-MM-DD in local timezone
+ * Note: Using local timezone to avoid off-by-one errors when user's timezone
+ * is ahead of UTC (e.g., at midnight local time, UTC is still previous day)
  */
 export function formatDate(date: Date): string {
-  return date.toISOString().split('T')[0]
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
 }
 
 /**

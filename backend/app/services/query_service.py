@@ -10,6 +10,7 @@ from google.cloud import bigquery
 from app.config import get_settings
 from app.services.db_service import get_db_service
 from app.models.db_models import ReviewDetail, Contributor, Task, WorkItem, TaskReviewedInfo, TaskAHT, ContributorTaskStats, ContributorDailyStats, ReviewerDailyStats, TaskRaw, TaskHistoryRaw, PodLeadMapping, ReviewerTrainerDailyStats, JibbleHours, TrainerReviewStats
+from app.constants import get_constants
 
 logger = logging.getLogger(__name__)
 
@@ -21,6 +22,30 @@ class QueryService:
         self.settings = get_settings()
         self.db_service = get_db_service()
         self._allowed_quality_dimensions_cache: Optional[Set[str]] = None
+        self._constants = get_constants()
+    
+    def _calculate_merged_aht(self, new_tasks: int, rework: int) -> Optional[float]:
+        """
+        Calculate merged expected AHT using configurable constants.
+        
+        Formula: (new_tasks * NEW_TASK_AHT + rework * REWORK_AHT) / total_submissions
+        """
+        submissions = new_tasks + rework
+        if submissions == 0:
+            return None
+        aht_config = self._constants.aht
+        return round((new_tasks * aht_config.DEFAULT_NEW_TASK_AHT + 
+                     rework * aht_config.DEFAULT_REWORK_AHT) / submissions, 2)
+    
+    def _calculate_accounted_hours(self, new_tasks: int, rework: int) -> float:
+        """
+        Calculate accounted hours using configurable constants.
+        
+        Formula: new_tasks * NEW_TASK_AHT + rework * REWORK_AHT
+        """
+        aht_config = self._constants.aht
+        return (new_tasks * aht_config.DEFAULT_NEW_TASK_AHT + 
+                rework * aht_config.DEFAULT_REWORK_AHT)
     
     def _get_allowed_quality_dimensions(self, force_refresh: bool = False) -> Set[str]:
         """Fetch allowed quality dimensions from BigQuery"""
@@ -32,7 +57,7 @@ class QueryService:
             
             query = f"""
             SELECT DISTINCT name 
-            FROM `turing-gpt.{self.settings.bigquery_dataset}.project_quality_dimension` 
+            FROM `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.project_quality_dimension` 
             WHERE project_id = {self.settings.project_id_filter} AND is_enabled = 1
             """
             
@@ -1343,16 +1368,9 @@ class QueryService:
                 trainer_jibble_map = {}
                 jibble_by_name = {}  # Primary matching by name
                 
-                # Map project IDs to Jibble project names
-                project_jibble_map = {
-                    36: 'Nvidia - SysBench',
-                    37: 'Nvidia - CFBench Multilingual',
-                    38: 'Nvidia - InverseIFEval',
-                    39: 'Nvidia - Multichallenge',  # Also includes Advanced
-                    40: 'Nvidia - Multichallenge Advanced',
-                    41: 'Nvidia - ICPC',
-                    42: 'NVIDIA_STEM Math_Eval',
-                }
+                # Map project IDs to Jibble project names (from centralized constants)
+                constants = get_constants()
+                project_jibble_map = constants.projects.PROJECT_ID_TO_NAME
                 
                 try:
                     # Apply filters
@@ -1361,15 +1379,15 @@ class QueryService:
                     
                     # Build list of Jibble project names to filter (no swap - use original)
                     jibble_projects_to_filter = []
+                    jibble_config = self._constants.jibble
                     if filter_project_ids:
                         for pid in filter_project_ids:
-                            if pid == 39:  # Multichallenge includes both regular and Advanced
-                                jibble_projects_to_filter.append('Nvidia - Multichallenge')
-                                jibble_projects_to_filter.append('Nvidia - Multichallenge Advanced')
-                            else:
-                                jibble_name = project_jibble_map.get(pid)
-                                if jibble_name:
-                                    jibble_projects_to_filter.append(jibble_name)
+                            # Get Jibble project names for this project ID from config
+                            jibble_names = jibble_config.PROJECT_ID_TO_JIBBLE_NAMES.get(pid, [])
+                            if jibble_names:
+                                jibble_projects_to_filter.extend(jibble_names)
+                            elif pid in project_jibble_map:
+                                jibble_projects_to_filter.append(project_jibble_map[pid])
                     
                     # Get Jibble hours - group by full_name (primary key for matching)
                     jibble_query = session.query(
@@ -2276,13 +2294,16 @@ class QueryService:
                 #   Trainer A gets 1 review: 2.3
                 #   Trainer B gets 1 review: 5.0
                 # ---------------------------------------------------------
+                
+                # Query for MANUAL reviews
                 trainer_review_query = session.query(
                     TrainerReviewStats.trainer_email,
                     func.count(TrainerReviewStats.review_id).label('total_reviews'),
                     func.sum(TrainerReviewStats.score).label('total_score')
                 ).filter(
                     TrainerReviewStats.project_id.in_(filter_project_ids),
-                    TrainerReviewStats.score.isnot(None)
+                    TrainerReviewStats.score.isnot(None),
+                    or_(TrainerReviewStats.review_type == 'manual', TrainerReviewStats.review_type.is_(None))
                 )
                 
                 if start_date:
@@ -2304,7 +2325,39 @@ class QueryService:
                         if r.total_reviews and r.total_reviews > 0 and r.total_score:
                             trainer_ratings[email] = round(float(r.total_score) / float(r.total_reviews), 2)
                 
-                logger.info(f"Found trainer-attributed reviews for {len(trainer_total_reviews)} trainers (using TrainerReviewStats)")
+                logger.info(f"Found trainer-attributed manual reviews for {len(trainer_total_reviews)} trainers")
+                
+                # Query for AGENTIC (auto) reviews
+                agentic_review_query = session.query(
+                    TrainerReviewStats.trainer_email,
+                    func.count(TrainerReviewStats.review_id).label('total_reviews'),
+                    func.sum(TrainerReviewStats.score).label('total_score')
+                ).filter(
+                    TrainerReviewStats.project_id.in_(filter_project_ids),
+                    TrainerReviewStats.score.isnot(None),
+                    TrainerReviewStats.review_type == 'auto'
+                )
+                
+                if start_date:
+                    agentic_review_query = agentic_review_query.filter(TrainerReviewStats.review_date >= start_date)
+                if end_date:
+                    agentic_review_query = agentic_review_query.filter(TrainerReviewStats.review_date <= end_date)
+                
+                agentic_review_query = agentic_review_query.group_by(TrainerReviewStats.trainer_email)
+                agentic_review_results = agentic_review_query.all()
+                
+                trainer_agentic_ratings = {}
+                trainer_agentic_reviews = {}
+                trainer_agentic_scores = {}  # For POD-level aggregation
+                for r in agentic_review_results:
+                    if r.trainer_email:
+                        email = r.trainer_email.lower().strip()
+                        trainer_agentic_reviews[email] = r.total_reviews or 0
+                        trainer_agentic_scores[email] = float(r.total_score or 0)
+                        if r.total_reviews and r.total_reviews > 0 and r.total_score:
+                            trainer_agentic_ratings[email] = round(float(r.total_score) / float(r.total_reviews), 2)
+                
+                logger.info(f"Found trainer-attributed agentic reviews for {len(trainer_agentic_reviews)} trainers")
                 
                 # ---------------------------------------------------------
                 # STEP 6: Get Jibble hours for trainers AND POD Leads
@@ -2317,27 +2370,20 @@ class QueryService:
                 # Get all POD lead emails for classification
                 all_pod_emails = set(pod_trainers.keys())
                 
-                # Map project IDs to Jibble project names
-                project_jibble_map = {
-                    36: 'Nvidia - SysBench',
-                    37: 'Nvidia - CFBench Multilingual',
-                    38: 'Nvidia - InverseIFEval',
-                    39: 'Nvidia - Multichallenge',  # Also includes Advanced
-                    40: 'Nvidia - Multichallenge Advanced',
-                    41: 'Nvidia - ICPC',
-                    42: 'NVIDIA_STEM Math_Eval',
-                }
+                # Map project IDs to Jibble project names (from centralized constants)
+                constants = get_constants()
+                project_jibble_map = constants.projects.PROJECT_ID_TO_NAME
+                jibble_config = constants.jibble
                 
                 # Build list of Jibble project names to filter (no swap - use original)
                 jibble_projects_to_filter = []
                 for pid in filter_project_ids:
-                    if pid == 39:  # Multichallenge includes both regular and Advanced
-                        jibble_projects_to_filter.append('Nvidia - Multichallenge')
-                        jibble_projects_to_filter.append('Nvidia - Multichallenge Advanced')
-                    else:
-                        jibble_name = project_jibble_map.get(pid)
-                        if jibble_name:
-                            jibble_projects_to_filter.append(jibble_name)
+                    # Get Jibble project names for this project ID from config
+                    jibble_names = jibble_config.PROJECT_ID_TO_JIBBLE_NAMES.get(pid, [])
+                    if jibble_names:
+                        jibble_projects_to_filter.extend(jibble_names)
+                    elif pid in project_jibble_map:
+                        jibble_projects_to_filter.append(project_jibble_map[pid])
                 
                 # Get Jibble hours grouped by full_name, filtered by project
                 jibble_query = session.query(
@@ -2438,13 +2484,17 @@ class QueryService:
                         # Get total_reviews from task_raw (SUM of count_reviews WHERE derived_status='Reviewed')
                         total_reviews = trainer_total_reviews.get(trainer_email, 0)
                         
+                        # Get agentic review metrics
+                        agentic_reviews = trainer_agentic_reviews.get(trainer_email, 0)
+                        agentic_rating = trainer_agentic_ratings.get(trainer_email)
+                        
                         # Calculate derived metrics (using new_tasks + rework for percentage calculations)
                         # Avg Rework = (total_completions / unique_tasks - 1) * 100
                         # Where total_completions = new_tasks + rework (all completion events from task_history_raw)
                         submissions = new_tasks + rework
                         avg_rework = round((submissions / unique_tasks) - 1, 2) if unique_tasks > 0 else None
                         rework_pct = round((rework / submissions) * 100, 1) if submissions > 0 else None
-                        merged_aht = round((new_tasks * 10 + rework * 4) / submissions, 2) if submissions > 0 else None
+                        merged_aht = self._calculate_merged_aht(new_tasks, rework)
                         # AHT of Submission = jibble_hours / (new_tasks + rework)
                         aht_submission = round(jibble_hours / submissions, 2) if submissions > 0 else None
                         
@@ -2455,6 +2505,8 @@ class QueryService:
                             'new_tasks': new_tasks,
                             'rework': rework,
                             'total_reviews': total_reviews,
+                            'agentic_reviews': agentic_reviews,
+                            'agentic_rating': agentic_rating,
                             'approved_tasks': approved,  # Approved new tasks (first completion approved)
                             'approved_rework': approved_rework,  # Approved rework (fixed someone else's task)
                             'delivered_tasks': delivered,
@@ -2489,12 +2541,22 @@ class QueryService:
                         # For avg_rating aggregation, use trainer_total_scores (from TrainerReviewStats)
                         pod_totals['total_score'] += trainer_total_scores.get(trainer_email, 0)
                         pod_totals['total_reviews'] += trainer_total_reviews.get(trainer_email, 0)
+                        
+                        # Agentic review aggregation
+                        pod_totals['agentic_reviews'] = pod_totals.get('agentic_reviews', 0) + trainer_agentic_reviews.get(trainer_email, 0)
+                        pod_totals['agentic_score'] = pod_totals.get('agentic_score', 0) + trainer_agentic_scores.get(trainer_email, 0)
                     
                     # Filter out trainers with no data in this project
-                    trainers_with_data = [t for t in trainers_data if t['unique_tasks'] > 0 or t['new_tasks'] > 0 or t['rework'] > 0 or t['total_reviews'] > 0]
+                    # FIX: Also include trainers who have delivery data (in_queue/delivered) but no task completions
+                    trainers_with_data = [t for t in trainers_data if 
+                        t['unique_tasks'] > 0 or t['new_tasks'] > 0 or t['rework'] > 0 or 
+                        t['total_reviews'] > 0 or t.get('delivered_tasks', 0) > 0 or t.get('in_delivery_queue', 0) > 0]
                     
-                    # Skip POD Leads with no trainers having data
-                    if pod_totals['unique_tasks'] == 0 and pod_totals['new_tasks'] == 0 and pod_totals['rework'] == 0:
+                    # Skip POD Leads with no trainers having any data (task OR delivery)
+                    # FIX: Also consider delivery data when deciding to include a POD Lead
+                    if (pod_totals['unique_tasks'] == 0 and pod_totals['new_tasks'] == 0 and 
+                        pod_totals['rework'] == 0 and pod_totals['delivered_tasks'] == 0 and 
+                        pod_totals['in_delivery_queue'] == 0):
                         continue
                     
                     # Calculate POD-level metrics
@@ -2503,7 +2565,12 @@ class QueryService:
                     pod_avg_rework = round((pod_total_submissions / pod_totals['unique_tasks']) - 1, 2) if pod_totals['unique_tasks'] > 0 else None
                     pod_rework_pct = round((pod_totals['rework'] / pod_total_submissions) * 100, 1) if pod_total_submissions > 0 else None
                     pod_avg_rating = round(pod_totals['total_score'] / pod_totals['total_reviews'], 2) if pod_totals['total_reviews'] > 0 else None
-                    pod_merged_aht = round((pod_totals['new_tasks'] * 10 + pod_totals['rework'] * 4) / pod_total_submissions, 2) if pod_total_submissions > 0 else None
+                    pod_merged_aht = self._calculate_merged_aht(pod_totals['new_tasks'], pod_totals['rework'])
+                    
+                    # Agentic review metrics at POD level
+                    pod_agentic_reviews = pod_totals.get('agentic_reviews', 0)
+                    pod_agentic_score = pod_totals.get('agentic_score', 0)
+                    pod_agentic_rating = round(pod_agentic_score / pod_agentic_reviews, 2) if pod_agentic_reviews > 0 else None
                     
                     # Get POD Lead's own Jibble hours (not sum of trainers)
                     pod_own_jibble_hours = pod_lead_jibble_hours.get(pod_email, 0)
@@ -2519,6 +2586,8 @@ class QueryService:
                         'new_tasks': pod_totals['new_tasks'],
                         'rework': pod_totals['rework'],
                         'total_reviews': pod_totals.get('total_reviews_sum', 0),
+                        'agentic_reviews': pod_agentic_reviews,
+                        'agentic_rating': pod_agentic_rating,
                         'approved_tasks': pod_totals['approved_tasks'],  # Approved new tasks
                         'approved_rework': pod_totals['approved_rework'],  # Approved rework tasks
                         'delivered_tasks': pod_totals['delivered_tasks'],
@@ -2532,6 +2601,158 @@ class QueryService:
                         'aht_submission': pod_aht_submission,
                         'trainers': sorted(trainers_with_data, key=lambda x: -(x['total_reviews'] or 0)),
                     })
+                
+                # ---------------------------------------------------------
+                # STEP 8: Handle trainers WITHOUT POD Lead mapping ("No Pod Lead")
+                # These are trainers with data in trainer_history but not in trainer_to_pod
+                # Also includes trainers with delivery data but no task history
+                # ---------------------------------------------------------
+                NO_POD_LEAD_EMAIL = "no_pod_lead"
+                NO_POD_LEAD_NAME = "No Pod Lead"
+                
+                # Find trainers with data but no mapping (from task history)
+                unmapped_trainers_from_history = set()
+                for trainer_email, hist in trainer_history.items():
+                    if trainer_email not in trainer_to_pod:
+                        # This trainer has task data but no POD lead mapping
+                        unmapped_trainers_from_history.add(trainer_email)
+                
+                # Also find unmapped trainers who have delivery data but no task history
+                delivery_trainers = set(trainer_in_queue.keys()) | set(trainer_delivered.keys())
+                unmapped_delivery_trainers = delivery_trainers - set(trainer_to_pod.keys()) - unmapped_trainers_from_history
+                
+                # Combine all unmapped trainers
+                unmapped_trainers = list(unmapped_trainers_from_history | unmapped_delivery_trainers)
+                
+                logger.info(f"Found {len(unmapped_trainers_from_history)} unmapped trainers with task history, {len(unmapped_delivery_trainers)} with delivery data only")
+                
+                if unmapped_trainers:
+                    logger.info(f"Found {len(unmapped_trainers)} unmapped trainers - adding to 'No Pod Lead' category")
+                    
+                    # Build "No Pod Lead" entry with unmapped trainers
+                    no_pod_totals = {
+                        'unique_tasks': 0,
+                        'new_tasks': 0,
+                        'rework': 0,
+                        'approved_tasks': 0,
+                        'approved_rework': 0,
+                        'delivered_tasks': 0,
+                        'in_delivery_queue': 0,
+                        'sum_turns': 0,
+                        'total_score': 0,
+                        'total_reviews': 0,
+                        'agentic_reviews': 0,
+                        'agentic_score': 0,
+                        'trainer_jibble_hours': 0,
+                    }
+                    
+                    unmapped_trainers_data = []
+                    
+                    for trainer_email in unmapped_trainers:
+                        # Get trainer name from contributor table
+                        trainer_contributor = session.query(Contributor).filter(
+                            func.lower(Contributor.turing_email) == trainer_email.lower()
+                        ).first()
+                        trainer_name = trainer_contributor.name if trainer_contributor else trainer_email.split('@')[0].replace('.', ' ').title()
+                        
+                        # Get stats from data sources
+                        hist = trainer_history.get(trainer_email, {})
+                        unique_tasks = hist.get('unique_tasks', 0)
+                        new_tasks = hist.get('new_tasks', 0)
+                        rework = hist.get('rework', 0)
+                        
+                        sum_turns = trainer_turns.get(trainer_email, 0)
+                        approved = trainer_approved.get(trainer_email, 0)
+                        approved_rework = trainer_approved_rework.get(trainer_email, 0)
+                        delivered = trainer_delivered.get(trainer_email, 0)
+                        in_queue = trainer_in_queue.get(trainer_email, 0)
+                        avg_rating = trainer_ratings.get(trainer_email)
+                        jibble_hours = trainer_jibble_hours.get(trainer_email, 0)
+                        total_reviews = trainer_total_reviews.get(trainer_email, 0)
+                        agentic_reviews = trainer_agentic_reviews.get(trainer_email, 0)
+                        agentic_rating = trainer_agentic_ratings.get(trainer_email)
+                        
+                        # Calculate derived metrics
+                        submissions = new_tasks + rework
+                        avg_rework = round((submissions / unique_tasks) - 1, 2) if unique_tasks > 0 else None
+                        rework_pct = round((rework / submissions) * 100, 1) if submissions > 0 else None
+                        merged_aht = self._calculate_merged_aht(new_tasks, rework)
+                        aht_submission = round(jibble_hours / submissions, 2) if submissions > 0 else None
+                        
+                        # Only include trainers with actual data (task data OR delivery data)
+                        if unique_tasks > 0 or new_tasks > 0 or rework > 0 or total_reviews > 0 or delivered > 0 or in_queue > 0:
+                            unmapped_trainers_data.append({
+                                'trainer_name': trainer_name,
+                                'trainer_email': trainer_email,
+                                'unique_tasks': unique_tasks,
+                                'new_tasks': new_tasks,
+                                'rework': rework,
+                                'total_reviews': total_reviews,
+                                'agentic_reviews': agentic_reviews,
+                                'agentic_rating': agentic_rating,
+                                'approved_tasks': approved,
+                                'approved_rework': approved_rework,
+                                'delivered_tasks': delivered,
+                                'in_delivery_queue': in_queue,
+                                'avg_rework': avg_rework,
+                                'rework_percent': rework_pct,
+                                'avg_rating': avg_rating,
+                                'merged_exp_aht': merged_aht,
+                                'jibble_hours': round(jibble_hours, 2),
+                                'aht_submission': aht_submission,
+                                'status': 'unmapped',
+                            })
+                            
+                            # Accumulate totals
+                            no_pod_totals['unique_tasks'] += unique_tasks
+                            no_pod_totals['new_tasks'] += new_tasks
+                            no_pod_totals['rework'] += rework
+                            no_pod_totals['approved_tasks'] += approved
+                            no_pod_totals['approved_rework'] += approved_rework
+                            no_pod_totals['delivered_tasks'] += delivered
+                            no_pod_totals['in_delivery_queue'] += in_queue
+                            no_pod_totals['sum_turns'] += sum_turns
+                            no_pod_totals['total_reviews'] += total_reviews
+                            no_pod_totals['total_score'] += trainer_total_scores.get(trainer_email, 0)
+                            no_pod_totals['agentic_reviews'] += agentic_reviews
+                            no_pod_totals['agentic_score'] += trainer_agentic_scores.get(trainer_email, 0)
+                            no_pod_totals['trainer_jibble_hours'] += jibble_hours
+                    
+                    # Only add "No Pod Lead" entry if there are trainers with data
+                    if unmapped_trainers_data:
+                        no_pod_submissions = no_pod_totals['new_tasks'] + no_pod_totals['rework']
+                        no_pod_avg_rework = round((no_pod_submissions / no_pod_totals['unique_tasks']) - 1, 2) if no_pod_totals['unique_tasks'] > 0 else None
+                        no_pod_rework_pct = round((no_pod_totals['rework'] / no_pod_submissions) * 100, 1) if no_pod_submissions > 0 else None
+                        no_pod_avg_rating = round(no_pod_totals['total_score'] / no_pod_totals['total_reviews'], 2) if no_pod_totals['total_reviews'] > 0 else None
+                        no_pod_merged_aht = self._calculate_merged_aht(no_pod_totals['new_tasks'], no_pod_totals['rework'])
+                        no_pod_agentic_rating = round(no_pod_totals['agentic_score'] / no_pod_totals['agentic_reviews'], 2) if no_pod_totals['agentic_reviews'] > 0 else None
+                        no_pod_aht_submission = round(no_pod_totals['trainer_jibble_hours'] / no_pod_submissions, 2) if no_pod_submissions > 0 else None
+                        
+                        pod_results.append({
+                            'pod_lead_name': NO_POD_LEAD_NAME,
+                            'pod_lead_email': NO_POD_LEAD_EMAIL,
+                            'trainer_count': len(unmapped_trainers_data),
+                            'unique_tasks': no_pod_totals['unique_tasks'],
+                            'new_tasks': no_pod_totals['new_tasks'],
+                            'rework': no_pod_totals['rework'],
+                            'total_reviews': no_pod_totals['total_reviews'],
+                            'agentic_reviews': no_pod_totals['agentic_reviews'],
+                            'agentic_rating': no_pod_agentic_rating,
+                            'approved_tasks': no_pod_totals['approved_tasks'],
+                            'approved_rework': no_pod_totals['approved_rework'],
+                            'delivered_tasks': no_pod_totals['delivered_tasks'],
+                            'in_delivery_queue': no_pod_totals['in_delivery_queue'],
+                            'avg_rework': no_pod_avg_rework,
+                            'rework_percent': no_pod_rework_pct,
+                            'avg_rating': no_pod_avg_rating,
+                            'merged_exp_aht': no_pod_merged_aht,
+                            'jibble_hours': 0,  # No POD lead hours
+                            'total_trainer_hours': round(no_pod_totals['trainer_jibble_hours'], 2),
+                            'aht_submission': no_pod_aht_submission,
+                            'trainers': sorted(unmapped_trainers_data, key=lambda x: -(x['total_reviews'] or 0)),
+                        })
+                        
+                        logger.info(f"Added 'No Pod Lead' with {len(unmapped_trainers_data)} trainers, {no_pod_totals['unique_tasks']} unique tasks")
                 
                 # Sort by total_reviews descending
                 pod_results.sort(key=lambda x: -x['total_reviews'])
@@ -2579,6 +2800,26 @@ class QueryService:
                 # For each project
                 for project_id in all_project_ids:
                     project_name = project_names.get(project_id, f"Project {project_id}")
+                    
+                    # ---------------------------------------------------------
+                    # FIX: Get TRUE unique_tasks count at project level
+                    # This prevents overcounting when tasks are worked on by multiple trainers
+                    # ---------------------------------------------------------
+                    true_unique_query = session.query(
+                        func.count(distinct(TaskHistoryRaw.task_id)).label('unique_tasks')
+                    ).filter(
+                        TaskHistoryRaw.new_status == 'completed',
+                        TaskHistoryRaw.old_status != 'completed-approval',
+                        TaskHistoryRaw.project_id == project_id
+                    )
+                    
+                    if start_date:
+                        true_unique_query = true_unique_query.filter(TaskHistoryRaw.date >= start_date)
+                    if end_date:
+                        true_unique_query = true_unique_query.filter(TaskHistoryRaw.date <= end_date)
+                    
+                    true_unique_result = true_unique_query.first()
+                    project_true_unique_tasks = true_unique_result.unique_tasks if true_unique_result else 0
                     
                     # Get metrics from task_history_raw for this project
                     # FIX: Use task_history_raw.author for proper attribution
@@ -2630,13 +2871,15 @@ class QueryService:
                     #   Trainer A gets 1 review: 2.3
                     #   Trainer B gets 1 review: 5.0
                     # ---------------------------------------------------------
+                    # Query for MANUAL reviews
                     reviews_query = session.query(
                         TrainerReviewStats.trainer_email,
                         func.count(TrainerReviewStats.review_id).label('total_reviews'),
                         func.sum(TrainerReviewStats.score).label('total_score')
                     ).filter(
                         TrainerReviewStats.project_id == project_id,
-                        TrainerReviewStats.score.isnot(None)
+                        TrainerReviewStats.score.isnot(None),
+                        or_(TrainerReviewStats.review_type == 'manual', TrainerReviewStats.review_type.is_(None))
                     )
                     
                     if start_date:
@@ -2649,14 +2892,48 @@ class QueryService:
                     
                     trainer_reviews = {}
                     trainer_avg_rating = {}
+                    trainer_manual_scores = {}  # For aggregation
                     for rr in reviews_results:
                         if rr.trainer_email:
                             email = rr.trainer_email.lower().strip()
                             trainer_reviews[email] = rr.total_reviews or 0
+                            trainer_manual_scores[email] = float(rr.total_score or 0)
                             if rr.total_reviews and rr.total_reviews > 0 and rr.total_score:
                                 trainer_avg_rating[email] = round(float(rr.total_score) / float(rr.total_reviews), 2)
                             else:
                                 trainer_avg_rating[email] = None
+                    
+                    # Query for AGENTIC (auto) reviews
+                    agentic_query = session.query(
+                        TrainerReviewStats.trainer_email,
+                        func.count(TrainerReviewStats.review_id).label('total_reviews'),
+                        func.sum(TrainerReviewStats.score).label('total_score')
+                    ).filter(
+                        TrainerReviewStats.project_id == project_id,
+                        TrainerReviewStats.score.isnot(None),
+                        TrainerReviewStats.review_type == 'auto'
+                    )
+                    
+                    if start_date:
+                        agentic_query = agentic_query.filter(TrainerReviewStats.review_date >= start_date)
+                    if end_date:
+                        agentic_query = agentic_query.filter(TrainerReviewStats.review_date <= end_date)
+                    
+                    agentic_query = agentic_query.group_by(TrainerReviewStats.trainer_email)
+                    agentic_results = agentic_query.all()
+                    
+                    trainer_agentic_reviews = {}
+                    trainer_agentic_rating = {}
+                    trainer_agentic_scores = {}  # For aggregation
+                    for ar in agentic_results:
+                        if ar.trainer_email:
+                            email = ar.trainer_email.lower().strip()
+                            trainer_agentic_reviews[email] = ar.total_reviews or 0
+                            trainer_agentic_scores[email] = float(ar.total_score or 0)
+                            if ar.total_reviews and ar.total_reviews > 0 and ar.total_score:
+                                trainer_agentic_rating[email] = round(float(ar.total_score) / float(ar.total_reviews), 2)
+                            else:
+                                trainer_agentic_rating[email] = None
                     
                     # ---------------------------------------------------------
                     # Get delivered and in_queue counts with proper attribution
@@ -2736,16 +3013,10 @@ class QueryService:
                                 trainer_in_queue[last_completer] = trainer_in_queue.get(last_completer, 0) + 1
                     
                     # Get Jibble hours for all trainers - use project-specific data only
-                    # Map project_id to exact Jibble project name (using Nvidia prefix)
-                    project_jibble_map = {
-                        36: 'Nvidia - SysBench',
-                        37: 'Nvidia - CFBench Multilingual',
-                        38: 'Nvidia - InverseIFEval',
-                        39: 'Nvidia - Multichallenge',
-                        40: 'Nvidia - Multichallenge Advanced',
-                        41: 'Nvidia - ICPC',
-                        42: 'NVIDIA_STEM Math_Eval',
-                    }
+                    # Map project_id to exact Jibble project name (from centralized constants)
+                    constants = get_constants()
+                    project_jibble_map = constants.projects.PROJECT_ID_TO_NAME
+                    jibble_config = constants.jibble
                     
                     jibble_project_name = project_jibble_map.get(project_id)
                     
@@ -2756,17 +3027,17 @@ class QueryService:
                         func.sum(JibbleHours.logged_hours).label('total_hours')
                     )
                     
-                    # Filter by specific project - SWAP CFBench and Multichallenge
-                    # Data issue: CFBench trainers logged under Multichallenge, and vice versa
-                    if project_id == 37:  # CFBench - use Multichallenge jibble hours (swapped)
-                        jibble_query = jibble_query.filter(
-                            or_(
-                                JibbleHours.project == 'Nvidia - Multichallenge',
-                                JibbleHours.project == 'Nvidia - Multichallenge Advanced'
+                    # Filter by specific project - SWAP Multichallenge (37) and CFBench (39) Jibble hours
+                    # Data alignment issue: trainers' Jibble hours may be logged under swapped projects
+                    # This swap is configured in constants.jibble.JIBBLE_PROJECT_SWAP
+                    if jibble_config.should_swap_jibble_hours(project_id):
+                        swapped_project_id = jibble_config.get_jibble_project_id(project_id)
+                        # Get Jibble project names for the swapped project ID
+                        swapped_jibble_names = jibble_config.PROJECT_ID_TO_JIBBLE_NAMES.get(swapped_project_id, [])
+                        if swapped_jibble_names:
+                            jibble_query = jibble_query.filter(
+                                JibbleHours.project.in_(swapped_jibble_names)
                             )
-                        )
-                    elif project_id == 39:  # Multichallenge - use CFBench jibble hours (swapped)
-                        jibble_query = jibble_query.filter(JibbleHours.project == 'Nvidia - CFBench Multilingual')
                     elif jibble_project_name:
                         jibble_query = jibble_query.filter(JibbleHours.project == jibble_project_name)
                     
@@ -2813,6 +3084,8 @@ class QueryService:
                         'new_tasks': 0,
                         'rework': 0,
                         'total_reviews': 0,
+                        'agentic_reviews': 0,
+                        'agentic_score': 0.0,
                         'delivered': 0,
                         'in_queue': 0,
                         'trainer_count': 0,
@@ -2823,83 +3096,159 @@ class QueryService:
                         'trainers': []  # List of trainer details
                     })
                     
+                    # Special key for trainers without POD Lead mapping
+                    NO_POD_LEAD_EMAIL = "no_pod_lead"
+                    NO_POD_LEAD_NAME = "No Pod Lead"
+                    
                     for trainer_email, hist in trainer_history.items():
                         pod_info = trainer_to_pod.get(trainer_email)
+                        
+                        # Determine POD Lead email and trainer name
                         if pod_info:
                             pod_email = pod_info['pod_lead_email']
                             trainer_name = pod_info.get('trainer_name', trainer_email.split('@')[0])
+                            trainer_status = pod_info.get('status', 'active')
+                        else:
+                            # Unmapped trainer - assign to "No Pod Lead" category
+                            pod_email = NO_POD_LEAD_EMAIL
+                            # Try to get name from contributor table
+                            trainer_name = email_to_name.get(trainer_email, trainer_email.split('@')[0])
+                            trainer_status = 'unmapped'
+                        
+                        # Get trainer's Jibble hours - try email first, then name
+                        trainer_jibble = email_to_jibble.get(trainer_email.lower().strip(), 0)
+                        if trainer_jibble == 0:
+                            # Fallback to name matching
+                            full_name = email_to_name.get(trainer_email, trainer_name)
+                            trainer_jibble = name_to_jibble.get(full_name.lower().strip(), 0) if full_name else 0
+                        
+                        # Calculate trainer-level metrics
+                        t_unique = hist['unique_tasks']
+                        t_new = hist['new_tasks']
+                        t_rework = hist['rework']
+                        t_reviews = trainer_reviews.get(trainer_email, 0)
+                        t_rating = trainer_avg_rating.get(trainer_email)
+                        t_delivered = trainer_delivered.get(trainer_email, 0)
+                        t_in_queue = trainer_in_queue.get(trainer_email, 0)
+                        t_submissions = t_new + t_rework
+                        
+                        # Agentic review metrics
+                        t_agentic_reviews = trainer_agentic_reviews.get(trainer_email, 0)
+                        t_agentic_rating = trainer_agentic_rating.get(trainer_email)
+                        
+                        t_avg_rework = round((t_submissions / t_unique) - 1, 2) if t_unique > 0 else None
+                        t_rework_pct = round((t_rework / t_submissions) * 100, 1) if t_submissions > 0 else None
+                        t_merged_aht = self._calculate_merged_aht(t_new, t_rework)
+                        
+                        # Calculate accounted hours using configurable AHT values
+                        t_accounted_hrs = self._calculate_accounted_hours(t_new, t_rework) if t_submissions > 0 else 0
+                        
+                        # Calculate efficiency (accounted / jibble * 100)
+                        t_efficiency = None
+                        if trainer_jibble > 0 and t_accounted_hrs > 0:
+                            t_efficiency = round((t_accounted_hrs / trainer_jibble) * 100, 1)
+                        
+                        # Create trainer entry with all columns from Trainer wise tab
+                        trainer_entry = {
+                            'trainer_name': trainer_name,
+                            'trainer_email': trainer_email,
+                            'unique_tasks': t_unique,
+                            'new_tasks': t_new,
+                            'rework': t_rework,
+                            'total_reviews': t_reviews,
+                            'agentic_reviews': t_agentic_reviews,
+                            'agentic_rating': t_agentic_rating,
+                            'delivered': t_delivered,
+                            'in_queue': t_in_queue,
+                            'avg_rework': t_avg_rework,
+                            'rework_percent': t_rework_pct,
+                            'avg_rating': t_rating,
+                            'merged_exp_aht': t_merged_aht,
+                            'jibble_hours': round(trainer_jibble, 2),
+                            'accounted_hours': round(t_accounted_hrs, 2),
+                            'efficiency': t_efficiency,
+                            'status': trainer_status
+                        }
+                        
+                        # Aggregate to POD level (or "No Pod Lead" category)
+                        pod_aggregates[pod_email]['unique_tasks'] += t_unique
+                        pod_aggregates[pod_email]['new_tasks'] += t_new
+                        pod_aggregates[pod_email]['rework'] += t_rework
+                        pod_aggregates[pod_email]['total_reviews'] += t_reviews
+                        pod_aggregates[pod_email]['agentic_reviews'] += t_agentic_reviews
+                        pod_aggregates[pod_email]['agentic_score'] += trainer_agentic_scores.get(trainer_email, 0)
+                        pod_aggregates[pod_email]['delivered'] += t_delivered
+                        pod_aggregates[pod_email]['in_queue'] += t_in_queue
+                        pod_aggregates[pod_email]['trainer_count'] += 1
+                        pod_aggregates[pod_email]['accounted_hours'] += t_accounted_hrs
+                        
+                        # For weighted average rating
+                        if t_rating is not None and t_reviews > 0:
+                            pod_aggregates[pod_email]['total_score'] += t_rating * t_reviews
+                            pod_aggregates[pod_email]['rated_reviews'] += t_reviews
+                        
+                        # FIX: Only add Jibble hours if trainer is NOT the same as POD lead
+                        # This prevents double-counting when POD lead is listed as their own trainer
+                        if trainer_email.lower().strip() != pod_email.lower().strip():
+                            pod_aggregates[pod_email]['trainer_jibble_hours'] += trainer_jibble
+                        
+                        pod_aggregates[pod_email]['trainers'].append(trainer_entry)
+                    
+                    # ---------------------------------------------------------
+                    # FIX: Include trainers who have in_queue/delivered tasks but NO task history
+                    # These trainers are in trainer_in_queue or trainer_delivered but not in trainer_history
+                    # This ensures we don't miss any in_queue counts from trainers without recent completions
+                    # ---------------------------------------------------------
+                    processed_trainers = set(trainer_history.keys())
+                    
+                    # Find trainers with delivery data (in_queue or delivered) who weren't processed
+                    delivery_trainers = set(trainer_in_queue.keys()) | set(trainer_delivered.keys())
+                    unprocessed_delivery_trainers = delivery_trainers - processed_trainers
+                    
+                    if unprocessed_delivery_trainers:
+                        logger.info(f"Project {project_name}: Found {len(unprocessed_delivery_trainers)} trainers with delivery data but no task history in date range")
+                        
+                        for trainer_email in unprocessed_delivery_trainers:
+                            # Determine POD Lead
+                            pod_info = trainer_to_pod.get(trainer_email)
+                            if pod_info:
+                                pod_email = pod_info['pod_lead_email']
+                                trainer_name = pod_info.get('trainer_name', trainer_email.split('@')[0])
+                            else:
+                                pod_email = NO_POD_LEAD_EMAIL
+                                trainer_name = email_to_name.get(trainer_email, trainer_email.split('@')[0])
                             
-                            # Get trainer's Jibble hours - try email first, then name
-                            trainer_jibble = email_to_jibble.get(trainer_email.lower().strip(), 0)
-                            if trainer_jibble == 0:
-                                # Fallback to name matching
-                                full_name = email_to_name.get(trainer_email, trainer_name)
-                                trainer_jibble = name_to_jibble.get(full_name.lower().strip(), 0) if full_name else 0
+                            # Get delivery stats for this trainer
+                            extra_delivered = trainer_delivered.get(trainer_email, 0)
+                            extra_in_queue = trainer_in_queue.get(trainer_email, 0)
                             
-                            # Calculate trainer-level metrics
-                            t_unique = hist['unique_tasks']
-                            t_new = hist['new_tasks']
-                            t_rework = hist['rework']
-                            t_reviews = trainer_reviews.get(trainer_email, 0)
-                            t_rating = trainer_avg_rating.get(trainer_email)
-                            t_delivered = trainer_delivered.get(trainer_email, 0)
-                            t_in_queue = trainer_in_queue.get(trainer_email, 0)
-                            t_submissions = t_new + t_rework
-                            
-                            t_avg_rework = round((t_submissions / t_unique) - 1, 2) if t_unique > 0 else None
-                            t_rework_pct = round((t_rework / t_submissions) * 100, 1) if t_submissions > 0 else None
-                            t_merged_aht = round((t_new * 10 + t_rework * 4) / t_submissions, 2) if t_submissions > 0 else None
-                            
-                            # Calculate accounted hours (TOTAL expected hours based on work done)
-                            # Formula: (newTasks × 10) + (rework × 4) - same as TrainerWise tab
-                            t_accounted_hrs = (t_new * 10 + t_rework * 4) if t_submissions > 0 else 0
-                            
-                            # Calculate efficiency (accounted / jibble * 100)
-                            t_efficiency = None
-                            if trainer_jibble > 0 and t_accounted_hrs > 0:
-                                t_efficiency = round((t_accounted_hrs / trainer_jibble) * 100, 1)
-                            
-                            # Create trainer entry with all columns from Trainer wise tab
-                            trainer_entry = {
-                                'trainer_name': trainer_name,
-                                'trainer_email': trainer_email,
-                                'unique_tasks': t_unique,
-                                'new_tasks': t_new,
-                                'rework': t_rework,
-                                'total_reviews': t_reviews,
-                                'delivered': t_delivered,
-                                'in_queue': t_in_queue,
-                                'avg_rework': t_avg_rework,
-                                'rework_percent': t_rework_pct,
-                                'avg_rating': t_rating,
-                                'merged_exp_aht': t_merged_aht,
-                                'jibble_hours': round(trainer_jibble, 2),
-                                'accounted_hours': round(t_accounted_hrs, 2),
-                                'efficiency': t_efficiency,
-                                'status': pod_info.get('status', 'active')
-                            }
-                            
-                            # Aggregate to POD level
-                            pod_aggregates[pod_email]['unique_tasks'] += t_unique
-                            pod_aggregates[pod_email]['new_tasks'] += t_new
-                            pod_aggregates[pod_email]['rework'] += t_rework
-                            pod_aggregates[pod_email]['total_reviews'] += t_reviews
-                            pod_aggregates[pod_email]['delivered'] += t_delivered
-                            pod_aggregates[pod_email]['in_queue'] += t_in_queue
-                            pod_aggregates[pod_email]['trainer_count'] += 1
-                            pod_aggregates[pod_email]['accounted_hours'] += t_accounted_hrs
-                            
-                            # For weighted average rating
-                            if t_rating is not None and t_reviews > 0:
-                                pod_aggregates[pod_email]['total_score'] += t_rating * t_reviews
-                                pod_aggregates[pod_email]['rated_reviews'] += t_reviews
-                            
-                            # FIX: Only add Jibble hours if trainer is NOT the same as POD lead
-                            # This prevents double-counting when POD lead is listed as their own trainer
-                            if trainer_email.lower().strip() != pod_email.lower().strip():
-                                pod_aggregates[pod_email]['trainer_jibble_hours'] += trainer_jibble
-                            
-                            pod_aggregates[pod_email]['trainers'].append(trainer_entry)
+                            if extra_delivered > 0 or extra_in_queue > 0:
+                                # Add to POD aggregates
+                                pod_aggregates[pod_email]['delivered'] += extra_delivered
+                                pod_aggregates[pod_email]['in_queue'] += extra_in_queue
+                                
+                                # Add a trainer entry with just delivery data
+                                pod_aggregates[pod_email]['trainers'].append({
+                                    'trainer_name': trainer_name,
+                                    'trainer_email': trainer_email,
+                                    'unique_tasks': 0,
+                                    'new_tasks': 0,
+                                    'rework': 0,
+                                    'total_reviews': 0,
+                                    'agentic_reviews': 0,
+                                    'agentic_rating': None,
+                                    'delivered': extra_delivered,
+                                    'in_queue': extra_in_queue,
+                                    'avg_rework': None,
+                                    'rework_percent': None,
+                                    'avg_rating': None,
+                                    'merged_exp_aht': None,
+                                    'jibble_hours': 0,
+                                    'accounted_hours': 0,
+                                    'efficiency': None,
+                                    'status': 'delivery_only'  # Special status for these trainers
+                                })
+                                pod_aggregates[pod_email]['trainer_count'] += 1
                     
                     # Build POD Lead list for this project
                     pod_leads_list = []
@@ -2908,6 +3257,8 @@ class QueryService:
                         'new_tasks': 0,
                         'rework': 0,
                         'total_reviews': 0,
+                        'agentic_reviews': 0,
+                        'agentic_score': 0.0,
                         'delivered': 0,
                         'in_queue': 0,
                         'trainer_count': 0,
@@ -2922,7 +3273,7 @@ class QueryService:
                         submissions = agg['new_tasks'] + agg['rework']
                         avg_rework = round((submissions / agg['unique_tasks']) - 1, 2) if agg['unique_tasks'] > 0 else None
                         rework_pct = round((agg['rework'] / submissions) * 100, 1) if submissions > 0 else None
-                        merged_aht = round((agg['new_tasks'] * 10 + agg['rework'] * 4) / submissions, 2) if submissions > 0 else None
+                        merged_aht = self._calculate_merged_aht(agg['new_tasks'], agg['rework'])
                         
                         # Get POD Lead's own Jibble hours - try email first, then name
                         pod_own_jibble = email_to_jibble.get(pod_email.lower().strip(), 0)
@@ -2936,6 +3287,11 @@ class QueryService:
                         if agg['rated_reviews'] > 0:
                             pod_avg_rating = round(agg['total_score'] / agg['rated_reviews'], 2)
                         
+                        # Calculate agentic review rating
+                        pod_agentic_rating = None
+                        if agg['agentic_reviews'] > 0:
+                            pod_agentic_rating = round(agg['agentic_score'] / agg['agentic_reviews'], 2)
+                        
                         # Calculate POD-level accounted hours and efficiency
                         pod_accounted = round(agg['accounted_hours'], 2)
                         total_pod_jibble = trainer_jibble + pod_own_jibble
@@ -2946,14 +3302,19 @@ class QueryService:
                         # Sort trainers by total_reviews within this POD lead
                         trainers_sorted = sorted(agg['trainers'], key=lambda x: -(x['total_reviews'] or 0))
                         
+                        # Use proper display name for "No Pod Lead" category
+                        display_name = NO_POD_LEAD_NAME if pod_email == NO_POD_LEAD_EMAIL else pod_email.split('@')[0]
+                        
                         pod_leads_list.append({
-                            'pod_lead_name': pod_email.split('@')[0],
+                            'pod_lead_name': display_name,
                             'pod_lead_email': pod_email,
                             'trainer_count': agg['trainer_count'],
                             'unique_tasks': agg['unique_tasks'],
                             'new_tasks': agg['new_tasks'],
                             'rework': agg['rework'],
                             'total_reviews': agg['total_reviews'],
+                            'agentic_reviews': agg['agentic_reviews'],
+                            'agentic_rating': pod_agentic_rating,
                             'delivered': agg['delivered'],
                             'in_queue': agg['in_queue'],
                             'avg_rework': avg_rework,
@@ -2972,6 +3333,8 @@ class QueryService:
                         project_totals['new_tasks'] += agg['new_tasks']
                         project_totals['rework'] += agg['rework']
                         project_totals['total_reviews'] += agg['total_reviews']
+                        project_totals['agentic_reviews'] += agg['agentic_reviews']
+                        project_totals['agentic_score'] += agg['agentic_score']
                         project_totals['delivered'] += agg['delivered']
                         project_totals['in_queue'] += agg['in_queue']
                         project_totals['trainer_count'] += agg['trainer_count']
@@ -2985,10 +3348,11 @@ class QueryService:
                     pod_leads_list.sort(key=lambda x: -(x['total_reviews'] or 0))
                     
                     # Calculate project-level metrics
+                    # FIX: Use project_true_unique_tasks instead of summed unique_tasks for accurate avg_rework
                     proj_submissions = project_totals['new_tasks'] + project_totals['rework']
-                    proj_avg_rework = round((proj_submissions / project_totals['unique_tasks']) - 1, 2) if project_totals['unique_tasks'] > 0 else None
+                    proj_avg_rework = round((proj_submissions / project_true_unique_tasks) - 1, 2) if project_true_unique_tasks > 0 else None
                     proj_rework_pct = round((project_totals['rework'] / proj_submissions) * 100, 1) if proj_submissions > 0 else None
-                    proj_merged_aht = round((project_totals['new_tasks'] * 10 + project_totals['rework'] * 4) / proj_submissions, 2) if proj_submissions > 0 else None
+                    proj_merged_aht = self._calculate_merged_aht(project_totals['new_tasks'], project_totals['rework'])
                     
                     # Calculate logged hours (trainers + POD leads)
                     total_logged_hours = project_totals['trainer_jibble_hours'] + project_totals['pod_jibble_hours']
@@ -2997,6 +3361,11 @@ class QueryService:
                     proj_avg_rating = None
                     if project_totals['rated_reviews'] > 0:
                         proj_avg_rating = round(project_totals['total_score'] / project_totals['rated_reviews'], 2)
+                    
+                    # Calculate project-level agentic rating
+                    proj_agentic_rating = None
+                    if project_totals['agentic_reviews'] > 0:
+                        proj_agentic_rating = round(project_totals['agentic_score'] / project_totals['agentic_reviews'], 2)
                     
                     # Calculate project-level accounted hours and efficiency
                     proj_accounted = round(project_totals['accounted_hours'], 2)
@@ -3009,10 +3378,12 @@ class QueryService:
                         'project_name': project_name,
                         'pod_lead_count': len(pod_leads_list),
                         'trainer_count': project_totals['trainer_count'],
-                        'unique_tasks': project_totals['unique_tasks'],
+                        'unique_tasks': project_true_unique_tasks,  # FIX: Use true unique count, not summed per-trainer
                         'new_tasks': project_totals['new_tasks'],
                         'rework': project_totals['rework'],
                         'total_reviews': project_totals['total_reviews'],
+                        'agentic_reviews': project_totals['agentic_reviews'],
+                        'agentic_rating': proj_agentic_rating,
                         'delivered': project_totals['delivered'],
                         'in_queue': project_totals['in_queue'],
                         'avg_rework': proj_avg_rework,

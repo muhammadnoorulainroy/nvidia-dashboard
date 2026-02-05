@@ -44,7 +44,7 @@ class PostgresQueryService:
             
             query = f"""
             SELECT DISTINCT name 
-            FROM `turing-gpt.{self.settings.bigquery_dataset}.project_quality_dimension` 
+            FROM `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.project_quality_dimension` 
             WHERE project_id = {self.settings.project_id_filter} AND is_enabled = 1
             """
             

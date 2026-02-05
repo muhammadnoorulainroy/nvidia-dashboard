@@ -11,6 +11,8 @@ from typing import Optional, List, Literal
 from datetime import date, datetime
 import re
 
+from app.constants import get_constants
+
 
 # =============================================================================
 # Date Validation Mixin
@@ -236,7 +238,7 @@ class PodLeadStatsQuery(DateRangeMixin, TimeframeParams):
     
     project_id: Optional[int] = Field(
         None,
-        description="Filter by project ID (36, 37, 38, 39). None = all projects"
+        description="Filter by project ID. None = all projects"
     )
     
     @field_validator("project_id")
@@ -244,7 +246,7 @@ class PodLeadStatsQuery(DateRangeMixin, TimeframeParams):
     def validate_project_id(cls, v):
         if v is None:
             return v
-        valid_ids = [36, 37, 38, 39]
+        valid_ids = get_constants().projects.PRIMARY_PROJECT_IDS
         if v not in valid_ids:
             raise ValueError(f"project_id must be one of {valid_ids}")
         return v

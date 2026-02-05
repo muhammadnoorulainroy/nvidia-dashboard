@@ -15,8 +15,10 @@ export const COLUMN_TOOLTIPS: Record<string, string> = {
   trainer_email: 'Email address of the trainer',
   reviewer_name: 'Name of the reviewer who reviews completed tasks',
   reviewer_email: 'Email address of the reviewer',
+  name: 'Project name, POD Lead name, or Trainer name',
   
-  // Count columns
+  // Size/Count columns
+  size: 'Number of POD Leads (for projects) or Trainers (for POD Leads)',
   count: 'Number of POD Leads and trainers under this project/POD Lead',
   trainer_count: 'Total number of trainers under this POD Lead',
   pod_lead_count: 'Total number of POD Leads in this project',
@@ -38,12 +40,18 @@ export const COLUMN_TOOLTIPS: Record<string, string> = {
   total_reviews: 'Total number of manual reviews completed (published reviews only)',
   count_reviews: 'Number of reviews received for this task',
   
+  // Agentic Review columns
+  agentic_reviews: 'Total number of agentic/automated reviews completed',
+  agentic_rating: 'Average rating from agentic/automated reviews (>4.8 Green, 4-4.8 Yellow, <4 Red)',
+  
   // Approval & Delivery columns
   approved_tasks: 'Tasks where the trainer is the ORIGINAL AUTHOR and the task got approved. Even if the task was rejected and the trainer reworked it themselves, they still get credit here since they are the first author',
   approved_rework: 'Tasks where the trainer FIXED SOMEONE ELSE\'S rejected work and got it approved. The trainer completed a rework on a task originally started by another trainer',
   tasks_approved: 'Number of new tasks approved (trainer\'s first completion was approved)',
+  delivered: 'Tasks that have been delivered to the client (in delivered batches)',
   delivered_tasks: 'Tasks that have been added to a delivery batch and successfully delivered to the client',
   tasks_delivered: 'Number of tasks that have been delivered to the client (in delivered batches)',
+  in_queue: 'Tasks in delivery queue, pending delivery to the client',
   in_delivery_queue: 'Tasks that are in an ongoing delivery batch, pending delivery to the client',
   tasks_in_queue: 'Number of tasks waiting in delivery queue (in ongoing batches, not yet delivered)',
   
@@ -52,32 +60,32 @@ export const COLUMN_TOOLTIPS: Record<string, string> = {
   tasks_ready_for_delivery: 'Deprecated - see Approved Tasks',
   
   // Percentage columns
-  avg_rework: 'Average Rework = (Total Submissions / Unique Tasks) - 1. Shows the average number of additional submissions per task. A value of 1.5 means each task had 1.5 extra submissions on average',
+  avg_rework: 'Average Rework = (Total Submissions / Unique Tasks) - 1. Shows the average number of additional submissions per task (<1 Green, 1-2.5 Yellow, >2.5 Red)',
   avg_rework_percent: 'Average rework percentage across all tasks. Higher values indicate more iterations needed per task',
-  rework_percent: 'Rework % = (Rework / (New Tasks + Rework)) × 100. Proportion of submissions that are reworks vs new tasks',
+  rework_percent: 'Rework % = (Rework / (New Tasks + Rework)) × 100. Lower is better (≤10% Green, 10-30% Yellow, >30% Red)',
   
   // Rating columns
-  avg_rating: 'Average review score across all reviewed tasks. Scale is typically 1-5 where higher is better',
+  avg_rating: 'Average manual review rating (>4.8 Green, 4-4.8 Yellow, <4 Red)',
   task_score: 'The review score given to this specific task',
   score: 'Review score given by the reviewer',
   sum_score: 'Sum of all review scores for this task',
   
   // AHT (Average Handling Time) columns
-  merged_exp_aht: 'Merged Expected AHT = (New Tasks × 10 + Rework × 4) / Total Submissions. Weighted average time allocation in minutes',
+  merged_exp_aht: 'Merged Expected AHT = (New Tasks × 10 + Rework × 4) / Total Submissions. Weighted average time in minutes',
   aht: 'Average Handling Time - the average time spent working on tasks',
   aht_submission: 'Average time per task submission (total hours / total submissions)',
   aht_mins: 'Average handling time in minutes',
   
   // Hours columns
-  logged_hours: 'Total hours logged by trainers and POD leads combined (from Jibble time tracking)',
-  total_pod_hours: 'Total hours logged by POD Leads (from Jibble time tracking)',
+  logged_hours: 'Total hours logged in Jibble time tracking by trainers and POD leads',
+  total_pod_hours: 'POD Lead\'s own logged hours from Jibble time tracking',
   jibble_hours: 'Hours logged in Jibble time tracking system',
   pod_lead_hours: 'Total hours logged by the POD Lead',
   total_trainer_hours: 'Sum of hours logged by all trainers under this POD Lead',
   trainer_jibble_hours: 'Hours logged by trainers in Jibble',
   pod_jibble_hours: 'Hours logged by POD Lead in Jibble',
-  accounted_hours: 'Hours accounted for by actual work = (New Tasks × 10 + Rework × 4) minutes converted to hours',
-  efficiency: 'Efficiency = (Accounted Hrs / Jibble Hrs) × 100. Higher is better. Below 70% may indicate inefficiency',
+  accounted_hours: 'Accounted Hours = (New Tasks × 10 + Rework × 4) minutes converted to hours',
+  efficiency: 'Efficiency = (Accounted Hrs / Jibble Hrs) × 100 (≥90% Green, 70-90% Yellow, <70% Red)',
   
   // Task-specific columns
   task_id: 'Unique identifier for the task/conversation',
@@ -202,26 +210,44 @@ export const HEADER_TO_KEY_MAP: Record<string, string> = {
   'Total Tasks': 'unique_tasks',
   
   // Abbreviated headers (for compact grouped tables)
-  'Name': 'trainer_name',
+  'Name': 'name',
   'Email': 'trainer_email',
-  'Size': 'trainer_count',
+  'Size': 'size',
   'Uniq': 'unique_tasks',
   'New': 'new_tasks',
   'Rwk': 'rework',
+  'Rework': 'rework',
   'Appr': 'approved_tasks',
-  'Del': 'delivered_tasks',
-  'Queue': 'in_delivery_queue',
+  'Del': 'delivered',
+  'Delivered': 'delivered',
+  'Queue': 'in_queue',
+  'In Queue': 'in_queue',
   'Rev': 'total_reviews',
+  'Reviews': 'total_reviews',
   'AvgR': 'avg_rework',
+  'Avg Rework': 'avg_rework',
   'R%': 'rework_percent',
+  'Rework %': 'rework_percent',
   'Rate': 'avg_rating',
+  'Rating': 'avg_rating',
+  'Agt': 'agentic_reviews',
+  'Agentic': 'agentic_reviews',
+  'AgtR': 'agentic_rating',
+  'Agentic Rating': 'agentic_rating',
   'AHT': 'merged_exp_aht',
   'Jibble': 'jibble_hours',
+  'Jib': 'logged_hours',
   'JIB': 'jibble_hours',
+  'Logged Hours': 'logged_hours',
   'TrnHrs': 'total_trainer_hours',
+  'Trainer Hours': 'total_trainer_hours',
   'AHT/S': 'aht_submission',
   'Acct': 'accounted_hours',
+  'Accounted': 'accounted_hours',
   'Eff%': 'efficiency',
+  'Efficiency': 'efficiency',
+  'POD': 'total_pod_hours',
+  'POD Hours': 'total_pod_hours',
   'Total': 'total_reviews',
   'Ready': 'approved_tasks',
 }

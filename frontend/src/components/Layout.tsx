@@ -21,6 +21,7 @@ import {
   Business as BusinessIcon,
   Settings as SettingsIcon,
 } from '@mui/icons-material'
+import SyncStatus from './common/SyncStatus'
 
 const drawerWidth = 260
 
@@ -246,8 +247,20 @@ export default function Layout({ children }: LayoutProps) {
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           backgroundColor: '#F8FAFC',
           minHeight: '100vh',
+          position: 'relative',
         }}
       >
+        {/* Sync Status - Upper Right Corner */}
+        <Box
+          sx={{
+            position: 'absolute',
+            top: { xs: 70, sm: 16 },
+            right: 16,
+            zIndex: 10,
+          }}
+        >
+          <SyncStatus />
+        </Box>
         {children}
       </Box>
     </Box>

@@ -56,7 +56,8 @@ class Settings(BaseSettings):
     all_project_ids: str = "36,37,38,39"  # Comma-separated, parsed to list
     
     # Project ID to Name mapping - loaded from env or uses defaults
-    project_names_json: str = '{"36":"Nvidia - SysBench","37":"Nvidia - CFBench Multilingual","38":"Nvidia - InverseIFEval","39":"Nvidia - Multichallenge"}'
+    # NOTE: Project 37 is Multichallenge, Project 39 is CFBench Multilingual
+    project_names_json: str = '{"36":"Nvidia - SysBench","37":"Nvidia - Multichallenge","38":"Nvidia - InverseIFEval","39":"Nvidia - CFBench Multilingual"}'
     
     @property
     def all_project_ids_list(self) -> List[int]:
@@ -120,20 +121,21 @@ class Settings(BaseSettings):
     # Nvidia Jibble Project IDs (UUIDs from Jibble API)
     # These are the project IDs for filtering time entries
     jibble_nvidia_project_ids: str = ",".join([
-        "a1b6c34e-67cd-4554-8a7b-4cab2d0fa744",  # Nvidia - CFBench Multilingual
-        "16e16c63-6deb-4f3c-9d88-46537c006dc9",  # Nvidia - InverseIFEval
-        "7c305ca8-9675-4edc-a51c-84ad0beaae78",  # Nvidia - Multichallenge
-        "2581d1d5-e729-437f-92aa-2e3d7ceebc4f",  # Nvidia - Multichallenge Advanced
-        "1f33fccc-9c95-409a-b17c-541bdd5e446e",  # Nvidia - ICPC
-        "e6a4ebc3-5f25-42ce-806e-d23f9026d95b",  # NVIDIA_STEM Math_Eval
+        "a1b6c34e-67cd-4554-8a7b-4cab2d0fa744",  # Nvidia - Multichallenge (Project 37)
+        "16e16c63-6deb-4f3c-9d88-46537c006dc9",  # Nvidia - InverseIFEval (Project 38)
+        "7c305ca8-9675-4edc-a51c-84ad0beaae78",  # Nvidia - CFBench Multilingual (Project 39)
+        "2581d1d5-e729-437f-92aa-2e3d7ceebc4f",  # Nvidia - Multichallenge Advanced (Project 37)
+        "1f33fccc-9c95-409a-b17c-541bdd5e446e",  # Nvidia - ICPC (Project 36)
+        "e6a4ebc3-5f25-42ce-806e-d23f9026d95b",  # NVIDIA_STEM Math_Eval (Project 36)
     ])
     
     # Jibble project name to dashboard project mapping
+    # NOTE: Multichallenge = Project 37, CFBench Multilingual = Project 39
     jibble_project_mapping_json: str = '''{
-        "Nvidia - CFBench Multilingual": 37,
+        "Nvidia - Multichallenge": 37,
+        "Nvidia - Multichallenge Advanced": 37,
         "Nvidia - InverseIFEval": 38,
-        "Nvidia - Multichallenge": 39,
-        "Nvidia - Multichallenge Advanced": 39,
+        "Nvidia - CFBench Multilingual": 39,
         "Nvidia - ICPC": 36,
         "NVIDIA_STEM Math_Eval": 36,
         "Nvidia - SysBench": 36

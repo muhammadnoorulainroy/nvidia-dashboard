@@ -524,6 +524,8 @@ export interface TrainerUnderPodLead {
   new_tasks: number
   rework: number
   total_reviews: number
+  agentic_reviews: number
+  agentic_rating: number | null
   delivered: number
   in_queue: number
   avg_rework: number | null
@@ -545,6 +547,8 @@ export interface PodLeadUnderProject {
   new_tasks: number
   rework: number
   total_reviews: number
+  agentic_reviews: number
+  agentic_rating: number | null
   delivered: number
   in_queue: number
   avg_rework: number | null
@@ -568,6 +572,8 @@ export interface ProjectStats {
   new_tasks: number
   rework: number
   total_reviews: number
+  agentic_reviews: number
+  agentic_rating: number | null
   delivered: number
   in_queue: number
   avg_rework: number | null
@@ -889,5 +895,29 @@ export const getProjectTargetSummary = async (
     : `/target-comparison/summary/${projectId}`
   
   const response = await apiClient.get<ProjectTargetSummary>(url)
+  return response.data
+}
+
+// =============================================================================
+// SYNC STATUS
+// =============================================================================
+
+export interface SyncInfo {
+  current_utc_time: string
+  last_sync_time: string | null
+  last_sync_type: string | null
+  sync_interval_minutes: number
+  next_sync_time: string | null
+  seconds_until_next_sync: number | null
+  tables_synced: Array<{
+    table_name: string
+    records_synced: number
+    sync_started_at: string | null
+  }>
+}
+
+export const getSyncInfo = async (): Promise<SyncInfo> => {
+  // Don't cache sync info - we want fresh data
+  const response = await apiClient.get<SyncInfo>('/sync-info')
   return response.data
 }

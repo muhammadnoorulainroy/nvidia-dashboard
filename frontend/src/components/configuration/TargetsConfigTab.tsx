@@ -49,13 +49,9 @@ import {
   type ThroughputTargetsResponse
 } from '../../services/api'
 
-// Project options
-const projectOptions = [
-  { id: 36, name: 'Nvidia - SysBench' },
-  { id: 37, name: 'Nvidia - CFBench Multilingual' },
-  { id: 38, name: 'Nvidia - InverseIFEval' },
-  { id: 39, name: 'Nvidia - Multichallenge' },
-]
+// Project options - imported from centralized constants
+import { PROJECT_OPTIONS } from '../../constants'
+const projectOptions = PROJECT_OPTIONS
 
 interface ProjectTargetState {
   // Trainer targets

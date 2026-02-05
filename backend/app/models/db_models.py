@@ -511,6 +511,7 @@ class TrainerReviewStats(Base):
     review_date = Column(Date, index=True)
     score = Column(Float)
     followup_required = Column(Integer, default=0)  # 0 = approved, 1 = sent to rework
+    review_type = Column(String(50), index=True)  # 'manual' or 'auto' (agentic)
     
     # Project info for filtering
     project_id = Column(Integer, index=True)

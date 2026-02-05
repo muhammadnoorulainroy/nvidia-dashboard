@@ -18,6 +18,8 @@ from collections import defaultdict
 from typing import Dict, List, Optional, Tuple
 import requests
 
+from app.constants import get_constants
+
 logger = logging.getLogger(__name__)
 
 # Retry settings
@@ -25,16 +27,9 @@ MAX_RETRIES = 5
 INITIAL_BACKOFF = 30  # seconds
 MAX_BACKOFF = 300  # 5 minutes
 
-# Nvidia project IDs
-NVIDIA_PROJECTS = {
-    "a7b4596c-b632-49ce-bada-33df4491edd2": "Nvidia - SysBench",
-    "a1b6c34e-67cd-4554-8a7b-4cab2d0fa744": "Nvidia - CFBench Multilingual",
-    "16e16c63-6deb-4f3c-9d88-46537c006dc9": "Nvidia - InverseIFEval",
-    "7c305ca8-9675-4edc-a51c-84ad0beaae78": "Nvidia - Multichallenge",
-    "2581d1d5-e729-437f-92aa-2e3d7ceebc4f": "Nvidia - Multichallenge Advanced",
-    "1f33fccc-9c95-409a-b17c-541bdd5e446e": "Nvidia - ICPC",
-    "e6a4ebc3-5f25-42ce-806e-d23f9026d95b": "NVIDIA_STEM Math_Eval",
-}
+# Nvidia project IDs - get from centralized constants
+_constants = get_constants()
+NVIDIA_PROJECTS = _constants.jibble.JIBBLE_UUID_TO_NAME.copy()
 
 
 def parse_iso8601_duration(duration_str: str) -> float:

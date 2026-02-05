@@ -388,10 +388,12 @@ async def check_health() -> Dict[str, Any]:
 async def get_sync_info() -> Dict[str, Any]:
     """Get data synchronization information"""
     try:
-        from datetime import datetime, timezone
+        from datetime import datetime, timezone, timedelta
         from app.models.db_models import DataSyncLog
         from sqlalchemy import desc
+        from app.config import get_settings
         
+        settings = get_settings()
         db_service = get_db_service()
         
         with db_service.get_session() as session:
@@ -403,10 +405,24 @@ async def get_sync_info() -> Dict[str, Any]:
             
             current_utc = datetime.now(timezone.utc)
             
+            # Calculate next sync time based on last sync + interval
+            sync_interval_minutes = settings.sync_interval_hours * 60
+            next_sync_time = None
+            seconds_until_next_sync = None
+            
+            if last_sync and last_sync.sync_completed_at:
+                last_sync_utc = last_sync.sync_completed_at.replace(tzinfo=timezone.utc) if last_sync.sync_completed_at.tzinfo is None else last_sync.sync_completed_at
+                next_sync = last_sync_utc + timedelta(hours=settings.sync_interval_hours)
+                next_sync_time = next_sync.isoformat()
+                seconds_until_next_sync = max(0, int((next_sync - current_utc).total_seconds()))
+            
             sync_info = {
                 'current_utc_time': current_utc.isoformat(),
                 'last_sync_time': last_sync.sync_completed_at.isoformat() if last_sync and last_sync.sync_completed_at else None,
                 'last_sync_type': last_sync.sync_type if last_sync else None,
+                'sync_interval_minutes': sync_interval_minutes,
+                'next_sync_time': next_sync_time,
+                'seconds_until_next_sync': seconds_until_next_sync,
                 'tables_synced': []
             }
             
@@ -499,7 +515,7 @@ async def get_pod_lead_stats(
     start_date: Optional[str] = Query(None, description="Start date (YYYY-MM-DD)"),
     end_date: Optional[str] = Query(None, description="End date (YYYY-MM-DD)"),
     timeframe: str = Query("overall", description="Timeframe: daily, weekly, overall"),
-    project_id: Optional[int] = Query(None, description="Filter by project ID (36, 37, 38, 39). None = all projects")
+    project_id: Optional[int] = Query(None, description="Filter by project ID. None = all projects")
 ) -> List[Dict[str, Any]]:
     """Get POD Lead stats with trainers aggregated under each POD Lead."""
     # Validate parameters
