@@ -24,28 +24,51 @@ class QueryService:
         self._allowed_quality_dimensions_cache: Optional[Set[str]] = None
         self._constants = get_constants()
     
-    def _calculate_merged_aht(self, new_tasks: int, rework: int) -> Optional[float]:
+    def _calculate_merged_aht(self, tasks_with_new: int, tasks_with_rework: int, 
+                               unique_tasks: int) -> Optional[float]:
         """
         Calculate merged expected AHT using configurable constants.
         
-        Formula: (new_tasks * NEW_TASK_AHT + rework * REWORK_AHT) / total_submissions
+        NEW Formula: accounted_hours / unique_tasks
+        Where accounted_hours = (tasks_with_new * NEW_AHT) + (tasks_with_rework * REWORK_AHT)
+        
+        Args:
+            tasks_with_new: Count of unique tasks where trainer did first completion
+            tasks_with_rework: Count of unique tasks where trainer did at least 1 rework
+            unique_tasks: Total unique tasks worked on
         """
-        submissions = new_tasks + rework
-        if submissions == 0:
+        if unique_tasks == 0:
             return None
         aht_config = self._constants.aht
-        return round((new_tasks * aht_config.DEFAULT_NEW_TASK_AHT + 
-                     rework * aht_config.DEFAULT_REWORK_AHT) / submissions, 2)
+        return aht_config.calculate_merged_aht(tasks_with_new, tasks_with_rework, unique_tasks)
     
-    def _calculate_accounted_hours(self, new_tasks: int, rework: int) -> float:
+    def _calculate_accounted_hours(self, tasks_with_new: int, tasks_with_rework: int) -> float:
         """
         Calculate accounted hours using configurable constants.
         
-        Formula: new_tasks * NEW_TASK_AHT + rework * REWORK_AHT
+        NEW Formula: (tasks_with_new * NEW_AHT) + (tasks_with_rework * REWORK_AHT)
+        
+        Args:
+            tasks_with_new: Count of unique tasks where trainer did first completion
+            tasks_with_rework: Count of unique tasks where trainer did at least 1 rework
+        
+        Note: A task can count in both if trainer did new + rework on same task
         """
         aht_config = self._constants.aht
-        return (new_tasks * aht_config.DEFAULT_NEW_TASK_AHT + 
-                rework * aht_config.DEFAULT_REWORK_AHT)
+        return aht_config.calculate_trainer_accounted_hours(tasks_with_new, tasks_with_rework)
+    
+    def _calculate_task_accounted_hours(self, is_new: bool, rework_count: int) -> float:
+        """
+        Calculate accounted hours for a single task.
+        
+        Formula: (NEW_AHT if is_new else 0) + (REWORK_AHT * min(rework_count, MAX_REWORKS_TO_REWARD))
+        
+        Args:
+            is_new: True if trainer did the first completion
+            rework_count: Number of rework submissions by trainer on this task
+        """
+        aht_config = self._constants.aht
+        return aht_config.calculate_task_accounted_hours(is_new, rework_count)
     
     def _get_allowed_quality_dimensions(self, force_refresh: bool = False) -> Set[str]:
         """Fetch allowed quality dimensions from BigQuery"""
@@ -1152,7 +1175,13 @@ class QueryService:
                     func.sum(case(
                         (TaskHistoryRaw.completed_status_count > 1, 1),
                         else_=0
-                    )).label('rework')
+                    )).label('rework'),
+                    # NEW: Count unique tasks where trainer did at least 1 rework
+                    # This is different from 'rework' which counts total rework events
+                    func.count(distinct(case(
+                        (TaskHistoryRaw.completed_status_count > 1, TaskHistoryRaw.task_id),
+                        else_=None
+                    ))).label('tasks_with_rework')
                 ).filter(
                     TaskHistoryRaw.new_status == 'completed',
                     TaskHistoryRaw.old_status != 'completed-approval',
@@ -1173,7 +1202,8 @@ class QueryService:
                         history_map[email_key] = {
                             'unique_tasks': hs.unique_tasks or 0,
                             'new_tasks': hs.new_tasks or 0,
-                            'rework': hs.rework or 0
+                            'rework': hs.rework or 0,
+                            'tasks_with_rework': hs.tasks_with_rework or 0  # NEW: unique tasks with rework
                         }
                 
                 # Get sum_number_of_turns from task_raw for avg_rework calculation
@@ -1458,6 +1488,7 @@ class QueryService:
                     unique_tasks = hist_stats.get('unique_tasks', 0)
                     new_tasks = hist_stats.get('new_tasks', 0)
                     rework = hist_stats.get('rework', 0)
+                    tasks_with_rework = hist_stats.get('tasks_with_rework', 0)  # NEW: unique tasks with rework
                     
                     # Skip contributors with no data
                     if unique_tasks == 0 and new_tasks == 0 and rework == 0:
@@ -1478,6 +1509,15 @@ class QueryService:
                     rework_percent = None
                     if (rework + new_tasks) > 0:
                         rework_percent = round((rework / (rework + new_tasks)) * 100, 0)
+                    
+                    # NEW: Calculate accounted hours using new logic (Feb 2026)
+                    # Formula: (tasks_with_new * NEW_AHT) + (tasks_with_rework * REWORK_AHT)
+                    # This credits only ONCE per task for rework, regardless of how many rework events
+                    accounted_hours = self._calculate_accounted_hours(new_tasks, tasks_with_rework) if (new_tasks + rework) > 0 else 0
+                    
+                    # NEW: Calculate merged expected AHT using new logic
+                    # Formula: accounted_hours / unique_tasks
+                    merged_exp_aht = self._calculate_merged_aht(new_tasks, tasks_with_rework, unique_tasks)
                     
                     # Get review stats
                     review_info = trainer_reviews_map.get(email, {})
@@ -1526,6 +1566,8 @@ class QueryService:
                         'delivered': delivered,
                         'in_queue': in_queue,
                         'jibble_hours': round(jibble_hours, 2) if jibble_hours else None,
+                        'merged_exp_aht': round(merged_exp_aht, 2) if merged_exp_aht is not None else None,  # NEW
+                        'accounted_hours': round(accounted_hours, 2),  # NEW
                     })
                 
                 # Debug: Count how many trainers have jibble_hours
@@ -2025,6 +2067,7 @@ class QueryService:
                 # Unique Tasks = COUNT DISTINCT task_id WHERE new_status='completed' AND old_status <> 'completed-approval'
                 # New Tasks = COUNT WHERE completed_status_count = 1
                 # Rework = COUNT WHERE completed_status_count > 1
+                # tasks_with_rework = COUNT DISTINCT task_id WHERE completed_status_count > 1
                 # ---------------------------------------------------------
                 history_query = session.query(
                     TaskHistoryRaw.author,
@@ -2036,7 +2079,12 @@ class QueryService:
                     func.sum(case(
                         (TaskHistoryRaw.completed_status_count > 1, 1),
                         else_=0
-                    )).label('rework')
+                    )).label('rework'),
+                    # NEW: Count unique tasks where trainer did at least 1 rework
+                    func.count(distinct(case(
+                        (TaskHistoryRaw.completed_status_count > 1, TaskHistoryRaw.task_id),
+                        else_=None
+                    ))).label('tasks_with_rework')
                 ).filter(
                     TaskHistoryRaw.new_status == 'completed',
                     TaskHistoryRaw.old_status != 'completed-approval',
@@ -2061,7 +2109,8 @@ class QueryService:
                         trainer_history[email] = {
                             'unique_tasks': hs.unique_tasks or 0,
                             'new_tasks': hs.new_tasks or 0,
-                            'rework': hs.rework or 0
+                            'rework': hs.rework or 0,
+                            'tasks_with_rework': hs.tasks_with_rework or 0  # NEW: unique tasks with rework
                         }
                 
                 logger.info(f"Found history stats for {len(trainer_history)} trainers")
@@ -2472,6 +2521,7 @@ class QueryService:
                         unique_tasks = hist.get('unique_tasks', 0)
                         new_tasks = hist.get('new_tasks', 0)
                         rework = hist.get('rework', 0)
+                        tasks_with_rework = hist.get('tasks_with_rework', 0)  # NEW: unique tasks with rework
                         
                         sum_turns = trainer_turns.get(trainer_email, 0)
                         approved = trainer_approved.get(trainer_email, 0)  # Approved new tasks
@@ -2494,7 +2544,8 @@ class QueryService:
                         submissions = new_tasks + rework
                         avg_rework = round((submissions / unique_tasks) - 1, 2) if unique_tasks > 0 else None
                         rework_pct = round((rework / submissions) * 100, 1) if submissions > 0 else None
-                        merged_aht = self._calculate_merged_aht(new_tasks, rework)
+                        # NEW: Use tasks_with_new (=new_tasks) and tasks_with_rework for merged AHT
+                        merged_aht = self._calculate_merged_aht(new_tasks, tasks_with_rework, unique_tasks)
                         # AHT of Submission = jibble_hours / (new_tasks + rework)
                         aht_submission = round(jibble_hours / submissions, 2) if submissions > 0 else None
                         
@@ -2524,6 +2575,7 @@ class QueryService:
                         pod_totals['unique_tasks'] += unique_tasks
                         pod_totals['new_tasks'] += new_tasks
                         pod_totals['rework'] += rework
+                        pod_totals['tasks_with_rework'] = pod_totals.get('tasks_with_rework', 0) + tasks_with_rework  # NEW
                         pod_totals['approved_tasks'] += approved
                         pod_totals['approved_rework'] += approved_rework
                         pod_totals['delivered_tasks'] += delivered
@@ -2565,7 +2617,12 @@ class QueryService:
                     pod_avg_rework = round((pod_total_submissions / pod_totals['unique_tasks']) - 1, 2) if pod_totals['unique_tasks'] > 0 else None
                     pod_rework_pct = round((pod_totals['rework'] / pod_total_submissions) * 100, 1) if pod_total_submissions > 0 else None
                     pod_avg_rating = round(pod_totals['total_score'] / pod_totals['total_reviews'], 2) if pod_totals['total_reviews'] > 0 else None
-                    pod_merged_aht = self._calculate_merged_aht(pod_totals['new_tasks'], pod_totals['rework'])
+                    # NEW: Use tasks_with_new (=new_tasks) and tasks_with_rework for merged AHT
+                    pod_merged_aht = self._calculate_merged_aht(
+                        pod_totals['new_tasks'], 
+                        pod_totals.get('tasks_with_rework', 0), 
+                        pod_totals['unique_tasks']
+                    )
                     
                     # Agentic review metrics at POD level
                     pod_agentic_reviews = pod_totals.get('agentic_reviews', 0)
@@ -2634,6 +2691,7 @@ class QueryService:
                         'unique_tasks': 0,
                         'new_tasks': 0,
                         'rework': 0,
+                        'tasks_with_rework': 0,  # NEW: unique tasks with at least 1 rework
                         'approved_tasks': 0,
                         'approved_rework': 0,
                         'delivered_tasks': 0,
@@ -2660,6 +2718,7 @@ class QueryService:
                         unique_tasks = hist.get('unique_tasks', 0)
                         new_tasks = hist.get('new_tasks', 0)
                         rework = hist.get('rework', 0)
+                        tasks_with_rework = hist.get('tasks_with_rework', 0)  # NEW: unique tasks with rework
                         
                         sum_turns = trainer_turns.get(trainer_email, 0)
                         approved = trainer_approved.get(trainer_email, 0)
@@ -2676,7 +2735,8 @@ class QueryService:
                         submissions = new_tasks + rework
                         avg_rework = round((submissions / unique_tasks) - 1, 2) if unique_tasks > 0 else None
                         rework_pct = round((rework / submissions) * 100, 1) if submissions > 0 else None
-                        merged_aht = self._calculate_merged_aht(new_tasks, rework)
+                        # NEW: Use tasks_with_new (=new_tasks) and tasks_with_rework for merged AHT
+                        merged_aht = self._calculate_merged_aht(new_tasks, tasks_with_rework, unique_tasks)
                         aht_submission = round(jibble_hours / submissions, 2) if submissions > 0 else None
                         
                         # Only include trainers with actual data (task data OR delivery data)
@@ -2707,6 +2767,7 @@ class QueryService:
                             no_pod_totals['unique_tasks'] += unique_tasks
                             no_pod_totals['new_tasks'] += new_tasks
                             no_pod_totals['rework'] += rework
+                            no_pod_totals['tasks_with_rework'] = no_pod_totals.get('tasks_with_rework', 0) + tasks_with_rework  # NEW
                             no_pod_totals['approved_tasks'] += approved
                             no_pod_totals['approved_rework'] += approved_rework
                             no_pod_totals['delivered_tasks'] += delivered
@@ -2724,7 +2785,12 @@ class QueryService:
                         no_pod_avg_rework = round((no_pod_submissions / no_pod_totals['unique_tasks']) - 1, 2) if no_pod_totals['unique_tasks'] > 0 else None
                         no_pod_rework_pct = round((no_pod_totals['rework'] / no_pod_submissions) * 100, 1) if no_pod_submissions > 0 else None
                         no_pod_avg_rating = round(no_pod_totals['total_score'] / no_pod_totals['total_reviews'], 2) if no_pod_totals['total_reviews'] > 0 else None
-                        no_pod_merged_aht = self._calculate_merged_aht(no_pod_totals['new_tasks'], no_pod_totals['rework'])
+                        # NEW: Use tasks_with_new (=new_tasks) and tasks_with_rework for merged AHT
+                        no_pod_merged_aht = self._calculate_merged_aht(
+                            no_pod_totals['new_tasks'], 
+                            no_pod_totals.get('tasks_with_rework', 0), 
+                            no_pod_totals['unique_tasks']
+                        )
                         no_pod_agentic_rating = round(no_pod_totals['agentic_score'] / no_pod_totals['agentic_reviews'], 2) if no_pod_totals['agentic_reviews'] > 0 else None
                         no_pod_aht_submission = round(no_pod_totals['trainer_jibble_hours'] / no_pod_submissions, 2) if no_pod_submissions > 0 else None
                         
@@ -2766,11 +2832,17 @@ class QueryService:
     def get_project_stats_with_pod_leads(
         self,
         start_date: Optional[str] = None,
-        end_date: Optional[str] = None
+        end_date: Optional[str] = None,
+        include_tasks: bool = False
     ) -> List[Dict[str, Any]]:
         """
         Get statistics aggregated by Project -> POD Lead hierarchy.
         Each project contains POD Leads with their aggregated metrics.
+        
+        Args:
+            start_date: Start date filter (YYYY-MM-DD)
+            end_date: End date filter (YYYY-MM-DD)
+            include_tasks: If True, include task-level details under each trainer
         """
         try:
             from sqlalchemy import case, distinct
@@ -2833,7 +2905,12 @@ class QueryService:
                         func.sum(case(
                             (TaskHistoryRaw.completed_status_count > 1, 1),
                             else_=0
-                        )).label('rework')
+                        )).label('rework'),
+                        # NEW: Count unique tasks where trainer did at least 1 rework
+                        func.count(distinct(case(
+                            (TaskHistoryRaw.completed_status_count > 1, TaskHistoryRaw.task_id),
+                            else_=None
+                        ))).label('tasks_with_rework')
                     ).filter(
                         TaskHistoryRaw.new_status == 'completed',
                         TaskHistoryRaw.old_status != 'completed-approval',
@@ -2857,8 +2934,207 @@ class QueryService:
                             trainer_history[email] = {
                                 'unique_tasks': hs.unique_tasks or 0,
                                 'new_tasks': hs.new_tasks or 0,
-                                'rework': hs.rework or 0
+                                'rework': hs.rework or 0,
+                                'tasks_with_rework': hs.tasks_with_rework or 0  # NEW: unique tasks with rework
                             }
+                    
+                    # ---------------------------------------------------------
+                    # If include_tasks=True, get task-level details for each trainer
+                    # ---------------------------------------------------------
+                    trainer_tasks = {}
+                    if include_tasks:
+                        # Get detailed task history with completion info per trainer
+                        task_history_query = session.query(
+                            TaskHistoryRaw.task_id,
+                            TaskHistoryRaw.author,
+                            TaskHistoryRaw.completed_status_count,
+                            TaskHistoryRaw.date,
+                            TaskHistoryRaw.time_stamp
+                        ).filter(
+                            TaskHistoryRaw.new_status == 'completed',
+                            TaskHistoryRaw.old_status != 'completed-approval',
+                            TaskHistoryRaw.project_id == project_id,
+                            TaskHistoryRaw.author.isnot(None)
+                        )
+                        
+                        if start_date:
+                            task_history_query = task_history_query.filter(TaskHistoryRaw.date >= start_date)
+                        if end_date:
+                            task_history_query = task_history_query.filter(TaskHistoryRaw.date <= end_date)
+                        
+                        task_history_details = task_history_query.all()
+                        
+                        # Group task IDs by trainer email
+                        trainer_task_ids = defaultdict(set)
+                        task_completion_info = {}  # (task_id, email) -> {is_new, rework_count, completion_date, ...}
+                        
+                        for th in task_history_details:
+                            email = th.author.lower().strip()
+                            trainer_task_ids[email].add(th.task_id)
+                            
+                            # Track the completion info for each (task_id, trainer) pair
+                            # Key insight: 
+                            #   - is_new should be TRUE if the FIRST completion by this trainer had completed_status_count == 1
+                            #   - rework_count = (total completions by this trainer) - 1
+                            key = (th.task_id, email)
+                            if key not in task_completion_info:
+                                # First time seeing this (task, trainer) pair
+                                task_completion_info[key] = {
+                                    'is_new': th.completed_status_count == 1,  # Was this a NEW task completion?
+                                    'total_completions': 1,  # Count of completions by this trainer
+                                    'completion_date': th.date,
+                                    '_first_ts': th.time_stamp,  # Track first completion timestamp
+                                    '_last_ts': th.time_stamp,   # Track last completion for date
+                                    '_first_count': th.completed_status_count,  # The count at first completion
+                                }
+                            else:
+                                # Already seen this (task, trainer) pair - update tracking
+                                info = task_completion_info[key]
+                                info['total_completions'] += 1
+                                
+                                # Update is_new based on EARLIEST completion (lowest completed_status_count or earliest timestamp)
+                                if th.time_stamp and info.get('_first_ts'):
+                                    if th.time_stamp < info['_first_ts']:
+                                        # This event is earlier, update first completion info
+                                        info['is_new'] = th.completed_status_count == 1
+                                        info['_first_ts'] = th.time_stamp
+                                        info['_first_count'] = th.completed_status_count
+                                
+                                # Update completion_date to latest
+                                if th.time_stamp and (not info.get('_last_ts') or th.time_stamp > info['_last_ts']):
+                                    info['completion_date'] = th.date
+                                    info['_last_ts'] = th.time_stamp
+                        
+                        # Calculate rework_count from total_completions
+                        for key, info in task_completion_info.items():
+                            # rework_count = total completions - 1 (if new task) or total completions (if started as rework)
+                            # Actually, simpler: rework_count = completions where count > 1
+                            # For the trainer, rework_count = total_completions - 1 if is_new, else total_completions
+                            if info['is_new']:
+                                info['rework_count'] = max(0, info['total_completions'] - 1)
+                            else:
+                                # Task was already rework when this trainer first completed it
+                                info['rework_count'] = info['total_completions']
+                        
+                        # Get all unique task IDs for this project
+                        all_task_ids = set()
+                        for ids in trainer_task_ids.values():
+                            all_task_ids.update(ids)
+                        
+                        # Fetch task details from TaskRaw
+                        task_details = {}
+                        if all_task_ids:
+                            task_raw_query = session.query(TaskRaw).filter(
+                                TaskRaw.task_id.in_(list(all_task_ids)),
+                                TaskRaw.project_id == project_id
+                            )
+                            
+                            for task in task_raw_query.all():
+                                task_details[task.task_id] = {
+                                    'task_id': task.task_id,
+                                    'colab_link': task.colab_link,
+                                    'task_status': task.task_status,
+                                    'delivery_status': task.delivery_status,
+                                    'delivery_batch_name': task.delivery_batch_name,
+                                    'count_reviews': task.count_reviews or 0,
+                                    'avg_rating': round(float(task.sum_score) / float(task.count_reviews), 2) if task.count_reviews and task.count_reviews > 0 and task.sum_score else None,
+                                    'number_of_turns': task.number_of_turns or 0,
+                                    'last_completed_date': task.last_completed_date.isoformat() if task.last_completed_date else None,
+                                    'created_date': task.created_date.isoformat() if task.created_date else None,
+                                    'task_duration': task.task_duration,  # AHT in minutes
+                                }
+                        
+                        # Get per-task agentic review data
+                        task_agentic_reviews = {}
+                        if all_task_ids:
+                            agentic_per_task = session.query(
+                                TrainerReviewStats.task_id,
+                                func.count(TrainerReviewStats.review_id).label('agentic_count'),
+                                func.sum(TrainerReviewStats.score).label('agentic_score_sum')
+                            ).filter(
+                                TrainerReviewStats.task_id.in_(list(all_task_ids)),
+                                TrainerReviewStats.project_id == project_id,
+                                TrainerReviewStats.score.isnot(None),
+                                TrainerReviewStats.review_type == 'auto'
+                            )
+                            
+                            if start_date:
+                                agentic_per_task = agentic_per_task.filter(TrainerReviewStats.review_date >= start_date)
+                            if end_date:
+                                agentic_per_task = agentic_per_task.filter(TrainerReviewStats.review_date <= end_date)
+                            
+                            agentic_per_task = agentic_per_task.group_by(TrainerReviewStats.task_id)
+                            
+                            for ar in agentic_per_task.all():
+                                task_agentic_reviews[ar.task_id] = {
+                                    'count': ar.agentic_count or 0,
+                                    'avg_rating': round(float(ar.agentic_score_sum) / float(ar.agentic_count), 2) if ar.agentic_count and ar.agentic_count > 0 and ar.agentic_score_sum else None
+                                }
+                        
+                        # Build task list for each trainer
+                        for email, task_ids in trainer_task_ids.items():
+                            tasks_list = []
+                            for task_id in task_ids:
+                                task_info = task_details.get(task_id, {})
+                                completion_info = task_completion_info.get((task_id, email), {})
+                                agentic_info = task_agentic_reviews.get(task_id, {})
+                                
+                                # Determine delivery status display
+                                is_delivered = task_info.get('delivery_status', '').lower() == 'delivered' if task_info.get('delivery_status') else False
+                                is_in_queue = (
+                                    task_info.get('delivery_batch_name') and 
+                                    not is_delivered
+                                )
+                                
+                                # Determine if new or rework for this task submission
+                                is_new = completion_info.get('is_new', False)
+                                rework_count = completion_info.get('rework_count', 0)
+                                total_completions = completion_info.get('total_completions', 1)
+                                
+                                # Calculate task-level accounted hours using new logic
+                                # NEW LOGIC (Feb 2026):
+                                # - New task: credit 10 hours
+                                # - Rework: credit 4 hours ONCE per task (capped by MAX_REWORKS_TO_REWARD)
+                                # This prevents rewarding multiple low-quality reworks by same trainer
+                                aht_config = self._constants.aht
+                                task_accounted_hrs = aht_config.calculate_task_accounted_hours(
+                                    is_new=is_new,
+                                    rework_count=rework_count
+                                )
+                                
+                                # Rework percentage = rework_count / total_submissions × 100
+                                # total_submissions = 1 (if new) + rework_count OR just rework_count (if not new)
+                                total_submissions = (1 if is_new else 0) + rework_count
+                                if total_submissions > 0:
+                                    task_rework_pct = round((rework_count / total_submissions) * 100, 1)
+                                else:
+                                    task_rework_pct = 0
+                                
+                                # Task-level merged AHT = accounted_hours for this single task
+                                # (For a single task, merged AHT = accounted_hours since unique_tasks = 1)
+                                task_merged_aht = task_accounted_hrs
+                                
+                                tasks_list.append({
+                                    'task_id': task_id,
+                                    'colab_link': task_info.get('colab_link'),
+                                    'is_new': is_new,
+                                    'rework_count': rework_count,
+                                    'reviews': task_info.get('count_reviews', 0),
+                                    'avg_rating': task_info.get('avg_rating'),
+                                    'agentic_reviews': agentic_info.get('count', 0),
+                                    'agentic_rating': agentic_info.get('avg_rating'),
+                                    'is_delivered': is_delivered,
+                                    'is_in_queue': is_in_queue,
+                                    'task_status': task_info.get('task_status'),
+                                    'last_completed_date': completion_info.get('completion_date').isoformat() if completion_info.get('completion_date') else task_info.get('last_completed_date'),
+                                    'aht_mins': task_merged_aht,  # Merged AHT in hours (same as trainer level)
+                                    'accounted_hours': task_accounted_hrs,
+                                    'rework_percent': task_rework_pct,
+                                })
+                            
+                            # Sort tasks by last_completed_date (most recent first)
+                            tasks_list.sort(key=lambda x: x.get('last_completed_date') or '', reverse=True)
+                            trainer_tasks[email] = tasks_list
                     
                     # ---------------------------------------------------------
                     # Get total_reviews and avg_rating from TrainerReviewStats
@@ -3083,6 +3359,7 @@ class QueryService:
                         'unique_tasks': 0,
                         'new_tasks': 0,
                         'rework': 0,
+                        'tasks_with_rework': 0,  # NEW: unique tasks with at least 1 rework
                         'total_reviews': 0,
                         'agentic_reviews': 0,
                         'agentic_score': 0.0,
@@ -3124,8 +3401,9 @@ class QueryService:
                         
                         # Calculate trainer-level metrics
                         t_unique = hist['unique_tasks']
-                        t_new = hist['new_tasks']
-                        t_rework = hist['rework']
+                        t_new = hist['new_tasks']  # Count of first-completion events (= unique tasks with new)
+                        t_rework = hist['rework']  # Total rework events (for display/% calculation)
+                        t_tasks_with_rework = hist.get('tasks_with_rework', 0)  # NEW: unique tasks with rework
                         t_reviews = trainer_reviews.get(trainer_email, 0)
                         t_rating = trainer_avg_rating.get(trainer_email)
                         t_delivered = trainer_delivered.get(trainer_email, 0)
@@ -3138,10 +3416,24 @@ class QueryService:
                         
                         t_avg_rework = round((t_submissions / t_unique) - 1, 2) if t_unique > 0 else None
                         t_rework_pct = round((t_rework / t_submissions) * 100, 1) if t_submissions > 0 else None
-                        t_merged_aht = self._calculate_merged_aht(t_new, t_rework)
                         
-                        # Calculate accounted hours using configurable AHT values
-                        t_accounted_hrs = self._calculate_accounted_hours(t_new, t_rework) if t_submissions > 0 else 0
+                        # Calculate accounted hours using NEW LOGIC (Feb 2026):
+                        # - t_new = count of unique tasks where trainer did first completion
+                        # - t_tasks_with_rework = count of unique tasks where trainer did at least 1 rework
+                        # Formula: t_new * 10 + t_tasks_with_rework * 4
+                        # This credits only ONCE per task for rework, regardless of how many rework events
+                        aht_config = self._constants.aht
+                        t_accounted_hrs = aht_config.calculate_trainer_accounted_hours(
+                            tasks_with_new=t_new,
+                            tasks_with_rework=t_tasks_with_rework
+                        ) if t_submissions > 0 else 0
+                        
+                        # Merged Expected AHT = accounted_hours / unique_tasks
+                        t_merged_aht = aht_config.calculate_merged_aht(
+                            tasks_with_new=t_new,
+                            tasks_with_rework=t_tasks_with_rework,
+                            unique_tasks=t_unique
+                        ) if t_unique > 0 else None
                         
                         # Calculate efficiency (accounted / jibble * 100)
                         t_efficiency = None
@@ -3170,10 +3462,15 @@ class QueryService:
                             'status': trainer_status
                         }
                         
+                        # Add tasks if requested
+                        if include_tasks:
+                            trainer_entry['tasks'] = trainer_tasks.get(trainer_email, [])
+                        
                         # Aggregate to POD level (or "No Pod Lead" category)
                         pod_aggregates[pod_email]['unique_tasks'] += t_unique
                         pod_aggregates[pod_email]['new_tasks'] += t_new
                         pod_aggregates[pod_email]['rework'] += t_rework
+                        pod_aggregates[pod_email]['tasks_with_rework'] += t_tasks_with_rework  # NEW
                         pod_aggregates[pod_email]['total_reviews'] += t_reviews
                         pod_aggregates[pod_email]['agentic_reviews'] += t_agentic_reviews
                         pod_aggregates[pod_email]['agentic_score'] += trainer_agentic_scores.get(trainer_email, 0)
@@ -3256,6 +3553,7 @@ class QueryService:
                         'unique_tasks': 0,
                         'new_tasks': 0,
                         'rework': 0,
+                        'tasks_with_rework': 0,  # NEW: for accounted hours calculation
                         'total_reviews': 0,
                         'agentic_reviews': 0,
                         'agentic_score': 0.0,
@@ -3273,7 +3571,12 @@ class QueryService:
                         submissions = agg['new_tasks'] + agg['rework']
                         avg_rework = round((submissions / agg['unique_tasks']) - 1, 2) if agg['unique_tasks'] > 0 else None
                         rework_pct = round((agg['rework'] / submissions) * 100, 1) if submissions > 0 else None
-                        merged_aht = self._calculate_merged_aht(agg['new_tasks'], agg['rework'])
+                        # NEW: Use tasks_with_new (=new_tasks) and tasks_with_rework for merged AHT
+                        merged_aht = self._calculate_merged_aht(
+                            agg['new_tasks'], 
+                            agg.get('tasks_with_rework', 0), 
+                            agg['unique_tasks']
+                        )
                         
                         # Get POD Lead's own Jibble hours - try email first, then name
                         pod_own_jibble = email_to_jibble.get(pod_email.lower().strip(), 0)
@@ -3332,6 +3635,7 @@ class QueryService:
                         project_totals['unique_tasks'] += agg['unique_tasks']
                         project_totals['new_tasks'] += agg['new_tasks']
                         project_totals['rework'] += agg['rework']
+                        project_totals['tasks_with_rework'] += agg.get('tasks_with_rework', 0)  # NEW
                         project_totals['total_reviews'] += agg['total_reviews']
                         project_totals['agentic_reviews'] += agg['agentic_reviews']
                         project_totals['agentic_score'] += agg['agentic_score']
@@ -3352,7 +3656,13 @@ class QueryService:
                     proj_submissions = project_totals['new_tasks'] + project_totals['rework']
                     proj_avg_rework = round((proj_submissions / project_true_unique_tasks) - 1, 2) if project_true_unique_tasks > 0 else None
                     proj_rework_pct = round((project_totals['rework'] / proj_submissions) * 100, 1) if proj_submissions > 0 else None
-                    proj_merged_aht = self._calculate_merged_aht(project_totals['new_tasks'], project_totals['rework'])
+                    # NEW: Use tasks_with_new (=new_tasks) and tasks_with_rework for merged AHT
+                    # Note: Using project_true_unique_tasks for consistency
+                    proj_merged_aht = self._calculate_merged_aht(
+                        project_totals['new_tasks'], 
+                        project_totals['tasks_with_rework'], 
+                        project_true_unique_tasks
+                    )
                     
                     # Calculate logged hours (trainers + POD leads)
                     total_logged_hours = project_totals['trainer_jibble_hours'] + project_totals['pod_jibble_hours']

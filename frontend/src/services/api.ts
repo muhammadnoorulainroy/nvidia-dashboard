@@ -516,7 +516,26 @@ export const getPodLeadStats = async (
   return response.data
 }
 
-// Trainer under POD Lead (for 3-level hierarchy)
+// Task under Trainer (for 4-level hierarchy)
+export interface TaskUnderTrainer {
+  task_id: number
+  colab_link: string | null
+  is_new: boolean
+  rework_count: number
+  reviews: number
+  avg_rating: number | null
+  agentic_reviews: number
+  agentic_rating: number | null
+  is_delivered: boolean
+  is_in_queue: boolean
+  task_status: string | null
+  last_completed_date: string | null
+  aht_mins: number | null       // AHT in minutes
+  accounted_hours: number       // Accounted hours for this task
+  rework_percent: number        // 0 for new, 100 for rework
+}
+
+// Trainer under POD Lead (for 3-level hierarchy, with optional tasks for 4-level)
 export interface TrainerUnderPodLead {
   trainer_name: string
   trainer_email: string
@@ -536,6 +555,7 @@ export interface TrainerUnderPodLead {
   accounted_hours: number
   efficiency: number | null
   status: string
+  tasks?: TaskUnderTrainer[]  // Optional: only populated when include_tasks=true
 }
 
 // POD Lead under Project (with trainers for 3-level hierarchy)
@@ -589,11 +609,13 @@ export interface ProjectStats {
 
 export const getProjectStats = async (
   startDate?: string,
-  endDate?: string
+  endDate?: string,
+  includeTasks?: boolean
 ): Promise<ProjectStats[]> => {
   const params = new URLSearchParams()
   if (startDate) params.append('start_date', startDate)
   if (endDate) params.append('end_date', endDate)
+  if (includeTasks) params.append('include_tasks', 'true')
   
   const queryString = params.toString()
   const url = queryString ? `/project-stats?${queryString}` : '/project-stats'

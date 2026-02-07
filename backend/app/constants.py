@@ -100,40 +100,139 @@ class AHTConfig:
     """
     Average Handling Time configuration for metrics calculations.
     
-    These values are used in the Merged Expected AHT formula:
-    merged_aht = (new_tasks * NEW_TASK_AHT + rework * REWORK_AHT) / total_submissions
+    NEW LOGIC (as of Feb 2026):
+    - For new tasks: Credit DEFAULT_NEW_TASK_AHT hours (e.g., 10 hours)
+    - For rework: Credit DEFAULT_REWORK_AHT hours ONCE per task, regardless of how many
+      rework submissions the same trainer makes on that task
+    - MAX_REWORKS_TO_REWARD controls how many rework submissions to credit per task
+      (default 1 = only first rework credited, subsequent reworks by same trainer = 0 hours)
+    
+    This prevents rewarding trainers for repeatedly failing to deliver quality work.
+    
+    Formula for task-level:
+    task_accounted = (NEW_TASK_AHT if is_new else 0) + (REWORK_AHT * min(rework_count, MAX_REWORKS_TO_REWARD))
+    
+    Formula for trainer-level:
+    trainer_accounted = SUM(task_accounted for all tasks)
+                      = tasks_with_new * NEW_TASK_AHT + tasks_with_rework * REWORK_AHT
+    
+    Where:
+    - tasks_with_new = count of unique tasks where trainer did the first completion
+    - tasks_with_rework = count of unique tasks where trainer did at least 1 rework
     """
     
     # Default AHT values in hours
     DEFAULT_NEW_TASK_AHT: float = 10.0  # Hours expected for new tasks (fresh research)
     DEFAULT_REWORK_AHT: float = 4.0     # Hours expected for rework tasks (revisions)
     
+    # Maximum number of reworks to credit per task per trainer
+    # Setting to 1 means: only the first rework is credited, subsequent reworks = 0 hours
+    # This prevents gaming the system by doing multiple low-quality reworks
+    MAX_REWORKS_TO_REWARD: int = 1
+    
     # AHT range limits for validation
     MIN_AHT_VALUE: float = 0.1
     MAX_AHT_VALUE: float = 100.0
     
-    def calculate_merged_aht(self, new_tasks: int, rework: int, 
-                              new_task_aht: float = None, rework_aht: float = None) -> float:
+    def calculate_task_accounted_hours(self, is_new: bool, rework_count: int,
+                                        new_task_aht: float = None, 
+                                        rework_aht: float = None) -> float:
         """
-        Calculate merged expected AHT.
+        Calculate accounted hours for a SINGLE TASK for a specific trainer.
         
-        Formula: (new_tasks * new_task_aht + rework * rework_aht) / total_submissions
+        Args:
+            is_new: True if this trainer did the first completion of the task
+            rework_count: Number of rework submissions by this trainer on this task
+            new_task_aht: Override for new task AHT (defaults to DEFAULT_NEW_TASK_AHT)
+            rework_aht: Override for rework AHT (defaults to DEFAULT_REWORK_AHT)
+        
+        Returns:
+            Accounted hours for this task:
+            - 10 hours if new task
+            - + 4 hours if has any rework (capped by MAX_REWORKS_TO_REWARD)
+        
+        Example:
+            - New task with 0 rework: 10 hours
+            - New task with 1 rework: 14 hours  
+            - New task with 5 reworks: 14 hours (only first rework credited)
+            - Rework only with 1 submission: 4 hours
+            - Rework only with 3 submissions: 4 hours (only first credited)
         """
         new_task_aht = new_task_aht or self.DEFAULT_NEW_TASK_AHT
         rework_aht = rework_aht or self.DEFAULT_REWORK_AHT
-        total_submissions = new_tasks + rework
         
-        if total_submissions == 0:
+        new_hours = new_task_aht if is_new else 0
+        # Credit rework only up to MAX_REWORKS_TO_REWARD
+        reworks_to_credit = min(rework_count, self.MAX_REWORKS_TO_REWARD)
+        rework_hours = rework_aht * reworks_to_credit
+        
+        return new_hours + rework_hours
+    
+    def calculate_trainer_accounted_hours(self, tasks_with_new: int, tasks_with_rework: int,
+                                           new_task_aht: float = None, 
+                                           rework_aht: float = None) -> float:
+        """
+        Calculate accounted hours for a TRAINER (aggregated from tasks).
+        
+        Args:
+            tasks_with_new: Count of unique tasks where trainer did first completion
+            tasks_with_rework: Count of unique tasks where trainer did at least 1 rework
+            new_task_aht: Override for new task AHT (defaults to DEFAULT_NEW_TASK_AHT)
+            rework_aht: Override for rework AHT (defaults to DEFAULT_REWORK_AHT)
+        
+        Returns:
+            Total accounted hours = tasks_with_new * 10 + tasks_with_rework * 4
+        
+        Note: A task can be both "new" AND have rework if the trainer:
+        1. Did the first completion (new) and
+        2. Later did rework on the same task
+        In this case, that task contributes 14 hours total.
+        """
+        new_task_aht = new_task_aht or self.DEFAULT_NEW_TASK_AHT
+        rework_aht = rework_aht or self.DEFAULT_REWORK_AHT
+        
+        return (tasks_with_new * new_task_aht) + (tasks_with_rework * rework_aht)
+    
+    def calculate_merged_aht(self, tasks_with_new: int, tasks_with_rework: int,
+                              unique_tasks: int,
+                              new_task_aht: float = None, rework_aht: float = None) -> float:
+        """
+        Calculate merged expected AHT (weighted average AHT across all tasks).
+        
+        NEW Formula: accounted_hours / unique_tasks
+        
+        This gives the average accounted hours per unique task, which is a
+        meaningful measure of expected time per task worked on.
+        
+        Args:
+            tasks_with_new: Count of unique tasks with first completion by trainer
+            tasks_with_rework: Count of unique tasks with rework by trainer  
+            unique_tasks: Total unique tasks worked on by trainer
+            new_task_aht: Override for new task AHT
+            rework_aht: Override for rework AHT
+        
+        Returns:
+            Merged AHT = accounted_hours / unique_tasks
+        """
+        if unique_tasks == 0:
             return 0.0
         
-        return round((new_tasks * new_task_aht + rework * rework_aht) / total_submissions, 2)
+        accounted = self.calculate_trainer_accounted_hours(
+            tasks_with_new, tasks_with_rework, new_task_aht, rework_aht
+        )
+        
+        return round(accounted / unique_tasks, 2)
     
+    # DEPRECATED: Keeping for backward compatibility but should migrate to new methods
     def calculate_accounted_hours(self, new_tasks: int, rework: int,
                                    new_task_aht: float = None, rework_aht: float = None) -> float:
         """
-        Calculate accounted hours (expected time based on work done).
+        DEPRECATED: Use calculate_trainer_accounted_hours instead.
         
-        Formula: new_tasks * new_task_aht + rework * rework_aht
+        This method used event counts (new_tasks, rework events) which overcounted
+        when a trainer did multiple reworks on the same task.
+        
+        Keeping for backward compatibility during migration.
         """
         new_task_aht = new_task_aht or self.DEFAULT_NEW_TASK_AHT
         rework_aht = rework_aht or self.DEFAULT_REWORK_AHT

@@ -73,24 +73,25 @@ const COLUMN_GROUPS = {
   },
 }
 
-// Compact header cell style
+// Responsive header cell style
 const headerCellStyle = {
   fontWeight: 600,
-  fontSize: '0.6rem',
+  fontSize: { xs: '0.5rem', sm: '0.55rem', md: '0.58rem' },
   textTransform: 'uppercase' as const,
-  letterSpacing: '0.02em',
+  letterSpacing: '0.01em',
   lineHeight: 1.1,
-  py: 0.5,
-  px: 0.5,
+  py: { xs: 0.25, sm: 0.35, md: 0.4 },
+  px: { xs: 0.25, sm: 0.35, md: 0.4 },
   whiteSpace: 'nowrap' as const,
 }
 
-// Compact data cell style  
+// Responsive data cell style  
 const cellStyle = {
-  py: 0.5,
-  px: 0.5,
-  fontSize: '0.75rem',
+  py: { xs: 0.2, sm: 0.3, md: 0.35 },
+  px: { xs: 0.3, sm: 0.4, md: 0.5 },
+  fontSize: { xs: '0.58rem', sm: '0.65rem', md: '0.7rem' },
   borderBottom: '1px solid #E2E8F0',
+  whiteSpace: 'nowrap' as const,
 }
 import { getTooltipForHeader } from '../../utils/columnTooltips'
 import { getPodLeadStats, PodLeadStats, TrainerUnderPod } from '../../services/api'
@@ -860,7 +861,7 @@ export function PodLeadTab({ onSummaryUpdate, onSummaryLoading }: PodLeadTabProp
       </Popover>
 
       <Paper sx={{ width: '100%', overflow: 'hidden', borderRadius: 2, border: '1px solid #E2E8F0', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
-        <TableContainer sx={{ maxHeight: 600, overflowX: 'auto' }}>
+        <TableContainer sx={{ maxHeight: { xs: 'calc(100vh - 220px)', sm: 'calc(100vh - 200px)', md: 'calc(100vh - 180px)' }, minHeight: { xs: 400, sm: 500, md: 600 }, overflowX: 'auto' }}>
           <Table stickyHeader size="small" sx={{ minWidth: 1200 }}>
             <TableHead>
               {/* Group Header Row */}

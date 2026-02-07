@@ -87,6 +87,8 @@ export interface TrainerDailyStats {
   delivered?: number
   in_queue?: number
   jibble_hours?: number | null
+  merged_exp_aht?: number | null  // NEW: Merged expected AHT using new calculation logic
+  accounted_hours?: number | null  // NEW: Accounted hours using new calculation logic
 }
 
 export interface ReviewerDailyStats {

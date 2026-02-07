@@ -661,7 +661,7 @@ export default function DomainWise({ isClientDelivery = false, onSummaryUpdate, 
           </Box>
         </Box>
 
-        <TableContainer sx={{ maxHeight: 600, overflowX: 'auto' }}>
+        <TableContainer sx={{ maxHeight: { xs: 'calc(100vh - 220px)', sm: 'calc(100vh - 200px)', md: 'calc(100vh - 180px)' }, minHeight: { xs: 400, sm: 500, md: 600 }, overflowX: 'auto' }}>
           <Table stickyHeader size="small" sx={{ minWidth: 800 }}>
             <TableHead>
               <TableRow>

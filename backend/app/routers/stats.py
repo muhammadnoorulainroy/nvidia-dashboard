@@ -551,14 +551,22 @@ async def get_pod_lead_stats(
 )
 async def get_project_stats(
     start_date: Optional[str] = Query(None, description="Start date (YYYY-MM-DD)"),
-    end_date: Optional[str] = Query(None, description="End date (YYYY-MM-DD)")
+    end_date: Optional[str] = Query(None, description="End date (YYYY-MM-DD)"),
+    include_tasks: bool = Query(False, description="Include task-level details under each trainer")
 ) -> List[Dict[str, Any]]:
-    """Get Project stats with POD Leads aggregated under each project"""
+    """Get Project stats with POD Leads aggregated under each project.
+    
+    Args:
+        start_date: Start date filter (YYYY-MM-DD)
+        end_date: End date filter (YYYY-MM-DD)
+        include_tasks: If True, includes task-level details under each trainer (4-level hierarchy)
+    """
     try:
         service = get_query_service()
         result = service.get_project_stats_with_pod_leads(
             start_date=start_date,
-            end_date=end_date
+            end_date=end_date,
+            include_tasks=include_tasks
         )
         return result
     except Exception as e:
