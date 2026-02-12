@@ -2894,6 +2894,37 @@ class QueryService:
                     true_unique_result = true_unique_query.first()
                     project_true_unique_tasks = true_unique_result.unique_tasks if true_unique_result else 0
                     
+                    # ---------------------------------------------------------
+                    # FIX: Get TRUE tasks_with_new and tasks_with_rework at project level
+                    # This prevents inflation when tasks are worked on by multiple trainers
+                    # - tasks_with_new = unique tasks that had their FIRST completion (completed_status_count=1)
+                    # - tasks_with_rework = unique tasks that had REWORK completions (completed_status_count>1)
+                    # Note: A task can appear in BOTH if it was new AND reworked in the same period
+                    # ---------------------------------------------------------
+                    true_aht_query = session.query(
+                        func.count(distinct(case(
+                            (TaskHistoryRaw.completed_status_count == 1, TaskHistoryRaw.task_id),
+                            else_=None
+                        ))).label('tasks_with_new'),
+                        func.count(distinct(case(
+                            (TaskHistoryRaw.completed_status_count > 1, TaskHistoryRaw.task_id),
+                            else_=None
+                        ))).label('tasks_with_rework')
+                    ).filter(
+                        TaskHistoryRaw.new_status == 'completed',
+                        TaskHistoryRaw.old_status != 'completed-approval',
+                        TaskHistoryRaw.project_id == project_id
+                    )
+                    
+                    if start_date:
+                        true_aht_query = true_aht_query.filter(TaskHistoryRaw.date >= start_date)
+                    if end_date:
+                        true_aht_query = true_aht_query.filter(TaskHistoryRaw.date <= end_date)
+                    
+                    true_aht_result = true_aht_query.first()
+                    project_true_tasks_with_new = true_aht_result.tasks_with_new if true_aht_result else 0
+                    project_true_tasks_with_rework = true_aht_result.tasks_with_rework if true_aht_result else 0
+                    
                     # Get metrics from task_history_raw for this project
                     # FIX: Use task_history_raw.author for proper attribution
                     history_query = session.query(
@@ -3379,6 +3410,9 @@ class QueryService:
                     NO_POD_LEAD_EMAIL = "no_pod_lead"
                     NO_POD_LEAD_NAME = "No Pod Lead"
                     
+                    # Track trainer emails per POD lead for TRUE AHT calculation
+                    pod_trainer_emails = defaultdict(list)
+                    
                     for trainer_email, hist in trainer_history.items():
                         pod_info = trainer_to_pod.get(trainer_email)
                         
@@ -3492,6 +3526,9 @@ class QueryService:
                             pod_aggregates[pod_email]['trainer_jibble_hours'] += trainer_jibble
                         
                         pod_aggregates[pod_email]['trainers'].append(trainer_entry)
+                        
+                        # Track trainer email for TRUE POD-level AHT calculation
+                        pod_trainer_emails[pod_email].append(trainer_email)
                     
                     # ---------------------------------------------------------
                     # FIX: Include trainers who have in_queue/delivered tasks but NO task history
@@ -3573,11 +3610,58 @@ class QueryService:
                         submissions = agg['new_tasks'] + agg['rework']
                         avg_rework = round((submissions / agg['unique_tasks']) - 1, 2) if agg['unique_tasks'] > 0 else None
                         rework_pct = round((agg['rework'] / submissions) * 100, 1) if submissions > 0 else None
-                        # NEW: Use tasks_with_new (=new_tasks) and tasks_with_rework for merged AHT
+                        
+                        # ---------------------------------------------------------
+                        # FIX: Query TRUE tasks_with_new and tasks_with_rework for this POD lead
+                        # This prevents inflation when trainers within the same POD share tasks
+                        # ---------------------------------------------------------
+                        pod_trainers = pod_trainer_emails.get(pod_email, [])
+                        
+                        if len(pod_trainers) > 1:
+                            # Multiple trainers - query TRUE POD-level metrics
+                            pod_true_query = session.query(
+                                func.count(distinct(TaskHistoryRaw.task_id)).label('unique_tasks'),
+                                func.count(distinct(case(
+                                    (TaskHistoryRaw.completed_status_count == 1, TaskHistoryRaw.task_id),
+                                    else_=None
+                                ))).label('tasks_with_new'),
+                                func.count(distinct(case(
+                                    (TaskHistoryRaw.completed_status_count > 1, TaskHistoryRaw.task_id),
+                                    else_=None
+                                ))).label('tasks_with_rework')
+                            ).filter(
+                                TaskHistoryRaw.new_status == 'completed',
+                                TaskHistoryRaw.old_status != 'completed-approval',
+                                TaskHistoryRaw.project_id == project_id,
+                                func.lower(TaskHistoryRaw.author).in_([t.lower() for t in pod_trainers])
+                            )
+                            
+                            if start_date:
+                                pod_true_query = pod_true_query.filter(TaskHistoryRaw.date >= start_date)
+                            if end_date:
+                                pod_true_query = pod_true_query.filter(TaskHistoryRaw.date <= end_date)
+                            
+                            pod_true_result = pod_true_query.first()
+                            pod_true_unique = pod_true_result.unique_tasks if pod_true_result else 0
+                            pod_true_tasks_with_new = pod_true_result.tasks_with_new if pod_true_result else 0
+                            pod_true_tasks_with_rework = pod_true_result.tasks_with_rework if pod_true_result else 0
+                        else:
+                            # Single trainer or no trainers - summed values are correct
+                            pod_true_unique = agg['unique_tasks']
+                            pod_true_tasks_with_new = agg['new_tasks']
+                            pod_true_tasks_with_rework = agg.get('tasks_with_rework', 0)
+                        
+                        # Calculate merged AHT using TRUE POD-level values
                         merged_aht = self._calculate_merged_aht(
-                            agg['new_tasks'], 
-                            agg.get('tasks_with_rework', 0), 
-                            agg['unique_tasks']
+                            pod_true_tasks_with_new, 
+                            pod_true_tasks_with_rework, 
+                            pod_true_unique
+                        )
+                        
+                        # Calculate TRUE accounted hours for POD level
+                        pod_accounted = self._calculate_accounted_hours(
+                            pod_true_tasks_with_new, 
+                            pod_true_tasks_with_rework
                         )
                         
                         # Get POD Lead's own Jibble hours - try email first, then name
@@ -3597,8 +3681,7 @@ class QueryService:
                         if agg['agentic_reviews'] > 0:
                             pod_agentic_rating = round(agg['agentic_score'] / agg['agentic_reviews'], 2)
                         
-                        # Calculate POD-level accounted hours and efficiency
-                        pod_accounted = round(agg['accounted_hours'], 2)
+                        # Calculate POD-level efficiency using TRUE accounted hours
                         total_pod_jibble = trainer_jibble + pod_own_jibble
                         pod_efficiency = None
                         if total_pod_jibble > 0 and pod_accounted > 0:
@@ -3614,7 +3697,7 @@ class QueryService:
                             'pod_lead_name': display_name,
                             'pod_lead_email': pod_email,
                             'trainer_count': agg['trainer_count'],
-                            'unique_tasks': agg['unique_tasks'],
+                            'unique_tasks': pod_true_unique,  # FIX: Use TRUE unique tasks
                             'new_tasks': agg['new_tasks'],
                             'rework': agg['rework'],
                             'total_reviews': agg['total_reviews'],
@@ -3628,7 +3711,7 @@ class QueryService:
                             'merged_exp_aht': merged_aht,
                             'pod_jibble_hours': round(pod_own_jibble, 2),
                             'trainer_jibble_hours': round(trainer_jibble, 2),
-                            'accounted_hours': pod_accounted,
+                            'accounted_hours': round(pod_accounted, 2),
                             'efficiency': pod_efficiency,
                             'trainers': trainers_sorted,  # Include trainer details
                         })
@@ -3658,12 +3741,23 @@ class QueryService:
                     proj_submissions = project_totals['new_tasks'] + project_totals['rework']
                     proj_avg_rework = round((proj_submissions / project_true_unique_tasks) - 1, 2) if project_true_unique_tasks > 0 else None
                     proj_rework_pct = round((project_totals['rework'] / proj_submissions) * 100, 1) if proj_submissions > 0 else None
-                    # NEW: Use tasks_with_new (=new_tasks) and tasks_with_rework for merged AHT
-                    # Note: Using project_true_unique_tasks for consistency
+                    
+                    # ---------------------------------------------------------
+                    # FIX: Use TRUE project-level tasks_with_new and tasks_with_rework for AHT
+                    # This gives accurate per-task AHT even when tasks are shared between trainers
+                    # - project_true_tasks_with_new: unique tasks with first completion in period
+                    # - project_true_tasks_with_rework: unique tasks with rework in period
+                    # ---------------------------------------------------------
                     proj_merged_aht = self._calculate_merged_aht(
-                        project_totals['new_tasks'], 
-                        project_totals['tasks_with_rework'], 
+                        project_true_tasks_with_new, 
+                        project_true_tasks_with_rework, 
                         project_true_unique_tasks
+                    )
+                    
+                    # Also recalculate accounted hours using true project-level values
+                    proj_accounted = self._calculate_accounted_hours(
+                        project_true_tasks_with_new, 
+                        project_true_tasks_with_rework
                     )
                     
                     # Calculate logged hours (trainers + POD leads)
@@ -3678,9 +3772,6 @@ class QueryService:
                     proj_agentic_rating = None
                     if project_totals['agentic_reviews'] > 0:
                         proj_agentic_rating = round(project_totals['agentic_score'] / project_totals['agentic_reviews'], 2)
-                    
-                    # Calculate project-level accounted hours and efficiency
-                    proj_accounted = round(project_totals['accounted_hours'], 2)
                     proj_efficiency = None
                     if total_logged_hours > 0 and proj_accounted > 0:
                         proj_efficiency = round((proj_accounted / total_logged_hours) * 100, 1)
