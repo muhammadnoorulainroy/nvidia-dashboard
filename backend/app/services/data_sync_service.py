@@ -1377,6 +1377,8 @@ class DataSyncService:
                     c.turing_email AS delivery_batch_created_by, 
                     db.open_date, 
                     db.close_date,
+                    -- delivery_date: When the batch was marked as delivered (only if status='delivered')
+                    CASE WHEN LOWER(db.status) = 'delivered' THEN DATE(TIMESTAMP(db.updated_at)) ELSE NULL END AS delivery_date,
                     ROW_NUMBER() OVER (PARTITION BY dbt.task_id ORDER BY dbt.updated_at DESC) AS rn
                 FROM `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.delivery_batch_task` dbt 
                 LEFT JOIN `{self.settings.gcp_project_id}.{self.settings.bigquery_dataset}.delivery_batch` db ON db.id = dbt.delivery_batch_id
@@ -1400,6 +1402,7 @@ class DataSyncService:
                 td.delivery_batch_name, 
                 td.delivery_status, 
                 td.delivery_batch_created_by,
+                td.delivery_date,
                 DATE(TIMESTAMP(td.open_date)) AS db_open_date, 
                 DATE(TIMESTAMP(td.close_date)) AS db_close_date,
                 rs.conversation_id_rs,
@@ -1464,6 +1467,7 @@ class DataSyncService:
                     'delivery_batch_name': row_dict.get('delivery_batch_name'),
                     'delivery_status': row_dict.get('delivery_status'),
                     'delivery_batch_created_by': row_dict.get('delivery_batch_created_by'),
+                    'delivery_date': row_dict.get('delivery_date'),
                     'db_open_date': row_dict.get('db_open_date'),
                     'db_close_date': row_dict.get('db_close_date'),
                     'conversation_id_rs': row_dict.get('conversation_id_rs'),

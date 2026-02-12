@@ -339,6 +339,7 @@ class TaskRaw(Base):
     delivery_batch_name = Column(String(255))
     delivery_status = Column(String(50))
     delivery_batch_created_by = Column(String(255))
+    delivery_date = Column(Date, index=True)  # Date when batch was delivered (db.updated_at when status='delivered')
     db_open_date = Column(Date)
     db_close_date = Column(Date)
     

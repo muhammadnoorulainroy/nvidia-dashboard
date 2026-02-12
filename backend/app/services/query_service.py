@@ -2251,6 +2251,7 @@ class QueryService:
                 # ---------------------------------------------------------
                 
                 # Get delivered task IDs
+                # Filter by delivery_date (when the batch was actually delivered)
                 delivered_tasks_query = session.query(
                     TaskRaw.task_id
                 ).filter(
@@ -2258,9 +2259,9 @@ class QueryService:
                     TaskRaw.project_id.in_(filter_project_ids)
                 )
                 if start_date:
-                    delivered_tasks_query = delivered_tasks_query.filter(TaskRaw.last_completed_date >= start_date)
+                    delivered_tasks_query = delivered_tasks_query.filter(TaskRaw.delivery_date >= start_date)
                 if end_date:
-                    delivered_tasks_query = delivered_tasks_query.filter(TaskRaw.last_completed_date <= end_date)
+                    delivered_tasks_query = delivered_tasks_query.filter(TaskRaw.delivery_date <= end_date)
                 delivered_task_ids = [r.task_id for r in delivered_tasks_query.all()]
                 
                 # Get in-queue task IDs
@@ -3218,14 +3219,15 @@ class QueryService:
                     # ---------------------------------------------------------
                     
                     # Get delivered task IDs (delivery_status = 'delivered')
+                    # Filter by delivery_date (when the batch was actually delivered)
                     delivered_tasks_q = session.query(TaskRaw.task_id).filter(
                         func.lower(TaskRaw.delivery_status) == 'delivered',
                         TaskRaw.project_id == project_id
                     )
                     if start_date:
-                        delivered_tasks_q = delivered_tasks_q.filter(TaskRaw.last_completed_date >= start_date)
+                        delivered_tasks_q = delivered_tasks_q.filter(TaskRaw.delivery_date >= start_date)
                     if end_date:
-                        delivered_tasks_q = delivered_tasks_q.filter(TaskRaw.last_completed_date <= end_date)
+                        delivered_tasks_q = delivered_tasks_q.filter(TaskRaw.delivery_date <= end_date)
                     delivered_task_ids = [r.task_id for r in delivered_tasks_q.all()]
                     
                     # Get in_queue task IDs (has delivery_batch_name but not yet delivered)
