@@ -11,7 +11,7 @@ from google.cloud import bigquery
 
 from app.config import get_settings
 from app.services.db_service import get_db_service
-from app.models.db_models import ReviewDetail, Task, Contributor, DataSyncLog, TaskReviewedInfo, TaskAHT, ContributorTaskStats, ContributorDailyStats, ReviewerDailyStats, TaskRaw, TaskHistoryRaw, PodLeadMapping, ReviewerTrainerDailyStats, TrainerReviewStats
+from app.models.db_models import ReviewDetail, Task, Contributor, DataSyncLog, TaskReviewedInfo, TaskAHT, ContributorTaskStats, ContributorDailyStats, ReviewerDailyStats, TaskRaw, TaskHistoryRaw, PodLeadMapping, ReviewerTrainerDailyStats, TrainerReviewStats, ProjectRevenueWeekly, ProjectCostDaily
 from app.constants import get_constants
 
 logger = logging.getLogger(__name__)
@@ -2497,6 +2497,294 @@ class DataSyncService:
             traceback.print_exc()
             return False
     
+    # =========================================================================
+    # FINANCIAL DATA SYNC METHODS
+    # =========================================================================
+    
+    def sync_revenue_data(self, sync_type: str = 'scheduled') -> bool:
+        """
+        Sync revenue data from Google Sheet 'Projects WoW Revenue' tab.
+        
+        Source: https://docs.google.com/spreadsheets/d/1lpY2877xohw8pTLpjZCrt0bbHcX-ogzfBbsOP7DUIHA/
+        Tab: "Projects WoW Revenue" (gid=1977702086)
+        
+        Data flow:
+        1. Read all rows from the revenue sheet
+        2. Parse currency fields (removing $, commas)
+        3. Map Jibble project names -> dashboard project IDs
+        4. Store in project_revenue_weekly table
+        
+        CRITICAL: This is business-impacting financial data. Every parsing step
+        logs warnings for unparseable values rather than silently defaulting.
+        """
+        import gspread
+        from datetime import datetime as dt
+        
+        fin_config = self._constants.financial
+        # Build case-insensitive mapping (sheet may have "NVIDIA - ICPC" vs mapping "Nvidia - ICPC")
+        jibble_mapping_raw = self._constants.jibble.JIBBLE_NAME_TO_PROJECT_ID
+        jibble_mapping_lower = {k.lower(): v for k, v in jibble_mapping_raw.items()}
+        
+        log_id = self.log_sync_start('project_revenue_weekly', sync_type)
+        
+        try:
+            settings = get_settings()
+            sheet_id = settings.revenue_sheet_id
+            sheet_gid = settings.revenue_sheet_gid
+            
+            logger.info(f"Syncing revenue data from Google Sheet: {sheet_id}, tab gid: {sheet_gid}")
+            
+            # Get credentials and authorize
+            credentials = self._get_google_sheets_credentials()
+            gc = gspread.authorize(credentials)
+            
+            # Open the spreadsheet
+            spreadsheet = gc.open_by_key(sheet_id)
+            
+            # Find the correct worksheet by gid
+            worksheet = None
+            for ws in spreadsheet.worksheets():
+                if str(ws.id) == sheet_gid:
+                    worksheet = ws
+                    break
+            
+            if worksheet is None:
+                raise ValueError(f"Worksheet with gid {sheet_gid} not found in spreadsheet")
+            
+            # Get all raw values
+            all_values = worksheet.get_all_values()
+            
+            if len(all_values) < 2:
+                raise ValueError("Revenue sheet has no data rows")
+            
+            headers = all_values[0]
+            logger.info(f"Revenue sheet headers: {headers}")
+            logger.info(f"Revenue sheet has {len(all_values) - 1} data rows")
+            
+            # Parse each row
+            records = []
+            parse_warnings = []
+            
+            for row_idx, row in enumerate(all_values[1:], start=2):
+                # Skip empty rows
+                if not row or len(row) < 6:
+                    continue
+                
+                # Skip rows without a date
+                week_start_raw = row[fin_config.COL_WEEK_START].strip() if len(row) > fin_config.COL_WEEK_START else ''
+                if not week_start_raw:
+                    continue
+                
+                # Parse week start date
+                try:
+                    # Try multiple date formats
+                    week_start = None
+                    for fmt in ['%m/%d/%Y', '%Y-%m-%d', '%m-%d-%Y', '%d/%m/%Y']:
+                        try:
+                            week_start = dt.strptime(week_start_raw, fmt).date()
+                            break
+                        except ValueError:
+                            continue
+                    if week_start is None:
+                        parse_warnings.append(f"Row {row_idx}: Unparseable date '{week_start_raw}'")
+                        continue
+                except Exception as e:
+                    parse_warnings.append(f"Row {row_idx}: Date parse error: {e}")
+                    continue
+                
+                # Parse week end date
+                week_end_raw = row[fin_config.COL_WEEK_END].strip() if len(row) > fin_config.COL_WEEK_END else ''
+                week_end = None
+                if week_end_raw:
+                    for fmt in ['%m/%d/%Y', '%Y-%m-%d', '%m-%d-%Y', '%d/%m/%Y']:
+                        try:
+                            week_end = dt.strptime(week_end_raw, fmt).date()
+                            break
+                        except ValueError:
+                            continue
+                
+                # Get project name
+                jibble_name = row[fin_config.COL_PROJECT_JIBBLE].strip() if len(row) > fin_config.COL_PROJECT_JIBBLE else ''
+                if not jibble_name:
+                    continue
+                
+                # Map to dashboard project ID (case-insensitive to handle sheet variations)
+                project_id = jibble_mapping_raw.get(jibble_name) or jibble_mapping_lower.get(jibble_name.lower())
+                
+                # Get project status
+                status = row[fin_config.COL_STATUS].strip() if len(row) > fin_config.COL_STATUS else ''
+                
+                # Parse numeric fields with careful currency handling
+                expected_vol = fin_config.parse_integer(
+                    row[fin_config.COL_WEEKLY_EXPECTED_VOL] if len(row) > fin_config.COL_WEEKLY_EXPECTED_VOL else ''
+                )
+                delivered_vol = fin_config.parse_integer(
+                    row[fin_config.COL_WEEKLY_DELIVERED_VOL] if len(row) > fin_config.COL_WEEKLY_DELIVERED_VOL else ''
+                )
+                bill_rate_task = fin_config.parse_currency(
+                    row[fin_config.COL_BILL_RATE_TASK] if len(row) > fin_config.COL_BILL_RATE_TASK else ''
+                )
+                bill_rate_hour = fin_config.parse_currency(
+                    row[fin_config.COL_BILL_RATE_HOUR] if len(row) > fin_config.COL_BILL_RATE_HOUR else ''
+                )
+                expected_revenue = fin_config.parse_currency(
+                    row[fin_config.COL_EXPECTED_REVENUE] if len(row) > fin_config.COL_EXPECTED_REVENUE else ''
+                )
+                actual_revenue = fin_config.parse_currency(
+                    row[fin_config.COL_ACTUAL_REVENUE] if len(row) > fin_config.COL_ACTUAL_REVENUE else ''
+                )
+                
+                # Log if actual_revenue is non-trivial and project ID is unknown
+                if actual_revenue > 0 and project_id is None:
+                    parse_warnings.append(
+                        f"Row {row_idx}: Revenue ${actual_revenue} for unmapped project '{jibble_name}'"
+                    )
+                
+                records.append({
+                    'week_start_date': week_start,
+                    'week_end_date': week_end,
+                    'jibble_project_name': jibble_name,
+                    'project_id': project_id,
+                    'project_status': status or None,
+                    'weekly_expected_volume': expected_vol,
+                    'weekly_delivered_volume': delivered_vol,
+                    'bill_rate_task': bill_rate_task,
+                    'bill_rate_hour': bill_rate_hour,
+                    'expected_revenue': expected_revenue,
+                    'actual_revenue': actual_revenue,
+                    'last_synced': datetime.utcnow(),
+                })
+            
+            # Log any parse warnings
+            if parse_warnings:
+                logger.warning(f"Revenue sync had {len(parse_warnings)} parse warnings:")
+                for warning in parse_warnings[:20]:  # Limit to 20 to avoid log flood
+                    logger.warning(f"  {warning}")
+            
+            logger.info(f"Parsed {len(records)} revenue records from sheet")
+            
+            # Write to database
+            with self.db_service.get_session() as session:
+                # Clear existing data (full refresh for accuracy)
+                session.execute(delete(ProjectRevenueWeekly))
+                session.commit()
+                
+                # Batch insert
+                batch_size = 500
+                for i in range(0, len(records), batch_size):
+                    batch = records[i:i + batch_size]
+                    objects = [ProjectRevenueWeekly(**record) for record in batch]
+                    session.bulk_save_objects(objects)
+                    session.commit()
+                    logger.info(f"Synced {min(i + batch_size, len(records))}/{len(records)} revenue records")
+            
+            self.log_sync_complete(log_id, len(records), True)
+            logger.info(f"[OK] Successfully synced {len(records)} revenue records")
+            return True
+            
+        except Exception as e:
+            self.log_sync_complete(log_id, 0, False, str(e))
+            logger.error(f"[ERROR] Error syncing revenue data: {e}")
+            import traceback
+            traceback.print_exc()
+            return False
+    
+    def sync_cost_data(self, sync_type: str = 'scheduled') -> bool:
+        """
+        Sync cost data from BigQuery Jibblelogs (Billings field).
+        
+        Source: turing-230020.test.Jibblelogs
+        
+        Data flow:
+        1. Query BigQuery for daily cost per project + activity type
+        2. Classify activities as Work/Non-Work using regex
+        3. Map Jibble project names -> dashboard project IDs
+        4. Store in project_cost_daily table
+        
+        CRITICAL: This is business-impacting financial data.
+        - Uses SUM(Billings) as total_cost (ground truth from Jibble)
+        - Classifies Work vs Non-Work using the exact same regex as the client
+        - Daily granularity allows precise aggregation to any date range
+        """
+        fin_config = self._constants.financial
+        jibble_mapping_raw = self._constants.jibble.JIBBLE_NAME_TO_PROJECT_ID
+        jibble_mapping_lower = {k.lower(): v for k, v in jibble_mapping_raw.items()}
+        settings = get_settings()
+        
+        log_id = self.log_sync_start('project_cost_daily', sync_type)
+        
+        try:
+            # Build the list of Jibble project names for the WHERE clause
+            project_names_sql = ", ".join(f'"{name}"' for name in fin_config.COST_JIBBLE_PROJECTS)
+            
+            # This query exactly matches the client's formula
+            query = f"""
+            SELECT 
+                Jibble_DATE as date,
+                Jibble_PROJECT as project,
+                ACTIVITY as activity,
+                CASE 
+                    WHEN REGEXP_CONTAINS(
+                        LOWER(TRIM(ACTIVITY)),
+                        r'{fin_config.NON_WORK_REGEX}'
+                    ) THEN 'Non-Work Activity'
+                    ELSE 'Work Activity'
+                END AS activity_type,
+                SUM(TRACKED_HRS) as logged_hours,
+                SUM(Billings) as total_cost
+            FROM `{settings.cost_bigquery_table}`
+            WHERE Jibble_PROJECT IN ({project_names_sql})
+            GROUP BY 1, 2, 3, 4
+            ORDER BY 1 DESC
+            """
+            
+            logger.info("Fetching cost data from BigQuery Jibblelogs...")
+            results = self.bq_client.query(query).result()
+            
+            records = []
+            for row in results:
+                jibble_name = row.project
+                project_id = jibble_mapping_raw.get(jibble_name) or jibble_mapping_lower.get(jibble_name.lower())
+                
+                records.append({
+                    'date': row.date,
+                    'jibble_project_name': jibble_name,
+                    'project_id': project_id,
+                    'activity': row.activity,
+                    'activity_type': row.activity_type,
+                    'logged_hours': float(row.logged_hours) if row.logged_hours else 0.0,
+                    'total_cost': float(row.total_cost) if row.total_cost else 0.0,
+                    'last_synced': datetime.utcnow(),
+                })
+            
+            logger.info(f"Fetched {len(records)} cost records from BigQuery")
+            
+            # Write to database
+            with self.db_service.get_session() as session:
+                # Clear existing data (full refresh for accuracy)
+                session.execute(delete(ProjectCostDaily))
+                session.commit()
+                
+                # Batch insert
+                batch_size = 5000
+                for i in range(0, len(records), batch_size):
+                    batch = records[i:i + batch_size]
+                    objects = [ProjectCostDaily(**record) for record in batch]
+                    session.bulk_save_objects(objects)
+                    session.commit()
+                    logger.info(f"Synced {min(i + batch_size, len(records))}/{len(records)} cost records")
+            
+            self.log_sync_complete(log_id, len(records), True)
+            logger.info(f"[OK] Successfully synced {len(records)} cost records")
+            return True
+            
+        except Exception as e:
+            self.log_sync_complete(log_id, 0, False, str(e))
+            logger.error(f"[ERROR] Error syncing cost data: {e}")
+            import traceback
+            traceback.print_exc()
+            return False
+    
     def sync_all_tables(self, sync_type: str = 'scheduled') -> Dict[str, bool]:
         """Sync all required data from BigQuery to PostgreSQL"""
         logger.info(f"Starting data sync ({sync_type})...")
@@ -2520,6 +2808,8 @@ class DataSyncService:
             ('jibble_email_mapping', self.sync_jibble_email_mapping),  # Jibble ID to Turing email mapping
             ('jibble_hours', self.sync_jibble_hours),  # Jibble hours from BigQuery
             ('trainer_review_stats', self.sync_trainer_review_stats),  # Per-trainer review attribution
+            ('project_revenue_weekly', self.sync_revenue_data),  # Revenue from Google Sheet
+            ('project_cost_daily', self.sync_cost_data),  # Cost from BigQuery Jibblelogs
         ]
         
         for table_name, sync_func in sync_order:

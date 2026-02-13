@@ -604,6 +604,16 @@ export interface ProjectStats {
   total_pod_hours: number
   accounted_hours: number
   efficiency: number | null
+  // Financial metrics (project level only)
+  revenue: number
+  cost: number
+  work_cost: number
+  non_work_cost: number
+  margin: number
+  margin_percent: number | null
+  cost_logged_hours: number
+  revenue_weeks_matched: number
+  revenue_partial_week: boolean
   pod_leads: PodLeadUnderProject[]
 }
 
@@ -941,5 +951,89 @@ export interface SyncInfo {
 export const getSyncInfo = async (): Promise<SyncInfo> => {
   // Don't cache sync info - we want fresh data
   const response = await apiClient.get<SyncInfo>('/sync-info')
+  return response.data
+}
+
+// =============================================================================
+// ANALYTICS
+// =============================================================================
+
+export interface AnalyticsKPIDefinition {
+  key: string
+  label: string
+  group: string
+  unit: 'count' | 'currency' | 'percent' | 'hours' | 'rating'
+  color: string
+}
+
+export interface AnalyticsSummaryCard {
+  key: string
+  label: string
+  value: number | null
+  unit: string
+  color: string
+}
+
+export interface AnalyticsDataPoint {
+  period: string
+  period_end: string
+  period_label: string
+  // Tasks
+  unique_tasks: number
+  new_tasks: number
+  rework_tasks: number
+  delivered: number
+  in_queue: number
+  // Quality
+  avg_rating: number | null
+  human_avg_rating: number | null
+  agentic_avg_rating: number | null
+  rework_percent: number | null
+  // Time & Efficiency
+  aht_avg: number | null
+  accounted_hours: number
+  jibble_hours: number
+  efficiency_percent: number | null
+  // Finance
+  revenue: number
+  cost: number
+  work_cost: number
+  non_work_cost: number
+  margin: number | null
+  margin_percent: number | null
+  // People
+  trainers_active: number
+  team_size: number
+}
+
+export interface AnalyticsResponse {
+  data: AnalyticsDataPoint[]
+  summary: AnalyticsSummaryCard[]
+  available_kpis: AnalyticsKPIDefinition[]
+  granularity: string
+  revenue_available: boolean
+}
+
+export const getAnalyticsTimeSeries = async (options: {
+  granularity?: 'daily' | 'weekly' | 'monthly'
+  startDate?: string
+  endDate?: string
+  projectId?: number
+}): Promise<AnalyticsResponse> => {
+  const params = new URLSearchParams()
+  if (options.granularity) params.append('granularity', options.granularity)
+  if (options.startDate) params.append('start_date', options.startDate)
+  if (options.endDate) params.append('end_date', options.endDate)
+  if (options.projectId) params.append('project_id', String(options.projectId))
+  
+  const queryString = params.toString()
+  const cacheKey = `/analytics/time-series?${queryString}`
+  const cached = getFromCache<AnalyticsResponse>(cacheKey)
+  if (cached) return cached
+  
+  const response = await apiClient.get<AnalyticsResponse>(
+    `/analytics/time-series${queryString ? '?' + queryString : ''}`
+  )
+  setCache(cacheKey, response.data)
   return response.data
 }

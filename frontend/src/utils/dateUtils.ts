@@ -2,7 +2,7 @@
  * Shared date utilities for consistent date handling across all tabs
  */
 
-export type Timeframe = 'daily' | 'd-1' | 'd-2' | 'd-3' | 'weekly' | 'overall' | 'custom'
+export type Timeframe = 'daily' | 'd-1' | 'd-2' | 'd-3' | 'weekly' | 'monthly' | 'overall' | 'custom'
 
 export interface DateRange {
   startDate: string | undefined
@@ -116,6 +116,36 @@ export function canGoToNextWeek(currentWeekOffset: number): boolean {
 }
 
 /**
+ * Get month range with offset (0 = current month, -1 = last month, etc.)
+ */
+export function getMonthRangeWithOffset(monthOffset: number): { start: Date; end: Date } | null {
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+
+  const targetYear = today.getFullYear()
+  const targetMonth = today.getMonth() + monthOffset
+
+  const start = new Date(targetYear, targetMonth, 1)
+  start.setHours(0, 0, 0, 0)
+
+  // Last day of that month
+  const end = new Date(targetYear, targetMonth + 1, 0)
+  end.setHours(0, 0, 0, 0)
+
+  // Don't allow future months
+  if (start > today && monthOffset > 0) return null
+
+  return { start, end }
+}
+
+/**
+ * Check if we can navigate to next month (not future)
+ */
+export function canGoToNextMonth(currentMonthOffset: number): boolean {
+  return currentMonthOffset < 0
+}
+
+/**
  * Get date range based on timeframe and week offset
  */
 export function getDateRange(
@@ -184,6 +214,30 @@ export function getDateRange(
         startDate = undefined
         endDate = undefined
         displayLabel = 'Invalid week'
+      }
+      break
+    }
+
+    case 'monthly': {
+      const monthRange = getMonthRangeWithOffset(weekOffset) // reusing weekOffset as monthOffset
+      if (monthRange) {
+        startDate = formatDate(monthRange.start)
+        endDate = formatDate(monthRange.end)
+
+        // Adjust end date if it's in the future
+        if (monthRange.end > today) {
+          endDate = formatDate(today)
+        }
+
+        const monthName = monthRange.start.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+        const monthLabel = weekOffset === 0 ? 'This Month' :
+                          weekOffset === -1 ? 'Last Month' :
+                          `${Math.abs(weekOffset)} months ago`
+        displayLabel = `${monthLabel} (${monthName})`
+      } else {
+        startDate = undefined
+        endDate = undefined
+        displayLabel = 'Invalid month'
       }
       break
     }

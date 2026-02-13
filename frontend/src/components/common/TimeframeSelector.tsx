@@ -22,7 +22,8 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
 import { 
   Timeframe, 
   getDateRange, 
-  canGoToNextWeek, 
+  canGoToNextWeek,
+  canGoToNextMonth,
   getMaxDate,
   isValidDateRange 
 } from '../../utils/dateUtils'
@@ -51,29 +52,30 @@ export default function TimeframeSelector({
   compact = false,
 }: TimeframeSelectorProps) {
   const dateRange = getDateRange(timeframe, weekOffset, customStartDate, customEndDate)
-  const canGoNext = timeframe === 'weekly' && canGoToNextWeek(weekOffset)
-  const canGoPrev = timeframe === 'weekly' // Can always go to previous weeks
-  
-  const handlePrevWeek = () => {
-    if (timeframe === 'weekly') {
-      onWeekOffsetChange(weekOffset - 1)
+
+  // Navigation for weekly and monthly
+  const hasNavigation = timeframe === 'weekly' || timeframe === 'monthly'
+  const canGoNext =
+    (timeframe === 'weekly' && canGoToNextWeek(weekOffset)) ||
+    (timeframe === 'monthly' && canGoToNextMonth(weekOffset))
+  const canGoPrev = hasNavigation // Can always go to previous
+
+  const handlePrev = () => {
+    if (hasNavigation) {
+      onWeekOffsetChange(weekOffset - 1) // reused for month offset too
     }
   }
   
-  const handleNextWeek = () => {
-    if (timeframe === 'weekly' && canGoNext) {
+  const handleNext = () => {
+    if (hasNavigation && canGoNext) {
       onWeekOffsetChange(weekOffset + 1)
     }
   }
   
   const handleTimeframeChange = (newTimeframe: Timeframe) => {
     onTimeframeChange(newTimeframe)
-    // Reset week offset when changing timeframe
-    if (newTimeframe === 'weekly') {
-      onWeekOffsetChange(0) // Default to current week (Mon-Sun)
-    } else {
-      onWeekOffsetChange(0)
-    }
+    // Reset offset when changing timeframe
+    onWeekOffsetChange(0)
   }
 
   const isCustomRangeValid = timeframe !== 'custom' || isValidDateRange(customStartDate, customEndDate)
@@ -94,18 +96,19 @@ export default function TimeframeSelector({
           <MenuItem value="d-2">2 Days Ago</MenuItem>
           <MenuItem value="d-3">3 Days Ago</MenuItem>
           <MenuItem value="weekly">Weekly</MenuItem>
+          <MenuItem value="monthly">Monthly</MenuItem>
           <MenuItem value="custom">Custom Range</MenuItem>
           <MenuItem value="overall">All Time</MenuItem>
         </Select>
       </FormControl>
 
-      {/* Week Navigation (only for weekly) */}
-      {timeframe === 'weekly' && (
+      {/* Period Navigation (weekly / monthly) */}
+      {hasNavigation && (
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-          <Tooltip title="Previous Week">
+          <Tooltip title={timeframe === 'monthly' ? 'Previous Month' : 'Previous Week'}>
             <IconButton 
               size="small" 
-              onClick={handlePrevWeek}
+              onClick={handlePrev}
               disabled={!canGoPrev}
               sx={{ 
                 bgcolor: 'action.hover',
@@ -116,11 +119,11 @@ export default function TimeframeSelector({
             </IconButton>
           </Tooltip>
           
-          <Tooltip title="Next Week">
+          <Tooltip title={timeframe === 'monthly' ? 'Next Month' : 'Next Week'}>
             <span>
               <IconButton 
                 size="small" 
-                onClick={handleNextWeek}
+                onClick={handleNext}
                 disabled={!canGoNext}
                 sx={{ 
                   bgcolor: 'action.hover',

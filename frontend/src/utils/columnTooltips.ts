@@ -118,6 +118,14 @@ export const COLUMN_TOOLTIPS: Record<string, string> = {
   email: 'Email address',
   total_reworks: 'Total number of rework occurrences',
   total_tasks: 'Total number of distinct tasks',
+
+  // Financial columns (project level only)
+  revenue: 'Actual Revenue from client sheet (Project WoW Revenue). Weekly granularity - only includes complete weeks in the selected date range',
+  cost: 'Total Cost (Work + Non-Work) from Jibble Billings. Summed daily for the selected date range',
+  work_cost: 'Cost from Work Activities only (task-related work tracked in Jibble)',
+  non_work_cost: 'Cost from Non-Work Activities (meetings, coordination, admin, etc.)',
+  margin: 'Margin = Revenue - Total Cost. Positive means profitable',
+  margin_percent: 'Margin % = ((Revenue - Cost) / Revenue) × 100. Shows profitability percentage (≥20% Green, 0-20% Yellow, <0% Red)',
 }
 
 /**
@@ -244,6 +252,15 @@ export const HEADER_TO_KEY_MAP: Record<string, string> = {
   'POD Hours': 'total_pod_hours',
   'Total': 'total_reviews',
   'Ready': 'approved_tasks',
+
+  // Financial abbreviations
+  'Rev$': 'revenue',
+  'Revenue': 'revenue',
+  'Cost': 'cost',
+  'Mrgn': 'margin',
+  'Margin': 'margin',
+  'M%': 'margin_percent',
+  'Margin%': 'margin_percent',
 }
 
 /**

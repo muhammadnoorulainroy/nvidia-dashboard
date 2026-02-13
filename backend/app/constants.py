@@ -393,7 +393,118 @@ class BigQueryConfig:
 
 
 # =============================================================================
-# 7. METRIC CALCULATION CONSTANTS
+# 7. FINANCIAL CONFIGURATION
+# =============================================================================
+
+@dataclass
+class FinancialConfig:
+    """
+    Configuration for financial metrics (Revenue, Cost, Margins).
+    
+    Revenue: From Google Sheet 'Projects WoW Revenue' tab (weekly granularity)
+    Cost: From BigQuery Jibblelogs 'Billings' field (daily granularity)
+    Margin: Revenue - Cost (only meaningful for complete weeks)
+    """
+    
+    # Google Sheet for revenue data
+    REVENUE_SHEET_ID: str = "1lpY2877xohw8pTLpjZCrt0bbHcX-ogzfBbsOP7DUIHA"
+    REVENUE_SHEET_GID: str = "1977702086"  # "Projects WoW Revenue" tab
+    
+    # Column indices in the revenue sheet (0-based)
+    COL_WEEK_START: int = 0       # A: Week Start Date
+    COL_WEEK_END: int = 1         # B: Week End Date
+    COL_PROJECT_JIBBLE: int = 4   # E: Project Name on Jibble
+    COL_STATUS: int = 7           # H: Project Status
+    COL_WEEKLY_EXPECTED_VOL: int = 11  # L: Weekly Expected Volume
+    COL_WEEKLY_DELIVERED_VOL: int = 12  # M: Weekly Delivered Volume
+    COL_BILL_RATE_TASK: int = 18  # S: Bill Rate/Task
+    COL_BILL_RATE_HOUR: int = 19  # T: Bill Rate/Hour
+    COL_EXPECTED_REVENUE: int = 20  # U: Expected Weekly Revenue
+    COL_ACTUAL_REVENUE: int = 21   # V: Actual Revenue
+    
+    # Jibble project names to include in cost query
+    COST_JIBBLE_PROJECTS: List[str] = field(default_factory=lambda: [
+        "Nvidia - ICPC",
+        "Nvidia - CFBench Multilingual",
+        "Nvidia - InverseIFEval",
+        "Nvidia - Multichallenge",
+        "Nvidia - Multichallenge Advanced",
+        "Nvidia - SysBench",
+        "NVIDIA_STEM Math_Eval",
+        "Nvidia - ScaleRTL",
+        "Nvidia - VERILOG",
+        "Nvidia - cuBench",
+        "Nvidia - CUDA",
+        "Nvidia - FACTUALITY (VQA)",
+        "Nvidia-pilots-and-proposals",
+    ])
+    
+    # Regex pattern for classifying Non-Work activities in BigQuery
+    NON_WORK_REGEX: str = (
+        r'(other|meeting(s|/standup)?|turing hours - no tasks|reporting|'
+        r'project management|coordination|community.*event(s)?|'
+        r'fte candidate assessment|convention|r&d|time off|'
+        r'calls with dev success|e-mail|slack|dev success|ops|'
+        r'leading coordinating|salesforce.*|interviews|testing|'
+        r'exit call|offboarding process|jibble|test activity|vetting content(s)?)'
+    )
+    
+    @staticmethod
+    def parse_currency(value: str) -> float:
+        """
+        Parse currency string to float. Returns 0 for invalid/empty/NA values.
+        
+        Handles: "$15,622", "$0", "NA", "", "$27,168.50"
+        
+        CRITICAL: This is used for business-impacting financial calculations.
+        Returns 0 (not None) for unparseable values to prevent NoneType errors
+        in margin calculations.
+        """
+        if not value or not isinstance(value, str):
+            return 0.0
+        value = value.strip()
+        if value.upper() in ('NA', 'N/A', '-', ''):
+            return 0.0
+        # Remove $ and commas
+        cleaned = value.replace('$', '').replace(',', '').strip()
+        if not cleaned:
+            return 0.0
+        try:
+            return float(cleaned)
+        except (ValueError, TypeError):
+            return 0.0
+    
+    @staticmethod
+    def parse_integer(value: str) -> int:
+        """Parse integer string. Returns 0 for invalid/empty values."""
+        if not value or not isinstance(value, str):
+            return 0
+        cleaned = value.strip().replace(',', '')
+        if cleaned.upper() in ('NA', 'N/A', '-', ''):
+            return 0
+        try:
+            return int(float(cleaned))
+        except (ValueError, TypeError):
+            return 0
+    
+    @staticmethod
+    def calculate_margin(revenue: float, cost: float) -> float:
+        """Calculate margin in dollars. Revenue - Total Cost."""
+        return revenue - cost
+    
+    @staticmethod
+    def calculate_margin_percent(revenue: float, cost: float) -> float:
+        """
+        Calculate margin percentage.
+        Returns None if revenue is 0 (avoid division by zero).
+        """
+        if revenue == 0:
+            return None
+        return round(((revenue - cost) / revenue) * 100, 1)
+
+
+# =============================================================================
+# 8. METRIC CALCULATION CONSTANTS
 # =============================================================================
 
 @dataclass
@@ -478,6 +589,7 @@ class AppConstants:
     statuses: TaskStatusConfig = field(default_factory=TaskStatusConfig)
     jibble: JibbleConfig = field(default_factory=JibbleConfig)
     bigquery: BigQueryConfig = field(default_factory=BigQueryConfig)
+    financial: FinancialConfig = field(default_factory=FinancialConfig)
     metrics: MetricConfig = field(default_factory=MetricConfig)
 
 

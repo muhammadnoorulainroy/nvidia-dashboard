@@ -20,6 +20,7 @@ import {
   Menu as MenuIcon,
   Business as BusinessIcon,
   Settings as SettingsIcon,
+  Analytics as AnalyticsIcon,
 } from '@mui/icons-material'
 import SyncStatus from './common/SyncStatus'
 
@@ -37,6 +38,7 @@ interface MenuItem {
 
 const menuItems: MenuItem[] = [
   { text: 'Task Metrics', icon: <BusinessIcon />, path: '/task-metrics' },
+  { text: 'Analytics', icon: <AnalyticsIcon />, path: '/analytics' },
   { text: 'Configuration', icon: <SettingsIcon />, path: '/configuration' },
 ]
 

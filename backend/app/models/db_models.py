@@ -654,3 +654,91 @@ class ProjectConfiguration(Base):
         Index('ix_project_config_project_type', 'project_id', 'config_type'),
         Index('ix_project_config_entity', 'entity_type', 'entity_id'),
     )
+
+
+# =============================================================================
+# FINANCIAL DATA TABLES
+# =============================================================================
+
+class ProjectRevenueWeekly(Base):
+    """
+    Weekly revenue data per project, synced from Google Sheet 'Projects WoW Revenue' tab.
+    
+    Each row = one project's revenue for one week.
+    Revenue is the 'Actual Revenue' column from the sheet (ground truth from client).
+    
+    IMPORTANT: Revenue is weekly granularity only. Never prorate to daily.
+    """
+    __tablename__ = 'project_revenue_weekly'
+    
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    
+    # Week identification
+    week_start_date = Column(Date, nullable=False, index=True)
+    week_end_date = Column(Date, nullable=True)
+    
+    # Project identification
+    jibble_project_name = Column(String(255), nullable=False)  # "Nvidia - SysBench" (as in sheet)
+    project_id = Column(Integer, nullable=True, index=True)  # Mapped to our 36/37/38/39
+    
+    # Project metadata (from sheet)
+    project_status = Column(String(50))  # Active/Upcoming/Closed
+    
+    # Volume
+    weekly_expected_volume = Column(Integer, nullable=True)
+    weekly_delivered_volume = Column(Integer, nullable=True)
+    
+    # Billing rates (stored as raw numbers, parsed from $X,XXX format)
+    bill_rate_task = Column(Float, nullable=True)
+    bill_rate_hour = Column(Float, nullable=True)
+    
+    # Revenue (stored as raw numbers, parsed from $X,XXX format)
+    expected_revenue = Column(Float, nullable=True, default=0)
+    actual_revenue = Column(Float, nullable=True, default=0)
+    
+    # Sync metadata
+    last_synced = Column(DateTime, nullable=True)
+    
+    # Unique constraint: one row per project per week
+    __table_args__ = (
+        Index('ix_project_revenue_week_project', 'week_start_date', 'project_id'),
+        Index('ix_project_revenue_jibble', 'week_start_date', 'jibble_project_name'),
+    )
+
+
+class ProjectCostDaily(Base):
+    """
+    Daily cost data per project, synced from BigQuery Jibblelogs.
+    
+    Each row = one project + activity_type combination for one day.
+    Cost comes from the 'Billings' field in BigQuery (ground truth from Jibble).
+    
+    IMPORTANT: Cost is daily granularity. Can be aggregated to any date range precisely.
+    """
+    __tablename__ = 'project_cost_daily'
+    
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    
+    # Date
+    date = Column(Date, nullable=False, index=True)
+    
+    # Project identification
+    jibble_project_name = Column(String(255), nullable=False)  # "Nvidia - SysBench"
+    project_id = Column(Integer, nullable=True, index=True)  # Mapped to our 36/37/38/39
+    
+    # Activity classification
+    activity = Column(String(255), nullable=True)
+    activity_type = Column(String(50), nullable=False)  # 'Work Activity' or 'Non-Work Activity'
+    
+    # Hours and cost
+    logged_hours = Column(Float, nullable=True, default=0)
+    total_cost = Column(Float, nullable=True, default=0)  # Billings from BigQuery
+    
+    # Sync metadata
+    last_synced = Column(DateTime, nullable=True)
+    
+    # Composite indexes for efficient querying
+    __table_args__ = (
+        Index('ix_project_cost_date_project', 'date', 'project_id'),
+        Index('ix_project_cost_date_jibble', 'date', 'jibble_project_name'),
+    )

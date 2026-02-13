@@ -75,6 +75,13 @@ const COLUMN_GROUPS = {
     borderColor: '#FCD34D',
     textColor: '#92400E'
   },
+  finance: {
+    label: 'Finance',
+    bgHeader: '#FDF2F8',
+    bgSubHeader: '#FDF4FF',
+    borderColor: '#F0ABFC',
+    textColor: '#86198F'
+  },
 }
 
 // Responsive common cell styles - compact for all screens
@@ -146,6 +153,21 @@ const getAvgReworkStyle = (avgR: number | null) => {
   if (avgR < 1) return { color: '#065F46', bgcolor: '#D1FAE5' }        // Green
   if (avgR <= 2.5) return { color: '#92400E', bgcolor: '#FEF3C7' }     // Yellow
   return { color: '#991B1B', bgcolor: '#FEE2E2' }                       // Red
+}
+
+// Margin% color coding
+// Positive margin is good (green), low margin is cautionary (yellow), negative is bad (red)
+const getMarginStyle = (marginPct: number | null) => {
+  if (marginPct === null || marginPct === undefined) return { color: '#94A3B8', bgcolor: 'transparent' }
+  if (marginPct >= 20) return { color: '#065F46', bgcolor: '#D1FAE5' }      // Green - healthy
+  if (marginPct >= 0) return { color: '#92400E', bgcolor: '#FEF3C7' }       // Yellow - watch
+  return { color: '#991B1B', bgcolor: '#FEE2E2' }                            // Red - negative
+}
+
+// Format currency with $ and commas, e.g. $15,622
+const formatCurrency = (value: number | null | undefined): string => {
+  if (value === null || value === undefined || value === 0) return '-'
+  return '$' + value.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })
 }
 
 // Responsive font sizes for data cells
@@ -275,6 +297,14 @@ function TaskRow({ task }: { task: TaskUnderTrainer }) {
       <TableCell align="center" sx={{ ...cellStyle }}>
         <Typography sx={{ fontSize: dataFontSize, color: '#94A3B8' }}>-</Typography>
       </TableCell>
+      <TableCell align="center" sx={{ ...cellStyle, borderRight: `1px solid ${COLUMN_GROUPS.time.borderColor}` }}>
+        <Typography sx={{ fontSize: dataFontSize, color: '#94A3B8' }}>-</Typography>
+      </TableCell>
+
+      {/* Finance Group - N/A at task level */}
+      <TableCell align="center" sx={{ ...cellStyle, color: '#94A3B8' }}>-</TableCell>
+      <TableCell align="center" sx={{ ...cellStyle, color: '#94A3B8' }}>-</TableCell>
+      <TableCell align="center" sx={{ ...cellStyle, color: '#94A3B8' }}>-</TableCell>
       <TableCell align="center" sx={{ ...cellStyle, color: '#94A3B8' }}>-</TableCell>
     </TableRow>
   )
@@ -424,6 +454,12 @@ function TrainerRow({
             {trainer.efficiency !== null ? `${trainer.efficiency.toFixed(0)}%` : '-'}
           </Typography>
         </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle, borderRight: `1px solid ${COLUMN_GROUPS.time.borderColor}`, color: '#94A3B8' }}>-</TableCell>
+
+        {/* Finance Group - N/A at trainer level */}
+        <TableCell align="center" sx={{ ...cellStyle, color: '#94A3B8' }}>-</TableCell>
+        <TableCell align="center" sx={{ ...cellStyle, color: '#94A3B8' }}>-</TableCell>
+        <TableCell align="center" sx={{ ...cellStyle, color: '#94A3B8' }}>-</TableCell>
         <TableCell align="center" sx={{ ...cellStyle, color: '#94A3B8' }}>-</TableCell>
       </TableRow>
       
@@ -586,11 +622,17 @@ function PodLeadRow({
             {podLead.efficiency !== null ? `${podLead.efficiency.toFixed(0)}%` : '-'}
           </Typography>
         </TableCell>
-        <TableCell align="center" sx={{ ...cellStyle }}>
+        <TableCell align="center" sx={{ ...cellStyle, borderRight: `1px solid ${COLUMN_GROUPS.time.borderColor}` }}>
           <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#475569' }}>
             {podLead.pod_jibble_hours?.toFixed(1) ?? '-'}
           </Typography>
         </TableCell>
+
+        {/* Finance Group - N/A at POD lead level */}
+        <TableCell align="center" sx={{ ...cellStyle, color: '#94A3B8' }}>-</TableCell>
+        <TableCell align="center" sx={{ ...cellStyle, color: '#94A3B8' }}>-</TableCell>
+        <TableCell align="center" sx={{ ...cellStyle, color: '#94A3B8' }}>-</TableCell>
+        <TableCell align="center" sx={{ ...cellStyle, color: '#94A3B8' }}>-</TableCell>
       </TableRow>
       
       {hasTrainers && open && podLead.trainers.map((trainer, idx) => (
@@ -752,9 +794,31 @@ function ProjectRow({
             {project.efficiency !== null ? `${project.efficiency.toFixed(0)}%` : '-'}
           </Typography>
         </TableCell>
-        <TableCell align="center" sx={{ ...cellStyle }}>
+        <TableCell align="center" sx={{ ...cellStyle, borderRight: `1px solid ${COLUMN_GROUPS.time.borderColor}` }}>
           <Typography sx={{ fontSize: projectFontSize, fontWeight: 700, color: '#1E293B' }}>
             {project.total_pod_hours?.toFixed(1) ?? '-'}
+          </Typography>
+        </TableCell>
+
+        {/* Finance Group - PROJECT LEVEL ONLY */}
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: projectFontSize, fontWeight: 700, color: '#059669' }}>
+            {formatCurrency(project.revenue)}
+          </Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: projectFontSize, fontWeight: 700, color: '#DC2626' }}>
+            {formatCurrency(project.cost)}
+          </Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: projectFontSize, fontWeight: 700, color: project.margin >= 0 ? '#059669' : '#DC2626' }}>
+            {project.margin !== 0 ? formatCurrency(project.margin) : '-'}
+          </Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle, ...getMarginStyle(project.margin_percent) }}>
+          <Typography sx={{ fontSize: projectFontSize, fontWeight: 700 }}>
+            {project.margin_percent !== null && project.margin_percent !== undefined ? `${project.margin_percent.toFixed(1)}%` : '-'}
           </Typography>
         </TableCell>
       </TableRow>
@@ -878,6 +942,11 @@ export function ProjectsTab({ onSummaryUpdate, onSummaryLoading }: ProjectsTabPr
       case 'accounted_hours': aVal = a.accounted_hours ?? 0; bVal = b.accounted_hours ?? 0; break
       case 'efficiency': aVal = a.efficiency ?? -Infinity; bVal = b.efficiency ?? -Infinity; break
       case 'total_pod_hours': aVal = a.total_pod_hours ?? 0; bVal = b.total_pod_hours ?? 0; break
+      // Finance
+      case 'revenue': aVal = a.revenue ?? 0; bVal = b.revenue ?? 0; break
+      case 'cost': aVal = a.cost ?? 0; bVal = b.cost ?? 0; break
+      case 'margin': aVal = a.margin ?? 0; bVal = b.margin ?? 0; break
+      case 'margin_percent': aVal = a.margin_percent ?? -Infinity; bVal = b.margin_percent ?? -Infinity; break
       default: return 0
     }
     if (typeof aVal === 'string') return sortDirection === 'asc' ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal)
@@ -940,7 +1009,13 @@ export function ProjectsTab({ onSummaryUpdate, onSummaryLoading }: ProjectsTabPr
   const handleExport = () => {
     const exportData: any[] = []
     filteredData.forEach(project => {
-      exportData.push({ level: 'Project', project: project.project_name, unique_tasks: project.unique_tasks, new_tasks: project.new_tasks, rework: project.rework, total_reviews: project.total_reviews, rework_percent: project.rework_percent, logged_hours: project.logged_hours })
+      exportData.push({ 
+        level: 'Project', project: project.project_name, 
+        unique_tasks: project.unique_tasks, new_tasks: project.new_tasks, rework: project.rework, 
+        total_reviews: project.total_reviews, rework_percent: project.rework_percent, logged_hours: project.logged_hours,
+        revenue: project.revenue || 0, cost: project.cost || 0, 
+        margin: project.margin || 0, margin_percent: project.margin_percent,
+      })
       project.pod_leads.forEach(pl => {
         exportData.push({ level: 'POD Lead', project: project.project_name, pod_lead: pl.pod_lead_name, email: pl.pod_lead_email, unique_tasks: pl.unique_tasks, new_tasks: pl.new_tasks, rework: pl.rework, total_reviews: pl.total_reviews, rework_percent: pl.rework_percent })
         pl.trainers?.forEach(t => {
@@ -1026,7 +1101,7 @@ export function ProjectsTab({ onSummaryUpdate, onSummaryLoading }: ProjectsTabPr
       {/* Table - Bigger height, responsive */}
       <Paper sx={{ width: '100%', overflow: 'hidden', borderRadius: 1, border: '1px solid #E2E8F0' }}>
         <TableContainer sx={{ maxHeight: { xs: 'calc(100vh - 200px)', sm: 'calc(100vh - 180px)', md: 'calc(100vh - 160px)' }, minHeight: { xs: 400, sm: 500, md: 600 } }}>
-          <Table stickyHeader size="small" sx={{ minWidth: { xs: 800, sm: 900, md: 1000 } }}>
+          <Table stickyHeader size="small" sx={{ minWidth: { xs: 900, sm: 1050, md: 1200 } }}>
             <TableHead>
               {/* Group Headers Row - Responsive */}
               <TableRow>
@@ -1077,9 +1152,22 @@ export function ProjectsTab({ onSummaryUpdate, onSummaryLoading }: ProjectsTabPr
                     bgcolor: COLUMN_GROUPS.time.bgHeader, 
                     color: COLUMN_GROUPS.time.textColor,
                     borderBottom: `1px solid ${COLUMN_GROUPS.time.borderColor}`,
+                    borderRight: `2px solid ${COLUMN_GROUPS.time.borderColor}`,
                   }}
                 >
                   <Typography sx={{ fontSize: { xs: '0.5rem', sm: '0.55rem', md: '0.6rem' }, fontWeight: 700, letterSpacing: '0.02em' }}>TIME & EFF</Typography>
+                </TableCell>
+                <TableCell 
+                  colSpan={4} 
+                  align="center"
+                  sx={{ 
+                    ...headerCellStyle, 
+                    bgcolor: COLUMN_GROUPS.finance.bgHeader, 
+                    color: COLUMN_GROUPS.finance.textColor,
+                    borderBottom: `1px solid ${COLUMN_GROUPS.finance.borderColor}`,
+                  }}
+                >
+                  <Typography sx={{ fontSize: { xs: '0.5rem', sm: '0.55rem', md: '0.6rem' }, fontWeight: 700, letterSpacing: '0.02em' }}>FINANCE</Typography>
                 </TableCell>
               </TableRow>
 
@@ -1122,7 +1210,13 @@ export function ProjectsTab({ onSummaryUpdate, onSummaryLoading }: ProjectsTabPr
                 <SubHeader label="Jib" columnKey="logged_hours" group="time" tooltipKey="Jib" />
                 <SubHeader label="Acct" columnKey="accounted_hours" group="time" tooltipKey="Acct" />
                 <SubHeader label="Eff%" columnKey="efficiency" group="time" tooltipKey="Eff%" />
-                <SubHeader label="POD" columnKey="total_pod_hours" group="time" tooltipKey="POD" />
+                <SubHeader label="POD" columnKey="total_pod_hours" group="time" tooltipKey="POD" isLastInGroup />
+
+                {/* Finance - Project level only */}
+                <SubHeader label="Rev$" columnKey="revenue" group="finance" tooltipKey="Rev$" />
+                <SubHeader label="Cost" columnKey="cost" group="finance" tooltipKey="Cost" />
+                <SubHeader label="Mrgn" columnKey="margin" group="finance" tooltipKey="Mrgn" />
+                <SubHeader label="M%" columnKey="margin_percent" group="finance" tooltipKey="M%" />
               </TableRow>
             </TableHead>
             <TableBody>

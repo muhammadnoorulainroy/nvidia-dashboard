@@ -9,6 +9,7 @@ const TaskMetrics = lazy(() => import('./pages/PreDelivery'))
 const ClientDelivery = lazy(() => import('./pages/ClientDelivery'))
 const ClientDeliverySummary = lazy(() => import('./pages/ClientDeliverySummary'))
 const Configuration = lazy(() => import('./components/configuration/ConfigurationPage'))
+const Analytics = lazy(() => import('./pages/Analytics'))
 
 // Loading fallback component
 function PageLoader() {
@@ -39,6 +40,7 @@ function App() {
               <Route path="/client-delivery" element={<ClientDelivery />} />
               <Route path="/client-delivery-summary" element={<ClientDeliverySummary />} />
               <Route path="/configuration" element={<Configuration />} />
+              <Route path="/analytics" element={<Analytics />} />
             </Routes>
           </Suspense>
         </ErrorBoundary>

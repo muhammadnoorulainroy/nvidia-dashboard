@@ -145,6 +145,25 @@ class Settings(BaseSettings):
     jibble_email_mapping_sheet_id: str = "1nR15UwSHx2WwQYFePAQIyIORf2aSCNp4ny33jetETZ8"
     jibble_email_mapping_sheet_gid: str = "1375209319"
     
+    # ==========================================================================
+    # Financial Data Settings
+    # ==========================================================================
+    # Google Sheet for revenue data (Projects WoW Revenue tab)
+    revenue_sheet_id: str = "1lpY2877xohw8pTLpjZCrt0bbHcX-ogzfBbsOP7DUIHA"
+    revenue_sheet_gid: str = "1977702086"  # "Projects WoW Revenue" tab
+    
+    # BigQuery table for cost data (Jibble logs with Billings)
+    cost_bigquery_project: str = "turing-230020"
+    cost_bigquery_table: str = "turing-230020.test.Jibblelogs"
+    
+    # Jibble project names to include in cost queries
+    cost_jibble_projects: str = "Nvidia - ICPC,Nvidia - CFBench Multilingual,Nvidia - InverseIFEval,Nvidia - Multichallenge,Nvidia - Multichallenge Advanced,Nvidia - SysBench,NVIDIA_STEM Math_Eval,Nvidia - ScaleRTL,Nvidia - VERILOG,Nvidia - cuBench,Nvidia - CUDA,Nvidia - FACTUALITY (VQA),Nvidia-pilots-and-proposals"
+    
+    @property
+    def cost_jibble_projects_list(self) -> List[str]:
+        """Get cost Jibble project names as a list"""
+        return [p.strip() for p in self.cost_jibble_projects.split(',') if p.strip()]
+    
     @property
     def jibble_nvidia_project_ids_list(self) -> List[str]:
         """Get Nvidia Jibble project IDs as a list"""

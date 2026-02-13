@@ -9,7 +9,7 @@ from google.cloud import bigquery
 
 from app.config import get_settings
 from app.services.db_service import get_db_service
-from app.models.db_models import ReviewDetail, Contributor, Task, WorkItem, TaskReviewedInfo, TaskAHT, ContributorTaskStats, ContributorDailyStats, ReviewerDailyStats, TaskRaw, TaskHistoryRaw, PodLeadMapping, ReviewerTrainerDailyStats, JibbleHours, TrainerReviewStats
+from app.models.db_models import ReviewDetail, Contributor, Task, WorkItem, TaskReviewedInfo, TaskAHT, ContributorTaskStats, ContributorDailyStats, ReviewerDailyStats, TaskRaw, TaskHistoryRaw, PodLeadMapping, ReviewerTrainerDailyStats, JibbleHours, TrainerReviewStats, ProjectRevenueWeekly, ProjectCostDaily
 from app.constants import get_constants
 
 logger = logging.getLogger(__name__)
@@ -3803,11 +3803,212 @@ class QueryService:
                 # Sort projects by total_reviews
                 project_results.sort(key=lambda x: -(x['total_reviews'] or 0))
                 
+                # ============================================================
+                # FINANCIAL METRICS
+                # Attach revenue, cost, margin data at project level
+                # ============================================================
+                try:
+                    financial_data = self.get_financial_metrics(
+                        start_date=start_date,
+                        end_date=end_date,
+                        project_ids=[p['project_id'] for p in project_results],
+                        session=session
+                    )
+                    
+                    # Merge financial data into project results
+                    for proj in project_results:
+                        pid = proj['project_id']
+                        fin = financial_data.get(pid, {})
+                        proj['revenue'] = fin.get('revenue', 0)
+                        proj['cost'] = fin.get('cost', 0)
+                        proj['work_cost'] = fin.get('work_cost', 0)
+                        proj['non_work_cost'] = fin.get('non_work_cost', 0)
+                        proj['margin'] = fin.get('margin', 0)
+                        proj['margin_percent'] = fin.get('margin_percent', None)
+                        proj['cost_logged_hours'] = fin.get('cost_logged_hours', 0)
+                        proj['revenue_weeks_matched'] = fin.get('revenue_weeks_matched', 0)
+                        proj['revenue_partial_week'] = fin.get('revenue_partial_week', False)
+                except Exception as e:
+                    logger.warning(f"Failed to attach financial metrics (non-fatal): {e}")
+                    import traceback
+                    traceback.print_exc()
+                    # Financial metrics are optional - don't break the response
+                    for proj in project_results:
+                        proj['revenue'] = 0
+                        proj['cost'] = 0
+                        proj['work_cost'] = 0
+                        proj['non_work_cost'] = 0
+                        proj['margin'] = 0
+                        proj['margin_percent'] = None
+                        proj['cost_logged_hours'] = 0
+                        proj['revenue_weeks_matched'] = 0
+                        proj['revenue_partial_week'] = False
+                
                 return project_results
                 
         except Exception as e:
             logger.error(f"Error getting project stats: {e}")
             raise
+    
+    def get_financial_metrics(
+        self,
+        start_date: Optional[str] = None,
+        end_date: Optional[str] = None,
+        project_ids: Optional[list] = None,
+        session=None,
+    ) -> Dict:
+        """
+        Get financial metrics (revenue, cost, margins) for projects.
+        
+        Revenue: From project_revenue_weekly (weekly granularity)
+            - Only includes weeks where week_start_date falls within the date range
+            - This ensures we don't prorate or double-count
+        
+        Cost: From project_cost_daily (daily granularity)
+            - Precise to the day - sums all days in the date range
+            - Includes BOTH Work and Non-Work activities for total cost
+        
+        Margin: Revenue - Total Cost
+        Margin%: ((Revenue - Cost) / Revenue) * 100
+        
+        Returns dict of {project_id: {revenue, cost, work_cost, non_work_cost, margin, margin_percent}}
+        
+        CRITICAL: This method handles the Multichallenge consolidation:
+        - Project 37 (Multichallenge) and Project 40 (Multichallenge Advanced) 
+          share the same project_id=37 in JIBBLE_NAME_TO_PROJECT_ID
+        - Revenue rows for both are summed under project_id 37
+        - Cost rows for both are summed under project_id 37
+        """
+        from sqlalchemy import func, and_
+        from datetime import date, datetime as dt
+        
+        fin_config = get_constants().financial
+        
+        result = {}
+        
+        try:
+            # Parse dates
+            parsed_start = None
+            parsed_end = None
+            if start_date:
+                parsed_start = dt.strptime(start_date, '%Y-%m-%d').date() if isinstance(start_date, str) else start_date
+            if end_date:
+                parsed_end = dt.strptime(end_date, '%Y-%m-%d').date() if isinstance(end_date, str) else end_date
+            
+            if project_ids is None:
+                project_ids = self.settings.all_project_ids_list
+            
+            # Initialize result for all projects
+            for pid in project_ids:
+                result[pid] = {
+                    'revenue': 0,
+                    'cost': 0,
+                    'work_cost': 0,
+                    'non_work_cost': 0,
+                    'margin': 0,
+                    'margin_percent': None,
+                    'cost_logged_hours': 0,
+                    'revenue_weeks_matched': 0,
+                    'revenue_partial_week': False,
+                }
+            
+            # ============================================================
+            # REVENUE: Query project_revenue_weekly
+            # The sheet's weeks may not align with the dashboard's Mon-Sun weeks
+            # (e.g. sheet might use Sat-Fri). To assign each sheet week to
+            # exactly ONE dashboard week (avoiding double-counting), we use the
+            # MIDPOINT of the sheet's week as the representative date.
+            # Midpoint = week_start + (week_end - week_start) / 2
+            # If week_end is NULL, default to week_start + 3 (assumes 7-day week).
+            # ============================================================
+            # Compute week midpoint: week_start + 3 days (midpoint of a ~7-day week)
+            # This ensures each sheet week maps to exactly one dashboard week
+            # even when sheet weeks (e.g. Sat-Fri) don't align with dashboard weeks (Mon-Sun)
+            week_midpoint = ProjectRevenueWeekly.week_start_date + 3
+            
+            revenue_query = session.query(
+                ProjectRevenueWeekly.project_id,
+                func.sum(ProjectRevenueWeekly.actual_revenue).label('total_revenue'),
+                func.count(ProjectRevenueWeekly.id).label('weeks_matched'),
+            ).filter(
+                ProjectRevenueWeekly.project_id.isnot(None),
+                ProjectRevenueWeekly.project_id.in_(project_ids),
+            )
+            
+            if parsed_start:
+                revenue_query = revenue_query.filter(week_midpoint >= parsed_start)
+            if parsed_end:
+                revenue_query = revenue_query.filter(week_midpoint <= parsed_end)
+            
+            revenue_query = revenue_query.group_by(ProjectRevenueWeekly.project_id)
+            
+            for row in revenue_query.all():
+                pid = row.project_id
+                if pid in result:
+                    result[pid]['revenue'] = round(float(row.total_revenue or 0), 2)
+                    result[pid]['revenue_weeks_matched'] = row.weeks_matched or 0
+            
+            # ============================================================
+            # COST: Query project_cost_daily
+            # Sum all days in the date range (precise daily granularity)
+            # ============================================================
+            cost_query = session.query(
+                ProjectCostDaily.project_id,
+                ProjectCostDaily.activity_type,
+                func.sum(ProjectCostDaily.total_cost).label('total_cost'),
+                func.sum(ProjectCostDaily.logged_hours).label('total_hours'),
+            ).filter(
+                ProjectCostDaily.project_id.isnot(None),
+                ProjectCostDaily.project_id.in_(project_ids),
+            )
+            
+            if parsed_start:
+                cost_query = cost_query.filter(ProjectCostDaily.date >= parsed_start)
+            if parsed_end:
+                cost_query = cost_query.filter(ProjectCostDaily.date <= parsed_end)
+            
+            cost_query = cost_query.group_by(
+                ProjectCostDaily.project_id,
+                ProjectCostDaily.activity_type,
+            )
+            
+            for row in cost_query.all():
+                pid = row.project_id
+                if pid not in result:
+                    continue
+                    
+                cost_val = round(float(row.total_cost or 0), 2)
+                hours_val = round(float(row.total_hours or 0), 2)
+                
+                if row.activity_type == 'Work Activity':
+                    result[pid]['work_cost'] += cost_val
+                    result[pid]['cost_logged_hours'] += hours_val
+                elif row.activity_type == 'Non-Work Activity':
+                    result[pid]['non_work_cost'] += cost_val
+                    result[pid]['cost_logged_hours'] += hours_val
+            
+            # ============================================================
+            # Calculate totals and margins
+            # ============================================================
+            for pid in project_ids:
+                if pid not in result:
+                    continue
+                
+                r = result[pid]
+                r['cost'] = round(r['work_cost'] + r['non_work_cost'], 2)
+                r['margin'] = round(fin_config.calculate_margin(r['revenue'], r['cost']), 2)
+                r['margin_percent'] = fin_config.calculate_margin_percent(r['revenue'], r['cost'])
+                r['work_cost'] = round(r['work_cost'], 2)
+                r['non_work_cost'] = round(r['non_work_cost'], 2)
+                r['cost_logged_hours'] = round(r['cost_logged_hours'], 2)
+            
+            return result
+            
+        except Exception as e:
+            logger.error(f"Error calculating financial metrics: {e}")
+            import traceback
+            traceback.print_exc()
+            return result
 
 
 _query_service = None
