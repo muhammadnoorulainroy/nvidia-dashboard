@@ -10,6 +10,8 @@ const ClientDelivery = lazy(() => import('./pages/ClientDelivery'))
 const ClientDeliverySummary = lazy(() => import('./pages/ClientDeliverySummary'))
 const Configuration = lazy(() => import('./components/configuration/ConfigurationPage'))
 const Analytics = lazy(() => import('./pages/Analytics'))
+const TeamOverview = lazy(() => import('./pages/TeamOverview'))
+const QualityRubrics = lazy(() => import('./pages/QualityRubrics'))
 
 // Loading fallback component
 function PageLoader() {
@@ -41,6 +43,8 @@ function App() {
               <Route path="/client-delivery-summary" element={<ClientDeliverySummary />} />
               <Route path="/configuration" element={<Configuration />} />
               <Route path="/analytics" element={<Analytics />} />
+              <Route path="/team-overview" element={<TeamOverview />} />
+              <Route path="/quality-rubrics" element={<QualityRubrics />} />
             </Routes>
           </Suspense>
         </ErrorBoundary>

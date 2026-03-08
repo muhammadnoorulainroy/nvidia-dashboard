@@ -21,6 +21,8 @@ import {
   Business as BusinessIcon,
   Settings as SettingsIcon,
   Analytics as AnalyticsIcon,
+  GridView as GridViewIcon,
+  FactCheck as FactCheckIcon,
 } from '@mui/icons-material'
 import SyncStatus from './common/SyncStatus'
 
@@ -38,7 +40,9 @@ interface MenuItem {
 
 const menuItems: MenuItem[] = [
   { text: 'Task Metrics', icon: <BusinessIcon />, path: '/task-metrics' },
+  { text: 'Team Overview', icon: <GridViewIcon />, path: '/team-overview' },
   { text: 'Analytics', icon: <AnalyticsIcon />, path: '/analytics' },
+  { text: 'Quality Rubrics', icon: <FactCheckIcon />, path: '/quality-rubrics' },
   { text: 'Configuration', icon: <SettingsIcon />, path: '/configuration' },
 ]
 

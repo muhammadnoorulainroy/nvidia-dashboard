@@ -1827,6 +1827,139 @@ class DataSyncService:
             logger.error(f"[ERROR] Error syncing pod_lead_mapping: {e}")
             return False
     
+    def sync_math_proof_eval_team(self, sync_type: str = 'scheduled') -> bool:
+        """
+        Sync Math Proof Eval (project 59) team structure from a dedicated Google Sheet.
+        
+        Reads columns F-I ("Third week onwards") which contain:
+          F: Turing Mail ID, G: Name, H: Role, I: Reporting to
+        
+        Parses the hierarchy to resolve each Trainer/Sub Pod Lead to their Pod Lead,
+        then inserts into pod_lead_mapping with jibble_project='NVIDIA_STEM Math_Proof_Eval'.
+        """
+        from sqlalchemy import text
+        
+        settings = get_settings()
+        sheet_id = settings.math_proof_eval_team_sheet_id
+        if not sheet_id:
+            logger.info("MATH_PROOF_EVAL_TEAM_SHEET_ID not configured, skipping")
+            return True
+        
+        log_id = self.log_sync_start('math_proof_eval_team', sync_type)
+        JIBBLE_PROJECT = 'NVIDIA_STEM Math_Proof_Eval'
+        
+        try:
+            import gspread
+            credentials = self._get_google_sheets_credentials()
+            gc = gspread.authorize(credentials)
+            spreadsheet = gc.open_by_key(sheet_id)
+            worksheet = spreadsheet.get_worksheet(0)
+            all_values = worksheet.get_all_values()
+            
+            logger.info(f"Read {len(all_values)} rows from Math Proof Eval team sheet")
+            
+            # Parse columns F-I (indices 5-8), skip header rows (row 1 = title, row 2 = headers)
+            people = []
+            for row in all_values[2:]:  # skip first 2 rows
+                if len(row) < 9:
+                    continue
+                email = (row[5] or '').strip()
+                name = (row[6] or '').strip()
+                role = (row[7] or '').strip()
+                reporting_to = (row[8] or '').strip()
+                if email and name and role:
+                    people.append({
+                        'email': email.lower(),
+                        'name': name,
+                        'role': role,
+                        'reporting_to': reporting_to,
+                    })
+            
+            logger.info(f"Parsed {len(people)} team members from sheet")
+            
+            # Build name -> person lookup (case-insensitive)
+            name_to_person = {}
+            for p in people:
+                name_to_person[p['name'].lower()] = p
+            
+            # Resolve each person's Pod Lead by traversing up the "Reporting to" chain
+            def find_pod_lead(person, visited=None):
+                if visited is None:
+                    visited = set()
+                if person['email'] in visited:
+                    return None
+                visited.add(person['email'])
+                if person['role'] == 'Pod Lead':
+                    return person
+                reporting_name = person.get('reporting_to', '').lower()
+                if reporting_name and reporting_name in name_to_person:
+                    return find_pod_lead(name_to_person[reporting_name], visited)
+                return None
+            
+            records = []
+            for p in people:
+                if p['role'] in ('DM', 'Team Lead', 'Calibrator'):
+                    continue
+                
+                if p['role'] == 'Pod Lead':
+                    # Self-referencing entry for Pod Leads
+                    records.append({
+                        'trainer_email': p['email'],
+                        'trainer_name': p['name'],
+                        'pod_lead_email': p['email'],
+                        'role': 'POD Lead',
+                        'current_status': 'active',
+                        'jibble_project': JIBBLE_PROJECT,
+                        'jibble_name': p['name'],
+                    })
+                else:
+                    # Trainer or Sub Pod Lead -> resolve to their Pod Lead
+                    pod_lead = find_pod_lead(p)
+                    pod_email = pod_lead['email'] if pod_lead else None
+                    
+                    records.append({
+                        'trainer_email': p['email'],
+                        'trainer_name': p['name'],
+                        'pod_lead_email': pod_email,
+                        'role': p['role'],
+                        'current_status': 'active',
+                        'jibble_project': JIBBLE_PROJECT,
+                        'jibble_name': p['name'],
+                    })
+            
+            # Write to database
+            with self.db_service.get_session() as session:
+                session.execute(text(
+                    "DELETE FROM pod_lead_mapping WHERE jibble_project = :proj"
+                ), {'proj': JIBBLE_PROJECT})
+                session.commit()
+                
+                for rec in records:
+                    session.execute(text("""
+                        INSERT INTO pod_lead_mapping 
+                        (trainer_email, trainer_name, pod_lead_email, role, current_status, jibble_project, jibble_name)
+                        VALUES (:trainer_email, :trainer_name, :pod_lead_email, :role, :current_status, :jibble_project, :jibble_name)
+                    """), rec)
+                session.commit()
+            
+            # Log summary
+            pod_leads = [r for r in records if r['role'] == 'POD Lead']
+            trainers = [r for r in records if r['role'] != 'POD Lead']
+            logger.info(f"[OK] Synced {len(records)} Math Proof Eval team members "
+                        f"({len(pod_leads)} pod leads, {len(trainers)} trainers/sub-pod-leads)")
+            
+            self.log_sync_complete(log_id, len(records), True)
+            return True
+            
+        except ImportError:
+            logger.warning("gspread not installed - cannot sync Math Proof Eval team")
+            self.log_sync_complete(log_id, 0, False, "gspread not installed")
+            return False
+        except Exception as e:
+            logger.error(f"[ERROR] Error syncing Math Proof Eval team: {e}")
+            self.log_sync_complete(log_id, 0, False, str(e))
+            return False
+    
     def sync_jibble_hours(self, sync_type: str = 'initial') -> bool:
         """Sync Jibble hours from BigQuery turing-230020.test.Jibblelogs"""
         from app.models.db_models import JibbleHours
@@ -2805,6 +2938,7 @@ class DataSyncService:
             ('task_raw', self.sync_task_raw),
             ('task_history_raw', self.sync_task_history_raw),
             ('pod_lead_mapping', self.sync_pod_lead_mapping),
+            ('math_proof_eval_team', self.sync_math_proof_eval_team),
             ('jibble_email_mapping', self.sync_jibble_email_mapping),  # Jibble ID to Turing email mapping
             ('jibble_hours', self.sync_jibble_hours),  # Jibble hours from BigQuery
             ('trainer_review_stats', self.sync_trainer_review_stats),  # Per-trainer review attribution

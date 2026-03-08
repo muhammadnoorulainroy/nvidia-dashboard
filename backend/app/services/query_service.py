@@ -2287,6 +2287,7 @@ class QueryService:
                 trainer_in_queue = {}
                 
                 all_delivery_task_ids = list(set(delivered_task_ids + in_queue_task_ids))
+                delivery_task_completions = defaultdict(list)
                 
                 if all_delivery_task_ids:
                     # Get completion events for delivery tasks
@@ -2302,7 +2303,6 @@ class QueryService:
                     ).all()
                     
                     # Group by task_id and find last completer
-                    delivery_task_completions = defaultdict(list)
                     for event in delivery_completion_events:
                         delivery_task_completions[event.task_id].append({
                             'author': event.author.lower().strip() if event.author else None,
@@ -2329,6 +2329,111 @@ class QueryService:
                             trainer_in_queue[last_completer] = trainer_in_queue.get(last_completer, 0) + 1
                 
                 logger.info(f"Attributed delivery stats to {len(trainer_delivered)} trainers (delivered), {len(trainer_in_queue)} trainers (in queue)")
+                
+                # ---------------------------------------------------------
+                # STEP 3.6: Compute trainer-level revenue
+                #
+                # For each delivered task, look up the bill_rate_task from
+                # ProjectRevenueWeekly for that project + delivery week.
+                # trainer_revenue = SUM(bill_rate_task for each delivered task)
+                #
+                # Handles:
+                # - Different bill rates per week for the same project
+                # - MC vs MC-Advanced split via batch_name (both project_id=37)
+                # - Tasks outside any sheet week get rate=0 (no revenue)
+                # ---------------------------------------------------------
+                trainer_revenue = {}
+                
+                if delivered_task_ids:
+                    # Get rate entries from ProjectRevenueWeekly
+                    from datetime import timedelta as td
+                    rate_rows = session.query(
+                        ProjectRevenueWeekly.jibble_project_name,
+                        ProjectRevenueWeekly.week_start_date,
+                        ProjectRevenueWeekly.week_end_date,
+                        ProjectRevenueWeekly.bill_rate_task,
+                    ).filter(
+                        ProjectRevenueWeekly.bill_rate_task.isnot(None),
+                        ProjectRevenueWeekly.bill_rate_task > 0,
+                    ).all()
+                    
+                    rate_entries = []
+                    for rr in rate_rows:
+                        rate_entries.append({
+                            'jibble_name': rr.jibble_project_name,
+                            'week_start': rr.week_start_date,
+                            'week_end': rr.week_end_date or (rr.week_start_date + td(days=6)),
+                            'bill_rate': float(rr.bill_rate_task),
+                        })
+                    
+                    # Get delivered tasks with batch_name and delivery_date
+                    delivered_task_details = session.query(
+                        TaskRaw.task_id,
+                        TaskRaw.project_id,
+                        TaskRaw.batch_name,
+                        TaskRaw.delivery_date,
+                    ).filter(
+                        TaskRaw.task_id.in_(delivered_task_ids),
+                    ).all()
+                    
+                    # Map task_id -> (project_id, batch_name, delivery_date)
+                    task_detail_map = {}
+                    for td_row in delivered_task_details:
+                        task_detail_map[td_row.task_id] = {
+                            'project_id': td_row.project_id,
+                            'batch_name': td_row.batch_name,
+                            'delivery_date': td_row.delivery_date,
+                        }
+                    
+                    def _get_jibble_name(pid, batch_name):
+                        """Map project_id + batch_name to sheet's jibble_project_name."""
+                        if pid == 37:
+                            bn = (batch_name or '').lower()
+                            if 'advanced' in bn:
+                                return 'Nvidia - Multichallenge Advanced'
+                            return 'Nvidia - Multichallenge'
+                        _pid_map = {
+                            36: 'Nvidia - SysBench',
+                            38: 'Nvidia - InverseIFEval',
+                            39: 'Nvidia - CFBench Multilingual',
+                            41: 'Nvidia - ICPC',
+                            42: 'NVIDIA_STEM Math_Eval',
+                        }
+                        return _pid_map.get(pid, '')
+                    
+                    def _find_bill_rate(jibble_name, delivery_date):
+                        """Find bill_rate for a project + delivery date from rate entries."""
+                        if not delivery_date or not jibble_name:
+                            return 0
+                        for entry in rate_entries:
+                            if entry['jibble_name'] == jibble_name and entry['week_start'] <= delivery_date <= entry['week_end']:
+                                return entry['bill_rate']
+                        return 0
+                    
+                    # For each delivered task, find last completer and compute revenue
+                    for task_id in delivered_task_ids:
+                        detail = task_detail_map.get(task_id)
+                        if not detail or not detail['delivery_date']:
+                            continue
+                        
+                        # Get trainer attribution (last completer)
+                        completions = delivery_task_completions.get(task_id, [])
+                        if completions:
+                            completions_sorted = sorted(completions, key=lambda x: x['time_stamp'] or '')
+                            trainer_email = completions_sorted[-1]['author']
+                        else:
+                            continue
+                        
+                        if not trainer_email:
+                            continue
+                        
+                        jibble_name = _get_jibble_name(detail['project_id'], detail['batch_name'])
+                        bill_rate = _find_bill_rate(jibble_name, detail['delivery_date'])
+                        
+                        if bill_rate > 0:
+                            trainer_revenue[trainer_email] = trainer_revenue.get(trainer_email, 0) + bill_rate
+                    
+                    logger.info(f"Computed revenue for {len(trainer_revenue)} trainers, total=${sum(trainer_revenue.values()):,.0f}")
                 
                 # ---------------------------------------------------------
                 # STEP 4 & 5: Get avg_rating and total_reviews from trainer_review_stats
@@ -2550,6 +2655,9 @@ class QueryService:
                         # AHT of Submission = jibble_hours / (new_tasks + rework)
                         aht_submission = round(jibble_hours / submissions, 2) if submissions > 0 else None
                         
+                        # Revenue: delivered_tasks * bill_rate_task (week-aware)
+                        trainer_rev = round(trainer_revenue.get(trainer_email, 0), 2)
+                        
                         trainers_data.append({
                             'trainer_name': trainer_name,
                             'trainer_email': trainer_email,
@@ -2569,6 +2677,7 @@ class QueryService:
                             'merged_exp_aht': merged_aht,
                             'jibble_hours': round(jibble_hours, 2),
                             'aht_submission': aht_submission,
+                            'revenue': trainer_rev,
                             'status': trainer_info.get('status', 'Unknown'),
                         })
                         
@@ -2598,6 +2707,9 @@ class QueryService:
                         # Agentic review aggregation
                         pod_totals['agentic_reviews'] = pod_totals.get('agentic_reviews', 0) + trainer_agentic_reviews.get(trainer_email, 0)
                         pod_totals['agentic_score'] = pod_totals.get('agentic_score', 0) + trainer_agentic_scores.get(trainer_email, 0)
+                        
+                        # Revenue accumulation
+                        pod_totals['revenue'] = pod_totals.get('revenue', 0) + trainer_rev
                     
                     # Filter out trainers with no data in this project
                     # FIX: Also include trainers who have delivery data (in_queue/delivered) but no task completions
@@ -2657,6 +2769,7 @@ class QueryService:
                         'jibble_hours': round(pod_own_jibble_hours, 2),
                         'total_trainer_hours': round(total_trainer_hours, 2),
                         'aht_submission': pod_aht_submission,
+                        'revenue': round(pod_totals.get('revenue', 0), 2),
                         'trainers': sorted(trainers_with_data, key=lambda x: -(x['total_reviews'] or 0)),
                     })
                 
@@ -2740,6 +2853,9 @@ class QueryService:
                         merged_aht = self._calculate_merged_aht(new_tasks, tasks_with_rework, unique_tasks)
                         aht_submission = round(jibble_hours / submissions, 2) if submissions > 0 else None
                         
+                        # Revenue
+                        trainer_rev = round(trainer_revenue.get(trainer_email, 0), 2)
+                        
                         # Only include trainers with actual data (task data OR delivery data)
                         if unique_tasks > 0 or new_tasks > 0 or rework > 0 or total_reviews > 0 or delivered > 0 or in_queue > 0:
                             unmapped_trainers_data.append({
@@ -2761,6 +2877,7 @@ class QueryService:
                                 'merged_exp_aht': merged_aht,
                                 'jibble_hours': round(jibble_hours, 2),
                                 'aht_submission': aht_submission,
+                                'revenue': trainer_rev,
                                 'status': 'unmapped',
                             })
                             
@@ -2779,6 +2896,7 @@ class QueryService:
                             no_pod_totals['agentic_reviews'] += agentic_reviews
                             no_pod_totals['agentic_score'] += trainer_agentic_scores.get(trainer_email, 0)
                             no_pod_totals['trainer_jibble_hours'] += jibble_hours
+                            no_pod_totals['revenue'] = no_pod_totals.get('revenue', 0) + trainer_rev
                     
                     # Only add "No Pod Lead" entry if there are trainers with data
                     if unmapped_trainers_data:
@@ -2816,6 +2934,7 @@ class QueryService:
                             'jibble_hours': 0,  # No POD lead hours
                             'total_trainer_hours': round(no_pod_totals['trainer_jibble_hours'], 2),
                             'aht_submission': no_pod_aht_submission,
+                            'revenue': round(no_pod_totals.get('revenue', 0), 2),
                             'trainers': sorted(unmapped_trainers_data, key=lambda x: -(x['total_reviews'] or 0)),
                         })
                         
@@ -3279,6 +3398,7 @@ class QueryService:
                     trainer_delivered = {}
                     trainer_in_queue = {}
                     all_delivery_task_ids = list(set(delivered_task_ids + in_queue_task_ids))
+                    task_completions = defaultdict(list)  # Initialize before conditional block
                     
                     if all_delivery_task_ids:
                         # Get completion events
@@ -3320,6 +3440,95 @@ class QueryService:
                                 trainer_delivered[last_completer] = trainer_delivered.get(last_completer, 0) + 1
                             if task_id in in_queue_set:
                                 trainer_in_queue[last_completer] = trainer_in_queue.get(last_completer, 0) + 1
+                    
+                    # ---------------------------------------------------------
+                    # Compute trainer-level revenue for this project
+                    # Trainer revenue = SUM(bill_rate_task for each delivered task)
+                    # Uses week-aware rate lookup from ProjectRevenueWeekly
+                    # ---------------------------------------------------------
+                    trainer_revenue_map = {}
+                    
+                    if delivered_task_ids:
+                        from datetime import timedelta as _td
+                        
+                        # Get rate entries from ProjectRevenueWeekly for this project
+                        _rate_rows = session.query(
+                            ProjectRevenueWeekly.jibble_project_name,
+                            ProjectRevenueWeekly.week_start_date,
+                            ProjectRevenueWeekly.week_end_date,
+                            ProjectRevenueWeekly.bill_rate_task,
+                        ).filter(
+                            ProjectRevenueWeekly.bill_rate_task.isnot(None),
+                            ProjectRevenueWeekly.bill_rate_task > 0,
+                        ).all()
+                        
+                        _rate_entries = []
+                        for _rr in _rate_rows:
+                            _rate_entries.append({
+                                'jibble_name': _rr.jibble_project_name,
+                                'week_start': _rr.week_start_date,
+                                'week_end': _rr.week_end_date or (_rr.week_start_date + _td(days=6)),
+                                'bill_rate': float(_rr.bill_rate_task),
+                            })
+                        
+                        # Get delivered task details
+                        _dtd = session.query(
+                            TaskRaw.task_id,
+                            TaskRaw.project_id,
+                            TaskRaw.batch_name,
+                            TaskRaw.delivery_date,
+                        ).filter(
+                            TaskRaw.task_id.in_(delivered_task_ids),
+                        ).all()
+                        
+                        _task_detail = {}
+                        for _row in _dtd:
+                            _task_detail[_row.task_id] = {
+                                'project_id': _row.project_id,
+                                'batch_name': _row.batch_name,
+                                'delivery_date': _row.delivery_date,
+                            }
+                        
+                        def _get_jibble_name_proj(pid, batch_name):
+                            if pid == 37:
+                                bn = (batch_name or '').lower()
+                                if 'advanced' in bn:
+                                    return 'Nvidia - Multichallenge Advanced'
+                                return 'Nvidia - Multichallenge'
+                            _pid_m = {
+                                36: 'Nvidia - SysBench',
+                                38: 'Nvidia - InverseIFEval',
+                                39: 'Nvidia - CFBench Multilingual',
+                                41: 'Nvidia - ICPC',
+                                42: 'NVIDIA_STEM Math_Eval',
+                            }
+                            return _pid_m.get(pid, '')
+                        
+                        def _find_rate(jn, dd):
+                            if not dd or not jn:
+                                return 0
+                            for ent in _rate_entries:
+                                if ent['jibble_name'] == jn and ent['week_start'] <= dd <= ent['week_end']:
+                                    return ent['bill_rate']
+                            return 0
+                        
+                        # Use task_completions (already computed above for delivery attribution)
+                        for _tid in delivered_task_ids:
+                            _det = _task_detail.get(_tid)
+                            if not _det or not _det['delivery_date']:
+                                continue
+                            _comps = task_completions.get(_tid, [])
+                            if _comps:
+                                _sorted = sorted(_comps, key=lambda x: x['time_stamp'] or '')
+                                _trainer = _sorted[-1]['author']
+                            else:
+                                continue
+                            if not _trainer:
+                                continue
+                            _jn = _get_jibble_name_proj(_det['project_id'], _det['batch_name'])
+                            _br = _find_rate(_jn, _det['delivery_date'])
+                            if _br > 0:
+                                trainer_revenue_map[_trainer] = trainer_revenue_map.get(_trainer, 0) + _br
                     
                     # Get Jibble hours for all trainers - use project-specific data only
                     # Map project_id to exact Jibble project name (from centralized constants)
@@ -3476,6 +3685,9 @@ class QueryService:
                         if trainer_jibble > 0 and t_accounted_hrs > 0:
                             t_efficiency = round((t_accounted_hrs / trainer_jibble) * 100, 1)
                         
+                        # Trainer revenue = delivered_tasks * bill_rate_task
+                        t_revenue = round(trainer_revenue_map.get(trainer_email, 0), 2)
+                        
                         # Create trainer entry with all columns from Trainer wise tab
                         trainer_entry = {
                             'trainer_name': trainer_name,
@@ -3495,6 +3707,7 @@ class QueryService:
                             'jibble_hours': round(trainer_jibble, 2),
                             'accounted_hours': round(t_accounted_hrs, 2),
                             'efficiency': t_efficiency,
+                            'revenue': t_revenue,
                             'status': trainer_status
                         }
                         
@@ -3524,6 +3737,9 @@ class QueryService:
                         # This prevents double-counting when POD lead is listed as their own trainer
                         if trainer_email.lower().strip() != pod_email.lower().strip():
                             pod_aggregates[pod_email]['trainer_jibble_hours'] += trainer_jibble
+                        
+                        # Revenue accumulation at POD level
+                        pod_aggregates[pod_email]['revenue'] = pod_aggregates[pod_email].get('revenue', 0) + t_revenue
                         
                         pod_aggregates[pod_email]['trainers'].append(trainer_entry)
                         
@@ -3563,6 +3779,9 @@ class QueryService:
                                 pod_aggregates[pod_email]['delivered'] += extra_delivered
                                 pod_aggregates[pod_email]['in_queue'] += extra_in_queue
                                 
+                                # Revenue for delivery-only trainer
+                                _extra_rev = round(trainer_revenue_map.get(trainer_email, 0), 2)
+                                
                                 # Add a trainer entry with just delivery data
                                 pod_aggregates[pod_email]['trainers'].append({
                                     'trainer_name': trainer_name,
@@ -3582,8 +3801,10 @@ class QueryService:
                                     'jibble_hours': 0,
                                     'accounted_hours': 0,
                                     'efficiency': None,
+                                    'revenue': _extra_rev,
                                     'status': 'delivery_only'  # Special status for these trainers
                                 })
+                                pod_aggregates[pod_email]['revenue'] = pod_aggregates[pod_email].get('revenue', 0) + _extra_rev
                                 pod_aggregates[pod_email]['trainer_count'] += 1
                     
                     # Build POD Lead list for this project
@@ -3713,6 +3934,7 @@ class QueryService:
                             'trainer_jibble_hours': round(trainer_jibble, 2),
                             'accounted_hours': round(pod_accounted, 2),
                             'efficiency': pod_efficiency,
+                            'revenue': round(agg.get('revenue', 0), 2),
                             'trainers': trainers_sorted,  # Include trainer details
                         })
                         
@@ -3760,8 +3982,25 @@ class QueryService:
                         project_true_tasks_with_rework
                     )
                     
-                    # Calculate logged hours (trainers + POD leads)
-                    total_logged_hours = project_totals['trainer_jibble_hours'] + project_totals['pod_jibble_hours']
+                    # Calculate logged hours - query directly from Jibble data at project level
+                    # This ensures hours show even when no trainers are mapped to the project
+                    jibble_project_names = jibble_config.PROJECT_ID_TO_JIBBLE_NAMES.get(project_id, [])
+                    if jibble_config.should_swap_jibble_hours(project_id):
+                        swapped_pid = jibble_config.get_jibble_project_id(project_id)
+                        jibble_project_names = jibble_config.PROJECT_ID_TO_JIBBLE_NAMES.get(swapped_pid, [])
+                    
+                    if jibble_project_names:
+                        direct_jibble_query = session.query(
+                            func.sum(JibbleHours.logged_hours).label('total')
+                        ).filter(JibbleHours.project.in_(jibble_project_names))
+                        if start_date:
+                            direct_jibble_query = direct_jibble_query.filter(JibbleHours.entry_date >= start_date)
+                        if end_date:
+                            direct_jibble_query = direct_jibble_query.filter(JibbleHours.entry_date <= end_date)
+                        direct_total = direct_jibble_query.scalar()
+                        total_logged_hours = float(direct_total or 0)
+                    else:
+                        total_logged_hours = project_totals['trainer_jibble_hours'] + project_totals['pod_jibble_hours']
                     
                     # Calculate project-level rating (weighted average)
                     proj_avg_rating = None

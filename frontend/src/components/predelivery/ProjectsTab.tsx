@@ -120,12 +120,11 @@ function getDateRange(timeframe: Timeframe, weekOffset: number, customStart?: st
 // ============================================================================
 
 // Ratings color coding (PMO Requirement)
-// >4.8 - green, >4 - 4.8 - Yellow, <4 - red
+// >4.8 - green, <=4.8 - yellow
 const getRatingStyle = (rating: number | null) => {
   if (rating === null) return { color: '#94A3B8', bgcolor: 'transparent' }
-  if (rating > 4.8) return { color: '#065F46', bgcolor: '#D1FAE5' }  // Green
-  if (rating >= 4) return { color: '#92400E', bgcolor: '#FEF3C7' }   // Yellow (4.0 - 4.8)
-  return { color: '#991B1B', bgcolor: '#FEE2E2' }                     // Red (<4)
+  if (rating > 4.8) return { color: '#065F46', bgcolor: '#D1FAE5' }
+  return { color: '#92400E', bgcolor: '#FEF3C7' }
 }
 
 // Efficiency color coding (PMO Requirement)
@@ -456,8 +455,12 @@ function TrainerRow({
         </TableCell>
         <TableCell align="center" sx={{ ...cellStyle, borderRight: `1px solid ${COLUMN_GROUPS.time.borderColor}`, color: '#94A3B8' }}>-</TableCell>
 
-        {/* Finance Group - N/A at trainer level */}
-        <TableCell align="center" sx={{ ...cellStyle, color: '#94A3B8' }}>-</TableCell>
+        {/* Finance Group - Revenue at trainer level */}
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: trainer.revenue > 0 ? '#059669' : '#94A3B8' }}>
+            {trainer.revenue > 0 ? formatCurrency(trainer.revenue) : '-'}
+          </Typography>
+        </TableCell>
         <TableCell align="center" sx={{ ...cellStyle, color: '#94A3B8' }}>-</TableCell>
         <TableCell align="center" sx={{ ...cellStyle, color: '#94A3B8' }}>-</TableCell>
         <TableCell align="center" sx={{ ...cellStyle, color: '#94A3B8' }}>-</TableCell>
@@ -628,8 +631,12 @@ function PodLeadRow({
           </Typography>
         </TableCell>
 
-        {/* Finance Group - N/A at POD lead level */}
-        <TableCell align="center" sx={{ ...cellStyle, color: '#94A3B8' }}>-</TableCell>
+        {/* Finance Group - Revenue at POD lead level (sum of trainer revenues) */}
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: podLead.revenue > 0 ? '#059669' : '#94A3B8' }}>
+            {podLead.revenue > 0 ? formatCurrency(podLead.revenue) : '-'}
+          </Typography>
+        </TableCell>
         <TableCell align="center" sx={{ ...cellStyle, color: '#94A3B8' }}>-</TableCell>
         <TableCell align="center" sx={{ ...cellStyle, color: '#94A3B8' }}>-</TableCell>
         <TableCell align="center" sx={{ ...cellStyle, color: '#94A3B8' }}>-</TableCell>

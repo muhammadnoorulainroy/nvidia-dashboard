@@ -77,9 +77,9 @@ export default function QualityChart({ data, expanded, onExpand }: Props) {
 
           <Box sx={{ flex: 1, minHeight: 0 }}>
           <ResponsiveContainer width="100%" height="100%">
-            <ComposedChart data={data} margin={{ top: 8, right: 16, left: 0, bottom: -8 }}>
+            <ComposedChart data={data} margin={{ top: 8, right: 16, left: 0, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#F1F5F9" vertical={false} />
-              <XAxis dataKey="period_label" tick={false} tickLine={false} axisLine={false} height={4} />
+              <XAxis dataKey="period_label" tick={false} tickLine={false} axisLine={false} height={4} interval={0} />
               <YAxis
                 domain={[3, 5]}
                 tick={{ fontSize: 10, fill: '#64748B' }}
@@ -155,7 +155,7 @@ export default function QualityChart({ data, expanded, onExpand }: Props) {
                 tick={{ fontSize: 11, fill: '#94A3B8' }}
                 tickLine={false}
                 axisLine={{ stroke: '#E2E8F0' }}
-                interval="preserveStartEnd"
+                interval={0}
               />
               <YAxis
                 domain={[0, 'auto']}

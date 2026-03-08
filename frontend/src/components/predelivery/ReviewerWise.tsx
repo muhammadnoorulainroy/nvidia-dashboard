@@ -155,8 +155,7 @@ function TrainerRow({
   const getRatingStyle = (rating: number | null | undefined) => {
     if (rating === null || rating === undefined) return { color: '#94A3B8', bgcolor: 'transparent' }
     if (rating > 4.8) return { color: '#065F46', bgcolor: '#D1FAE5' }
-    if (rating >= 4) return { color: '#92400E', bgcolor: '#FEF3C7' }
-    return { color: '#991B1B', bgcolor: '#FEE2E2' }
+    return { color: '#92400E', bgcolor: '#FEF3C7' }
   }
 
   return (
@@ -267,8 +266,7 @@ function ReviewerRowComponent({
   const getRatingStyle = (rating: number | null | undefined) => {
     if (rating === null || rating === undefined) return { color: '#94A3B8', bgcolor: 'transparent' }
     if (rating > 4.8) return { color: '#065F46', bgcolor: '#D1FAE5' }
-    if (rating >= 4) return { color: '#92400E', bgcolor: '#FEF3C7' }
-    return { color: '#991B1B', bgcolor: '#FEE2E2' }
+    return { color: '#92400E', bgcolor: '#FEF3C7' }
   }
 
   return (

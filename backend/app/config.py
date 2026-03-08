@@ -53,11 +53,11 @@ class Settings(BaseSettings):
     project_id_filter: int  # Required - no default (project specific)
     
     # All Nvidia project IDs - can be overridden via env as JSON array
-    all_project_ids: str = "36,37,38,39"  # Comma-separated, parsed to list
+    all_project_ids: str = "36,37,38,39,59"  # Comma-separated, parsed to list
     
     # Project ID to Name mapping - loaded from env or uses defaults
-    # NOTE: Project 37 is Multichallenge, Project 39 is CFBench Multilingual
-    project_names_json: str = '{"36":"Nvidia - SysBench","37":"Nvidia - Multichallenge","38":"Nvidia - InverseIFEval","39":"Nvidia - CFBench Multilingual"}'
+    # NOTE: Project 37 is Multichallenge, Project 39 is CFBench Multilingual, Project 59 is Math Proof Eval
+    project_names_json: str = '{"36":"Nvidia - SysBench","37":"Nvidia - Multichallenge","38":"Nvidia - InverseIFEval","39":"Nvidia - CFBench Multilingual","59":"Nvidia - Math Proof Eval"}'
     
     @property
     def all_project_ids_list(self) -> List[int]:
@@ -138,12 +138,19 @@ class Settings(BaseSettings):
         "Nvidia - CFBench Multilingual": 39,
         "Nvidia - ICPC": 36,
         "NVIDIA_STEM Math_Eval": 36,
-        "Nvidia - SysBench": 36
+        "Nvidia - SysBench": 36,
+        "NVIDIA_STEM Math_Proof_Eval": 59
     }'''
     
     # Google Sheet for Jibble email mapping
     jibble_email_mapping_sheet_id: str = "1nR15UwSHx2WwQYFePAQIyIORf2aSCNp4ny33jetETZ8"
     jibble_email_mapping_sheet_gid: str = "1375209319"
+    
+    # Math Proof Eval team structure sheet
+    math_proof_eval_team_sheet_id: str = '1jPoZeco1t7YaAOd0NJrzNIO3F_CfPBBMm3J3fxHfot8'
+    
+    # Quality Rubrics sheet (Advanced Math EVAL Quality Report)
+    quality_rubrics_sheet_id: str = '1n0kYJNO5DwQso1DlaNzikXBWt-yVHV1dhitX_n5M6Ls'
     
     # ==========================================================================
     # Financial Data Settings
@@ -157,7 +164,7 @@ class Settings(BaseSettings):
     cost_bigquery_table: str = "turing-230020.test.Jibblelogs"
     
     # Jibble project names to include in cost queries
-    cost_jibble_projects: str = "Nvidia - ICPC,Nvidia - CFBench Multilingual,Nvidia - InverseIFEval,Nvidia - Multichallenge,Nvidia - Multichallenge Advanced,Nvidia - SysBench,NVIDIA_STEM Math_Eval,Nvidia - ScaleRTL,Nvidia - VERILOG,Nvidia - cuBench,Nvidia - CUDA,Nvidia - FACTUALITY (VQA),Nvidia-pilots-and-proposals"
+    cost_jibble_projects: str = "Nvidia - ICPC,Nvidia - CFBench Multilingual,Nvidia - InverseIFEval,Nvidia - Multichallenge,Nvidia - Multichallenge Advanced,Nvidia - SysBench,NVIDIA_STEM Math_Eval,NVIDIA_STEM Math_Proof_Eval,Nvidia - ScaleRTL,Nvidia - VERILOG,Nvidia - cuBench,Nvidia - CUDA,Nvidia - FACTUALITY (VQA),Nvidia-pilots-and-proposals"
     
     @property
     def cost_jibble_projects_list(self) -> List[str]:

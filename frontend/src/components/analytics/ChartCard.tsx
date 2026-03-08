@@ -21,32 +21,32 @@ export default function ChartCard({
   children,
   expanded,
   onExpand,
-  height = 300,
+  height = 320,
 }: Props) {
   return (
     <Paper
       elevation={0}
       sx={{
-        borderRadius: 2,
+        borderRadius: 3,
         border: '1px solid #E2E8F0',
         overflow: 'hidden',
-        position: 'relative',
+        backgroundColor: '#FAFBFD',
       }}
     >
       {/* Header */}
       <Box
         sx={{
-          px: 2, py: 1.5,
+          px: 2, py: 1.25,
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          borderBottom: '1px solid #F1F5F9',
-          background: `linear-gradient(135deg, ${color}08 0%, ${color}03 100%)`,
+          borderBottom: '1px solid #E2E8F0',
+          background: `linear-gradient(135deg, ${color}0A 0%, ${color}04 100%)`,
         }}
       >
         <Box>
           <Typography
             sx={{
               fontWeight: 700, fontSize: '0.85rem', color: '#1E293B',
-              display: 'flex', alignItems: 'center', gap: 1,
+              display: 'flex', alignItems: 'center', gap: 0.75,
             }}
           >
             <Box
@@ -58,7 +58,7 @@ export default function ChartCard({
             {title}
           </Typography>
           {subtitle && (
-            <Typography variant="caption" sx={{ color: '#94A3B8', fontSize: '0.7rem', ml: 2.5 }}>
+            <Typography variant="caption" sx={{ color: '#94A3B8', fontSize: '0.68rem', ml: 2.5 }}>
               {subtitle}
             </Typography>
           )}

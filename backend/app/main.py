@@ -21,7 +21,7 @@ from apscheduler.triggers.interval import IntervalTrigger
 # from slowapi.middleware import SlowAPIMiddleware
 
 from app.config import get_settings
-from app.routers import stats, jibble, config, analytics  # Configuration router for AHT settings
+from app.routers import stats, jibble, config, analytics, quality_rubrics
 from app.schemas.response_schemas import HealthResponse, ErrorResponse
 from app.services.db_service import get_db_service
 from app.services.data_sync_service import get_data_sync_service
@@ -203,6 +203,7 @@ app.include_router(stats.router, prefix=settings.api_prefix)
 app.include_router(jibble.router, prefix=settings.api_prefix)
 app.include_router(config.router, prefix=settings.api_prefix)
 app.include_router(analytics.router, prefix=settings.api_prefix)
+app.include_router(quality_rubrics.router, prefix=settings.api_prefix)
 
 
 # =============================================================================

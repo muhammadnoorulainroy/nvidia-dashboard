@@ -149,8 +149,7 @@ function TrainerRow({
   const getRatingStyle = (rating: number | null | undefined) => {
     if (rating === null || rating === undefined) return { color: '#94A3B8', bgcolor: 'transparent' }
     if (rating > 4.8) return { color: '#065F46', bgcolor: '#D1FAE5' }
-    if (rating >= 4) return { color: '#92400E', bgcolor: '#FEF3C7' }
-    return { color: '#991B1B', bgcolor: '#FEE2E2' }
+    return { color: '#92400E', bgcolor: '#FEF3C7' }
   }
 
   return (
@@ -232,6 +231,12 @@ function TrainerRow({
           {trainer.aht_submission !== null && trainer.aht_submission !== undefined ? trainer.aht_submission.toFixed(2) : '-'}
         </Typography>
       </TableCell>
+      {/* Revenue */}
+      <TableCell align="center" sx={{ ...cellStyle }}>
+        <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: (trainer.revenue ?? 0) > 0 ? '#059669' : '#94A3B8' }}>
+          {(trainer.revenue ?? 0) > 0 ? '$' + (trainer.revenue ?? 0).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) : '-'}
+        </Typography>
+      </TableCell>
     </TableRow>
   )
 }
@@ -280,8 +285,7 @@ function PodLeadRow({
   const getRatingStyle = (rating: number | null | undefined) => {
     if (rating === null || rating === undefined) return { color: '#94A3B8', bgcolor: 'transparent' }
     if (rating > 4.8) return { color: '#065F46', bgcolor: '#D1FAE5' }
-    if (rating >= 4) return { color: '#92400E', bgcolor: '#FEF3C7' }
-    return { color: '#991B1B', bgcolor: '#FEE2E2' }
+    return { color: '#92400E', bgcolor: '#FEF3C7' }
   }
 
   return (
@@ -393,6 +397,12 @@ function PodLeadRow({
         <TableCell align="center" sx={{ ...cellStyle }}>
           <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: '#475569' }}>
             {podLead.aht_submission !== null && podLead.aht_submission !== undefined ? podLead.aht_submission.toFixed(2) : '-'}
+          </Typography>
+        </TableCell>
+        {/* Revenue */}
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 700, color: (podLead.revenue ?? 0) > 0 ? '#059669' : '#94A3B8' }}>
+            {(podLead.revenue ?? 0) > 0 ? '$' + (podLead.revenue ?? 0).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) : '-'}
           </Typography>
         </TableCell>
       </TableRow>
@@ -926,11 +936,27 @@ export function PodLeadTab({ onSummaryUpdate, onSummaryLoading }: PodLeadTabProp
                     bgcolor: COLUMN_GROUPS.efficiency.bgHeader,
                     color: COLUMN_GROUPS.efficiency.textColor,
                     borderBottom: `2px solid ${COLUMN_GROUPS.efficiency.borderColor}`,
+                    borderRight: `2px solid ${COLUMN_GROUPS.efficiency.borderColor}`,
                     fontSize: '0.7rem',
                     fontWeight: 700,
                   }}
                 >
                   TIME & EFFICIENCY
+                </TableCell>
+                {/* Finance Group */}
+                <TableCell 
+                  colSpan={1}
+                  align="center"
+                  sx={{ 
+                    ...headerCellStyle,
+                    bgcolor: '#FDF2F8',
+                    color: '#86198F',
+                    borderBottom: `2px solid #F0ABFC`,
+                    fontSize: '0.7rem',
+                    fontWeight: 700,
+                  }}
+                >
+                  FINANCE
                 </TableCell>
               </TableRow>
               {/* Sub-Header Row */}
@@ -1001,8 +1027,12 @@ export function PodLeadTab({ onSummaryUpdate, onSummaryLoading }: PodLeadTabProp
                 <TableCell align="center" sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.efficiency.bgSubHeader, color: COLUMN_GROUPS.efficiency.textColor, minWidth: 60, borderBottom: `2px solid ${COLUMN_GROUPS.efficiency.borderColor}` }}>
                   {renderHeaderWithFilter('TrnHrs', 'total_trainer_hours', true)}
                 </TableCell>
-                <TableCell align="center" sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.efficiency.bgSubHeader, color: COLUMN_GROUPS.efficiency.textColor, minWidth: 55, borderBottom: `2px solid ${COLUMN_GROUPS.efficiency.borderColor}` }}>
+                <TableCell align="center" sx={{ ...headerCellStyle, bgcolor: COLUMN_GROUPS.efficiency.bgSubHeader, color: COLUMN_GROUPS.efficiency.textColor, minWidth: 55, borderBottom: `2px solid ${COLUMN_GROUPS.efficiency.borderColor}`, borderRight: `2px solid ${COLUMN_GROUPS.efficiency.borderColor}` }}>
                   {renderHeaderWithFilter('AHT/S', 'aht_submission', true)}
+                </TableCell>
+                {/* Finance */}
+                <TableCell align="center" sx={{ ...headerCellStyle, bgcolor: '#FDF4FF', color: '#86198F', minWidth: 60, borderBottom: `2px solid #F0ABFC` }}>
+                  {renderHeaderWithFilter('Rev$', 'revenue', true)}
                 </TableCell>
               </TableRow>
             </TableHead>

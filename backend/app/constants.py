@@ -40,13 +40,14 @@ class ProjectConfig:
         40: "Nvidia - Multichallenge Advanced",
         41: "Nvidia - ICPC",
         42: "NVIDIA_STEM Math_Eval",
+        59: "Nvidia - Math Proof Eval",
     })
     
     # All valid Nvidia project IDs
-    ALL_PROJECT_IDS: List[int] = field(default_factory=lambda: [36, 37, 38, 39, 40, 41, 42])
+    ALL_PROJECT_IDS: List[int] = field(default_factory=lambda: [36, 37, 38, 39, 40, 41, 42, 59])
     
     # Primary project IDs used in most queries (excludes Advanced variants)
-    PRIMARY_PROJECT_IDS: List[int] = field(default_factory=lambda: [36, 37, 38, 39])
+    PRIMARY_PROJECT_IDS: List[int] = field(default_factory=lambda: [36, 37, 38, 39, 59])
     
     # Project ID for Multichallenge (includes both regular and Advanced)
     MULTICHALLENGE_PROJECT_ID: int = 39
@@ -296,6 +297,7 @@ class JibbleConfig:
         "2581d1d5-e729-437f-92aa-2e3d7ceebc4f": "Nvidia - Multichallenge Advanced",
         "1f33fccc-9c95-409a-b17c-541bdd5e446e": "Nvidia - ICPC",
         "e6a4ebc3-5f25-42ce-806e-d23f9026d95b": "NVIDIA_STEM Math_Eval",
+        "7aeb42cf-5f84-4f7b-b941-1d4ab67e1dec": "NVIDIA_STEM Math_Proof_Eval",
     })
     
     # Jibble project name to Dashboard project ID mapping
@@ -307,6 +309,7 @@ class JibbleConfig:
         "Nvidia - Multichallenge Advanced": 37,  # Maps to same as Multichallenge (37)
         "Nvidia - ICPC": 36,  # Maps to SysBench
         "NVIDIA_STEM Math_Eval": 36,  # Maps to SysBench
+        "NVIDIA_STEM Math_Proof_Eval": 59,
     })
     
     # Dashboard project ID to Jibble project names mapping
@@ -316,6 +319,7 @@ class JibbleConfig:
         37: ["Nvidia - Multichallenge", "Nvidia - Multichallenge Advanced"],
         38: ["Nvidia - InverseIFEval"],
         39: ["Nvidia - CFBench Multilingual"],
+        59: ["NVIDIA_STEM Math_Proof_Eval"],
     })
     
     # Multichallenge/CFBench Jibble swap mapping (data quality workaround)
@@ -431,6 +435,7 @@ class FinancialConfig:
         "Nvidia - Multichallenge Advanced",
         "Nvidia - SysBench",
         "NVIDIA_STEM Math_Eval",
+        "NVIDIA_STEM Math_Proof_Eval",
         "Nvidia - ScaleRTL",
         "Nvidia - VERILOG",
         "Nvidia - cuBench",

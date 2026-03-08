@@ -475,6 +475,7 @@ export interface TrainerUnderPod {
   merged_exp_aht: number | null
   jibble_hours: number
   aht_submission: number | null
+  revenue: number              // Computed: delivered_tasks * bill_rate_task
   status: string
 }
 
@@ -498,6 +499,7 @@ export interface PodLeadStats {
   jibble_hours: number
   total_trainer_hours: number
   aht_submission: number | null
+  revenue: number              // Sum of trainer revenues (delivered_tasks * bill_rate_task)
   trainers: TrainerUnderPod[]
 }
 
@@ -554,6 +556,7 @@ export interface TrainerUnderPodLead {
   jibble_hours: number
   accounted_hours: number
   efficiency: number | null
+  revenue: number              // Computed: delivered_tasks * bill_rate_task
   status: string
   tasks?: TaskUnderTrainer[]  // Optional: only populated when include_tasks=true
 }
@@ -579,6 +582,7 @@ export interface PodLeadUnderProject {
   trainer_jibble_hours: number
   accounted_hours: number
   efficiency: number | null
+  revenue: number              // Sum of trainer revenues (delivered_tasks * bill_rate_task)
   trainers: TrainerUnderPodLead[]
 }
 
@@ -1012,6 +1016,97 @@ export interface AnalyticsResponse {
   available_kpis: AnalyticsKPIDefinition[]
   granularity: string
   revenue_available: boolean
+}
+
+// ============================================================================
+// Quality Rubrics
+// ============================================================================
+
+export interface ReasonEntry {
+  label: string
+  text: string
+}
+
+export interface QualityRubricsData {
+  daily_rollup: {
+    total_annotations_l1: number
+    total_reviewed_l2: number
+    total_reviewed_l2_action: string
+    total_passed_l2: number
+    total_flagged_rework: number
+    total_flagged_rework_action: string
+    total_calibrated: number
+    passed_calibrator: number
+    failed_calibration: number
+    failed_calibration_action: string
+    total_defects: number
+    high_severity: number
+    medium_severity: number
+    total_ready_to_ship: number
+    reviewer_fpy: number
+    reviewer_fpy_action: string
+    auditor_fpy: number
+    auditor_fpy_action: string
+    overall_status: string
+    updated_date: string
+  }
+  batch_quality: {
+    batch: string
+    reviewer_to_trainer_fpy: number | null
+    reviewer_to_trainer_rework: number | null
+    auditor_to_reviewer_fpy: number | null
+    auditor_to_trainer_rework: number | null
+    source?: 'sheet' | 'computed' | 'pending'
+    task_count?: number
+  }[]
+  rubric_fpy: {
+    rubric_item: string
+    category: string
+    is_category_summary?: boolean
+    reviewer_fpy: number | null
+    reviewer_rework: number | null
+    auditor_fpy: number | null
+    auditor_rework: number | null
+    source?: 'sheet' | 'computed' | 'pending'
+  }[]
+  task_details: {
+    batch: string
+    task: string
+    task_link: string
+    has_data: boolean
+    reviewer: {
+      scores: Record<string, string>
+      reasons: Record<string, ReasonEntry[]>
+    }
+    auditor: {
+      scores: Record<string, string>
+      reasons: Record<string, ReasonEntry[]>
+    }
+  }[]
+  rubric_categories: {
+    name: string
+    items: string[]
+  }[]
+  summary?: {
+    batch_list: string[]
+    batch_fpy: Record<string, Record<string, number | null>>
+    category_fpy: Record<string, Record<string, number | null>>
+    rubric_item_fpy: Record<string, Record<string, number | null>>
+  }
+}
+
+export const getQualityRubricsData = async (refresh = false): Promise<QualityRubricsData> => {
+  const cacheKey = '/quality-rubrics/data'
+  if (!refresh) {
+    const cached = getFromCache<QualityRubricsData>(cacheKey)
+    if (cached) return cached
+  }
+
+  const response = await apiClient.get<QualityRubricsData>(
+    `/quality-rubrics/data${refresh ? '?refresh=true' : ''}`
+  )
+  setCache(cacheKey, response.data)
+  return response.data
 }
 
 export const getAnalyticsTimeSeries = async (options: {

@@ -47,9 +47,7 @@ const UNIT_CONFIG: Record<
     label: string
     chartType: 'line' | 'bar' | 'area'
     yFormatter: (v: number) => string
-    color: string      // accent for badge / Y-axis
-    bgFrom: string     // light gradient start
-    bgTo: string       // light gradient end
+    color: string      // accent for section header bar
   }
 > = {
   count: {
@@ -57,8 +55,6 @@ const UNIT_CONFIG: Record<
     chartType: 'line',
     yFormatter: (v) => (v >= 1000 ? `${(v / 1000).toFixed(0)}K` : String(Math.round(v))),
     color: '#6366F1',
-    bgFrom: '#EEF2FF',
-    bgTo: '#F8FAFC',
   },
   currency: {
     label: 'USD ($)',
@@ -69,32 +65,24 @@ const UNIT_CONFIG: Record<
       return `$${v}`
     },
     color: '#10B981',
-    bgFrom: '#ECFDF5',
-    bgTo: '#F8FAFC',
   },
   percent: {
     label: 'Percentage (%)',
     chartType: 'line',
     yFormatter: (v) => `${v}%`,
     color: '#F59E0B',
-    bgFrom: '#FFFBEB',
-    bgTo: '#F8FAFC',
   },
   hours: {
     label: 'Hours',
     chartType: 'bar',
     yFormatter: (v) => (v >= 1000 ? `${(v / 1000).toFixed(1)}K` : `${v}`),
     color: '#3B82F6',
-    bgFrom: '#EFF6FF',
-    bgTo: '#F8FAFC',
   },
   rating: {
     label: 'Rating (1–5)',
     chartType: 'line',
     yFormatter: (v) => v.toFixed(1),
     color: '#EC4899',
-    bgFrom: '#FDF2F8',
-    bgTo: '#F8FAFC',
   },
 }
 
@@ -183,7 +171,7 @@ function CurrencySummaryPanel({
   const hasPercentBars = percentTotals.length > 0
 
   return (
-    <Box sx={{ height, display: 'flex', flexDirection: 'column' }}>
+    <Box sx={{ height, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       {/* Margin % headline */}
       {computedMarginPct !== null && (
         <Box sx={{ textAlign: 'center', pt: 1 }}>
@@ -349,22 +337,22 @@ function UnitPanel({
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart
             data={data}
-            margin={{ top: 8, right: 20, left: 4, bottom: showXAxis ? 4 : -16 }}
+            margin={{ top: 8, right: 16, left: 0, bottom: 0 }}
           >
-            <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" vertical={false} />
-            <XAxis
-              dataKey="period_label"
-              tick={showXAxis ? { fontSize: 11, fill: '#94A3B8' } : false}
-              tickLine={false}
-              axisLine={showXAxis ? { stroke: '#CBD5E1' } : false}
-              interval="preserveStartEnd"
-              height={showXAxis ? 32 : 8}
-            />
+              <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" vertical={false} />
+              <XAxis
+                dataKey="period_label"
+                tick={showXAxis ? { fontSize: 11, fill: '#94A3B8' } : false}
+                tickLine={false}
+                axisLine={showXAxis ? { stroke: '#CBD5E1' } : false}
+                interval={0}
+                height={showXAxis ? 30 : 1}
+              />
             <YAxis
-              tick={{ fontSize: 11, fill: config.color, fontWeight: 600 }}
+              tick={{ fontSize: 10, fill: '#64748B' }}
               tickLine={false}
               axisLine={false}
-              width={58}
+              width={52}
               domain={yDomain || yDomainPercent || undefined}
               tickFormatter={(v) => config.yFormatter(v)}
             />
@@ -434,7 +422,7 @@ function UnitPanel({
   )
 }
 
-/* ─── Shared wrapper that gives each panel its header bar + background ─── */
+/* ─── Shared wrapper – neutral background, matching grid chart style ─── */
 function PanelWrapper({
   unitType,
   height,
@@ -449,60 +437,49 @@ function PanelWrapper({
   const config = UNIT_CONFIG[unitType] || UNIT_CONFIG.count
 
   return (
-    <Box
-      sx={{
-        height,
-        display: 'flex',
-        flexDirection: 'column',
-        background: `linear-gradient(135deg, ${config.bgFrom} 0%, ${config.bgTo} 100%)`,
-        borderRadius: 2,
-        border: '1px solid',
-        borderColor: `${config.color}18`,
-        overflow: 'hidden',
-      }}
-    >
-      {/* Section header */}
+    <Box sx={{ height, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+      {/* Section header + SVG legend */}
       <Box
         sx={{
           display: 'flex',
           alignItems: 'center',
           gap: 1,
-          px: 1.5,
-          py: 0.75,
-          borderBottom: '1px solid',
-          borderColor: `${config.color}15`,
+          px: 1,
+          pt: 0.5,
           flexWrap: 'wrap',
         }}
       >
-        {/* Colored accent bar */}
-        <Box sx={{ width: 3, height: 16, borderRadius: 1, backgroundColor: config.color }} />
-        <Typography
-          sx={{
-            fontSize: '0.72rem',
-            fontWeight: 700,
-            color: config.color,
-            textTransform: 'uppercase',
-            letterSpacing: '0.06em',
-          }}
-        >
-          {config.label}
-        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+          <Box sx={{ width: 3, height: 14, borderRadius: 1, backgroundColor: config.color }} />
+          <Typography
+            sx={{
+              fontSize: '0.65rem',
+              fontWeight: 700,
+              color: config.color,
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em',
+            }}
+          >
+            {config.label}
+          </Typography>
+        </Box>
 
-        {/* Inline mini-legend */}
+        {/* SVG legends matching actual chart element style */}
         {kpis && kpis.length > 0 && (
           <Box sx={{ display: 'flex', gap: 1.5, ml: 'auto', flexWrap: 'wrap' }}>
             {kpis.map((kpi) => (
               <Box key={kpi.key} sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                <Box
-                  sx={{
-                    width: 8,
-                    height: 8,
-                    borderRadius: '50%',
-                    backgroundColor: kpi.color,
-                    flexShrink: 0,
-                  }}
-                />
-                <Typography sx={{ fontSize: '0.68rem', color: '#64748B', fontWeight: 600, whiteSpace: 'nowrap' }}>
+                {config.chartType === 'bar' ? (
+                  <svg width="16" height="10">
+                    <rect x="2" y="1" width="12" height="8" rx="2" fill={kpi.color} fillOpacity="0.85" />
+                  </svg>
+                ) : (
+                  <svg width="20" height="10">
+                    <line x1="0" y1="5" x2="20" y2="5" stroke={kpi.color} strokeWidth={2} />
+                    <circle cx="10" cy="5" r="2.5" fill={kpi.color} />
+                  </svg>
+                )}
+                <Typography sx={{ fontSize: '0.65rem', color: '#475569', fontWeight: 600, whiteSpace: 'nowrap' }}>
                   {kpi.label}
                 </Typography>
               </Box>
@@ -561,12 +538,13 @@ export default function CustomKPIChart({ data, availableKpis, granularity }: Pro
   const groupEntries = Object.entries(unitGroups)
   const groupCount = groupEntries.length
 
-  /* Dynamic panel heights – generous minimums so charts are readable */
+  /* Dynamic panel heights – generous minimums so charts are readable.
+     Each panel has ~28px header, so total allocated = panelHeight per group. */
   const panelHeight = useMemo(() => {
-    if (groupCount <= 1) return 360
-    if (groupCount === 2) return 280
-    if (groupCount === 3) return 240
-    return 220 // 4+
+    if (groupCount <= 1) return 380
+    if (groupCount === 2) return 300
+    if (groupCount === 3) return 260
+    return 240 // 4+
   }, [groupCount])
 
   return (
@@ -706,17 +684,19 @@ export default function CustomKPIChart({ data, availableKpis, granularity }: Pro
 
       {/* ── Chart Panels ── */}
       {selectedKpis.length > 0 ? (
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, p: 2 }}>
+        <Box sx={{ px: 1, py: 1 }}>
           {groupEntries.map(([unitType, kpis], idx) => (
-            <UnitPanel
-              key={unitType}
-              data={data}
-              kpis={kpis}
-              unitType={unitType}
-              showXAxis={idx === groupEntries.length - 1}
-              height={panelHeight}
-              useSummary={unitType === 'currency' && granularity === 'daily'}
-            />
+            <Box key={unitType}>
+              {idx > 0 && <Box sx={{ borderTop: '1px dashed #E2E8F0', mx: 1 }} />}
+              <UnitPanel
+                data={data}
+                kpis={kpis}
+                unitType={unitType}
+                showXAxis={idx === groupEntries.length - 1}
+                height={panelHeight}
+                useSummary={unitType === 'currency' && granularity === 'daily'}
+              />
+            </Box>
           ))}
         </Box>
       ) : (
