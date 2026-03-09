@@ -9,7 +9,7 @@ Features:
 - Circuit breakers for resilience
 - Graceful startup (doesn't crash on non-critical failures)
 """
-from fastapi import FastAPI, Request
+from fastapi import Depends, FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from datetime import datetime
@@ -22,6 +22,8 @@ from apscheduler.triggers.interval import IntervalTrigger
 
 from app.config import get_settings
 from app.routers import stats, jibble, config, analytics, quality_rubrics
+from app.routers import auth as auth_router, users as users_router
+from app.auth import get_current_user, seed_initial_admin
 from app.schemas.response_schemas import HealthResponse, ErrorResponse
 from app.services.db_service import get_db_service
 from app.services.data_sync_service import get_data_sync_service
@@ -199,11 +201,18 @@ async def health_full() -> HealthCheckResponse:
 # =============================================================================
 # Include Routers
 # =============================================================================
-app.include_router(stats.router, prefix=settings.api_prefix)
-app.include_router(jibble.router, prefix=settings.api_prefix)
-app.include_router(config.router, prefix=settings.api_prefix)
-app.include_router(analytics.router, prefix=settings.api_prefix)
-app.include_router(quality_rubrics.router, prefix=settings.api_prefix)
+# Auth routes are public (no dependency)
+app.include_router(auth_router.router, prefix=settings.api_prefix)
+
+# All data routes require a valid JWT
+_auth_dep = [Depends(get_current_user)]
+
+app.include_router(stats.router, prefix=settings.api_prefix, dependencies=_auth_dep)
+app.include_router(jibble.router, prefix=settings.api_prefix, dependencies=_auth_dep)
+app.include_router(config.router, prefix=settings.api_prefix, dependencies=_auth_dep)
+app.include_router(analytics.router, prefix=settings.api_prefix, dependencies=_auth_dep)
+app.include_router(quality_rubrics.router, prefix=settings.api_prefix, dependencies=_auth_dep)
+app.include_router(users_router.router, prefix=settings.api_prefix)
 
 
 # =============================================================================
@@ -276,6 +285,12 @@ async def startup_event():
     if not db_result.success:
         logger.critical("CRITICAL: Database initialization failed.")
         raise RuntimeError(f"Database initialization failed: {db_result.error}")
+    
+    # Seed the initial admin user from INITIAL_ADMIN_EMAIL env var
+    try:
+        seed_initial_admin()
+    except Exception as e:
+        logger.warning(f"Admin seed failed (non-critical): {e}")
     
     # =========================================================================
     # Step 2: Initialize BigQuery Client (NON-CRITICAL)

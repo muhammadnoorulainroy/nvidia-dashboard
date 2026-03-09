@@ -142,7 +142,8 @@ class DatabaseService:
                 'work_item',
                 'task_reviewed_info',
                 'pod_lead_mapping',
-                'jibble_hours'
+                'jibble_hours',
+                'dashboard_user',
             ]
             
             table_status = {}

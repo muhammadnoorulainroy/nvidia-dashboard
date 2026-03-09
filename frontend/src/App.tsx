@@ -3,8 +3,10 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import { Box, CircularProgress } from '@mui/material'
 import Layout from './components/Layout'
 import ErrorBoundary from './components/ErrorBoundary'
+import ProtectedRoute from './components/ProtectedRoute'
+import { useAuth } from './contexts/AuthContext'
 
-// Lazy load pages for better performance
+const Login = lazy(() => import('./pages/Login'))
 const TaskMetrics = lazy(() => import('./pages/PreDelivery'))
 const ClientDelivery = lazy(() => import('./pages/ClientDelivery'))
 const ClientDeliverySummary = lazy(() => import('./pages/ClientDeliverySummary'))
@@ -12,8 +14,8 @@ const Configuration = lazy(() => import('./components/configuration/Configuratio
 const Analytics = lazy(() => import('./pages/Analytics'))
 const TeamOverview = lazy(() => import('./pages/TeamOverview'))
 const QualityRubrics = lazy(() => import('./pages/QualityRubrics'))
+const UserManagement = lazy(() => import('./pages/UserManagement'))
 
-// Loading fallback component
 function PageLoader() {
   return (
     <Box
@@ -30,26 +32,62 @@ function PageLoader() {
 }
 
 function App() {
+  const { isAuthenticated, loading } = useAuth()
+
+  if (loading) {
+    return (
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+        <CircularProgress size={40} />
+      </Box>
+    )
+  }
+
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh', backgroundColor: '#F8FAFC' }}>
-      <Layout>
-        <ErrorBoundary>
-          <Suspense fallback={<PageLoader />}>
-            <Routes>
-              <Route path="/" element={<Navigate to="/task-metrics" replace />} />
-              <Route path="/task-metrics" element={<TaskMetrics />} />
-              <Route path="/pre-delivery" element={<Navigate to="/task-metrics" replace />} />
-              <Route path="/client-delivery" element={<ClientDelivery />} />
-              <Route path="/client-delivery-summary" element={<ClientDeliverySummary />} />
-              <Route path="/configuration" element={<Configuration />} />
-              <Route path="/analytics" element={<Analytics />} />
-              <Route path="/team-overview" element={<TeamOverview />} />
-              <Route path="/quality-rubrics" element={<QualityRubrics />} />
-            </Routes>
-          </Suspense>
-        </ErrorBoundary>
-      </Layout>
-    </Box>
+    <ErrorBoundary>
+      <Suspense fallback={<PageLoader />}>
+        <Routes>
+          {/* Public route */}
+          <Route
+            path="/login"
+            element={isAuthenticated ? <Navigate to="/task-metrics" replace /> : <Login />}
+          />
+
+          {/* Protected dashboard routes */}
+          <Route
+            path="/*"
+            element={
+              <ProtectedRoute>
+                <Box sx={{ display: 'flex', minHeight: '100vh', backgroundColor: '#F8FAFC' }}>
+                  <Layout>
+                    <Suspense fallback={<PageLoader />}>
+                      <Routes>
+                        <Route path="/" element={<Navigate to="/task-metrics" replace />} />
+                        <Route path="/task-metrics" element={<TaskMetrics />} />
+                        <Route path="/pre-delivery" element={<Navigate to="/task-metrics" replace />} />
+                        <Route path="/client-delivery" element={<ClientDelivery />} />
+                        <Route path="/client-delivery-summary" element={<ClientDeliverySummary />} />
+                        <Route path="/configuration" element={<Configuration />} />
+                        <Route path="/analytics" element={<Analytics />} />
+                        <Route path="/team-overview" element={<TeamOverview />} />
+                        <Route path="/quality-rubrics" element={<QualityRubrics />} />
+                        <Route
+                          path="/users"
+                          element={
+                            <ProtectedRoute adminOnly>
+                              <UserManagement />
+                            </ProtectedRoute>
+                          }
+                        />
+                      </Routes>
+                    </Suspense>
+                  </Layout>
+                </Box>
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </Suspense>
+    </ErrorBoundary>
   )
 }
 

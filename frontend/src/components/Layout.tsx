@@ -13,6 +13,7 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Avatar,
   useTheme,
   useMediaQuery,
 } from '@mui/material'
@@ -23,8 +24,11 @@ import {
   Analytics as AnalyticsIcon,
   GridView as GridViewIcon,
   FactCheck as FactCheckIcon,
+  People as PeopleIcon,
+  Logout as LogoutIcon,
 } from '@mui/icons-material'
 import SyncStatus from './common/SyncStatus'
+import { useAuth } from '../contexts/AuthContext'
 
 const drawerWidth = 260
 
@@ -36,6 +40,7 @@ interface MenuItem {
   text: string
   icon: JSX.Element
   path: string
+  adminOnly?: boolean
 }
 
 const menuItems: MenuItem[] = [
@@ -44,6 +49,7 @@ const menuItems: MenuItem[] = [
   { text: 'Analytics', icon: <AnalyticsIcon />, path: '/analytics' },
   { text: 'Quality Rubrics', icon: <FactCheckIcon />, path: '/quality-rubrics' },
   { text: 'Configuration', icon: <SettingsIcon />, path: '/configuration' },
+  { text: 'User Management', icon: <PeopleIcon />, path: '/users', adminOnly: true },
 ]
 
 interface LayoutProps {
@@ -56,6 +62,7 @@ export default function Layout({ children }: LayoutProps) {
   const location = useLocation()
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+  const { user, isAdmin, logout } = useAuth()
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen)
@@ -69,7 +76,7 @@ export default function Layout({ children }: LayoutProps) {
   }
 
   const drawer = (
-    <Box sx={{ height: '100%', backgroundColor: '#1E293B' }}>
+    <Box sx={{ height: '100%', backgroundColor: '#1E293B', display: 'flex', flexDirection: 'column' }}>
       <Toolbar
         sx={{
           backgroundColor: '#0F172A',
@@ -123,55 +130,82 @@ export default function Layout({ children }: LayoutProps) {
         </Typography>
       </Toolbar>
       <List sx={{ pt: 2, px: 1.5 }}>
-        {menuItems.map((item) => {
-          const isActive = location.pathname === item.path
-          return (
-            <ListItem key={item.text} disablePadding sx={{ mb: 0.5 }}>
-              <ListItemButton
-                onClick={() => handleNavigation(item.path)}
-                selected={isActive}
-                sx={{
-                  borderRadius: 1.5,
-                  py: 1.25,
-                  px: 2,
-                  transition: 'all 0.15s ease',
-                  '&.Mui-selected': {
-                    backgroundColor: 'rgba(118, 185, 0, 0.15)',
-                    color: '#76B900',
-                    '&:hover': {
-                      backgroundColor: 'rgba(118, 185, 0, 0.2)',
-                    },
-                    '& .MuiListItemIcon-root': {
-                      color: '#76B900',
-                    },
-                  },
-                  '&:hover': {
-                    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                  },
-                  color: '#94A3B8',
-                }}
-              >
-                <ListItemIcon
+        {menuItems
+          .filter((item) => !item.adminOnly || isAdmin)
+          .map((item) => {
+            const isActive = location.pathname === item.path
+            return (
+              <ListItem key={item.text} disablePadding sx={{ mb: 0.5 }}>
+                <ListItemButton
+                  onClick={() => handleNavigation(item.path)}
+                  selected={isActive}
                   sx={{
-                    color: isActive ? '#76B900' : '#64748B',
-                    minWidth: 36,
+                    borderRadius: 1.5,
+                    py: 1.25,
+                    px: 2,
+                    transition: 'all 0.15s ease',
+                    '&.Mui-selected': {
+                      backgroundColor: 'rgba(118, 185, 0, 0.15)',
+                      color: '#76B900',
+                      '&:hover': {
+                        backgroundColor: 'rgba(118, 185, 0, 0.2)',
+                      },
+                      '& .MuiListItemIcon-root': {
+                        color: '#76B900',
+                      },
+                    },
+                    '&:hover': {
+                      backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                    },
+                    color: '#94A3B8',
                   }}
                 >
-                  {item.icon}
-                </ListItemIcon>
-                <ListItemText
-                  primary={item.text}
-                  primaryTypographyProps={{
-                    fontSize: '0.875rem',
-                    fontWeight: isActive ? 600 : 500,
-                    letterSpacing: '-0.01em',
-                  }}
-                />
-              </ListItemButton>
-            </ListItem>
-          )
-        })}
+                  <ListItemIcon
+                    sx={{
+                      color: isActive ? '#76B900' : '#64748B',
+                      minWidth: 36,
+                    }}
+                  >
+                    {item.icon}
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={item.text}
+                    primaryTypographyProps={{
+                      fontSize: '0.875rem',
+                      fontWeight: isActive ? 600 : 500,
+                      letterSpacing: '-0.01em',
+                    }}
+                  />
+                </ListItemButton>
+              </ListItem>
+            )
+          })}
       </List>
+
+      {/* User info + logout at the bottom of the sidebar */}
+      {user && (
+        <Box sx={{ mt: 'auto', p: 2, borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+            <Avatar
+              src={user.picture}
+              sx={{ width: 32, height: 32, bgcolor: '#76B900', fontSize: '0.85rem', fontWeight: 700 }}
+            >
+              {user.name?.[0]?.toUpperCase() || user.email[0].toUpperCase()}
+            </Avatar>
+            <Box sx={{ flex: 1, overflow: 'hidden' }}>
+              <Typography sx={{ fontSize: '0.8rem', fontWeight: 600, color: '#F8FAFC', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                {user.name || user.email}
+              </Typography>
+              <Typography sx={{ fontSize: '0.65rem', color: '#94A3B8', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                {user.email}
+              </Typography>
+            </Box>
+            <IconButton size="small" onClick={logout} sx={{ color: '#94A3B8', '&:hover': { color: '#EF4444' } }}>
+              <LogoutIcon fontSize="small" />
+            </IconButton>
+          </Box>
+        </Box>
+      )}
     </Box>
   )
 

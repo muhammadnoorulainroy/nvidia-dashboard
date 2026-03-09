@@ -9,7 +9,7 @@ This module defines all database models with:
 
 Note: Foreign keys use ondelete="SET NULL" or "CASCADE" depending on the relationship.
 """
-from sqlalchemy import Column, Integer, String, Float, DateTime, Text, Date, BigInteger, ForeignKey, Index
+from sqlalchemy import Column, Integer, String, Float, DateTime, Text, Date, BigInteger, Boolean, ForeignKey, Index
 from sqlalchemy.orm import relationship, declarative_base
 
 Base = declarative_base()
@@ -742,6 +742,20 @@ class ProjectCostDaily(Base):
         Index('ix_project_cost_date_project', 'date', 'project_id'),
         Index('ix_project_cost_date_jibble', 'date', 'jibble_project_name'),
     )
+
+
+class DashboardUser(Base):
+    """Authorised dashboard users managed by admins."""
+    __tablename__ = 'dashboard_user'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    email = Column(String(255), unique=True, nullable=False, index=True)
+    name = Column(String(255), nullable=True)
+    picture = Column(Text, nullable=True)
+    role = Column(String(20), nullable=False, default='user')  # 'admin' or 'user'
+    is_active = Column(Boolean, nullable=False, default=True)
+    created_at = Column(DateTime, server_default='now()')
+    last_login = Column(DateTime, nullable=True)
 
 
 class ProjectFTECostMonthly(Base):

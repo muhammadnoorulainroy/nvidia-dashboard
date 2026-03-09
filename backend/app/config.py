@@ -184,6 +184,15 @@ class Settings(BaseSettings):
             return {}
     
     # ==========================================================================
+    # OAuth / Authentication Settings
+    # ==========================================================================
+    oauth_client_id: Optional[str] = None
+    oauth_client_secret: Optional[str] = None
+    jwt_secret_key: str = "change-me-in-production"
+    jwt_expiry_hours: int = 24
+    initial_admin_emails: str = ""  # Comma-separated list of admin emails
+    
+    # ==========================================================================
     # Sentry Settings - Optional (error tracking disabled if not set)
     # ==========================================================================
     sentry_dsn: Optional[str] = None
