@@ -84,6 +84,7 @@ export const COLUMN_TOOLTIPS: Record<string, string> = {
   total_trainer_hours: 'Sum of hours logged by all trainers under this POD Lead',
   trainer_jibble_hours: 'Hours logged by trainers in Jibble',
   pod_jibble_hours: 'Hours logged by POD Lead in Jibble',
+  active_jibble_people: 'Number of people who logged Jibble hours in the selected time range',
   accounted_hours: 'Accounted Hours = (New Tasks × 10 + Rework × 4) minutes converted to hours',
   efficiency: 'Efficiency = (Accounted Hrs / Jibble Hrs) × 100 (≥90% Green, 70-90% Yellow, <70% Red)',
   
@@ -244,6 +245,8 @@ export const HEADER_TO_KEY_MAP: Record<string, string> = {
   'TrnHrs': 'total_trainer_hours',
   'Trainer Hours': 'total_trainer_hours',
   'AHT/S': 'aht_submission',
+  'Act': 'active_jibble_people',
+  'Active': 'active_jibble_people',
   'Acct': 'accounted_hours',
   'Accounted': 'accounted_hours',
   'Eff%': 'efficiency',

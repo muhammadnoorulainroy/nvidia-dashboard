@@ -558,6 +558,10 @@ export interface TrainerUnderPodLead {
   efficiency: number | null
   revenue: number              // Computed: delivered_tasks * bill_rate_task
   status: string
+  role?: string
+  tasks_per_8hrs?: number | null
+  daily_target?: number | null
+  below_target?: boolean
   tasks?: TaskUnderTrainer[]  // Optional: only populated when include_tasks=true
 }
 
@@ -582,6 +586,7 @@ export interface PodLeadUnderProject {
   trainer_jibble_hours: number
   accounted_hours: number
   efficiency: number | null
+  active_jibble_people: number
   revenue: number              // Sum of trainer revenues (delivered_tasks * bill_rate_task)
   trainers: TrainerUnderPodLead[]
 }
@@ -605,6 +610,7 @@ export interface ProjectStats {
   avg_rating: number | null
   merged_exp_aht: number | null
   logged_hours: number
+  active_jibble_people: number
   total_pod_hours: number
   accounted_hours: number
   efficiency: number | null

@@ -742,3 +742,31 @@ class ProjectCostDaily(Base):
         Index('ix_project_cost_date_project', 'date', 'project_id'),
         Index('ix_project_cost_date_jibble', 'date', 'jibble_project_name'),
     )
+
+
+class ProjectFTECostMonthly(Base):
+    """
+    Monthly FTE (full-time employee) cost per project.
+    Synced from the client's PnL tracking sheet 'mom_fte_costs' tab.
+    
+    The client's total cost = Contractors (from BigQuery Billings) + FTEs (this table).
+    Without this data, margins are understated.
+    """
+    __tablename__ = 'project_fte_cost_monthly'
+    
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    
+    jibble_project_name = Column(String(255), nullable=False)
+    project_id = Column(Integer, nullable=True, index=True)
+    
+    month_name = Column(String(20), nullable=False)  # "Nov", "Dec", "Jan", "Feb"
+    month_start_date = Column(Date, nullable=True)
+    month_end_date = Column(Date, nullable=True)
+    
+    cost = Column(Float, nullable=False, default=0)
+    
+    last_synced = Column(DateTime, nullable=True)
+    
+    __table_args__ = (
+        Index('ix_fte_cost_project_month', 'project_id', 'month_name'),
+    )

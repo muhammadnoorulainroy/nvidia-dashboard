@@ -20,6 +20,8 @@ import {
   ListItemIcon,
   ListItemText,
   Tooltip,
+  Collapse,
+  Chip,
 } from '@mui/material'
 import {
   KeyboardArrowDown,
@@ -31,6 +33,7 @@ import {
   Folder as FolderIcon,
   Sort as SortIcon,
   Info as InfoIcon,
+  Warning as WarningIcon,
 } from '@mui/icons-material'
 import { getTooltipForHeader } from '../../utils/columnTooltips'
 import { getProjectStats, ProjectStats, PodLeadUnderProject, TrainerUnderPodLead, TaskUnderTrainer } from '../../services/api'
@@ -296,6 +299,9 @@ function TaskRow({ task }: { task: TaskUnderTrainer }) {
       <TableCell align="center" sx={{ ...cellStyle }}>
         <Typography sx={{ fontSize: dataFontSize, color: '#94A3B8' }}>-</Typography>
       </TableCell>
+      <TableCell align="center" sx={{ ...cellStyle }}>
+        <Typography sx={{ fontSize: dataFontSize, color: '#94A3B8' }}>-</Typography>
+      </TableCell>
       <TableCell align="center" sx={{ ...cellStyle, borderRight: `1px solid ${COLUMN_GROUPS.time.borderColor}` }}>
         <Typography sx={{ fontSize: dataFontSize, color: '#94A3B8' }}>-</Typography>
       </TableCell>
@@ -330,10 +336,10 @@ function TrainerRow({
     <>
       <TableRow 
         sx={{ 
-          bgcolor: open ? '#F1F5F9' : '#FAFBFC',
-          '&:hover': { bgcolor: '#F1F5F9' },
+          bgcolor: trainer.below_target ? '#FEF2F2' : open ? '#F1F5F9' : '#FAFBFC',
+          '&:hover': { bgcolor: trainer.below_target ? '#FEE2E2' : '#F1F5F9' },
           cursor: hasTasks ? 'pointer' : 'default',
-          borderLeft: open ? '2px solid #6366F1' : '2px solid transparent',
+          borderLeft: trainer.below_target ? '2px solid #EF4444' : open ? '2px solid #6366F1' : '2px solid transparent',
         }}
         onClick={() => hasTasks && setOpen(!open)}
       >
@@ -343,7 +349,7 @@ function TrainerRow({
           pl: hasTasks ? { xs: 3, sm: 4, md: 5 } : { xs: 3.5, sm: 4.5, md: 5.5 },
           position: 'sticky',
           left: 0,
-          bgcolor: open ? '#F1F5F9' : '#FAFBFC',
+          bgcolor: trainer.below_target ? '#FEF2F2' : open ? '#F1F5F9' : '#FAFBFC',
           zIndex: 1,
           borderRight: `1px solid ${COLUMN_GROUPS.overview.borderColor}`,
           maxWidth: { xs: 120, sm: 160, md: 180 },
@@ -354,9 +360,15 @@ function TrainerRow({
                 {open ? <KeyboardArrowUp sx={{ fontSize: { xs: 8, md: 10 } }} /> : <KeyboardArrowDown sx={{ fontSize: { xs: 8, md: 10 } }} />}
               </IconButton>
             ) : <Box sx={{ width: { xs: 10, md: 12 } }} />}
-            <Box sx={{ width: 3, height: 3, borderRadius: '50%', bgcolor: '#CBD5E1', flexShrink: 0, display: { xs: 'none', sm: 'block' } }} />
+            {trainer.below_target ? (
+              <Tooltip title={`Below target: ${trainer.tasks_per_8hrs?.toFixed(1) ?? '0'}/${trainer.daily_target} ${trainer.role && ['POD Lead', 'Calibrator', 'Team Lead'].includes(trainer.role) ? 'reviews' : 'tasks'} per 8hrs`} arrow>
+                <WarningIcon sx={{ fontSize: 10, color: '#EF4444', flexShrink: 0 }} />
+              </Tooltip>
+            ) : (
+              <Box sx={{ width: 3, height: 3, borderRadius: '50%', bgcolor: '#CBD5E1', flexShrink: 0, display: { xs: 'none', sm: 'block' } }} />
+            )}
             <Box sx={{ minWidth: 0, flex: 1 }}>
-              <Typography sx={{ fontSize: { xs: '0.55rem', sm: '0.58rem', md: '0.62rem' }, color: '#64748B', fontWeight: 500, lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              <Typography sx={{ fontSize: { xs: '0.55rem', sm: '0.58rem', md: '0.62rem' }, color: trainer.below_target ? '#DC2626' : '#64748B', fontWeight: 500, lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                 {trainer.trainer_name}
               </Typography>
               <Typography sx={{ fontSize: { xs: '0.45rem', sm: '0.47rem', md: '0.5rem' }, color: '#94A3B8', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
@@ -453,6 +465,7 @@ function TrainerRow({
             {trainer.efficiency !== null ? `${trainer.efficiency.toFixed(0)}%` : '-'}
           </Typography>
         </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle, color: '#94A3B8' }}>-</TableCell>
         <TableCell align="center" sx={{ ...cellStyle, borderRight: `1px solid ${COLUMN_GROUPS.time.borderColor}`, color: '#94A3B8' }}>-</TableCell>
 
         {/* Finance Group - Revenue at trainer level */}
@@ -623,6 +636,11 @@ function PodLeadRow({
         <TableCell align="center" sx={{ ...cellStyle, ...getEfficiencyStyle(podLead.efficiency) }}>
           <Typography sx={{ fontSize: trainerFontSize, fontWeight: 700 }}>
             {podLead.efficiency !== null ? `${podLead.efficiency.toFixed(0)}%` : '-'}
+          </Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#0369A1' }}>
+            {podLead.active_jibble_people > 0 ? podLead.active_jibble_people : '-'}
           </Typography>
         </TableCell>
         <TableCell align="center" sx={{ ...cellStyle, borderRight: `1px solid ${COLUMN_GROUPS.time.borderColor}` }}>
@@ -801,6 +819,11 @@ function ProjectRow({
             {project.efficiency !== null ? `${project.efficiency.toFixed(0)}%` : '-'}
           </Typography>
         </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: projectFontSize, fontWeight: 700, color: '#0369A1' }}>
+            {project.active_jibble_people > 0 ? project.active_jibble_people : '-'}
+          </Typography>
+        </TableCell>
         <TableCell align="center" sx={{ ...cellStyle, borderRight: `1px solid ${COLUMN_GROUPS.time.borderColor}` }}>
           <Typography sx={{ fontSize: projectFontSize, fontWeight: 700, color: '#1E293B' }}>
             {project.total_pod_hours?.toFixed(1) ?? '-'}
@@ -845,6 +868,127 @@ function ProjectRow({
 
 // Import TabSummaryStats type from PreDelivery
 import type { TabSummaryStats } from '../../pages/PreDelivery'
+
+// ============================================================================
+// Below-Target Summary Component
+// ============================================================================
+
+interface FlaggedPerson {
+  trainer_name: string
+  trainer_email: string
+  role: string
+  unique_tasks: number
+  new_tasks: number
+  rework: number
+  total_reviews: number
+  jibble_hours: number
+  tasks_per_8hrs: number
+  daily_target: number
+  pod_lead_name: string
+}
+
+function BelowTargetSummary({ projects }: { projects: ProjectStats[] }) {
+  const [expanded, setExpanded] = useState(false)
+
+  const flagged: FlaggedPerson[] = []
+  for (const project of projects) {
+    for (const pod of project.pod_leads) {
+      for (const t of pod.trainers || []) {
+        if (t.below_target && t.tasks_per_8hrs != null && t.daily_target != null) {
+          flagged.push({
+            trainer_name: t.trainer_name,
+            trainer_email: t.trainer_email,
+            role: t.role || 'Trainer',
+            unique_tasks: t.unique_tasks,
+            new_tasks: t.new_tasks,
+            rework: t.rework,
+            total_reviews: t.total_reviews,
+            jibble_hours: t.jibble_hours,
+            tasks_per_8hrs: t.tasks_per_8hrs,
+            daily_target: t.daily_target,
+            pod_lead_name: pod.pod_lead_name,
+          })
+        }
+      }
+    }
+  }
+
+  if (flagged.length === 0) return null
+
+  flagged.sort((a, b) => (a.tasks_per_8hrs / a.daily_target) - (b.tasks_per_8hrs / b.daily_target))
+
+  return (
+    <Paper sx={{ mb: 1, borderRadius: 1, border: '1px solid #FECACA', overflow: 'hidden' }}>
+      <Box
+        sx={{
+          display: 'flex', alignItems: 'center', gap: 1,
+          px: 1.5, py: 0.75, bgcolor: '#FEF2F2', cursor: 'pointer',
+          '&:hover': { bgcolor: '#FEE2E2' },
+        }}
+        onClick={() => setExpanded(!expanded)}
+      >
+        <WarningIcon sx={{ fontSize: 16, color: '#DC2626' }} />
+        <Typography sx={{ fontSize: '0.75rem', fontWeight: 700, color: '#991B1B', flex: 1 }}>
+          Below Target Alert
+        </Typography>
+        <Chip
+          label={`${flagged.length} flagged`}
+          size="small"
+          sx={{ height: 18, fontSize: '0.6rem', fontWeight: 700, bgcolor: '#FEE2E2', color: '#DC2626', border: '1px solid #FECACA' }}
+        />
+        <IconButton size="small" sx={{ p: 0.25 }}>
+          {expanded ? <KeyboardArrowUp sx={{ fontSize: 14 }} /> : <KeyboardArrowDown sx={{ fontSize: 14 }} />}
+        </IconButton>
+      </Box>
+      <Collapse in={expanded}>
+        <TableContainer>
+          <Table size="small">
+            <TableHead>
+              <TableRow sx={{ bgcolor: '#FEF2F2' }}>
+                {['Name', 'Role', 'Pod Lead', 'New Tasks', 'Rework', 'Reviews', 'Jibble Hrs', 'Review Rate/day', 'Target', 'Gap'].map(h => (
+                  <TableCell key={h} align={h === 'Name' || h === 'Role' || h === 'Pod Lead' ? 'left' : 'center'} sx={{ fontSize: '0.6rem', fontWeight: 700, color: '#991B1B', py: 0.5, borderBottom: '1px solid #FECACA' }}>
+                    {h}
+                  </TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {flagged.map((p) => {
+                const isReviewRole = ['POD Lead', 'Calibrator', 'Team Lead'].includes(p.role)
+                const gap = p.daily_target - p.tasks_per_8hrs
+                return (
+                  <TableRow key={p.trainer_email} sx={{ '&:hover': { bgcolor: '#FEF2F2' } }}>
+                    <TableCell sx={{ fontSize: '0.6rem', fontWeight: 600, color: '#1E293B', py: 0.4 }}>
+                      <Box>
+                        <Typography sx={{ fontSize: '0.6rem', fontWeight: 600, color: '#1E293B', lineHeight: 1.2 }}>{p.trainer_name}</Typography>
+                        <Typography sx={{ fontSize: '0.5rem', color: '#94A3B8' }}>{p.trainer_email}</Typography>
+                      </Box>
+                    </TableCell>
+                    <TableCell sx={{ fontSize: '0.55rem', color: '#64748B', py: 0.4 }}>{p.role}</TableCell>
+                    <TableCell sx={{ fontSize: '0.55rem', color: '#64748B', py: 0.4 }}>{p.pod_lead_name}</TableCell>
+                    <TableCell align="center" sx={{ fontSize: '0.6rem', fontWeight: 600, color: '#475569', py: 0.4 }}>{p.new_tasks}</TableCell>
+                    <TableCell align="center" sx={{ fontSize: '0.6rem', fontWeight: 600, color: '#475569', py: 0.4 }}>{p.rework}</TableCell>
+                    <TableCell align="center" sx={{ fontSize: '0.6rem', fontWeight: 600, color: '#475569', py: 0.4 }}>{p.total_reviews}</TableCell>
+                    <TableCell align="center" sx={{ fontSize: '0.6rem', fontWeight: 600, color: '#475569', py: 0.4 }}>{p.jibble_hours.toFixed(1)}</TableCell>
+                    <TableCell align="center" sx={{ fontSize: '0.6rem', fontWeight: 700, color: '#DC2626', py: 0.4 }}>
+                      {p.tasks_per_8hrs.toFixed(1)} {isReviewRole ? 'rev' : 'tasks'}
+                    </TableCell>
+                    <TableCell align="center" sx={{ fontSize: '0.6rem', fontWeight: 600, color: '#065F46', py: 0.4 }}>
+                      {p.daily_target} {isReviewRole ? 'rev' : 'tasks'}
+                    </TableCell>
+                    <TableCell align="center" sx={{ fontSize: '0.6rem', fontWeight: 700, color: '#DC2626', py: 0.4, bgcolor: '#FEF2F2' }}>
+                      -{gap.toFixed(1)}
+                    </TableCell>
+                  </TableRow>
+                )
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Collapse>
+    </Paper>
+  )
+}
 
 interface ProjectsTabProps {
   onSummaryUpdate?: (stats: TabSummaryStats) => void
@@ -948,6 +1092,7 @@ export function ProjectsTab({ onSummaryUpdate, onSummaryLoading }: ProjectsTabPr
       case 'logged_hours': aVal = a.logged_hours ?? 0; bVal = b.logged_hours ?? 0; break
       case 'accounted_hours': aVal = a.accounted_hours ?? 0; bVal = b.accounted_hours ?? 0; break
       case 'efficiency': aVal = a.efficiency ?? -Infinity; bVal = b.efficiency ?? -Infinity; break
+      case 'active_jibble_people': aVal = a.active_jibble_people ?? 0; bVal = b.active_jibble_people ?? 0; break
       case 'total_pod_hours': aVal = a.total_pod_hours ?? 0; bVal = b.total_pod_hours ?? 0; break
       // Finance
       case 'revenue': aVal = a.revenue ?? 0; bVal = b.revenue ?? 0; break
@@ -1105,6 +1250,9 @@ export function ProjectsTab({ onSummaryUpdate, onSummaryLoading }: ProjectsTabPr
         </Box>
       </Paper>
 
+      {/* Flagged Underperformers Summary (Math Proof Eval) */}
+      <BelowTargetSummary projects={sortedData} />
+
       {/* Table - Bigger height, responsive */}
       <Paper sx={{ width: '100%', overflow: 'hidden', borderRadius: 1, border: '1px solid #E2E8F0' }}>
         <TableContainer sx={{ maxHeight: { xs: 'calc(100vh - 200px)', sm: 'calc(100vh - 180px)', md: 'calc(100vh - 160px)' }, minHeight: { xs: 400, sm: 500, md: 600 } }}>
@@ -1152,7 +1300,7 @@ export function ProjectsTab({ onSummaryUpdate, onSummaryLoading }: ProjectsTabPr
                   <Typography sx={{ fontSize: { xs: '0.5rem', sm: '0.55rem', md: '0.6rem' }, fontWeight: 700, letterSpacing: '0.02em' }}>QUALITY</Typography>
                 </TableCell>
                 <TableCell 
-                  colSpan={5} 
+                  colSpan={6} 
                   align="center"
                   sx={{ 
                     ...headerCellStyle, 
@@ -1198,32 +1346,33 @@ export function ProjectsTab({ onSummaryUpdate, onSummaryLoading }: ProjectsTabPr
                 <SubHeader label="Size" columnKey="size" group="overview" tooltipKey="Size" isLastInGroup />
 
                 {/* Tasks - All sortable */}
-                <SubHeader label="Uniq" columnKey="unique_tasks" group="tasks" tooltipKey="Uniq" />
+                <SubHeader label="Unique" columnKey="unique_tasks" group="tasks" tooltipKey="Uniq" />
                 <SubHeader label="New" columnKey="new_tasks" group="tasks" tooltipKey="New" />
-                <SubHeader label="Rwk" columnKey="rework" group="tasks" tooltipKey="Rwk" />
-                <SubHeader label="Del" columnKey="delivered" group="tasks" tooltipKey="Del" />
+                <SubHeader label="Rework" columnKey="rework" group="tasks" tooltipKey="Rwk" />
+                <SubHeader label="Delivered" columnKey="delivered" group="tasks" tooltipKey="Del" />
                 <SubHeader label="Queue" columnKey="in_queue" group="tasks" tooltipKey="Queue" isLastInGroup />
 
                 {/* Quality - All sortable */}
-                <SubHeader label="Rev" columnKey="total_reviews" group="quality" tooltipKey="Rev" />
-                <SubHeader label="Rate" columnKey="avg_rating" group="quality" tooltipKey="Rate" />
-                <SubHeader label="Agt" columnKey="agentic_reviews" group="quality" tooltipKey="Agt" customColor="#7C3AED" />
-                <SubHeader label="AgtR" columnKey="agentic_rating" group="quality" tooltipKey="AgtR" customColor="#7C3AED" />
-                <SubHeader label="AvgR" columnKey="avg_rework" group="quality" tooltipKey="AvgR" />
-                <SubHeader label="R%" columnKey="rework_percent" group="quality" tooltipKey="R%" isLastInGroup />
+                <SubHeader label="Reviews" columnKey="total_reviews" group="quality" tooltipKey="Rev" />
+                <SubHeader label="Rating" columnKey="avg_rating" group="quality" tooltipKey="Rate" />
+                <SubHeader label="Agentic" columnKey="agentic_reviews" group="quality" tooltipKey="Agt" customColor="#7C3AED" />
+                <SubHeader label="Agt Rate" columnKey="agentic_rating" group="quality" tooltipKey="AgtR" customColor="#7C3AED" />
+                <SubHeader label="Avg Rwk" columnKey="avg_rework" group="quality" tooltipKey="AvgR" />
+                <SubHeader label="Rwk %" columnKey="rework_percent" group="quality" tooltipKey="R%" isLastInGroup />
 
                 {/* Time & Efficiency - All sortable */}
                 <SubHeader label="AHT" columnKey="merged_exp_aht" group="time" tooltipKey="AHT" />
-                <SubHeader label="Jib" columnKey="logged_hours" group="time" tooltipKey="Jib" />
-                <SubHeader label="Acct" columnKey="accounted_hours" group="time" tooltipKey="Acct" />
-                <SubHeader label="Eff%" columnKey="efficiency" group="time" tooltipKey="Eff%" />
-                <SubHeader label="POD" columnKey="total_pod_hours" group="time" tooltipKey="POD" isLastInGroup />
+                <SubHeader label="Jibble Hrs" columnKey="logged_hours" group="time" tooltipKey="Jib" />
+                <SubHeader label="Acct Hrs" columnKey="accounted_hours" group="time" tooltipKey="Acct" />
+                <SubHeader label="Eff %" columnKey="efficiency" group="time" tooltipKey="Eff%" />
+                <SubHeader label="Active" columnKey="active_jibble_people" group="time" tooltipKey="Active" />
+                <SubHeader label="POD Hrs" columnKey="total_pod_hours" group="time" tooltipKey="POD" isLastInGroup />
 
                 {/* Finance - Project level only */}
-                <SubHeader label="Rev$" columnKey="revenue" group="finance" tooltipKey="Rev$" />
+                <SubHeader label="Revenue" columnKey="revenue" group="finance" tooltipKey="Rev$" />
                 <SubHeader label="Cost" columnKey="cost" group="finance" tooltipKey="Cost" />
-                <SubHeader label="Mrgn" columnKey="margin" group="finance" tooltipKey="Mrgn" />
-                <SubHeader label="M%" columnKey="margin_percent" group="finance" tooltipKey="M%" />
+                <SubHeader label="Margin" columnKey="margin" group="finance" tooltipKey="Mrgn" />
+                <SubHeader label="Margin %" columnKey="margin_percent" group="finance" tooltipKey="M%" />
               </TableRow>
             </TableHead>
             <TableBody>

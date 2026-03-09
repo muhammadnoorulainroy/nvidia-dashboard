@@ -11,7 +11,7 @@ from google.cloud import bigquery
 
 from app.config import get_settings
 from app.services.db_service import get_db_service
-from app.models.db_models import ReviewDetail, Task, Contributor, DataSyncLog, TaskReviewedInfo, TaskAHT, ContributorTaskStats, ContributorDailyStats, ReviewerDailyStats, TaskRaw, TaskHistoryRaw, PodLeadMapping, ReviewerTrainerDailyStats, TrainerReviewStats, ProjectRevenueWeekly, ProjectCostDaily
+from app.models.db_models import ReviewDetail, Task, Contributor, DataSyncLog, TaskReviewedInfo, TaskAHT, ContributorTaskStats, ContributorDailyStats, ReviewerDailyStats, TaskRaw, TaskHistoryRaw, PodLeadMapping, ReviewerTrainerDailyStats, TrainerReviewStats, ProjectRevenueWeekly, ProjectCostDaily, ProjectFTECostMonthly
 from app.constants import get_constants
 
 logger = logging.getLogger(__name__)
@@ -57,8 +57,10 @@ class DataSyncService:
     
     @property
     def _project_ids_sql(self) -> str:
-        """Get SQL clause for project IDs."""
-        ids = self._constants.projects.PRIMARY_PROJECT_IDS
+        """Get SQL clause for real BigQuery project IDs (not dashboard IDs).
+        Uses ALL_BQ_PROJECT_IDS which are the actual labeling tool project IDs
+        from DASHBOARD_PROJECT_TO_BQ_IDS, avoiding Jibble-only synthetic IDs."""
+        ids = self._constants.projects.ALL_BQ_PROJECT_IDS
         return ", ".join(str(id) for id in ids)
     
     def initialize_bigquery_client(self):
@@ -1284,7 +1286,7 @@ class DataSyncService:
                     'author': row_dict.get('author'),
                     'completed_status_count': row_dict.get('completed_status_count', 0),
                     'last_completed_date': row_dict.get('last_completed_date'),
-                    'project_id': row_dict.get('project_id'),
+                    'project_id': self._constants.projects.remap_bq_to_dashboard(row_dict.get('project_id')),
                     'batch_name': row_dict.get('batch_name'),
                 }
                 data.append(mapped_row)
@@ -1463,7 +1465,7 @@ class DataSyncService:
                     'task_status': row_dict.get('task_status'),
                     'batch_name': row_dict.get('batch_name'),
                     'task_duration': row_dict.get('task_duration'),
-                    'project_id': row_dict.get('project_id'),
+                    'project_id': self._constants.projects.remap_bq_to_dashboard(row_dict.get('project_id')),
                     'delivery_batch_name': row_dict.get('delivery_batch_name'),
                     'delivery_status': row_dict.get('delivery_status'),
                     'delivery_batch_created_by': row_dict.get('delivery_batch_created_by'),
@@ -1618,7 +1620,7 @@ class DataSyncService:
                     'author': row_dict.get('author'),
                     'completed_status_count': row_dict.get('completed_status_count', 0),
                     'last_completed_date': row_dict.get('last_completed_date'),
-                    'project_id': row_dict.get('project_id'),
+                    'project_id': self._constants.projects.remap_bq_to_dashboard(row_dict.get('project_id')),
                     'batch_name': row_dict.get('batch_name'),
                 }
                 data.append(mapped_row)
@@ -1896,18 +1898,51 @@ class DataSyncService:
                     return find_pod_lead(name_to_person[reporting_name], visited)
                 return None
             
+            # Build email -> person lookup for resolving "reporting to" by email
+            email_to_person = {p['email']: p for p in people}
+
+            def find_reporting_to_email(person):
+                """Resolve the 'reporting to' name to an email address."""
+                reporting_name = person.get('reporting_to', '').lower()
+                if reporting_name and reporting_name in name_to_person:
+                    return name_to_person[reporting_name]['email']
+                return None
+
             records = []
             for p in people:
-                if p['role'] in ('DM', 'Team Lead', 'Calibrator'):
+                if p['role'] == 'DM':
                     continue
-                
-                if p['role'] == 'Pod Lead':
-                    # Self-referencing entry for Pod Leads
+
+                if p['role'] == 'Team Lead':
+                    # Team Leads become top-level group headers (self-referencing)
                     records.append({
                         'trainer_email': p['email'],
                         'trainer_name': p['name'],
                         'pod_lead_email': p['email'],
                         'role': 'POD Lead',
+                        'current_status': 'active',
+                        'jibble_project': JIBBLE_PROJECT,
+                        'jibble_name': p['name'],
+                    })
+                elif p['role'] == 'Pod Lead':
+                    # Pod Leads: self-referencing entry (group header for their trainers)
+                    records.append({
+                        'trainer_email': p['email'],
+                        'trainer_name': p['name'],
+                        'pod_lead_email': p['email'],
+                        'role': 'POD Lead',
+                        'current_status': 'active',
+                        'jibble_project': JIBBLE_PROJECT,
+                        'jibble_name': p['name'],
+                    })
+                elif p['role'] == 'Calibrator':
+                    # Calibrators go under their direct "reporting to" person
+                    reporting_email = find_reporting_to_email(p)
+                    records.append({
+                        'trainer_email': p['email'],
+                        'trainer_name': p['name'],
+                        'pod_lead_email': reporting_email,
+                        'role': 'Calibrator',
                         'current_status': 'active',
                         'jibble_project': JIBBLE_PROJECT,
                         'jibble_name': p['name'],
@@ -1944,9 +1979,11 @@ class DataSyncService:
             
             # Log summary
             pod_leads = [r for r in records if r['role'] == 'POD Lead']
-            trainers = [r for r in records if r['role'] != 'POD Lead']
+            calibrators = [r for r in records if r['role'] == 'Calibrator']
+            trainers = [r for r in records if r['role'] not in ('POD Lead', 'Calibrator')]
             logger.info(f"[OK] Synced {len(records)} Math Proof Eval team members "
-                        f"({len(pod_leads)} pod leads, {len(trainers)} trainers/sub-pod-leads)")
+                        f"({len(pod_leads)} pod leads/team leads, {len(calibrators)} calibrators, "
+                        f"{len(trainers)} trainers/sub-pod-leads)")
             
             self.log_sync_complete(log_id, len(records), True)
             return True
@@ -1960,6 +1997,124 @@ class DataSyncService:
             self.log_sync_complete(log_id, 0, False, str(e))
             return False
     
+    def sync_math_proof_eval_jibble_ids(self, sync_type: str = 'scheduled') -> bool:
+        """
+        Resolve Jibble member_codes for Math Proof Eval team members and insert
+        them into jibble_email_mapping so the normal jibble_hours sync can
+        populate turing_email for these entries.
+
+        Steps:
+        1. Read team members from pod_lead_mapping where jibble_project = NVIDIA_STEM Math_Proof_Eval
+        2. Query BigQuery Jibblelogs for distinct (MEMBER_CODE, FULL_NAME) on that project
+        3. Match team members by name -> member_code
+        4. INSERT into jibble_email_mapping (ON CONFLICT DO UPDATE)
+        """
+        from sqlalchemy import text
+
+        JIBBLE_PROJECT = 'NVIDIA_STEM Math_Proof_Eval'
+        log_id = self.log_sync_start('math_proof_eval_jibble_ids', sync_type)
+
+        try:
+            if not self.bq_client:
+                logger.warning("BigQuery client not available - skipping Math Proof Eval Jibble ID sync")
+                self.log_sync_complete(log_id, 0, False, "No BQ client")
+                return False
+
+            # 1. Get team members already stored in pod_lead_mapping
+            with self.db_service.get_session() as session:
+                team_rows = session.execute(text(
+                    "SELECT DISTINCT trainer_email, trainer_name FROM pod_lead_mapping "
+                    "WHERE jibble_project = :proj AND trainer_email IS NOT NULL"
+                ), {'proj': JIBBLE_PROJECT}).fetchall()
+
+            team_by_name = {}
+            for r in team_rows:
+                if r[1]:
+                    team_by_name[r[1].lower().strip()] = r[0].lower().strip()
+
+            if not team_by_name:
+                logger.info("No Math Proof Eval team members found in pod_lead_mapping, skipping")
+                self.log_sync_complete(log_id, 0, True)
+                return True
+
+            # 2. Query BigQuery for distinct member_codes on the Jibble project
+            query = f"""
+            SELECT DISTINCT
+                CAST(MEMBER_CODE AS STRING) AS member_code,
+                FULL_NAME AS full_name
+            FROM `turing-230020.test.Jibblelogs`
+            WHERE Jibble_PROJECT = '{JIBBLE_PROJECT}'
+              AND MEMBER_CODE IS NOT NULL
+              AND FULL_NAME IS NOT NULL
+            """
+            results = self.bq_client.query(query).result()
+
+            bq_members = []
+            for row in results:
+                bq_members.append({
+                    'member_code': str(row.member_code).strip(),
+                    'full_name': row.full_name.strip(),
+                })
+            logger.info(f"Found {len(bq_members)} distinct Jibble members on {JIBBLE_PROJECT}")
+
+            # 3. Match by name (case-insensitive)
+            matched = 0
+
+            def _names_match(team_name: str, bq_name: str) -> bool:
+                """Check if two names refer to the same person.
+                Handles middle-name mismatches (e.g. 'Geofry Ntheka' vs
+                'Geofry Kyengo Ntheka') by verifying all tokens of the
+                shorter name appear in the longer name."""
+                if team_name in bq_name or bq_name in team_name:
+                    return True
+                team_tokens = set(team_name.split())
+                bq_tokens = set(bq_name.split())
+                shorter, longer = (team_tokens, bq_tokens) if len(team_tokens) <= len(bq_tokens) else (bq_tokens, team_tokens)
+                return len(shorter) >= 2 and shorter.issubset(longer)
+
+            with self.db_service.get_session() as session:
+                for bq in bq_members:
+                    bq_name_lower = bq['full_name'].lower().strip()
+                    # Try exact match first
+                    turing_email = team_by_name.get(bq_name_lower)
+                    # Try partial / token-based: handles substring matches and
+                    # middle-name differences (all words of shorter name must
+                    # appear in the longer name)
+                    if not turing_email:
+                        for team_name, team_email in team_by_name.items():
+                            if _names_match(team_name, bq_name_lower):
+                                turing_email = team_email
+                                break
+
+                    if turing_email:
+                        session.execute(text("""
+                            INSERT INTO jibble_email_mapping
+                            (jibble_id, jibble_email, jibble_name, turing_email, last_synced)
+                            VALUES (:jibble_id, NULL, :jibble_name, :turing_email, NOW())
+                            ON CONFLICT (jibble_id) DO UPDATE SET
+                                jibble_name = EXCLUDED.jibble_name,
+                                turing_email = EXCLUDED.turing_email,
+                                last_synced = NOW()
+                        """), {
+                            'jibble_id': bq['member_code'],
+                            'jibble_name': bq['full_name'],
+                            'turing_email': turing_email,
+                        })
+                        matched += 1
+                    else:
+                        logger.debug(f"No team match for Jibble member '{bq['full_name']}' (mc={bq['member_code']})")
+
+                session.commit()
+
+            logger.info(f"[OK] Matched {matched}/{len(bq_members)} Math Proof Eval Jibble members to turing emails")
+            self.log_sync_complete(log_id, matched, True)
+            return True
+
+        except Exception as e:
+            logger.error(f"[ERROR] Error syncing Math Proof Eval Jibble IDs: {e}")
+            self.log_sync_complete(log_id, 0, False, str(e))
+            return False
+
     def sync_jibble_hours(self, sync_type: str = 'initial') -> bool:
         """Sync Jibble hours from BigQuery turing-230020.test.Jibblelogs"""
         from app.models.db_models import JibbleHours
@@ -2002,22 +2157,43 @@ class DataSyncService:
             logger.info(f"Fetched {len(data)} Jibble hours records from BigQuery")
             
             with self.db_service.get_session() as session:
+                # Build member_code -> turing_email lookup from jibble_email_mapping
+                email_map = {}
+                try:
+                    mapping_rows = session.execute(text(
+                        "SELECT jibble_id, turing_email FROM jibble_email_mapping WHERE jibble_id IS NOT NULL AND turing_email IS NOT NULL"
+                    )).fetchall()
+                    for m in mapping_rows:
+                        clean_id = m[0].strip().replace(",", "").split(".")[0]
+                        email_map[clean_id] = m[1].lower().strip()
+                    logger.info(f"Loaded {len(email_map)} jibble_id->turing_email mappings")
+                except Exception as map_err:
+                    logger.warning(f"Could not load jibble_email_mapping: {map_err}")
+                
                 # Clear existing data
                 session.execute(delete(JibbleHours))
                 
-                # Insert new data
+                mapped_count = 0
                 for record in data:
                     if record['member_code']:
+                        clean_code = record['member_code'].strip().replace(",", "").split(".")[0]
+                        turing_email = email_map.get(clean_code)
+                        if turing_email:
+                            mapped_count += 1
+                        
                         jh = JibbleHours(
                             member_code=record['member_code'],
                             entry_date=record['entry_date'],
                             project=record['project'],
                             full_name=record['full_name'],
-                            logged_hours=record['logged_hours']
+                            logged_hours=record['logged_hours'],
+                            turing_email=turing_email,
+                            source='bigquery',
                         )
                         session.add(jh)
                 
                 session.commit()
+                logger.info(f"Mapped {mapped_count}/{len(data)} jibble_hours rows to turing_email")
             
             self.log_sync_complete(log_id, len(data), True)
             logger.info(f"[OK] Successfully synced {len(data)} jibble_hours records")
@@ -2491,15 +2667,14 @@ class DataSyncService:
         try:
             self.initialize_bigquery_client()
             
-            # Get project IDs from settings
+            # Use real BigQuery project IDs (not dashboard synthetic IDs)
             project_ids = self.settings.project_id_filter
             if isinstance(project_ids, int):
                 project_ids = [project_ids]
             elif isinstance(project_ids, str):
                 project_ids = [int(p.strip()) for p in project_ids.split(',')]
             
-            # Add all Nvidia project IDs from constants
-            all_project_ids = list(set(project_ids + self._constants.projects.PRIMARY_PROJECT_IDS))
+            all_project_ids = list(set(project_ids + self._constants.projects.ALL_BQ_PROJECT_IDS))
             project_filter = ','.join(map(str, all_project_ids))
             
             logger.info(f"Syncing trainer_review_stats for projects: {all_project_ids}")
@@ -2599,7 +2774,7 @@ class DataSyncService:
                     'score': float(row_dict.get('score')) if row_dict.get('score') is not None else None,
                     'followup_required': int(row_dict.get('followup_required', 0)),
                     'review_type': row_dict.get('review_type', 'manual'),  # 'manual' or 'auto' (agentic)
-                    'project_id': row_dict.get('project_id')
+                    'project_id': self._constants.projects.remap_bq_to_dashboard(row_dict.get('project_id'))
                 })
             
             logger.info(f"Fetched {len(data)} trainer review attribution records")
@@ -2654,7 +2829,7 @@ class DataSyncService:
         from datetime import datetime as dt
         
         fin_config = self._constants.financial
-        # Build case-insensitive mapping (sheet may have "NVIDIA - ICPC" vs mapping "Nvidia - ICPC")
+        # Build case-insensitive mapping (sheet names may differ in casing from our mapping)
         jibble_mapping_raw = self._constants.jibble.JIBBLE_NAME_TO_PROJECT_ID
         jibble_mapping_lower = {k.lower(): v for k, v in jibble_mapping_raw.items()}
         
@@ -2918,6 +3093,107 @@ class DataSyncService:
             traceback.print_exc()
             return False
     
+    def sync_fte_costs(self, sync_type: str = 'scheduled') -> bool:
+        """
+        Sync FTE (full-time employee) costs from the client's PnL tracking sheet.
+        
+        Source: 'mom_fte_costs' tab in the client's PnL sheet.
+        The client's total cost = Contractors (BigQuery Billings) + FTEs (this data).
+        
+        Columns: Projects (A), Month (B), Cost (C)
+        """
+        import gspread
+        from datetime import date as date_type
+        
+        log_id = self.log_sync_start('project_fte_cost_monthly', sync_type)
+        
+        MONTH_TO_DATES = {
+            'nov': (date_type(2025, 11, 1), date_type(2025, 11, 30)),
+            'dec': (date_type(2025, 12, 1), date_type(2025, 12, 31)),
+            'jan': (date_type(2026, 1, 1), date_type(2026, 1, 31)),
+            'feb': (date_type(2026, 2, 1), date_type(2026, 2, 28)),
+            'mar': (date_type(2026, 3, 1), date_type(2026, 3, 31)),
+            'apr': (date_type(2026, 4, 1), date_type(2026, 4, 30)),
+        }
+        
+        try:
+            settings = get_settings()
+            sheet_id = settings.client_pnl_sheet_id
+            
+            credentials = self._get_google_sheets_credentials()
+            gc = gspread.authorize(credentials)
+            
+            workbook = gc.open_by_key(sheet_id)
+            ws = workbook.worksheet('mom_fte_costs')
+            all_values = ws.get_all_values()
+            
+            if len(all_values) < 2:
+                logger.warning("mom_fte_costs tab has no data rows")
+                self.log_sync_complete(log_id, 0, True)
+                return True
+            
+            fin_config = self._constants.financial
+            jibble_mapping = self._constants.jibble.JIBBLE_NAME_TO_PROJECT_ID
+            jibble_mapping_lower = {k.lower(): v for k, v in jibble_mapping.items()}
+            
+            records = []
+            for i, row in enumerate(all_values[1:], start=2):
+                if len(row) < 3:
+                    continue
+                
+                project_name = row[0].strip()
+                month_name = row[1].strip()
+                cost_str = row[2].strip()
+                
+                if not project_name or not month_name or not cost_str:
+                    continue
+                
+                if project_name.lower() in ('others total', 'total'):
+                    continue
+                
+                cost_val = fin_config.parse_currency(cost_str)
+                if cost_val == 0:
+                    continue
+                
+                project_id = jibble_mapping.get(project_name) or jibble_mapping_lower.get(project_name.lower())
+                if project_id is None:
+                    logger.warning(f"FTE costs row {i}: no project_id mapping for '{project_name}'")
+                
+                month_key = month_name.lower()[:3]
+                month_dates = MONTH_TO_DATES.get(month_key)
+                month_start = month_dates[0] if month_dates else None
+                month_end = month_dates[1] if month_dates else None
+                
+                records.append({
+                    'jibble_project_name': project_name,
+                    'project_id': project_id,
+                    'month_name': month_name,
+                    'month_start_date': month_start,
+                    'month_end_date': month_end,
+                    'cost': cost_val,
+                    'last_synced': datetime.utcnow(),
+                })
+            
+            with self.db_service.get_session() as session:
+                session.execute(delete(ProjectFTECostMonthly))
+                session.commit()
+                
+                if records:
+                    objects = [ProjectFTECostMonthly(**r) for r in records]
+                    session.bulk_save_objects(objects)
+                    session.commit()
+            
+            self.log_sync_complete(log_id, len(records), True)
+            logger.info(f"[OK] Synced {len(records)} FTE cost records from mom_fte_costs")
+            return True
+            
+        except Exception as e:
+            self.log_sync_complete(log_id, 0, False, str(e))
+            logger.error(f"[ERROR] Error syncing FTE costs: {e}")
+            import traceback
+            traceback.print_exc()
+            return False
+    
     def sync_all_tables(self, sync_type: str = 'scheduled') -> Dict[str, bool]:
         """Sync all required data from BigQuery to PostgreSQL"""
         logger.info(f"Starting data sync ({sync_type})...")
@@ -2940,10 +3216,12 @@ class DataSyncService:
             ('pod_lead_mapping', self.sync_pod_lead_mapping),
             ('math_proof_eval_team', self.sync_math_proof_eval_team),
             ('jibble_email_mapping', self.sync_jibble_email_mapping),  # Jibble ID to Turing email mapping
+            ('math_proof_eval_jibble_ids', self.sync_math_proof_eval_jibble_ids),  # Fill missing Jibble member_code mappings
             ('jibble_hours', self.sync_jibble_hours),  # Jibble hours from BigQuery
             ('trainer_review_stats', self.sync_trainer_review_stats),  # Per-trainer review attribution
             ('project_revenue_weekly', self.sync_revenue_data),  # Revenue from Google Sheet
             ('project_cost_daily', self.sync_cost_data),  # Cost from BigQuery Jibblelogs
+            ('project_fte_cost_monthly', self.sync_fte_costs),  # FTE costs from client's PnL sheet
         ]
         
         for table_name, sync_func in sync_order:

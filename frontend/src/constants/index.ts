@@ -25,9 +25,6 @@ export const PROJECT_ID_TO_NAME: Record<number, string> = {
   37: 'Nvidia - Multichallenge',
   38: 'Nvidia - InverseIFEval',
   39: 'Nvidia - CFBench Multilingual',
-  40: 'Nvidia - Multichallenge Advanced',
-  41: 'Nvidia - ICPC',
-  42: 'NVIDIA_STEM Math_Eval',
   59: 'Nvidia - Math Proof Eval',
 }
 
@@ -39,7 +36,7 @@ export const PRIMARY_PROJECT_IDS: number[] = [36, 37, 38, 39, 59]
 /**
  * All project IDs including advanced variants
  */
-export const ALL_PROJECT_IDS: number[] = [36, 37, 38, 39, 40, 41, 42, 59]
+export const ALL_PROJECT_IDS: number[] = [36, 37, 38, 39, 59]
 
 /**
  * Project options for dropdown selectors (with "All Projects" option)

@@ -53,10 +53,8 @@ class Settings(BaseSettings):
     project_id_filter: int  # Required - no default (project specific)
     
     # All Nvidia project IDs - can be overridden via env as JSON array
-    all_project_ids: str = "36,37,38,39,59"  # Comma-separated, parsed to list
+    all_project_ids: str = "36,37,38,39,59"
     
-    # Project ID to Name mapping - loaded from env or uses defaults
-    # NOTE: Project 37 is Multichallenge, Project 39 is CFBench Multilingual, Project 59 is Math Proof Eval
     project_names_json: str = '{"36":"Nvidia - SysBench","37":"Nvidia - Multichallenge","38":"Nvidia - InverseIFEval","39":"Nvidia - CFBench Multilingual","59":"Nvidia - Math Proof Eval"}'
     
     @property
@@ -124,20 +122,15 @@ class Settings(BaseSettings):
         "a1b6c34e-67cd-4554-8a7b-4cab2d0fa744",  # Nvidia - Multichallenge (Project 37)
         "16e16c63-6deb-4f3c-9d88-46537c006dc9",  # Nvidia - InverseIFEval (Project 38)
         "7c305ca8-9675-4edc-a51c-84ad0beaae78",  # Nvidia - CFBench Multilingual (Project 39)
-        "2581d1d5-e729-437f-92aa-2e3d7ceebc4f",  # Nvidia - Multichallenge Advanced (Project 37)
-        "1f33fccc-9c95-409a-b17c-541bdd5e446e",  # Nvidia - ICPC (Project 36)
-        "e6a4ebc3-5f25-42ce-806e-d23f9026d95b",  # NVIDIA_STEM Math_Eval (Project 36)
+        "2581d1d5-e729-437f-92aa-2e3d7ceebc4f",  # Nvidia - Multichallenge Advanced (-> Project 37)
     ])
     
-    # Jibble project name to dashboard project mapping
-    # NOTE: Multichallenge = Project 37, CFBench Multilingual = Project 39
+    # Jibble project name to dashboard project mapping (1:1 for accurate financials)
     jibble_project_mapping_json: str = '''{
         "Nvidia - Multichallenge": 37,
         "Nvidia - Multichallenge Advanced": 37,
         "Nvidia - InverseIFEval": 38,
         "Nvidia - CFBench Multilingual": 39,
-        "Nvidia - ICPC": 36,
-        "NVIDIA_STEM Math_Eval": 36,
         "Nvidia - SysBench": 36,
         "NVIDIA_STEM Math_Proof_Eval": 59
     }'''
@@ -152,6 +145,9 @@ class Settings(BaseSettings):
     # Quality Rubrics sheet (Advanced Math EVAL Quality Report)
     quality_rubrics_sheet_id: str = '1n0kYJNO5DwQso1DlaNzikXBWt-yVHV1dhitX_n5M6Ls'
     
+    # Client's PnL tracking sheet (for FTE costs from mom_fte_costs tab)
+    client_pnl_sheet_id: str = '1hXJGpHp8hVt0tFks7WmJh1q5BkiSkRUvq1ritlfKwDs'
+    
     # ==========================================================================
     # Financial Data Settings
     # ==========================================================================
@@ -164,7 +160,7 @@ class Settings(BaseSettings):
     cost_bigquery_table: str = "turing-230020.test.Jibblelogs"
     
     # Jibble project names to include in cost queries
-    cost_jibble_projects: str = "Nvidia - ICPC,Nvidia - CFBench Multilingual,Nvidia - InverseIFEval,Nvidia - Multichallenge,Nvidia - Multichallenge Advanced,Nvidia - SysBench,NVIDIA_STEM Math_Eval,NVIDIA_STEM Math_Proof_Eval,Nvidia - ScaleRTL,Nvidia - VERILOG,Nvidia - cuBench,Nvidia - CUDA,Nvidia - FACTUALITY (VQA),Nvidia-pilots-and-proposals"
+    cost_jibble_projects: str = "Nvidia - CFBench Multilingual,Nvidia - InverseIFEval,Nvidia - Multichallenge,Nvidia - Multichallenge Advanced,Nvidia - SysBench,NVIDIA_STEM Math_Proof_Eval,Nvidia - ScaleRTL,Nvidia - VERILOG,Nvidia - cuBench,Nvidia - CUDA,Nvidia - FACTUALITY (VQA),Nvidia-pilots-and-proposals"
     
     @property
     def cost_jibble_projects_list(self) -> List[str]:

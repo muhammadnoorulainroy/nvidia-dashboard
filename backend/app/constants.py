@@ -27,36 +27,67 @@ from functools import lru_cache
 
 @dataclass
 class ProjectConfig:
-    """Configuration for Nvidia projects in the labeling tool."""
+    """Configuration for Nvidia projects in the labeling tool.
     
-    # Project ID to Name mapping
-    # NOTE: Project 37 is "Multichallenge" (SFT-Multichallenge in BigQuery)
-    # NOTE: Project 39 is "CFBench Multilingual" (SFT-CFBench in BigQuery)
+    IMPORTANT: Dashboard project IDs vs BigQuery project IDs
+    --------------------------------------------------------
+    Dashboard IDs 36-39, 59 match real BigQuery labeling tool project IDs.
+    
+    DASHBOARD_PROJECT_TO_BQ_IDS maps each dashboard project to the BigQuery labeling tool
+    project IDs whose task data should be aggregated under it.
+    
+    Multichallenge (37) includes both vanilla and advanced Jibble hours.
+    CFBench (39) aggregates all language variant BQ projects (39, 44-53).
+    Math Proof Eval (59) aggregates BQ projects 55, 56, and 59.
+    """
+    
     PROJECT_ID_TO_NAME: Dict[int, str] = field(default_factory=lambda: {
         36: "Nvidia - SysBench",
         37: "Nvidia - Multichallenge",
         38: "Nvidia - InverseIFEval",
         39: "Nvidia - CFBench Multilingual",
-        40: "Nvidia - Multichallenge Advanced",
-        41: "Nvidia - ICPC",
-        42: "NVIDIA_STEM Math_Eval",
         59: "Nvidia - Math Proof Eval",
     })
     
-    # All valid Nvidia project IDs
-    ALL_PROJECT_IDS: List[int] = field(default_factory=lambda: [36, 37, 38, 39, 40, 41, 42, 59])
+    ALL_PROJECT_IDS: List[int] = field(default_factory=lambda: [36, 37, 38, 39, 59])
     
-    # Primary project IDs used in most queries (excludes Advanced variants)
     PRIMARY_PROJECT_IDS: List[int] = field(default_factory=lambda: [36, 37, 38, 39, 59])
     
-    # Project ID for Multichallenge (includes both regular and Advanced)
-    MULTICHALLENGE_PROJECT_ID: int = 39
-    MULTICHALLENGE_ADVANCED_PROJECT_ID: int = 40
+    DASHBOARD_PROJECT_TO_BQ_IDS: Dict[int, List[int]] = field(default_factory=lambda: {
+        36: [36],
+        37: [37],
+        38: [38],
+        39: [39, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53],
+        59: [55, 56, 59],
+    })
     
-    # Project name to ID mapping (reverse lookup)
+    MULTICHALLENGE_PROJECT_ID: int = 39
+    
     @property
     def PROJECT_NAME_TO_ID(self) -> Dict[str, int]:
         return {v: k for k, v in self.PROJECT_ID_TO_NAME.items()}
+    
+    @property
+    def BQ_ID_TO_DASHBOARD_ID(self) -> Dict[int, int]:
+        """Reverse lookup: BigQuery project ID -> dashboard project ID."""
+        mapping = {}
+        for dash_id, bq_ids in self.DASHBOARD_PROJECT_TO_BQ_IDS.items():
+            for bq_id in bq_ids:
+                mapping[bq_id] = dash_id
+        return mapping
+    
+    @property
+    def ALL_BQ_PROJECT_IDS(self) -> List[int]:
+        """All real BigQuery labeling tool project IDs (flattened from DASHBOARD_PROJECT_TO_BQ_IDS)."""
+        ids = []
+        for bq_ids in self.DASHBOARD_PROJECT_TO_BQ_IDS.values():
+            ids.extend(bq_ids)
+        return sorted(set(ids))
+    
+    @property
+    def DASHBOARD_IDS_WITH_TASKS(self) -> List[int]:
+        """Dashboard project IDs that have associated BigQuery labeling tool projects."""
+        return [did for did, bq_ids in self.DASHBOARD_PROJECT_TO_BQ_IDS.items() if bq_ids]
     
     def get_project_name(self, project_id: int) -> str:
         """Get project name by ID, returns 'Unknown' if not found."""
@@ -65,6 +96,10 @@ class ProjectConfig:
     def get_project_id(self, project_name: str) -> int:
         """Get project ID by name, returns -1 if not found."""
         return self.PROJECT_NAME_TO_ID.get(project_name, -1)
+    
+    def remap_bq_to_dashboard(self, bq_project_id: int) -> int:
+        """Map a BigQuery project ID to its dashboard project ID. Returns the BQ ID if no mapping exists."""
+        return self.BQ_ID_TO_DASHBOARD_ID.get(bq_project_id, bq_project_id)
 
 
 # =============================================================================
@@ -287,35 +322,27 @@ class JibbleConfig:
     trainer data is swapped. This is handled with explicit project swapping.
     """
     
-    # Jibble UUID to Project Name mapping
-    # NOTE: Jibble UUIDs map to dashboard display names (corrected)
     JIBBLE_UUID_TO_NAME: Dict[str, str] = field(default_factory=lambda: {
         "a7b4596c-b632-49ce-bada-33df4491edd2": "Nvidia - SysBench",
         "a1b6c34e-67cd-4554-8a7b-4cab2d0fa744": "Nvidia - Multichallenge",
         "16e16c63-6deb-4f3c-9d88-46537c006dc9": "Nvidia - InverseIFEval",
         "7c305ca8-9675-4edc-a51c-84ad0beaae78": "Nvidia - CFBench Multilingual",
         "2581d1d5-e729-437f-92aa-2e3d7ceebc4f": "Nvidia - Multichallenge Advanced",
-        "1f33fccc-9c95-409a-b17c-541bdd5e446e": "Nvidia - ICPC",
-        "e6a4ebc3-5f25-42ce-806e-d23f9026d95b": "NVIDIA_STEM Math_Eval",
         "7aeb42cf-5f84-4f7b-b941-1d4ab67e1dec": "NVIDIA_STEM Math_Proof_Eval",
     })
     
-    # Jibble project name to Dashboard project ID mapping
+    # Multichallenge Advanced maps to project 37 (combined with Multichallenge vanilla)
     JIBBLE_NAME_TO_PROJECT_ID: Dict[str, int] = field(default_factory=lambda: {
         "Nvidia - SysBench": 36,
         "Nvidia - Multichallenge": 37,
+        "Nvidia - Multichallenge Advanced": 37,
         "Nvidia - InverseIFEval": 38,
         "Nvidia - CFBench Multilingual": 39,
-        "Nvidia - Multichallenge Advanced": 37,  # Maps to same as Multichallenge (37)
-        "Nvidia - ICPC": 36,  # Maps to SysBench
-        "NVIDIA_STEM Math_Eval": 36,  # Maps to SysBench
         "NVIDIA_STEM Math_Proof_Eval": 59,
     })
     
-    # Dashboard project ID to Jibble project names mapping
-    # Used for fetching Jibble hours for a dashboard project
     PROJECT_ID_TO_JIBBLE_NAMES: Dict[int, List[str]] = field(default_factory=lambda: {
-        36: ["Nvidia - SysBench", "Nvidia - ICPC", "NVIDIA_STEM Math_Eval"],
+        36: ["Nvidia - SysBench"],
         37: ["Nvidia - Multichallenge", "Nvidia - Multichallenge Advanced"],
         38: ["Nvidia - InverseIFEval"],
         39: ["Nvidia - CFBench Multilingual"],
@@ -428,13 +455,11 @@ class FinancialConfig:
     
     # Jibble project names to include in cost query
     COST_JIBBLE_PROJECTS: List[str] = field(default_factory=lambda: [
-        "Nvidia - ICPC",
         "Nvidia - CFBench Multilingual",
         "Nvidia - InverseIFEval",
         "Nvidia - Multichallenge",
         "Nvidia - Multichallenge Advanced",
         "Nvidia - SysBench",
-        "NVIDIA_STEM Math_Eval",
         "NVIDIA_STEM Math_Proof_Eval",
         "Nvidia - ScaleRTL",
         "Nvidia - VERILOG",
@@ -566,7 +591,75 @@ class MetricConfig:
 
 
 # =============================================================================
-# 8. CONFIGURATION FACTORY
+# 9. DAILY TASK TARGET CONFIGURATION
+# =============================================================================
+
+@dataclass
+class DailyTaskTargetConfig:
+    """
+    Per-project daily task targets for flagging underperformers.
+    
+    Metric depends on role:
+    - Trainers / Sub Pod Leads: effective new tasks per 8 Jibble hours
+      (rework counts as 0.5 of a new task)
+    - Pod Leads / Calibrators: reviews per 8 Jibble hours
+    """
+
+    TARGETS: Dict[int, Dict[str, float]] = field(default_factory=lambda: {
+        59: {  # Math Proof Eval
+            'Trainer': 2,
+            'Sub Pod Lead': 2,
+            'POD Lead': 4,
+            'Calibrator': 4,
+            'Team Lead': 4,
+            'default': 2,
+        },
+    })
+
+    def get_target(self, project_id: int, role: str) -> float | None:
+        """Return the daily target for a role within a project, or None if no targets configured."""
+        project_targets = self.TARGETS.get(project_id)
+        if not project_targets:
+            return None
+        return project_targets.get(role, project_targets.get('default'))
+
+    def is_review_role(self, role: str) -> bool:
+        """Roles measured by reviews rather than task completions."""
+        return role in ('POD Lead', 'Calibrator', 'Team Lead')
+
+    def compute_tasks_per_8hrs(self, project_id: int, role: str,
+                                new_tasks: int, rework: int,
+                                total_reviews: int, jibble_hours: float) -> dict:
+        """
+        Compute the tasks_per_8hrs metric and whether the person is below target.
+        
+        Returns dict with keys: role, tasks_per_8hrs, daily_target, below_target
+        """
+        target = self.get_target(project_id, role)
+        if target is None or jibble_hours <= 0:
+            return {
+                'role': role,
+                'tasks_per_8hrs': None,
+                'daily_target': target,
+                'below_target': False,
+            }
+
+        if self.is_review_role(role):
+            effective_count = total_reviews
+        else:
+            effective_count = new_tasks + (rework * 0.5)
+
+        rate = round((effective_count / jibble_hours) * 8, 2)
+        return {
+            'role': role,
+            'tasks_per_8hrs': rate,
+            'daily_target': target,
+            'below_target': rate < target,
+        }
+
+
+# =============================================================================
+# 10. CONFIGURATION FACTORY
 # =============================================================================
 
 @dataclass
@@ -596,6 +689,7 @@ class AppConstants:
     bigquery: BigQueryConfig = field(default_factory=BigQueryConfig)
     financial: FinancialConfig = field(default_factory=FinancialConfig)
     metrics: MetricConfig = field(default_factory=MetricConfig)
+    daily_targets: DailyTaskTargetConfig = field(default_factory=DailyTaskTargetConfig)
 
 
 @lru_cache()
