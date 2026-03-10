@@ -85,7 +85,7 @@ export const COLUMN_TOOLTIPS: Record<string, string> = {
   trainer_jibble_hours: 'Hours logged by trainers in Jibble',
   pod_jibble_hours: 'Hours logged by POD Lead in Jibble',
   active_jibble_people: 'Number of people who logged Jibble hours in the selected time range',
-  accounted_hours: 'Accounted Hours = (New Tasks × 10 + Rework × 4) minutes converted to hours',
+  accounted_hours: 'Accounted Hours: AHT-based (New×10 + Rework×4) or target-based (output/target × 8) for projects with daily targets',
   efficiency: 'Efficiency = (Accounted Hrs / Jibble Hrs) × 100 (≥90% Green, 70-90% Yellow, <70% Red)',
   
   // Task-specific columns

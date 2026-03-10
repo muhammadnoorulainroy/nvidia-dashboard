@@ -20,8 +20,11 @@ import {
   ListItemIcon,
   ListItemText,
   Tooltip,
-  Collapse,
   Chip,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  TableSortLabel,
 } from '@mui/material'
 import {
   KeyboardArrowDown,
@@ -721,14 +724,16 @@ function ProjectRow({
             }}>
               <FolderIcon sx={{ color: '#10B981', fontSize: { xs: 10, md: 12 } }} />
             </Box>
-            <Box sx={{ minWidth: 0, flex: 1 }}>
-              <Typography sx={{ fontSize: { xs: '0.62rem', sm: '0.68rem', md: '0.72rem' }, fontWeight: 700, color: '#1E293B', lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                {project.project_name}
-              </Typography>
-              <Typography sx={{ fontSize: { xs: '0.45rem', sm: '0.48rem', md: '0.52rem' }, color: '#94A3B8' }}>
-                ID: {project.project_id}
-              </Typography>
-            </Box>
+            <Tooltip title={project.project_name} arrow placement="right">
+              <Box sx={{ minWidth: 0, flex: 1 }}>
+                <Typography sx={{ fontSize: { xs: '0.62rem', sm: '0.68rem', md: '0.72rem' }, fontWeight: 700, color: '#1E293B', lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {project.project_name}
+                </Typography>
+                <Typography sx={{ fontSize: { xs: '0.45rem', sm: '0.48rem', md: '0.52rem' }, color: '#94A3B8' }}>
+                  ID: {project.project_id}
+                </Typography>
+              </Box>
+            </Tooltip>
           </Box>
         </TableCell>
         <TableCell align="center" sx={{ ...cellStyle, borderRight: `2px solid ${COLUMN_GROUPS.overview.borderColor}` }}>
@@ -868,15 +873,17 @@ function ProjectRow({
 
 // Import TabSummaryStats type from PreDelivery
 import type { TabSummaryStats } from '../../pages/PreDelivery'
+import CloseIcon from '@mui/icons-material/Close'
 
 // ============================================================================
-// Below-Target Summary Component
+// Flagged Dialog Component (replaces Below Target Alert)
 // ============================================================================
 
 interface FlaggedPerson {
   trainer_name: string
   trainer_email: string
   role: string
+  project_name: string
   unique_tasks: number
   new_tasks: number
   rework: number
@@ -887,11 +894,14 @@ interface FlaggedPerson {
   pod_lead_name: string
 }
 
-function BelowTargetSummary({ projects }: { projects: ProjectStats[] }) {
-  const [expanded, setExpanded] = useState(false)
+type FlaggedSortKey = 'trainer_name' | 'role' | 'project_name' | 'pod_lead_name' | 'new_tasks' | 'rework' | 'total_reviews' | 'jibble_hours' | 'tasks_per_8hrs' | 'shortfall'
 
+const FLAGGED_PROJECT_IDS = [60]
+
+function collectFlagged(projects: ProjectStats[]): FlaggedPerson[] {
   const flagged: FlaggedPerson[] = []
   for (const project of projects) {
+    if (!FLAGGED_PROJECT_IDS.includes(project.project_id)) continue
     for (const pod of project.pod_leads) {
       for (const t of pod.trainers || []) {
         if (t.below_target && t.tasks_per_8hrs != null && t.daily_target != null) {
@@ -899,6 +909,7 @@ function BelowTargetSummary({ projects }: { projects: ProjectStats[] }) {
             trainer_name: t.trainer_name,
             trainer_email: t.trainer_email,
             role: t.role || 'Trainer',
+            project_name: project.project_name,
             unique_tasks: t.unique_tasks,
             new_tasks: t.new_tasks,
             rework: t.rework,
@@ -912,81 +923,131 @@ function BelowTargetSummary({ projects }: { projects: ProjectStats[] }) {
       }
     }
   }
+  return flagged
+}
 
-  if (flagged.length === 0) return null
+function FlaggedDialog({ open, onClose, projects }: { open: boolean; onClose: () => void; projects: ProjectStats[] }) {
+  const [sortKey, setSortKey] = useState<FlaggedSortKey>('shortfall')
+  const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc')
 
-  flagged.sort((a, b) => (a.tasks_per_8hrs / a.daily_target) - (b.tasks_per_8hrs / b.daily_target))
+  const flagged = collectFlagged(projects)
+
+  const handleSort = (key: FlaggedSortKey) => {
+    if (sortKey === key) {
+      setSortDir(prev => prev === 'asc' ? 'desc' : 'asc')
+    } else {
+      setSortKey(key)
+      setSortDir(key === 'trainer_name' || key === 'role' || key === 'project_name' || key === 'pod_lead_name' ? 'asc' : 'desc')
+    }
+  }
+
+  const sorted = [...flagged].sort((a, b) => {
+    let aVal: any, bVal: any
+    if (sortKey === 'shortfall') {
+      aVal = a.daily_target - a.tasks_per_8hrs
+      bVal = b.daily_target - b.tasks_per_8hrs
+    } else {
+      aVal = a[sortKey]
+      bVal = b[sortKey]
+    }
+    if (typeof aVal === 'string') return sortDir === 'asc' ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal)
+    return sortDir === 'asc' ? aVal - bVal : bVal - aVal
+  })
+
+  const columns: { key: FlaggedSortKey; label: string; align: 'left' | 'center'; tooltip: string }[] = [
+    { key: 'trainer_name', label: 'Name', align: 'left', tooltip: 'Team member name and email' },
+    { key: 'role', label: 'Role', align: 'left', tooltip: 'Assigned role (Trainer, POD Lead, Calibrator, etc.)' },
+    { key: 'project_name', label: 'Project', align: 'left', tooltip: 'Dashboard project the member is working on' },
+    { key: 'pod_lead_name', label: 'Pod Lead', align: 'left', tooltip: 'Assigned POD Lead / reporting manager' },
+    { key: 'new_tasks', label: 'New Tasks', align: 'center', tooltip: 'Number of new task completions' },
+    { key: 'rework', label: 'Rework', align: 'center', tooltip: 'Number of rework submissions' },
+    { key: 'total_reviews', label: 'Reviews', align: 'center', tooltip: 'Total reviews completed (for reviewer roles)' },
+    { key: 'jibble_hours', label: 'Jibble Hrs', align: 'center', tooltip: 'Total hours logged in Jibble for the selected period' },
+    { key: 'tasks_per_8hrs', label: 'Output/day', align: 'center', tooltip: 'Actual daily output rate: tasks or reviews per 8 Jibble hours vs the expected daily target' },
+    { key: 'shortfall', label: 'Shortfall', align: 'center', tooltip: 'Tasks or reviews per day below target (daily target minus actual output rate)' },
+  ]
 
   return (
-    <Paper sx={{ mb: 1, borderRadius: 1, border: '1px solid #FECACA', overflow: 'hidden' }}>
-      <Box
-        sx={{
-          display: 'flex', alignItems: 'center', gap: 1,
-          px: 1.5, py: 0.75, bgcolor: '#FEF2F2', cursor: 'pointer',
-          '&:hover': { bgcolor: '#FEE2E2' },
-        }}
-        onClick={() => setExpanded(!expanded)}
-      >
-        <WarningIcon sx={{ fontSize: 16, color: '#DC2626' }} />
-        <Typography sx={{ fontSize: '0.75rem', fontWeight: 700, color: '#991B1B', flex: 1 }}>
-          Below Target Alert
+    <Dialog open={open} onClose={onClose} maxWidth="lg" fullWidth PaperProps={{ sx: { borderRadius: 2 } }}>
+      <DialogTitle sx={{ display: 'flex', alignItems: 'center', gap: 1, py: 1.5, px: 2.5, bgcolor: '#FEF2F2', borderBottom: '1px solid #FECACA' }}>
+        <WarningIcon sx={{ fontSize: 20, color: '#DC2626' }} />
+        <Typography sx={{ fontSize: '0.95rem', fontWeight: 700, color: '#991B1B', flex: 1 }}>
+          Flagged — Below Target
         </Typography>
         <Chip
-          label={`${flagged.length} flagged`}
+          label={`${flagged.length} total`}
           size="small"
-          sx={{ height: 18, fontSize: '0.6rem', fontWeight: 700, bgcolor: '#FEE2E2', color: '#DC2626', border: '1px solid #FECACA' }}
+          sx={{ height: 22, fontSize: '0.7rem', fontWeight: 700, bgcolor: '#FEE2E2', color: '#DC2626', border: '1px solid #FECACA' }}
         />
-        <IconButton size="small" sx={{ p: 0.25 }}>
-          {expanded ? <KeyboardArrowUp sx={{ fontSize: 14 }} /> : <KeyboardArrowDown sx={{ fontSize: 14 }} />}
+        <IconButton size="small" onClick={onClose} sx={{ ml: 0.5 }}>
+          <CloseIcon sx={{ fontSize: 18 }} />
         </IconButton>
-      </Box>
-      <Collapse in={expanded}>
-        <TableContainer>
-          <Table size="small">
-            <TableHead>
-              <TableRow sx={{ bgcolor: '#FEF2F2' }}>
-                {['Name', 'Role', 'Pod Lead', 'New Tasks', 'Rework', 'Reviews', 'Jibble Hrs', 'Review Rate/day', 'Target', 'Gap'].map(h => (
-                  <TableCell key={h} align={h === 'Name' || h === 'Role' || h === 'Pod Lead' ? 'left' : 'center'} sx={{ fontSize: '0.6rem', fontWeight: 700, color: '#991B1B', py: 0.5, borderBottom: '1px solid #FECACA' }}>
-                    {h}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {flagged.map((p) => {
-                const isReviewRole = ['POD Lead', 'Calibrator', 'Team Lead'].includes(p.role)
-                const gap = p.daily_target - p.tasks_per_8hrs
-                return (
-                  <TableRow key={p.trainer_email} sx={{ '&:hover': { bgcolor: '#FEF2F2' } }}>
-                    <TableCell sx={{ fontSize: '0.6rem', fontWeight: 600, color: '#1E293B', py: 0.4 }}>
-                      <Box>
-                        <Typography sx={{ fontSize: '0.6rem', fontWeight: 600, color: '#1E293B', lineHeight: 1.2 }}>{p.trainer_name}</Typography>
-                        <Typography sx={{ fontSize: '0.5rem', color: '#94A3B8' }}>{p.trainer_email}</Typography>
-                      </Box>
+      </DialogTitle>
+      <DialogContent sx={{ p: 0 }}>
+        {flagged.length === 0 ? (
+          <Box sx={{ py: 4, textAlign: 'center' }}>
+            <Typography sx={{ color: '#64748B', fontSize: '0.85rem' }}>No flagged members at this time.</Typography>
+          </Box>
+        ) : (
+          <TableContainer sx={{ maxHeight: '60vh' }}>
+            <Table stickyHeader size="small">
+              <TableHead>
+                <TableRow>
+                  {columns.map(col => (
+                    <TableCell
+                      key={col.key}
+                      align={col.align}
+                      sx={{ bgcolor: '#FEF2F2', py: 0.75, borderBottom: '2px solid #FECACA', whiteSpace: 'nowrap' }}
+                    >
+                      <Tooltip title={col.tooltip} arrow placement="top">
+                        <TableSortLabel
+                          active={sortKey === col.key}
+                          direction={sortKey === col.key ? sortDir : 'asc'}
+                          onClick={() => handleSort(col.key)}
+                          sx={{ fontSize: '0.7rem', fontWeight: 700, color: '#991B1B', '&.Mui-active': { color: '#991B1B' }, '& .MuiTableSortLabel-icon': { color: '#991B1B !important' } }}
+                        >
+                          {col.label}
+                        </TableSortLabel>
+                      </Tooltip>
                     </TableCell>
-                    <TableCell sx={{ fontSize: '0.55rem', color: '#64748B', py: 0.4 }}>{p.role}</TableCell>
-                    <TableCell sx={{ fontSize: '0.55rem', color: '#64748B', py: 0.4 }}>{p.pod_lead_name}</TableCell>
-                    <TableCell align="center" sx={{ fontSize: '0.6rem', fontWeight: 600, color: '#475569', py: 0.4 }}>{p.new_tasks}</TableCell>
-                    <TableCell align="center" sx={{ fontSize: '0.6rem', fontWeight: 600, color: '#475569', py: 0.4 }}>{p.rework}</TableCell>
-                    <TableCell align="center" sx={{ fontSize: '0.6rem', fontWeight: 600, color: '#475569', py: 0.4 }}>{p.total_reviews}</TableCell>
-                    <TableCell align="center" sx={{ fontSize: '0.6rem', fontWeight: 600, color: '#475569', py: 0.4 }}>{p.jibble_hours.toFixed(1)}</TableCell>
-                    <TableCell align="center" sx={{ fontSize: '0.6rem', fontWeight: 700, color: '#DC2626', py: 0.4 }}>
-                      {p.tasks_per_8hrs.toFixed(1)} {isReviewRole ? 'rev' : 'tasks'}
-                    </TableCell>
-                    <TableCell align="center" sx={{ fontSize: '0.6rem', fontWeight: 600, color: '#065F46', py: 0.4 }}>
-                      {p.daily_target} {isReviewRole ? 'rev' : 'tasks'}
-                    </TableCell>
-                    <TableCell align="center" sx={{ fontSize: '0.6rem', fontWeight: 700, color: '#DC2626', py: 0.4, bgcolor: '#FEF2F2' }}>
-                      -{gap.toFixed(1)}
-                    </TableCell>
-                  </TableRow>
-                )
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Collapse>
-    </Paper>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {sorted.map((p, idx) => {
+                  const isReviewRole = ['POD Lead', 'Calibrator', 'Team Lead'].includes(p.role)
+                  const gap = p.daily_target - p.tasks_per_8hrs
+                  return (
+                    <TableRow key={`${p.trainer_email}-${idx}`} sx={{ '&:hover': { bgcolor: '#FEF2F2' } }}>
+                      <TableCell sx={{ py: 0.6 }}>
+                        <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#1E293B', lineHeight: 1.2 }}>{p.trainer_name}</Typography>
+                        <Typography sx={{ fontSize: '0.55rem', color: '#94A3B8' }}>{p.trainer_email}</Typography>
+                      </TableCell>
+                      <TableCell sx={{ fontSize: '0.65rem', color: '#64748B', py: 0.6 }}>{p.role}</TableCell>
+                      <TableCell sx={{ fontSize: '0.65rem', color: '#64748B', py: 0.6 }}>{p.project_name}</TableCell>
+                      <TableCell sx={{ fontSize: '0.65rem', color: '#64748B', py: 0.6 }}>{p.pod_lead_name}</TableCell>
+                      <TableCell align="center" sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#475569', py: 0.6 }}>{p.new_tasks}</TableCell>
+                      <TableCell align="center" sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#475569', py: 0.6 }}>{p.rework}</TableCell>
+                      <TableCell align="center" sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#475569', py: 0.6 }}>{p.total_reviews}</TableCell>
+                      <TableCell align="center" sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#475569', py: 0.6 }}>{p.jibble_hours.toFixed(1)}</TableCell>
+                      <TableCell align="center" sx={{ py: 0.6 }}>
+                        <Typography component="span" sx={{ fontSize: '0.7rem', fontWeight: 700, color: '#DC2626' }}>{p.tasks_per_8hrs.toFixed(1)}</Typography>
+                        <Typography component="span" sx={{ fontSize: '0.6rem', color: '#94A3B8' }}> / {p.daily_target}</Typography>
+                        <Typography component="span" sx={{ fontSize: '0.5rem', color: '#94A3B8', ml: 0.3 }}>{isReviewRole ? 'rev' : 'tasks'}</Typography>
+                      </TableCell>
+                      <TableCell align="center" sx={{ py: 0.6, bgcolor: '#FEF2F2', borderRadius: 0.5 }}>
+                        <Typography component="span" sx={{ fontSize: '0.7rem', fontWeight: 700, color: '#DC2626' }}>-{gap.toFixed(1)}</Typography>
+                        <Typography component="span" sx={{ fontSize: '0.5rem', color: '#94A3B8', ml: 0.3 }}>{isReviewRole ? 'rev' : 'tasks'}</Typography>
+                      </TableCell>
+                    </TableRow>
+                  )
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
+      </DialogContent>
+    </Dialog>
   )
 }
 
@@ -1008,6 +1069,7 @@ export function ProjectsTab({ onSummaryUpdate, onSummaryLoading }: ProjectsTabPr
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc')
   const [menuPosition, setMenuPosition] = useState<{ top: number; left: number } | null>(null)
   const [activeFilterColumn, setActiveFilterColumn] = useState<string>('')
+  const [flaggedOpen, setFlaggedOpen] = useState(false)
   
   const [colorSettings, setColorSettings] = useColorSettings('projectsColorSettings')
   const [colorApplyLevel, setColorApplyLevel] = useState<ColorApplyLevel>('both')
@@ -1209,6 +1271,27 @@ export function ProjectsTab({ onSummaryUpdate, onSummaryLoading }: ProjectsTabPr
             metrics={['tasks_reviewed', 'new_tasks_reviewed', 'rework_reviewed', 'total_reviews', 'avg_rework', 'rework_percent', 'merged_exp_aht']}
             applyLevel={colorApplyLevel} onApplyLevelChange={setColorApplyLevel}
           />
+          {(() => {
+            const flaggedCount = collectFlagged(sortedData).length
+            return flaggedCount > 0 ? (
+              <Button
+                variant="contained"
+                startIcon={<WarningIcon sx={{ fontSize: { xs: 12, md: 14 } }} />}
+                onClick={() => setFlaggedOpen(true)}
+                sx={{
+                  bgcolor: '#DC2626',
+                  fontSize: { xs: '0.6rem', sm: '0.65rem', md: '0.7rem' },
+                  textTransform: 'none',
+                  px: { xs: 1, sm: 1.5 },
+                  py: 0.3,
+                  minHeight: { xs: 24, sm: 26, md: 28 },
+                  '&:hover': { bgcolor: '#B91C1C' },
+                }}
+              >
+                {flaggedCount} Flagged
+              </Button>
+            ) : null
+          })()}
           <Button variant="contained" startIcon={<DownloadIcon sx={{ fontSize: { xs: 12, md: 14 } }} />} onClick={handleExport}
             sx={{ 
               bgcolor: '#10B981', 
@@ -1250,8 +1333,7 @@ export function ProjectsTab({ onSummaryUpdate, onSummaryLoading }: ProjectsTabPr
         </Box>
       </Paper>
 
-      {/* Flagged Underperformers Summary (Math Proof Eval) */}
-      <BelowTargetSummary projects={sortedData} />
+      <FlaggedDialog open={flaggedOpen} onClose={() => setFlaggedOpen(false)} projects={sortedData} />
 
       {/* Table - Bigger height, responsive */}
       <Paper sx={{ width: '100%', overflow: 'hidden', borderRadius: 1, border: '1px solid #E2E8F0' }}>

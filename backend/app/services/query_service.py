@@ -3608,23 +3608,20 @@ class QueryService:
                         t_avg_rework = round((t_submissions / t_unique) - 1, 2) if t_unique > 0 else None
                         t_rework_pct = round((t_rework / t_submissions) * 100, 1) if t_submissions > 0 else None
                         
-                        # Calculate accounted hours using NEW LOGIC (Feb 2026):
-                        # - t_new = count of unique tasks where trainer did first completion
-                        # - t_tasks_with_rework = count of unique tasks where trainer did at least 1 rework
-                        # Formula: t_new * 10 + t_tasks_with_rework * 4
-                        # This credits only ONCE per task for rework, regardless of how many rework events
-                        aht_config = self._constants.aht
-                        t_accounted_hrs = aht_config.calculate_trainer_accounted_hours(
-                            tasks_with_new=t_new,
-                            tasks_with_rework=t_tasks_with_rework
-                        ) if t_submissions > 0 else 0
+                        # Determine role for per-project AHT calculations
+                        trainer_role = pod_info.get('role', 'Trainer') if pod_info else 'Trainer'
+                        
+                        # Accounted hours: per-project AHT (configured or default)
+                        t_accounted_hrs = self._constants.daily_targets.compute_accounted_hours(
+                            project_id=project_id,
+                            role=trainer_role,
+                            new_tasks=t_new,
+                            rework=t_rework,
+                            total_reviews=t_reviews,
+                        ) if (t_submissions > 0 or t_reviews > 0) else 0
                         
                         # Merged Expected AHT = accounted_hours / unique_tasks
-                        t_merged_aht = aht_config.calculate_merged_aht(
-                            tasks_with_new=t_new,
-                            tasks_with_rework=t_tasks_with_rework,
-                            unique_tasks=t_unique
-                        ) if t_unique > 0 else None
+                        t_merged_aht = round(t_accounted_hrs / t_unique, 2) if t_unique > 0 and t_accounted_hrs > 0 else None
                         
                         # Calculate efficiency (accounted / jibble * 100)
                         t_efficiency = None
@@ -3633,9 +3630,6 @@ class QueryService:
                         
                         # Trainer revenue = delivered_tasks * bill_rate_task
                         t_revenue = round(trainer_revenue_map.get(trainer_email, 0), 2)
-                        
-                        # Daily target flagging
-                        trainer_role = pod_info.get('role', 'Trainer') if pod_info else 'Trainer'
                         target_info = self._constants.daily_targets.compute_tasks_per_8hrs(
                             project_id=project_id,
                             role=trainer_role,

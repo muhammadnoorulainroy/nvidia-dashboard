@@ -46,12 +46,13 @@ class ProjectConfig:
         37: "Nvidia - Multichallenge",
         38: "Nvidia - InverseIFEval",
         39: "Nvidia - CFBench Multilingual",
-        59: "Nvidia - Math Proof Eval",
+        59: "Nvidia - Math Proof Eval - Test",
+        60: "Nvidia - Math Proof Evals",
     })
     
-    ALL_PROJECT_IDS: List[int] = field(default_factory=lambda: [36, 37, 38, 39, 59])
+    ALL_PROJECT_IDS: List[int] = field(default_factory=lambda: [36, 37, 38, 39, 59, 60])
     
-    PRIMARY_PROJECT_IDS: List[int] = field(default_factory=lambda: [36, 37, 38, 39, 59])
+    PRIMARY_PROJECT_IDS: List[int] = field(default_factory=lambda: [36, 37, 38, 39, 59, 60])
     
     DASHBOARD_PROJECT_TO_BQ_IDS: Dict[int, List[int]] = field(default_factory=lambda: {
         36: [36],
@@ -59,6 +60,7 @@ class ProjectConfig:
         38: [38],
         39: [39, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53],
         59: [55, 56, 59],
+        60: [60],
     })
     
     MULTICHALLENGE_PROJECT_ID: int = 39
@@ -159,7 +161,7 @@ class AHTConfig:
     
     # Default AHT values in hours
     DEFAULT_NEW_TASK_AHT: float = 10.0  # Hours expected for new tasks (fresh research)
-    DEFAULT_REWORK_AHT: float = 4.0     # Hours expected for rework tasks (revisions)
+    DEFAULT_REWORK_AHT: float = 2.0     # Hours expected for rework tasks (revisions)
     
     # Maximum number of reworks to credit per task per trainer
     # Setting to 1 means: only the first rework is credited, subsequent reworks = 0 hours
@@ -338,7 +340,12 @@ class JibbleConfig:
         "Nvidia - Multichallenge Advanced": 37,
         "Nvidia - InverseIFEval": 38,
         "Nvidia - CFBench Multilingual": 39,
-        "NVIDIA_STEM Math_Proof_Eval": 59,
+        "NVIDIA_STEM Math_Proof_Eval": 60,
+    })
+    
+    # Project 60 shares the same Jibble project as 59
+    JIBBLE_SHARED_PROJECTS: Dict[int, int] = field(default_factory=lambda: {
+        60: 59,
     })
     
     PROJECT_ID_TO_JIBBLE_NAMES: Dict[int, List[str]] = field(default_factory=lambda: {
@@ -347,6 +354,7 @@ class JibbleConfig:
         38: ["Nvidia - InverseIFEval"],
         39: ["Nvidia - CFBench Multilingual"],
         59: ["NVIDIA_STEM Math_Proof_Eval"],
+        60: ["NVIDIA_STEM Math_Proof_Eval"],
     })
     
     # Multichallenge/CFBench Jibble swap mapping (data quality workaround)
@@ -597,16 +605,50 @@ class MetricConfig:
 @dataclass
 class DailyTaskTargetConfig:
     """
-    Per-project daily task targets for flagging underperformers.
+    Per-project accounted hours and daily targets.
     
-    Metric depends on role:
-    - Trainers / Sub Pod Leads: effective new tasks per 8 Jibble hours
-      (rework counts as 0.5 of a new task)
-    - Pod Leads / Calibrators: reviews per 8 Jibble hours
+    Each project can configure AHT (hours per unit of work) for:
+    - new_task_aht: hours credited per new task completion
+    - rework_aht: hours credited per rework submission
+    - review_aht: hours credited per review (for POD Leads / Calibrators)
+    
+    These are derived from daily targets:
+      Math Proof Eval: Trainer 2 new/day → 4 hrs each, 4 reworks/day → 2 hrs each
+                       Reviewer 4 reviews/day → 2 hrs each
+      Other projects:  new_task=10 hrs, rework=2 hrs (no review-based accounting)
+    
+    Flagging uses tasks_per_8hrs vs daily target to identify underperformers.
     """
 
+    # Per-project AHT: hours credited per unit of work
+    PROJECT_AHT: Dict[int, Dict[str, float]] = field(default_factory=lambda: {
+        59: {  # Math Proof Eval (Test) — derived from targets: 2 new/day, 4 rework/day, 4 reviews/day
+            'new_task_aht': 4.0,   # 8 / 2
+            'rework_aht': 2.0,     # 8 / 4
+            'review_aht': 2.0,     # 8 / 4
+        },
+        60: {  # Math Proof Evals (Live) — same as 59
+            'new_task_aht': 4.0,
+            'rework_aht': 2.0,
+            'review_aht': 2.0,
+        },
+    })
+
+    # Defaults for projects without specific AHT configuration
+    DEFAULT_NEW_TASK_AHT: float = 10.0
+    DEFAULT_REWORK_AHT: float = 2.0
+
+    # Flagging targets: expected output per 8 Jibble hours
     TARGETS: Dict[int, Dict[str, float]] = field(default_factory=lambda: {
-        59: {  # Math Proof Eval
+        59: {  # Math Proof Eval (Test)
+            'Trainer': 2,
+            'Sub Pod Lead': 2,
+            'POD Lead': 4,
+            'Calibrator': 4,
+            'Team Lead': 4,
+            'default': 2,
+        },
+        60: {  # Math Proof Evals (Live)
             'Trainer': 2,
             'Sub Pod Lead': 2,
             'POD Lead': 4,
@@ -626,6 +668,35 @@ class DailyTaskTargetConfig:
     def is_review_role(self, role: str) -> bool:
         """Roles measured by reviews rather than task completions."""
         return role in ('POD Lead', 'Calibrator', 'Team Lead')
+
+    def get_aht(self, project_id: int) -> Dict[str, float]:
+        """Get AHT values for a project. Falls back to defaults."""
+        return self.PROJECT_AHT.get(project_id, {
+            'new_task_aht': self.DEFAULT_NEW_TASK_AHT,
+            'rework_aht': self.DEFAULT_REWORK_AHT,
+        })
+
+    def compute_accounted_hours(self, project_id: int, role: str,
+                                new_tasks: int, rework: int,
+                                total_reviews: int) -> float:
+        """
+        Compute accounted hours for any project using per-project AHT.
+        
+        For review roles with review_aht configured:
+            accounted = total_reviews * review_aht
+        For trainer/sub pod lead roles:
+            accounted = new_tasks * new_task_aht + rework * rework_aht
+        """
+        aht = self.get_aht(project_id)
+
+        if self.is_review_role(role) and 'review_aht' in aht:
+            return round(total_reviews * aht['review_aht'], 2)
+
+        return round(
+            new_tasks * aht.get('new_task_aht', self.DEFAULT_NEW_TASK_AHT) +
+            rework * aht.get('rework_aht', self.DEFAULT_REWORK_AHT),
+            2
+        )
 
     def compute_tasks_per_8hrs(self, project_id: int, role: str,
                                 new_tasks: int, rework: int,

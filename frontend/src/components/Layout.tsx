@@ -7,13 +7,12 @@ import {
   Toolbar,
   List,
   Typography,
-  Divider,
   IconButton,
   ListItem,
   ListItemButton,
   ListItemIcon,
-  ListItemText,
   Avatar,
+  Tooltip,
   useTheme,
   useMediaQuery,
 } from '@mui/material'
@@ -30,11 +29,7 @@ import {
 import SyncStatus from './common/SyncStatus'
 import { useAuth } from '../contexts/AuthContext'
 
-const drawerWidth = 260
-
-// Get app info from environment variables
-const APP_NAME = import.meta.env.VITE_APP_NAME || 'NVIDIA DASHBOARD'
-const APP_VERSION = import.meta.env.VITE_APP_VERSION || '1.0.0'
+const drawerWidth = 64
 
 interface MenuItem {
   text: string
@@ -76,133 +71,96 @@ export default function Layout({ children }: LayoutProps) {
   }
 
   const drawer = (
-    <Box sx={{ height: '100%', backgroundColor: '#1E293B', display: 'flex', flexDirection: 'column' }}>
-      <Toolbar
+    <Box sx={{ height: '100%', backgroundColor: '#1E293B', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <Box
         sx={{
-          backgroundColor: '#0F172A',
-          minHeight: 72,
-          flexDirection: 'column',
-          alignItems: 'flex-start',
+          py: 1.5,
+          display: 'flex',
+          alignItems: 'center',
           justifyContent: 'center',
-          py: 2,
-          px: 2.5,
           borderBottom: '1px solid rgba(255,255,255,0.08)',
+          width: '100%',
         }}
       >
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 0.5 }}>
-          <Box 
-            sx={{ 
-              width: 32, 
-              height: 32, 
-              borderRadius: 1.5,
-              background: 'linear-gradient(135deg, #76B900 0%, #5A8F00 100%)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 2px 8px rgba(118, 185, 0, 0.3)',
-            }}
-          >
-            <Typography sx={{ color: 'white', fontWeight: 800, fontSize: '14px' }}>N</Typography>
-          </Box>
-          <Typography 
-            variant="h6" 
-            component="div" 
-            sx={{ 
-              fontWeight: 700,
-              letterSpacing: '-0.01em',
-              color: '#F8FAFC',
-              fontSize: '15px',
-            }}
-          >
-            {APP_NAME}
-          </Typography>
-        </Box>
-        <Typography 
-          variant="caption" 
+        <Box 
           sx={{ 
-            color: 'rgba(148, 163, 184, 0.8)',
-            fontWeight: 500,
-            fontSize: '11px',
-            pl: 5.5,
+            width: 32, 
+            height: 32, 
+            borderRadius: 1.5,
+            background: 'linear-gradient(135deg, #76B900 0%, #5A8F00 100%)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 2px 8px rgba(118, 185, 0, 0.3)',
           }}
         >
-          Task Metrics v{APP_VERSION}
-        </Typography>
-      </Toolbar>
-      <List sx={{ pt: 2, px: 1.5 }}>
+          <Typography sx={{ color: 'white', fontWeight: 800, fontSize: '14px' }}>N</Typography>
+        </Box>
+      </Box>
+      <List sx={{ pt: 1.5, px: 0.5, width: '100%' }}>
         {menuItems
           .filter((item) => !item.adminOnly || isAdmin)
           .map((item) => {
             const isActive = location.pathname === item.path
             return (
               <ListItem key={item.text} disablePadding sx={{ mb: 0.5 }}>
-                <ListItemButton
-                  onClick={() => handleNavigation(item.path)}
-                  selected={isActive}
-                  sx={{
-                    borderRadius: 1.5,
-                    py: 1.25,
-                    px: 2,
-                    transition: 'all 0.15s ease',
-                    '&.Mui-selected': {
-                      backgroundColor: 'rgba(118, 185, 0, 0.15)',
-                      color: '#76B900',
-                      '&:hover': {
-                        backgroundColor: 'rgba(118, 185, 0, 0.2)',
-                      },
-                      '& .MuiListItemIcon-root': {
-                        color: '#76B900',
-                      },
-                    },
-                    '&:hover': {
-                      backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                    },
-                    color: '#94A3B8',
-                  }}
-                >
-                  <ListItemIcon
+                <Tooltip title={item.text} placement="right" arrow>
+                  <ListItemButton
+                    onClick={() => handleNavigation(item.path)}
+                    selected={isActive}
                     sx={{
-                      color: isActive ? '#76B900' : '#64748B',
-                      minWidth: 36,
+                      borderRadius: 1.5,
+                      py: 1,
+                      px: 0,
+                      justifyContent: 'center',
+                      minHeight: 40,
+                      transition: 'all 0.15s ease',
+                      '&.Mui-selected': {
+                        backgroundColor: 'rgba(118, 185, 0, 0.15)',
+                        color: '#76B900',
+                        '&:hover': {
+                          backgroundColor: 'rgba(118, 185, 0, 0.2)',
+                        },
+                        '& .MuiListItemIcon-root': {
+                          color: '#76B900',
+                        },
+                      },
+                      '&:hover': {
+                        backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                      },
+                      color: '#94A3B8',
                     }}
                   >
-                    {item.icon}
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={item.text}
-                    primaryTypographyProps={{
-                      fontSize: '0.875rem',
-                      fontWeight: isActive ? 600 : 500,
-                      letterSpacing: '-0.01em',
-                    }}
-                  />
-                </ListItemButton>
+                    <ListItemIcon
+                      sx={{
+                        color: isActive ? '#76B900' : '#64748B',
+                        minWidth: 0,
+                        justifyContent: 'center',
+                      }}
+                    >
+                      {item.icon}
+                    </ListItemIcon>
+                  </ListItemButton>
+                </Tooltip>
               </ListItem>
             )
           })}
       </List>
 
-      {/* User info + logout at the bottom of the sidebar */}
       {user && (
-        <Box sx={{ mt: 'auto', p: 2, borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+        <Box sx={{ mt: 'auto', p: 1, borderTop: '1px solid rgba(255,255,255,0.08)', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0.5 }}>
+          <Tooltip title={`${user.name || user.email}\n${user.email}`} placement="right" arrow>
             <Avatar
-              sx={{ width: 32, height: 32, bgcolor: '#76B900', fontSize: '0.85rem', fontWeight: 700 }}
+              sx={{ width: 30, height: 30, bgcolor: '#76B900', fontSize: '0.8rem', fontWeight: 700, cursor: 'default' }}
             >
               {user.name?.[0]?.toUpperCase() || user.email[0].toUpperCase()}
             </Avatar>
-            <Box sx={{ flex: 1, overflow: 'hidden' }}>
-              <Typography sx={{ fontSize: '0.8rem', fontWeight: 600, color: '#F8FAFC', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                {user.name || user.email}
-              </Typography>
-              <Typography sx={{ fontSize: '0.65rem', color: '#94A3B8', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                {user.email}
-              </Typography>
-            </Box>
+          </Tooltip>
+          <Tooltip title="Logout" placement="right" arrow>
             <IconButton size="small" onClick={logout} sx={{ color: '#94A3B8', '&:hover': { color: '#EF4444' } }}>
-              <LogoutIcon fontSize="small" />
+              <LogoutIcon sx={{ fontSize: 18 }} />
             </IconButton>
-          </Box>
+          </Tooltip>
         </Box>
       )}
     </Box>
@@ -228,9 +186,7 @@ export default function Layout({ children }: LayoutProps) {
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ 
-              color: '#475569',
-            }}
+            sx={{ color: '#475569' }}
           >
             <MenuIcon />
           </IconButton>
@@ -245,9 +201,7 @@ export default function Layout({ children }: LayoutProps) {
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true,
-          }}
+          ModalProps={{ keepMounted: true }}
           sx={{
             display: { xs: 'block', sm: 'none' },
             '& .MuiDrawer-paper': { 
@@ -289,7 +243,6 @@ export default function Layout({ children }: LayoutProps) {
           position: 'relative',
         }}
       >
-        {/* Sync Status - Upper Right Corner */}
         <Box
           sx={{
             position: 'absolute',

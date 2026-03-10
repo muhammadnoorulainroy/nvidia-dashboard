@@ -53,9 +53,9 @@ class Settings(BaseSettings):
     project_id_filter: int  # Required - no default (project specific)
     
     # All Nvidia project IDs - can be overridden via env as JSON array
-    all_project_ids: str = "36,37,38,39,59"
+    all_project_ids: str = "36,37,38,39,59,60"
     
-    project_names_json: str = '{"36":"Nvidia - SysBench","37":"Nvidia - Multichallenge","38":"Nvidia - InverseIFEval","39":"Nvidia - CFBench Multilingual","59":"Nvidia - Math Proof Eval"}'
+    project_names_json: str = '{"36":"Nvidia - SysBench","37":"Nvidia - Multichallenge","38":"Nvidia - InverseIFEval","39":"Nvidia - CFBench Multilingual","59":"Nvidia - Math Proof Eval - Test","60":"Nvidia - Math Proof Evals"}'
     
     @property
     def all_project_ids_list(self) -> List[int]:
@@ -132,7 +132,7 @@ class Settings(BaseSettings):
         "Nvidia - InverseIFEval": 38,
         "Nvidia - CFBench Multilingual": 39,
         "Nvidia - SysBench": 36,
-        "NVIDIA_STEM Math_Proof_Eval": 59
+        "NVIDIA_STEM Math_Proof_Eval": 60
     }'''
     
     # Google Sheet for Jibble email mapping
