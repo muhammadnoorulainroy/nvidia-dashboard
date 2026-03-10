@@ -27,6 +27,7 @@ import {
   Add as AddIcon,
   Delete as DeleteIcon,
   Edit as EditIcon,
+  Send as SendIcon,
 } from '@mui/icons-material'
 import axios from 'axios'
 import { useAuth } from '../contexts/AuthContext'
@@ -41,6 +42,7 @@ interface DashboardUser {
   is_active: boolean
   created_at: string | null
   last_login: string | null
+  has_password: boolean
 }
 
 function authHeaders(token: string | null) {
@@ -61,6 +63,8 @@ export default function UserManagement() {
   const [editUser, setEditUser] = useState<DashboardUser | null>(null)
   const [editRole, setEditRole] = useState('user')
 
+  const [deleteTarget, setDeleteTarget] = useState<DashboardUser | null>(null)
+
   const fetchUsers = useCallback(async () => {
     try {
       const res = await axios.get(`${API_BASE}/users`, authHeaders(token))
@@ -74,22 +78,35 @@ export default function UserManagement() {
     fetchUsers()
   }, [fetchUsers])
 
+  const [addError, setAddError] = useState<string | null>(null)
+
   const handleAdd = async () => {
-    setError(null)
+    setAddError(null)
     try {
       await axios.post(
         `${API_BASE}/users`,
         { email: newEmail.trim(), role: newRole, name: newName.trim() || undefined },
         authHeaders(token),
       )
-      setSuccess(`User ${newEmail} added`)
+      setSuccess(`Invite sent to ${newEmail}`)
       setAddOpen(false)
       setNewEmail('')
       setNewName('')
       setNewRole('user')
+      setAddError(null)
       fetchUsers()
     } catch (err: any) {
-      setError(err?.response?.data?.detail || 'Failed to add user')
+      setAddError(err?.response?.data?.detail || 'Failed to add user')
+    }
+  }
+
+  const handleResendInvite = async (u: DashboardUser) => {
+    setError(null)
+    try {
+      await axios.post(`${API_BASE}/users/${u.id}/resend-invite`, {}, authHeaders(token))
+      setSuccess(`Invite resent to ${u.email}`)
+    } catch (err: any) {
+      setError(err?.response?.data?.detail || 'Failed to resend invite')
     }
   }
 
@@ -110,25 +127,27 @@ export default function UserManagement() {
     }
   }
 
-  const handleDelete = async (u: DashboardUser) => {
-    if (!window.confirm(`Remove ${u.email} from the dashboard?`)) return
+  const handleDelete = async () => {
+    if (!deleteTarget) return
     setError(null)
     try {
-      await axios.delete(`${API_BASE}/users/${u.id}`, authHeaders(token))
-      setSuccess(`Removed ${u.email}`)
+      await axios.delete(`${API_BASE}/users/${deleteTarget.id}`, authHeaders(token))
+      setSuccess(`Removed ${deleteTarget.email}`)
+      setDeleteTarget(null)
       fetchUsers()
     } catch (err: any) {
       setError(err?.response?.data?.detail || 'Failed to delete user')
+      setDeleteTarget(null)
     }
   }
 
   return (
-    <Box sx={{ maxWidth: 900, mx: 'auto', mt: 2 }}>
+    <Box sx={{ maxWidth: 960, mx: 'auto', mt: 2 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
         <Typography variant="h5" sx={{ fontWeight: 700, color: '#1E293B' }}>
           User Management
         </Typography>
-        <Button variant="contained" startIcon={<AddIcon />} onClick={() => setAddOpen(true)}
+        <Button variant="contained" startIcon={<AddIcon />} onClick={() => { setAddOpen(true); setAddError(null) }}
           sx={{ bgcolor: '#76B900', '&:hover': { bgcolor: '#5A8F00' }, textTransform: 'none', fontWeight: 600 }}
         >
           Add User
@@ -164,24 +183,35 @@ export default function UserManagement() {
                   />
                 </TableCell>
                 <TableCell>
-                  <Chip
-                    label={u.is_active ? 'Active' : 'Inactive'}
-                    size="small"
-                    color={u.is_active ? 'success' : 'default'}
-                    sx={{ fontSize: '0.75rem' }}
-                  />
+                  {!u.has_password ? (
+                    <Chip label="Invite Pending" size="small" color="info" variant="outlined" sx={{ fontSize: '0.75rem' }} />
+                  ) : (
+                    <Chip
+                      label={u.is_active ? 'Active' : 'Inactive'}
+                      size="small"
+                      color={u.is_active ? 'success' : 'default'}
+                      sx={{ fontSize: '0.75rem' }}
+                    />
+                  )}
                 </TableCell>
                 <TableCell sx={{ fontSize: '0.8rem', color: '#64748B' }}>
                   {u.last_login ? new Date(u.last_login).toLocaleString() : 'Never'}
                 </TableCell>
                 <TableCell align="right">
+                  {!u.has_password && (
+                    <Tooltip title="Resend invite email">
+                      <IconButton size="small" color="primary" onClick={() => handleResendInvite(u)}>
+                        <SendIcon fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
+                  )}
                   <Tooltip title="Edit role">
                     <IconButton size="small" onClick={() => { setEditUser(u); setEditRole(u.role) }}>
                       <EditIcon fontSize="small" />
                     </IconButton>
                   </Tooltip>
                   <Tooltip title="Remove user">
-                    <IconButton size="small" color="error" onClick={() => handleDelete(u)}>
+                    <IconButton size="small" color="error" onClick={() => setDeleteTarget(u)}>
                       <DeleteIcon fontSize="small" />
                     </IconButton>
                   </Tooltip>
@@ -200,9 +230,12 @@ export default function UserManagement() {
       </Paper>
 
       {/* Add User Dialog */}
-      <Dialog open={addOpen} onClose={() => setAddOpen(false)} maxWidth="xs" fullWidth>
+      <Dialog open={addOpen} onClose={() => { setAddOpen(false); setAddError(null) }} maxWidth="xs" fullWidth>
         <DialogTitle sx={{ fontWeight: 700 }}>Add User</DialogTitle>
         <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: '16px !important' }}>
+          {addError && (
+            <Alert severity="error" onClose={() => setAddError(null)}>{addError}</Alert>
+          )}
           <TextField
             label="Email"
             type="email"
@@ -210,6 +243,7 @@ export default function UserManagement() {
             onChange={(e) => setNewEmail(e.target.value)}
             fullWidth
             size="small"
+            helperText="An invite email will be sent to this address"
           />
           <TextField
             label="Name (optional)"
@@ -231,7 +265,7 @@ export default function UserManagement() {
           <Button variant="contained" onClick={handleAdd} disabled={!newEmail.trim()}
             sx={{ bgcolor: '#76B900', '&:hover': { bgcolor: '#5A8F00' }, textTransform: 'none' }}
           >
-            Add
+            Add & Send Invite
           </Button>
         </DialogActions>
       </Dialog>
@@ -254,6 +288,27 @@ export default function UserManagement() {
             sx={{ bgcolor: '#76B900', '&:hover': { bgcolor: '#5A8F00' }, textTransform: 'none' }}
           >
             Save
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={!!deleteTarget} onClose={() => setDeleteTarget(null)} maxWidth="xs" fullWidth>
+        <DialogTitle sx={{ fontWeight: 700, color: '#DC2626' }}>Remove User</DialogTitle>
+        <DialogContent>
+          <Typography variant="body2" sx={{ color: '#475569' }}>
+            Are you sure you want to remove <strong>{deleteTarget?.email}</strong> from the dashboard?
+            This action cannot be undone.
+          </Typography>
+        </DialogContent>
+        <DialogActions sx={{ px: 3, pb: 2 }}>
+          <Button onClick={() => setDeleteTarget(null)} sx={{ textTransform: 'none' }}>Cancel</Button>
+          <Button
+            variant="contained"
+            onClick={handleDelete}
+            sx={{ bgcolor: '#DC2626', '&:hover': { bgcolor: '#B91C1C' }, textTransform: 'none', fontWeight: 600 }}
+          >
+            Remove
           </Button>
         </DialogActions>
       </Dialog>

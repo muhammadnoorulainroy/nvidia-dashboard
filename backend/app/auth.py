@@ -1,15 +1,13 @@
 """
-Authentication helpers: Google ID-token verification, JWT creation/validation,
+Authentication helpers: password hashing, JWT creation/validation,
 and FastAPI dependencies for protecting routes.
 """
 import logging
 from datetime import datetime, timedelta, timezone
-from typing import Optional
 
+import bcrypt
 import jwt
 from fastapi import Depends, HTTPException, Request, status
-from google.oauth2 import id_token as google_id_token
-from google.auth.transport import requests as google_requests
 from sqlalchemy import text
 
 from app.config import get_settings
@@ -20,38 +18,25 @@ logger = logging.getLogger(__name__)
 _ALGORITHM = "HS256"
 
 
-def verify_google_token(token: str) -> dict:
-    """Validate a Google OAuth2 ID token and return the payload (email, name, picture)."""
-    settings = get_settings()
+def hash_password(password: str) -> str:
+    return bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
+
+
+def verify_password(plain: str, hashed: str) -> bool:
     try:
-        payload = google_id_token.verify_oauth2_token(
-            token,
-            google_requests.Request(),
-            settings.oauth_client_id,
-        )
-        if payload.get("iss") not in ("accounts.google.com", "https://accounts.google.com"):
-            raise ValueError("Invalid issuer")
-        return {
-            "email": payload["email"],
-            "name": payload.get("name", ""),
-            "picture": payload.get("picture", ""),
-        }
-    except Exception as exc:
-        logger.warning(f"Google token verification failed: {exc}")
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid Google token",
-        ) from exc
+        return bcrypt.checkpw(plain.encode(), hashed.encode())
+    except Exception:
+        return False
 
 
-def create_jwt(email: str, role: str, name: str = "") -> str:
-    """Create a signed JWT containing user identity and role."""
+def create_jwt(email: str, role: str, name: str = "", must_change_password: bool = False) -> str:
     settings = get_settings()
     now = datetime.now(timezone.utc)
     payload = {
         "sub": email,
         "role": role,
         "name": name,
+        "must_change_password": must_change_password,
         "iat": now,
         "exp": now + timedelta(hours=settings.jwt_expiry_hours),
     }
@@ -59,7 +44,6 @@ def create_jwt(email: str, role: str, name: str = "") -> str:
 
 
 def decode_jwt(token: str) -> dict:
-    """Decode and validate a JWT. Raises HTTPException on failure."""
     settings = get_settings()
     try:
         return jwt.decode(token, settings.jwt_secret_key, algorithms=[_ALGORITHM])
@@ -84,6 +68,7 @@ async def get_current_user(request: Request) -> dict:
         "email": payload["sub"],
         "role": payload.get("role", "user"),
         "name": payload.get("name", ""),
+        "must_change_password": payload.get("must_change_password", False),
     }
 
 
@@ -95,7 +80,7 @@ async def require_admin(user: dict = Depends(get_current_user)) -> dict:
 
 
 def seed_initial_admin() -> None:
-    """Create initial admin users from INITIAL_ADMIN_EMAILS (comma-separated)."""
+    """Create initial admin users with a default password (must_change_password=True)."""
     settings = get_settings()
     raw = settings.initial_admin_emails
     if not raw:
@@ -104,6 +89,8 @@ def seed_initial_admin() -> None:
     emails = [e.strip().lower() for e in raw.split(",") if e.strip()]
     if not emails:
         return
+
+    pw_hash = hash_password(settings.default_admin_password)
 
     db = get_db_service()
     try:
@@ -116,14 +103,29 @@ def seed_initial_admin() -> None:
                 if not exists:
                     session.execute(
                         text(
-                            "INSERT INTO dashboard_user (email, name, role, is_active) "
-                            "VALUES (:email, :name, 'admin', true)"
+                            "INSERT INTO dashboard_user "
+                            "(email, name, role, is_active, password_hash, must_change_password) "
+                            "VALUES (:email, :name, 'admin', true, :pw_hash, true)"
                         ),
-                        {"email": email, "name": "Admin"},
+                        {"email": email, "name": "Admin", "pw_hash": pw_hash},
                     )
                     logger.info(f"Seeded initial admin user: {email}")
                 else:
-                    logger.debug(f"Admin user already exists: {email}")
+                    has_pw = session.execute(
+                        text("SELECT password_hash FROM dashboard_user WHERE email = :email"),
+                        {"email": email},
+                    ).fetchone()
+                    if not has_pw[0]:
+                        session.execute(
+                            text(
+                                "UPDATE dashboard_user SET password_hash = :pw_hash, "
+                                "must_change_password = true WHERE email = :email"
+                            ),
+                            {"pw_hash": pw_hash, "email": email},
+                        )
+                        logger.info(f"Set default password for existing admin: {email}")
+                    else:
+                        logger.debug(f"Admin user already has password: {email}")
             session.commit()
     except Exception as exc:
         logger.error(f"Failed to seed admin users: {exc}")

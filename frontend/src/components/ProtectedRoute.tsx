@@ -8,7 +8,7 @@ interface Props {
 }
 
 export default function ProtectedRoute({ children, adminOnly = false }: Props) {
-  const { isAuthenticated, isAdmin, loading } = useAuth()
+  const { isAuthenticated, isAdmin, mustChangePassword, loading } = useAuth()
 
   if (loading) {
     return (
@@ -20,6 +20,10 @@ export default function ProtectedRoute({ children, adminOnly = false }: Props) {
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />
+  }
+
+  if (mustChangePassword) {
+    return <Navigate to="/change-password" replace />
   }
 
   if (adminOnly && !isAdmin) {

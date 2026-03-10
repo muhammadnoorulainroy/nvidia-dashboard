@@ -187,7 +187,6 @@ export default function Layout({ children }: LayoutProps) {
         <Box sx={{ mt: 'auto', p: 2, borderTop: '1px solid rgba(255,255,255,0.08)' }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
             <Avatar
-              src={user.picture}
               sx={{ width: 32, height: 32, bgcolor: '#76B900', fontSize: '0.85rem', fontWeight: 700 }}
             >
               {user.name?.[0]?.toUpperCase() || user.email[0].toUpperCase()}

@@ -184,13 +184,25 @@ class Settings(BaseSettings):
             return {}
     
     # ==========================================================================
-    # OAuth / Authentication Settings
+    # Authentication Settings
     # ==========================================================================
-    oauth_client_id: Optional[str] = None
-    oauth_client_secret: Optional[str] = None
     jwt_secret_key: str = "change-me-in-production"
     jwt_expiry_hours: int = 24
     initial_admin_emails: str = ""  # Comma-separated list of admin emails
+    default_admin_password: str = "ChangeMe@123"
+    frontend_url: str = "http://localhost:3001"
+
+    # Google OAuth (kept for future use — requires a registered domain to work)
+    oauth_client_id: Optional[str] = None
+    oauth_client_secret: Optional[str] = None
+
+    # ==========================================================================
+    # Mailer Settings (SMTP)
+    # ==========================================================================
+    mailer_host: str = "smtp.gmail.com"
+    mailer_port: int = 587
+    mailer_username: Optional[str] = None
+    mailer_password: Optional[str] = None
     
     # ==========================================================================
     # Sentry Settings - Optional (error tracking disabled if not set)

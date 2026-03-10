@@ -757,6 +757,14 @@ class DashboardUser(Base):
     created_at = Column(DateTime, server_default='now()')
     last_login = Column(DateTime, nullable=True)
 
+    # Email/password auth fields
+    password_hash = Column(Text, nullable=True)
+    invite_token = Column(String(255), nullable=True, unique=True)
+    invite_token_expires = Column(DateTime, nullable=True)
+    reset_token = Column(String(255), nullable=True, unique=True)
+    reset_token_expires = Column(DateTime, nullable=True)
+    must_change_password = Column(Boolean, nullable=False, default=False)
+
 
 class ProjectFTECostMonthly(Base):
     """

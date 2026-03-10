@@ -1,6 +1,7 @@
 """User management endpoints (admin only)."""
 import logging
-from datetime import datetime, timezone
+import secrets
+from datetime import datetime, timedelta, timezone
 from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -9,6 +10,7 @@ from sqlalchemy import text
 
 from app.auth import require_admin
 from app.services.db_service import get_db_service
+from app.services.email_service import send_invite_email
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/users", tags=["User Management"], dependencies=[Depends(require_admin)])
@@ -22,6 +24,7 @@ class UserOut(BaseModel):
     is_active: bool
     created_at: Optional[str] = None
     last_login: Optional[str] = None
+    has_password: bool = False
 
 
 class UserCreate(BaseModel):
@@ -45,7 +48,11 @@ def _row_to_user(row) -> dict:
         "is_active": row[4],
         "created_at": str(row[5]) if row[5] else None,
         "last_login": str(row[6]) if row[6] else None,
+        "has_password": bool(row[7]) if len(row) > 7 else False,
     }
+
+
+_USER_COLS = "id, email, name, role, is_active, created_at, last_login, password_hash"
 
 
 @router.get("", response_model=list[UserOut])
@@ -53,7 +60,7 @@ async def list_users():
     db = get_db_service()
     with db.get_session() as session:
         rows = session.execute(
-            text("SELECT id, email, name, role, is_active, created_at, last_login FROM dashboard_user ORDER BY id")
+            text(f"SELECT {_USER_COLS} FROM dashboard_user ORDER BY id")
         ).fetchall()
     return [_row_to_user(r) for r in rows]
 
@@ -71,27 +78,62 @@ async def create_user(body: UserCreate):
             {"email": email},
         ).fetchone()
         if exists:
-            raise HTTPException(status_code=409, detail="User already exists")
+            raise HTTPException(status_code=409, detail=f"A user with email '{email}' already exists")
+
+        invite_token = secrets.token_urlsafe(48)
+        invite_expires = datetime.now(timezone.utc) + timedelta(hours=48)
 
         session.execute(
             text(
-                "INSERT INTO dashboard_user (email, name, role, is_active) "
-                "VALUES (:email, :name, :role, true)"
+                "INSERT INTO dashboard_user (email, name, role, is_active, invite_token, invite_token_expires) "
+                "VALUES (:email, :name, :role, true, :token, :exp)"
             ),
-            {"email": email, "name": body.name or "", "role": body.role},
+            {
+                "email": email,
+                "name": body.name or "",
+                "role": body.role,
+                "token": invite_token,
+                "exp": invite_expires,
+            },
         )
         session.commit()
 
         row = session.execute(
-            text(
-                "SELECT id, email, name, role, is_active, created_at, last_login "
-                "FROM dashboard_user WHERE email = :email"
-            ),
+            text(f"SELECT {_USER_COLS} FROM dashboard_user WHERE email = :email"),
             {"email": email},
         ).fetchone()
 
-    logger.info(f"Created user {email} with role {body.role}")
+    send_invite_email(email, invite_token, body.name)
+    logger.info(f"Created user {email} with role {body.role} and sent invite")
     return _row_to_user(row)
+
+
+@router.post("/{user_id}/resend-invite")
+async def resend_invite(user_id: int):
+    db = get_db_service()
+    with db.get_session() as session:
+        row = session.execute(
+            text("SELECT id, email, name, password_hash FROM dashboard_user WHERE id = :uid"),
+            {"uid": user_id},
+        ).fetchone()
+        if not row:
+            raise HTTPException(status_code=404, detail="User not found")
+        if row[3]:
+            raise HTTPException(status_code=400, detail="User already has an active account")
+
+        invite_token = secrets.token_urlsafe(48)
+        invite_expires = datetime.now(timezone.utc) + timedelta(hours=48)
+        session.execute(
+            text(
+                "UPDATE dashboard_user SET invite_token = :token, invite_token_expires = :exp WHERE id = :uid"
+            ),
+            {"token": invite_token, "exp": invite_expires, "uid": row[0]},
+        )
+        session.commit()
+
+    send_invite_email(row[1], invite_token, row[2])
+    logger.info(f"Resent invite to {row[1]}")
+    return {"detail": f"Invite resent to {row[1]}"}
 
 
 @router.put("/{user_id}", response_model=UserOut)
@@ -130,10 +172,7 @@ async def update_user(user_id: int, body: UserUpdate):
             session.commit()
 
         row = session.execute(
-            text(
-                "SELECT id, email, name, role, is_active, created_at, last_login "
-                "FROM dashboard_user WHERE id = :uid"
-            ),
+            text(f"SELECT {_USER_COLS} FROM dashboard_user WHERE id = :uid"),
             {"uid": user_id},
         ).fetchone()
 

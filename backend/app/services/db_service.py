@@ -313,6 +313,35 @@ class DatabaseService:
         finally:
             session.close()
     
+    def _migrate_dashboard_user(self):
+        """Add email-auth columns to dashboard_user if they don't exist yet."""
+        new_columns = {
+            "password_hash": "TEXT",
+            "invite_token": "VARCHAR(255)",
+            "invite_token_expires": "TIMESTAMP",
+            "reset_token": "VARCHAR(255)",
+            "reset_token_expires": "TIMESTAMP",
+            "must_change_password": "BOOLEAN DEFAULT FALSE NOT NULL",
+        }
+        try:
+            with self.engine.connect() as conn:
+                existing = {
+                    row[0]
+                    for row in conn.execute(text(
+                        "SELECT column_name FROM information_schema.columns "
+                        "WHERE table_schema = 'public' AND table_name = 'dashboard_user'"
+                    )).fetchall()
+                }
+                for col, col_type in new_columns.items():
+                    if col not in existing:
+                        conn.execute(text(
+                            f'ALTER TABLE dashboard_user ADD COLUMN "{col}" {col_type}'
+                        ))
+                        logger.info(f"Added column dashboard_user.{col}")
+                conn.commit()
+        except Exception as e:
+            logger.warning(f"dashboard_user migration error (may not exist yet): {e}")
+
     def initialize(self) -> bool:
         """Complete initialization process"""
         try:
@@ -344,6 +373,9 @@ class DatabaseService:
                 if not self.create_tables(use_alembic=False):
                     logger.error("Failed to create tables")
                     return False
+            
+            # Add new auth columns to existing dashboard_user tables
+            self._migrate_dashboard_user()
             
             logger.info("Database initialization completed successfully")
             return True

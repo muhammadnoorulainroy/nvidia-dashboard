@@ -23,7 +23,7 @@ from apscheduler.triggers.interval import IntervalTrigger
 from app.config import get_settings
 from app.routers import stats, jibble, config, analytics, quality_rubrics
 from app.routers import auth as auth_router, users as users_router
-from app.auth import get_current_user, seed_initial_admin
+from app.auth import get_current_user, seed_initial_admin  # noqa: F401 – used in router deps
 from app.schemas.response_schemas import HealthResponse, ErrorResponse
 from app.services.db_service import get_db_service
 from app.services.data_sync_service import get_data_sync_service

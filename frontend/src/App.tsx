@@ -7,6 +7,10 @@ import ProtectedRoute from './components/ProtectedRoute'
 import { useAuth } from './contexts/AuthContext'
 
 const Login = lazy(() => import('./pages/Login'))
+const Signup = lazy(() => import('./pages/Signup'))
+const ForgotPassword = lazy(() => import('./pages/ForgotPassword'))
+const ResetPassword = lazy(() => import('./pages/ResetPassword'))
+const ChangePassword = lazy(() => import('./pages/ChangePassword'))
 const TaskMetrics = lazy(() => import('./pages/PreDelivery'))
 const ClientDelivery = lazy(() => import('./pages/ClientDelivery'))
 const ClientDeliverySummary = lazy(() => import('./pages/ClientDeliverySummary'))
@@ -32,7 +36,7 @@ function PageLoader() {
 }
 
 function App() {
-  const { isAuthenticated, loading } = useAuth()
+  const { isAuthenticated, loading, mustChangePassword } = useAuth()
 
   if (loading) {
     return (
@@ -46,10 +50,19 @@ function App() {
     <ErrorBoundary>
       <Suspense fallback={<PageLoader />}>
         <Routes>
-          {/* Public route */}
+          {/* Public routes */}
           <Route
             path="/login"
-            element={isAuthenticated ? <Navigate to="/task-metrics" replace /> : <Login />}
+            element={isAuthenticated && !mustChangePassword ? <Navigate to="/task-metrics" replace /> : <Login />}
+          />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route
+            path="/change-password"
+            element={
+              isAuthenticated ? <ChangePassword /> : <Navigate to="/login" replace />
+            }
           />
 
           {/* Protected dashboard routes */}
