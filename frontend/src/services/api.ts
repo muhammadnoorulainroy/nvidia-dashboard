@@ -668,6 +668,35 @@ export const getProjectStats = async (
 
 
 // ============================================================================
+// JIBBLE HOURS API FUNCTIONS
+// ============================================================================
+
+export interface JibbleUserHours {
+  full_name: string | null
+  turing_email: string | null
+  jibble_email: string | null
+  member_code: string | null
+  total_hours: number
+  project: string
+}
+
+export const getJibbleProjectHours = async (
+  projectId?: number,
+  startDate?: string,
+  endDate?: string,
+): Promise<JibbleUserHours[]> => {
+  const params = new URLSearchParams()
+  if (projectId) params.append('project_id', String(projectId))
+  if (startDate) params.append('start_date', startDate)
+  if (endDate) params.append('end_date', endDate)
+  const queryString = params.toString()
+  const url = queryString ? `/jibble/project-hours?${queryString}` : '/jibble/project-hours'
+  const response = await apiClient.get<JibbleUserHours[]>(url)
+  return response.data
+}
+
+
+// ============================================================================
 // AHT CONFIGURATION API FUNCTIONS
 // ============================================================================
 

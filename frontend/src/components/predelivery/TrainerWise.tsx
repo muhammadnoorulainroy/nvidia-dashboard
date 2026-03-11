@@ -1189,22 +1189,22 @@ export default function TrainerWise({ isClientDelivery = false, onSummaryUpdate,
                 const mergedExpAht = calculateMergedAHT(newTasks, rework, selectedProject)
                 
                 // Color coding helpers
+                const noStyle = { color: undefined, bgcolor: 'transparent' }
+                const redStyle = { color: '#991B1B', bgcolor: '#FEE2E2' }
                 const getAvgReworkStyle = (avgR: number | null) => {
                   if (avgR === null) return { color: '#94A3B8', bgcolor: 'transparent' }
-                  if (avgR < 1) return { color: '#065F46', bgcolor: '#D1FAE5' }
-                  if (avgR <= 2.5) return { color: '#92400E', bgcolor: '#FEF3C7' }
-                  return { color: '#991B1B', bgcolor: '#FEE2E2' }
+                  if (avgR > 2.5) return redStyle
+                  return noStyle
                 }
                 const getReworkPctStyle = (rPct: number | null) => {
                   if (rPct === null) return { color: '#94A3B8', bgcolor: 'transparent' }
-                  if (rPct <= 10) return { color: '#065F46', bgcolor: '#D1FAE5' }
-                  if (rPct <= 30) return { color: '#92400E', bgcolor: '#FEF3C7' }
-                  return { color: '#991B1B', bgcolor: '#FEE2E2' }
+                  if (rPct > 30) return redStyle
+                  return noStyle
                 }
                 const getRatingStyle = (rating: number | null) => {
                   if (rating === null) return { color: '#94A3B8', bgcolor: 'transparent' }
-                  if (rating > 4.8) return { color: '#065F46', bgcolor: '#D1FAE5' }
-                  return { color: '#92400E', bgcolor: '#FEF3C7' }
+                  if (rating < 4) return redStyle
+                  return noStyle
                 }
                 
                 return (
@@ -1310,9 +1310,8 @@ export default function TrainerWise({ isClientDelivery = false, onSummaryUpdate,
                         : null
                       const getEffStyle = (eff: number | null) => {
                         if (eff === null) return { color: '#94A3B8', bgcolor: 'transparent' }
-                        if (eff >= 90) return { color: '#065F46', bgcolor: '#D1FAE5' }
-                        if (eff >= 70) return { color: '#92400E', bgcolor: '#FEF3C7' }
-                        return { color: '#991B1B', bgcolor: '#FEE2E2' }
+                        if (eff < 70) return redStyle
+                        return noStyle
                       }
                       
                       return (

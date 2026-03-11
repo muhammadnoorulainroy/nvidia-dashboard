@@ -1,13 +1,19 @@
 """
 Jibble API endpoints for time tracking data
 """
+import logging
 from fastapi import APIRouter, HTTPException, Depends
 from typing import List, Optional
 from datetime import datetime, timedelta
 from pydantic import BaseModel
+from sqlalchemy import func
 
-from app.services.db_service import get_db_session
+from app.services.db_service import get_db_session, get_db_service
 from app.services.jibble_service import JibbleService, JibbleSyncService
+from app.models.db_models import JibbleHours
+from app.constants import get_constants
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/jibble", tags=["jibble"])
 
@@ -99,7 +105,7 @@ async def get_trainer_hours(
             return results
             
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error fetching trainer hours: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error fetching trainer hours (daily): {str(e)}")
 
 
 @router.get("/trainer-hours-summary", response_model=List[TrainerHoursSummary])
@@ -160,4 +166,80 @@ async def get_trainer_hours_summary(
             return list(trainer_data.values())
             
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error fetching trainer hours: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error fetching trainer hours (summary): {str(e)}")
+
+
+class JibbleUserHours(BaseModel):
+    full_name: Optional[str] = None
+    turing_email: Optional[str] = None
+    jibble_email: Optional[str] = None
+    member_code: Optional[str] = None
+    total_hours: float
+    project: str
+
+
+@router.get("/project-hours", response_model=List[JibbleUserHours])
+async def get_project_jibble_hours(
+    project_id: Optional[int] = None,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+):
+    """
+    Get aggregated Jibble hours per user for a project within a date range.
+    Returns everyone who logged hours, regardless of team mapping.
+    """
+    try:
+        constants = get_constants()
+        jibble_config = constants.jibble
+        db = get_db_service()
+
+        jibble_project_names: List[str] = []
+        if project_id:
+            jibble_project_names = jibble_config.PROJECT_ID_TO_JIBBLE_NAMES.get(project_id, [])
+        else:
+            for names in jibble_config.PROJECT_ID_TO_JIBBLE_NAMES.values():
+                jibble_project_names.extend(names)
+            jibble_project_names = list(set(jibble_project_names))
+
+        with db.get_session() as session:
+            query = session.query(
+                JibbleHours.full_name,
+                JibbleHours.turing_email,
+                JibbleHours.jibble_email,
+                JibbleHours.member_code,
+                JibbleHours.project,
+                func.sum(JibbleHours.logged_hours).label('total_hours'),
+            )
+
+            if jibble_project_names:
+                query = query.filter(JibbleHours.project.in_(jibble_project_names))
+
+            if start_date:
+                query = query.filter(JibbleHours.entry_date >= start_date)
+            if end_date:
+                query = query.filter(JibbleHours.entry_date <= end_date)
+
+            query = query.group_by(
+                JibbleHours.member_code,
+                JibbleHours.full_name,
+                JibbleHours.turing_email,
+                JibbleHours.jibble_email,
+                JibbleHours.project,
+            ).order_by(func.sum(JibbleHours.logged_hours).desc())
+
+            results = []
+            for row in query.all():
+                results.append(JibbleUserHours(
+                    full_name=row.full_name,
+                    turing_email=row.turing_email,
+                    jibble_email=row.jibble_email,
+                    member_code=row.member_code,
+                    total_hours=round(float(row.total_hours or 0), 2),
+                    project=row.project,
+                ))
+
+            return results
+
+    except Exception as e:
+        logger.error(f"Error fetching project jibble hours: {e}")
+        raise HTTPException(status_code=500, detail=str(e))

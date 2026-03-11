@@ -32,31 +32,31 @@ import { PROJECT_OPTIONS_WITH_ALL } from '../constants'
 // Color coding helpers (PMO thresholds)
 // ---------------------------------------------------------------------------
 
+const noStyle = { color: undefined, bgcolor: 'transparent' }
+const redStyle = { color: '#991B1B', bgcolor: '#FEE2E2' }
+
 const getRatingStyle = (v: number | null) => {
   if (v === null) return { color: '#94A3B8', bgcolor: 'transparent' }
-  if (v > 4.8) return { color: '#065F46', bgcolor: '#D1FAE5' }
-  return { color: '#92400E', bgcolor: '#FEF3C7' }
+  if (v < 4) return redStyle
+  return noStyle
 }
 
 const getEfficiencyStyle = (v: number | null) => {
   if (v === null) return { color: '#94A3B8', bgcolor: 'transparent' }
-  if (v >= 90) return { color: '#065F46', bgcolor: '#D1FAE5' }
-  if (v >= 70) return { color: '#92400E', bgcolor: '#FEF3C7' }
-  return { color: '#991B1B', bgcolor: '#FEE2E2' }
+  if (v < 70) return redStyle
+  return noStyle
 }
 
 const getReworkPercentStyle = (v: number | null) => {
   if (v === null) return { color: '#94A3B8', bgcolor: 'transparent' }
-  if (v <= 10) return { color: '#065F46', bgcolor: '#D1FAE5' }
-  if (v <= 30) return { color: '#92400E', bgcolor: '#FEF3C7' }
-  return { color: '#991B1B', bgcolor: '#FEE2E2' }
+  if (v > 30) return redStyle
+  return noStyle
 }
 
 const getAvgReworkStyle = (v: number | null) => {
   if (v === null) return { color: '#94A3B8', bgcolor: 'transparent' }
-  if (v < 1) return { color: '#065F46', bgcolor: '#D1FAE5' }
-  if (v <= 2.5) return { color: '#92400E', bgcolor: '#FEF3C7' }
-  return { color: '#991B1B', bgcolor: '#FEE2E2' }
+  if (v > 2.5) return redStyle
+  return noStyle
 }
 
 const formatCurrency = (v: number | null | undefined): string => {
@@ -453,7 +453,7 @@ function PodRow({ row, M }: { row: PodHeaderRow; M: React.ComponentType<any> }) 
       <M value={row.efficiency} fmt="pct" style={getEfficiencyStyle(row.efficiency)} borderRight={`2px solid ${GROUPS.time.border}`} />
 
       {/* Finance */}
-      <M value={row.revenue} fmt="cur" style={row.revenue > 0 ? { color: '#065F46', bgcolor: '#D1FAE5' } : { color: '#94A3B8', bgcolor: 'transparent' }} />
+      <M value={row.revenue} fmt="cur" style={row.revenue > 0 ? { color: undefined, bgcolor: 'transparent' } : { color: '#94A3B8', bgcolor: 'transparent' }} />
     </TableRow>
   )
 }
@@ -502,7 +502,7 @@ function TrainerRow({ row, M }: { row: TrainerDataRow; M: React.ComponentType<an
       <M value={t.efficiency} fmt="pct" style={getEfficiencyStyle(t.efficiency)} borderRight={`2px solid ${GROUPS.time.border}`} />
 
       {/* Finance */}
-      <M value={t.revenue > 0 ? t.revenue : null} fmt="cur" style={t.revenue > 0 ? { color: '#065F46', bgcolor: '#D1FAE5' } : { color: '#94A3B8', bgcolor: 'transparent' }} />
+      <M value={t.revenue > 0 ? t.revenue : null} fmt="cur" style={t.revenue > 0 ? { color: undefined, bgcolor: 'transparent' } : { color: '#94A3B8', bgcolor: 'transparent' }} />
     </TableRow>
   )
 }

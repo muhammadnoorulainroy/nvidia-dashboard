@@ -139,23 +139,23 @@ function TrainerRow({
   const total = newTasks + rework
   const merged_exp_aht = total > 0 ? (newTasks * DEFAULT_NEW_TASK_AHT + rework * DEFAULT_REWORK_AHT) / total : null
 
-  // Color coding helpers
+  // Color coding helpers — red-only for bad performance
+  const noStyle = { color: undefined, bgcolor: 'transparent' }
+  const redStyle = { color: '#991B1B', bgcolor: '#FEE2E2' }
   const getAvgReworkStyle = (avgR: number | null | undefined) => {
     if (avgR === null || avgR === undefined) return { color: '#94A3B8', bgcolor: 'transparent' }
-    if (avgR < 1) return { color: '#065F46', bgcolor: '#D1FAE5' }
-    if (avgR <= 2.5) return { color: '#92400E', bgcolor: '#FEF3C7' }
-    return { color: '#991B1B', bgcolor: '#FEE2E2' }
+    if (avgR > 2.5) return redStyle
+    return noStyle
   }
   const getReworkPctStyle = (rPct: number | null | undefined) => {
     if (rPct === null || rPct === undefined) return { color: '#94A3B8', bgcolor: 'transparent' }
-    if (rPct <= 10) return { color: '#065F46', bgcolor: '#D1FAE5' }
-    if (rPct <= 30) return { color: '#92400E', bgcolor: '#FEF3C7' }
-    return { color: '#991B1B', bgcolor: '#FEE2E2' }
+    if (rPct > 30) return redStyle
+    return noStyle
   }
   const getRatingStyle = (rating: number | null | undefined) => {
     if (rating === null || rating === undefined) return { color: '#94A3B8', bgcolor: 'transparent' }
-    if (rating > 4.8) return { color: '#065F46', bgcolor: '#D1FAE5' }
-    return { color: '#92400E', bgcolor: '#FEF3C7' }
+    if (rating < 4) return redStyle
+    return noStyle
   }
 
   return (
@@ -250,23 +250,23 @@ function ReviewerRowComponent({
   const total = newTasks + rework
   const merged_exp_aht = total > 0 ? (newTasks * DEFAULT_NEW_TASK_AHT + rework * DEFAULT_REWORK_AHT) / total : null
 
-  // Color coding helpers
+  // Color coding helpers — red-only for bad performance
+  const noStyle = { color: undefined, bgcolor: 'transparent' }
+  const redStyle = { color: '#991B1B', bgcolor: '#FEE2E2' }
   const getAvgReworkStyle = (avgR: number | null | undefined) => {
     if (avgR === null || avgR === undefined) return { color: '#94A3B8', bgcolor: 'transparent' }
-    if (avgR < 1) return { color: '#065F46', bgcolor: '#D1FAE5' }
-    if (avgR <= 2.5) return { color: '#92400E', bgcolor: '#FEF3C7' }
-    return { color: '#991B1B', bgcolor: '#FEE2E2' }
+    if (avgR > 2.5) return redStyle
+    return noStyle
   }
   const getReworkPctStyle = (rPct: number | null | undefined) => {
     if (rPct === null || rPct === undefined) return { color: '#94A3B8', bgcolor: 'transparent' }
-    if (rPct <= 10) return { color: '#065F46', bgcolor: '#D1FAE5' }
-    if (rPct <= 30) return { color: '#92400E', bgcolor: '#FEF3C7' }
-    return { color: '#991B1B', bgcolor: '#FEE2E2' }
+    if (rPct > 30) return redStyle
+    return noStyle
   }
   const getRatingStyle = (rating: number | null | undefined) => {
     if (rating === null || rating === undefined) return { color: '#94A3B8', bgcolor: 'transparent' }
-    if (rating > 4.8) return { color: '#065F46', bgcolor: '#D1FAE5' }
-    return { color: '#92400E', bgcolor: '#FEF3C7' }
+    if (rating < 4) return redStyle
+    return noStyle
   }
 
   return (

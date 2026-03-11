@@ -39,7 +39,9 @@ import {
   Warning as WarningIcon,
 } from '@mui/icons-material'
 import { getTooltipForHeader } from '../../utils/columnTooltips'
-import { getProjectStats, ProjectStats, PodLeadUnderProject, TrainerUnderPodLead, TaskUnderTrainer } from '../../services/api'
+import { getProjectStats, getJibbleProjectHours, JibbleUserHours, ProjectStats, PodLeadUnderProject, TrainerUnderPodLead, TaskUnderTrainer } from '../../services/api'
+import AccessTimeIcon from '@mui/icons-material/AccessTime'
+import { FormControl, InputLabel, Select, SelectChangeEvent } from '@mui/material'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import AssignmentIcon from '@mui/icons-material/Assignment'
 import { Timeframe, getDateRange as getDateRangeUtil } from '../../utils/dateUtils'
@@ -125,54 +127,92 @@ function getDateRange(timeframe: Timeframe, weekOffset: number, customStart?: st
 // 4. Avg Rework (AVGR): <1 Green, 1-2.5 Yellow, >2.5 Red (LOWER IS BETTER)
 // ============================================================================
 
-// Ratings color coding (PMO Requirement)
-// >4.8 - green, <=4.8 - yellow
+// Color coding: only highlight red for bad performance, leave good/neutral as default
+const noStyle = { color: undefined, bgcolor: 'transparent' }
+const redStyle = { color: '#991B1B', bgcolor: '#FEE2E2' }
+
+// Ratings: <4 is red
 const getRatingStyle = (rating: number | null) => {
   if (rating === null) return { color: '#94A3B8', bgcolor: 'transparent' }
-  if (rating > 4.8) return { color: '#065F46', bgcolor: '#D1FAE5' }
-  return { color: '#92400E', bgcolor: '#FEF3C7' }
+  if (rating < 4) return redStyle
+  return noStyle
 }
 
-// Efficiency color coding (PMO Requirement)
-// >=90% Green, 70-90% Yellow, <70% Red
+// Efficiency: <70% is red
 const getEfficiencyStyle = (eff: number | null) => {
   if (eff === null) return { color: '#94A3B8', bgcolor: 'transparent' }
-  if (eff >= 90) return { color: '#065F46', bgcolor: '#D1FAE5' }      // Green
-  if (eff >= 70) return { color: '#92400E', bgcolor: '#FEF3C7' }      // Yellow
-  return { color: '#991B1B', bgcolor: '#FEE2E2' }                      // Red
+  if (eff < 70) return redStyle
+  return noStyle
 }
 
-// Rework% (R%) color coding - INVERTED (lower is better)
-// <=10% Green (good), 10-30% Yellow, >30% Red (bad)
+// Rework%: >30% is red (lower is better)
 const getReworkPercentStyle = (rPct: number | null) => {
   if (rPct === null) return { color: '#94A3B8', bgcolor: 'transparent' }
-  if (rPct <= 10) return { color: '#065F46', bgcolor: '#D1FAE5' }      // Green - low rework is good
-  if (rPct <= 30) return { color: '#92400E', bgcolor: '#FEF3C7' }      // Yellow
-  return { color: '#991B1B', bgcolor: '#FEE2E2' }                       // Red - high rework is bad
+  if (rPct > 30) return redStyle
+  return noStyle
 }
 
-// Average Rework (AVGR) color coding
-// <1 Green, 1-2.5 Yellow, >2.5 Red
+// Average Rework: >2.5 is red (lower is better)
 const getAvgReworkStyle = (avgR: number | null) => {
   if (avgR === null) return { color: '#94A3B8', bgcolor: 'transparent' }
-  if (avgR < 1) return { color: '#065F46', bgcolor: '#D1FAE5' }        // Green
-  if (avgR <= 2.5) return { color: '#92400E', bgcolor: '#FEF3C7' }     // Yellow
-  return { color: '#991B1B', bgcolor: '#FEE2E2' }                       // Red
+  if (avgR > 2.5) return redStyle
+  return noStyle
 }
 
-// Margin% color coding
-// Positive margin is good (green), low margin is cautionary (yellow), negative is bad (red)
+// Margin%: negative is red
 const getMarginStyle = (marginPct: number | null) => {
   if (marginPct === null || marginPct === undefined) return { color: '#94A3B8', bgcolor: 'transparent' }
-  if (marginPct >= 20) return { color: '#065F46', bgcolor: '#D1FAE5' }      // Green - healthy
-  if (marginPct >= 0) return { color: '#92400E', bgcolor: '#FEF3C7' }       // Yellow - watch
-  return { color: '#991B1B', bgcolor: '#FEE2E2' }                            // Red - negative
+  if (marginPct < 0) return redStyle
+  return noStyle
 }
 
 // Format currency with $ and commas, e.g. $15,622
 const formatCurrency = (value: number | null | undefined): string => {
   if (value === null || value === undefined || value === 0) return '-'
   return '$' + value.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })
+}
+
+// ---------------------------------------------------------------------------
+// Cascading sort helpers – reuse the top-level sortColumn/sortDirection at
+// every hierarchy level (Project → POD Lead → Trainer).
+// ---------------------------------------------------------------------------
+type HierarchyLevel = 'project' | 'podLead' | 'trainer'
+
+function getSortValue(item: any, sortColumn: string, level: HierarchyLevel): any {
+  switch (sortColumn) {
+    case 'project_name':
+      if (level === 'podLead') return item.pod_lead_name ?? ''
+      if (level === 'trainer') return item.trainer_name ?? ''
+      return item.project_name ?? ''
+    case 'size':
+      if (level === 'podLead') return item.trainer_count ?? 0
+      if (level === 'trainer') return 0
+      return item.pod_lead_count ?? 0
+    case 'logged_hours':
+      if (level === 'podLead') return (item.trainer_jibble_hours ?? 0) + (item.pod_jibble_hours ?? 0)
+      if (level === 'trainer') return item.jibble_hours ?? 0
+      return item.logged_hours ?? 0
+    case 'total_pod_hours':
+      if (level === 'podLead') return item.pod_jibble_hours ?? 0
+      if (level === 'trainer') return 0
+      return item.total_pod_hours ?? 0
+    default: {
+      const val = (item as any)[sortColumn]
+      return val ?? (typeof val === 'string' ? '' : -Infinity)
+    }
+  }
+}
+
+function sortChildren<T>(items: T[], sortColumn: string, sortDirection: 'asc' | 'desc', level: HierarchyLevel): T[] {
+  if (!sortColumn || !items || items.length === 0) return items
+  return [...items].sort((a, b) => {
+    const aVal = getSortValue(a, sortColumn, level)
+    const bVal = getSortValue(b, sortColumn, level)
+    if (typeof aVal === 'string' && typeof bVal === 'string') {
+      return sortDirection === 'asc' ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal)
+    }
+    return sortDirection === 'asc' ? (aVal as number) - (bVal as number) : (bVal as number) - (aVal as number)
+  })
 }
 
 // Responsive font sizes for data cells
@@ -496,15 +536,20 @@ function PodLeadRow({
   podLead, 
   colorSettings,
   applyColors = true,
-  applyColorsToTrainers = true
+  applyColorsToTrainers = true,
+  sortColumn = '',
+  sortDirection = 'asc' as const,
 }: { 
   podLead: PodLeadUnderProject
   colorSettings: ColorSettings
   applyColors?: boolean
   applyColorsToTrainers?: boolean
+  sortColumn?: string
+  sortDirection?: 'asc' | 'desc'
 }) {
   const [open, setOpen] = useState(false)
   const hasTrainers = podLead.trainers && podLead.trainers.length > 0
+  const sortedTrainers = sortChildren(podLead.trainers ?? [], sortColumn, sortDirection, 'trainer')
 
   return (
     <>
@@ -663,7 +708,7 @@ function PodLeadRow({
         <TableCell align="center" sx={{ ...cellStyle, color: '#94A3B8' }}>-</TableCell>
       </TableRow>
       
-      {hasTrainers && open && podLead.trainers.map((trainer, idx) => (
+      {hasTrainers && open && sortedTrainers.map((trainer, idx) => (
         <TrainerRow key={idx} trainer={trainer} colorSettings={colorSettings} applyColors={applyColorsToTrainers} />
       ))}
     </>
@@ -677,16 +722,21 @@ function ProjectRow({
   colorSettings, 
   applyColors = true,
   applyColorsToPodLeads = true,
-  applyColorsToTrainers = true
+  applyColorsToTrainers = true,
+  sortColumn = '',
+  sortDirection = 'asc' as const,
 }: { 
   project: ProjectStats
   colorSettings: ColorSettings
   applyColors?: boolean
   applyColorsToPodLeads?: boolean
   applyColorsToTrainers?: boolean
+  sortColumn?: string
+  sortDirection?: 'asc' | 'desc'
 }) {
   const [open, setOpen] = useState(false)
   const hasPodLeads = project.pod_leads && project.pod_leads.length > 0
+  const sortedPodLeads = sortChildren(project.pod_leads ?? [], sortColumn, sortDirection, 'podLead')
 
   // Responsive font sizes for project level
   const projectFontSize = { xs: '0.62rem', sm: '0.68rem', md: '0.75rem' }
@@ -858,13 +908,15 @@ function ProjectRow({
         </TableCell>
       </TableRow>
       
-      {hasPodLeads && open && project.pod_leads.map((podLead, idx) => (
+      {hasPodLeads && open && sortedPodLeads.map((podLead, idx) => (
         <PodLeadRow 
           key={idx} 
           podLead={podLead} 
           colorSettings={colorSettings} 
           applyColors={applyColorsToPodLeads}
           applyColorsToTrainers={applyColorsToTrainers}
+          sortColumn={sortColumn}
+          sortDirection={sortDirection}
         />
       ))}
     </>
@@ -1051,6 +1103,192 @@ function FlaggedDialog({ open, onClose, projects }: { open: boolean; onClose: ()
   )
 }
 
+// ============================================================================
+// Jibble Hours Dialog Component
+// ============================================================================
+
+type JibbleSortKey = 'full_name' | 'turing_email' | 'total_hours' | 'project'
+
+const PROJECT_OPTIONS_JIBBLE: { id: number | undefined; label: string }[] = [
+  { id: undefined, label: 'All Projects' },
+  { id: 36, label: 'Nvidia - SysBench' },
+  { id: 37, label: 'Nvidia - Multichallenge' },
+  { id: 38, label: 'Nvidia - InverseIFEval' },
+  { id: 39, label: 'Nvidia - CFBench Multilingual' },
+  { id: 59, label: 'Nvidia - Math Proof Eval - Test' },
+  { id: 60, label: 'Nvidia - Math Proof Evals' },
+]
+
+function JibbleHoursDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const [rows, setRows] = useState<JibbleUserHours[]>([])
+  const [loading, setLoading] = useState(false)
+  const [projectFilter, setProjectFilter] = useState<number | undefined>(undefined)
+  const [jibbleTimeframe, setJibbleTimeframe] = useState<Timeframe>('overall')
+  const [jibbleWeekOffset, setJibbleWeekOffset] = useState(0)
+  const [jibbleCustomStart, setJibbleCustomStart] = useState('')
+  const [jibbleCustomEnd, setJibbleCustomEnd] = useState('')
+  const [sortKey, setSortKey] = useState<JibbleSortKey>('total_hours')
+  const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc')
+  const [search, setSearch] = useState('')
+
+  const fetchJibble = async () => {
+    setLoading(true)
+    try {
+      const { startDate, endDate } = getDateRange(jibbleTimeframe, jibbleWeekOffset, jibbleCustomStart, jibbleCustomEnd)
+      const data = await getJibbleProjectHours(projectFilter, startDate, endDate)
+      setRows(data)
+    } catch {
+      setRows([])
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    if (open) fetchJibble()
+  }, [open, projectFilter, jibbleTimeframe, jibbleWeekOffset, jibbleCustomStart, jibbleCustomEnd])
+
+  const handleSort = (key: JibbleSortKey) => {
+    if (sortKey === key) {
+      setSortDir(prev => prev === 'asc' ? 'desc' : 'asc')
+    } else {
+      setSortKey(key)
+      setSortDir(key === 'total_hours' ? 'desc' : 'asc')
+    }
+  }
+
+  const filtered = rows.filter(r => {
+    if (!search) return true
+    const s = search.toLowerCase()
+    return (r.full_name?.toLowerCase().includes(s)) ||
+           (r.turing_email?.toLowerCase().includes(s)) ||
+           (r.jibble_email?.toLowerCase().includes(s))
+  })
+
+  const sorted = [...filtered].sort((a, b) => {
+    let aVal: any, bVal: any
+    switch (sortKey) {
+      case 'full_name': aVal = a.full_name || ''; bVal = b.full_name || ''; break
+      case 'turing_email': aVal = a.turing_email || ''; bVal = b.turing_email || ''; break
+      case 'total_hours': aVal = a.total_hours; bVal = b.total_hours; break
+      case 'project': aVal = a.project || ''; bVal = b.project || ''; break
+      default: return 0
+    }
+    if (typeof aVal === 'string') return sortDir === 'asc' ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal)
+    return sortDir === 'asc' ? aVal - bVal : bVal - aVal
+  })
+
+  const totalHours = filtered.reduce((s, r) => s + r.total_hours, 0)
+
+  const columns: { key: JibbleSortKey; label: string; align: 'left' | 'center'; tooltip: string }[] = [
+    { key: 'full_name', label: 'Name', align: 'left', tooltip: 'Full name from Jibble' },
+    { key: 'turing_email', label: 'Turing Email', align: 'left', tooltip: 'Mapped Turing email (may be empty if not mapped)' },
+    { key: 'project', label: 'Jibble Project', align: 'left', tooltip: 'Jibble project the hours were logged under' },
+    { key: 'total_hours', label: 'Hours', align: 'center', tooltip: 'Total hours logged in the selected time range' },
+  ]
+
+  return (
+    <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth PaperProps={{ sx: { borderRadius: 2 } }}>
+      <DialogTitle sx={{ display: 'flex', alignItems: 'center', gap: 1, py: 1.5, px: 2.5, bgcolor: '#EFF6FF', borderBottom: '1px solid #BFDBFE' }}>
+        <AccessTimeIcon sx={{ fontSize: 20, color: '#2563EB' }} />
+        <Typography sx={{ fontSize: '0.95rem', fontWeight: 700, color: '#1E40AF', flex: 1 }}>
+          Jibble Hours
+        </Typography>
+        <Chip
+          label={`${filtered.length} people · ${totalHours.toFixed(1)} hrs`}
+          size="small"
+          sx={{ height: 22, fontSize: '0.65rem', fontWeight: 700, bgcolor: '#DBEAFE', color: '#1E40AF', border: '1px solid #BFDBFE' }}
+        />
+        <IconButton size="small" onClick={onClose} sx={{ ml: 0.5 }}>
+          <CloseIcon sx={{ fontSize: 18 }} />
+        </IconButton>
+      </DialogTitle>
+      <DialogContent sx={{ p: 0 }}>
+        <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', flexWrap: 'wrap', px: 2, py: 1.5, borderBottom: '1px solid #E2E8F0', bgcolor: '#F8FAFC' }}>
+          <FormControl size="small" sx={{ minWidth: 180 }}>
+            <InputLabel sx={{ fontSize: '0.75rem' }}>Project</InputLabel>
+            <Select
+              native
+              value={projectFilter !== undefined ? String(projectFilter) : ''}
+              label="Project"
+              onChange={(e: SelectChangeEvent) => setProjectFilter(e.target.value ? Number(e.target.value) : undefined)}
+              sx={{ fontSize: '0.75rem', height: 32 }}
+            >
+              {PROJECT_OPTIONS_JIBBLE.map(opt => (
+                <option key={opt.label} value={opt.id ?? ''}>{opt.label}</option>
+              ))}
+            </Select>
+          </FormControl>
+          <TimeframeSelector
+            timeframe={jibbleTimeframe} onTimeframeChange={setJibbleTimeframe}
+            weekOffset={jibbleWeekOffset} onWeekOffsetChange={setJibbleWeekOffset}
+            customStartDate={jibbleCustomStart} onCustomStartDateChange={setJibbleCustomStart}
+            customEndDate={jibbleCustomEnd} onCustomEndDateChange={setJibbleCustomEnd}
+          />
+          <TextField
+            size="small" placeholder="Search name or email..." value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            sx={{ minWidth: 160, '& .MuiOutlinedInput-root': { fontSize: '0.75rem', height: 32 } }}
+          />
+        </Box>
+
+        {loading ? (
+          <Box sx={{ py: 4, display: 'flex', justifyContent: 'center' }}><CircularProgress size={28} /></Box>
+        ) : filtered.length === 0 ? (
+          <Box sx={{ py: 4, textAlign: 'center' }}>
+            <Typography sx={{ color: '#64748B', fontSize: '0.85rem' }}>No Jibble hours found for this selection.</Typography>
+          </Box>
+        ) : (
+          <TableContainer sx={{ maxHeight: '55vh' }}>
+            <Table stickyHeader size="small">
+              <TableHead>
+                <TableRow>
+                  <TableCell sx={{ bgcolor: '#EFF6FF', py: 0.75, borderBottom: '2px solid #BFDBFE', width: 40 }}>
+                    <Typography sx={{ fontSize: '0.7rem', fontWeight: 700, color: '#1E40AF' }}>#</Typography>
+                  </TableCell>
+                  {columns.map(col => (
+                    <TableCell key={col.key} align={col.align} sx={{ bgcolor: '#EFF6FF', py: 0.75, borderBottom: '2px solid #BFDBFE', whiteSpace: 'nowrap' }}>
+                      <Tooltip title={col.tooltip} arrow placement="top">
+                        <TableSortLabel
+                          active={sortKey === col.key}
+                          direction={sortKey === col.key ? sortDir : 'asc'}
+                          onClick={() => handleSort(col.key)}
+                          sx={{ fontSize: '0.7rem', fontWeight: 700, color: '#1E40AF', '&.Mui-active': { color: '#1E40AF' }, '& .MuiTableSortLabel-icon': { color: '#1E40AF !important' } }}
+                        >
+                          {col.label}
+                        </TableSortLabel>
+                      </Tooltip>
+                    </TableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {sorted.map((r, idx) => (
+                  <TableRow key={`${r.member_code}-${r.project}-${idx}`} sx={{ '&:hover': { bgcolor: '#EFF6FF' } }}>
+                    <TableCell sx={{ fontSize: '0.65rem', color: '#94A3B8', py: 0.5 }}>{idx + 1}</TableCell>
+                    <TableCell sx={{ py: 0.5 }}>
+                      <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#1E293B', lineHeight: 1.2 }}>{r.full_name || '-'}</Typography>
+                      {r.jibble_email && r.jibble_email !== r.turing_email && (
+                        <Typography sx={{ fontSize: '0.55rem', color: '#94A3B8' }}>{r.jibble_email}</Typography>
+                      )}
+                    </TableCell>
+                    <TableCell sx={{ fontSize: '0.65rem', color: r.turing_email ? '#475569' : '#DC2626', py: 0.5, fontWeight: r.turing_email ? 400 : 600 }}>
+                      {r.turing_email || 'Not mapped'}
+                    </TableCell>
+                    <TableCell sx={{ fontSize: '0.65rem', color: '#64748B', py: 0.5 }}>{r.project}</TableCell>
+                    <TableCell align="center" sx={{ fontSize: '0.75rem', fontWeight: 700, color: '#1E40AF', py: 0.5 }}>{r.total_hours.toFixed(1)}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+
 interface ProjectsTabProps {
   onSummaryUpdate?: (stats: TabSummaryStats) => void
   onSummaryLoading?: () => void
@@ -1070,6 +1308,7 @@ export function ProjectsTab({ onSummaryUpdate, onSummaryLoading }: ProjectsTabPr
   const [menuPosition, setMenuPosition] = useState<{ top: number; left: number } | null>(null)
   const [activeFilterColumn, setActiveFilterColumn] = useState<string>('')
   const [flaggedOpen, setFlaggedOpen] = useState(false)
+  const [jibbleOpen, setJibbleOpen] = useState(false)
   
   const [colorSettings, setColorSettings] = useColorSettings('projectsColorSettings')
   const [colorApplyLevel, setColorApplyLevel] = useState<ColorApplyLevel>('both')
@@ -1292,6 +1531,22 @@ export function ProjectsTab({ onSummaryUpdate, onSummaryLoading }: ProjectsTabPr
               </Button>
             ) : null
           })()}
+          <Button
+            variant="contained"
+            startIcon={<AccessTimeIcon sx={{ fontSize: { xs: 12, md: 14 } }} />}
+            onClick={() => setJibbleOpen(true)}
+            sx={{
+              bgcolor: '#2563EB',
+              fontSize: { xs: '0.6rem', sm: '0.65rem', md: '0.7rem' },
+              textTransform: 'none',
+              px: { xs: 1, sm: 1.5 },
+              py: 0.3,
+              minHeight: { xs: 24, sm: 26, md: 28 },
+              '&:hover': { bgcolor: '#1D4ED8' },
+            }}
+          >
+            Jibble Hours
+          </Button>
           <Button variant="contained" startIcon={<DownloadIcon sx={{ fontSize: { xs: 12, md: 14 } }} />} onClick={handleExport}
             sx={{ 
               bgcolor: '#10B981', 
@@ -1334,6 +1589,7 @@ export function ProjectsTab({ onSummaryUpdate, onSummaryLoading }: ProjectsTabPr
       </Paper>
 
       <FlaggedDialog open={flaggedOpen} onClose={() => setFlaggedOpen(false)} projects={sortedData} />
+      <JibbleHoursDialog open={jibbleOpen} onClose={() => setJibbleOpen(false)} />
 
       {/* Table - Bigger height, responsive */}
       <Paper sx={{ width: '100%', overflow: 'hidden', borderRadius: 1, border: '1px solid #E2E8F0' }}>
@@ -1462,6 +1718,7 @@ export function ProjectsTab({ onSummaryUpdate, onSummaryLoading }: ProjectsTabPr
                 <ProjectRow 
                   key={idx} project={project} colorSettings={effectiveColorSettings} 
                   applyColors={applyColorsToProject} applyColorsToPodLeads={applyColorsToPodLeads} applyColorsToTrainers={applyColorsToPodLeads}
+                  sortColumn={sortColumn} sortDirection={sortDirection}
                 />
               ))}
             </TableBody>
