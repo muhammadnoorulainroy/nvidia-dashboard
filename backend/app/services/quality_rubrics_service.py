@@ -1310,12 +1310,51 @@ class QualityRubricsService:
 
         total_ready_to_ship = total_passed_l2
 
-        # --- FPY ---
-        reviewer_fpy = round(total_passed_l2 / total_reviewed_l2 * 100, 1) if total_reviewed_l2 > 0 else 0
-        auditor_fpy = round(passed_calibrator / total_calibrated * 100, 1) if total_calibrated > 0 else 0
+        # --- FPY (based on first review action: approve vs rework) ---
+        fpy_query = f"""
+        SELECT
+            r.conversation_id,
+            cont.turing_email AS reviewer_email,
+            JSON_EXTRACT_SCALAR(r.review_action, '$.type') AS action_type,
+            r.submitted_at
+        FROM `{p}.{d}.review` r
+        JOIN `{p}.{d}.conversation` c ON c.id = r.conversation_id
+        LEFT JOIN `{p}.{d}.contributor` cont ON cont.id = r.reviewer_id
+        WHERE c.project_id = {project_id}
+          AND r.review_type = 'manual'
+          AND r.status = 'published'
+          AND r.submitted_at IS NOT NULL
+          {date_filter}
+        ORDER BY r.conversation_id, r.submitted_at ASC
+        """
+        fpy_rows = list(client.query(fpy_query).result())
+
+        r_total, r_pass, a_total, a_pass = 0, 0, 0, 0
+        seen: dict[int, dict] = {}
+        for row in fpy_rows:
+            cid = row["conversation_id"]
+            email = (row["reviewer_email"] or "").lower().strip()
+            action = (row["action_type"] or "").lower()
+            role = team_roles.get(email, "reviewer")
+
+            if cid not in seen:
+                seen[cid] = {}
+            if role == "reviewer" and "reviewer" not in seen[cid]:
+                seen[cid]["reviewer"] = True
+                r_total += 1
+                if action != "rework":
+                    r_pass += 1
+            elif role == "calibrator" and "calibrator" not in seen[cid]:
+                seen[cid]["calibrator"] = True
+                a_total += 1
+                if action != "rework":
+                    a_pass += 1
+
+        reviewer_fpy = round(r_pass / r_total * 100, 1) if r_total > 0 else 0
+        auditor_fpy = round(a_pass / a_total * 100, 1) if a_total > 0 else 0
 
         # --- Overall Status ---
-        if total_reviewed_l2 == 0:
+        if r_total == 0:
             overall_status = "N/A"
         elif reviewer_fpy >= 95:
             overall_status = "Good"

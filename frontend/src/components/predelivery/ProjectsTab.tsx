@@ -1082,28 +1082,28 @@ function FlaggedDialog({ open, onClose, projects }: { open: boolean; onClose: ()
   ]
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="lg" fullWidth PaperProps={{ sx: { borderRadius: 2 } }}>
+    <Dialog open={open} onClose={onClose} maxWidth="lg" fullWidth PaperProps={{ sx: { borderRadius: 2, maxHeight: '85vh' } }}>
       <DialogTitle sx={{ display: 'flex', alignItems: 'center', gap: 1, py: 1.5, px: 2.5, bgcolor: '#FEF2F2', borderBottom: '1px solid #FECACA' }}>
-        <WarningIcon sx={{ fontSize: 20, color: '#DC2626' }} />
-        <Typography sx={{ fontSize: '0.95rem', fontWeight: 700, color: '#991B1B', flex: 1 }}>
+        <WarningIcon sx={{ fontSize: 22, color: '#DC2626' }} />
+        <Typography sx={{ fontSize: '1.05rem', fontWeight: 700, color: '#991B1B', flex: 1 }}>
           Flagged — Below Target
         </Typography>
         <Chip
           label={`${flagged.length} total`}
           size="small"
-          sx={{ height: 22, fontSize: '0.7rem', fontWeight: 700, bgcolor: '#FEE2E2', color: '#DC2626', border: '1px solid #FECACA' }}
+          sx={{ height: 24, fontSize: '0.75rem', fontWeight: 700, bgcolor: '#FEE2E2', color: '#DC2626', border: '1px solid #FECACA' }}
         />
         <IconButton size="small" onClick={onClose} sx={{ ml: 0.5 }}>
-          <CloseIcon sx={{ fontSize: 18 }} />
+          <CloseIcon sx={{ fontSize: 20 }} />
         </IconButton>
       </DialogTitle>
       <DialogContent sx={{ p: 0 }}>
         {flagged.length === 0 ? (
           <Box sx={{ py: 4, textAlign: 'center' }}>
-            <Typography sx={{ color: '#64748B', fontSize: '0.85rem' }}>No flagged members at this time.</Typography>
+            <Typography sx={{ color: '#64748B', fontSize: '0.9rem' }}>No flagged members at this time.</Typography>
           </Box>
         ) : (
-          <TableContainer sx={{ maxHeight: '60vh' }}>
+          <TableContainer sx={{ maxHeight: '72vh' }}>
             <Table stickyHeader size="small">
               <TableHead>
                 <TableRow>
@@ -1111,14 +1111,14 @@ function FlaggedDialog({ open, onClose, projects }: { open: boolean; onClose: ()
                     <TableCell
                       key={col.key}
                       align={col.align}
-                      sx={{ bgcolor: '#FEF2F2', py: 0.75, borderBottom: '2px solid #FECACA', whiteSpace: 'nowrap' }}
+                      sx={{ bgcolor: '#FEF2F2', py: 1, borderBottom: '2px solid #FECACA', whiteSpace: 'nowrap' }}
                     >
                       <Tooltip title={col.tooltip} arrow placement="top">
                         <TableSortLabel
                           active={sortKey === col.key}
                           direction={sortKey === col.key ? sortDir : 'asc'}
                           onClick={() => handleSort(col.key)}
-                          sx={{ fontSize: '0.7rem', fontWeight: 700, color: '#991B1B', '&.Mui-active': { color: '#991B1B' }, '& .MuiTableSortLabel-icon': { color: '#991B1B !important' } }}
+                          sx={{ fontSize: '0.8rem', fontWeight: 700, color: '#991B1B', '&.Mui-active': { color: '#991B1B' }, '& .MuiTableSortLabel-icon': { color: '#991B1B !important' } }}
                         >
                           {col.label}
                         </TableSortLabel>
@@ -1133,25 +1133,25 @@ function FlaggedDialog({ open, onClose, projects }: { open: boolean; onClose: ()
                   const gap = p.daily_target - p.tasks_per_8hrs
                   return (
                     <TableRow key={`${p.trainer_email}-${idx}`} sx={{ '&:hover': { bgcolor: '#FEF2F2' } }}>
-                      <TableCell sx={{ py: 0.6 }}>
-                        <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#1E293B', lineHeight: 1.2 }}>{p.trainer_name}</Typography>
-                        <Typography sx={{ fontSize: '0.55rem', color: '#94A3B8' }}>{p.trainer_email}</Typography>
+                      <TableCell sx={{ py: 1 }}>
+                        <Typography sx={{ fontSize: '0.82rem', fontWeight: 600, color: '#1E293B', lineHeight: 1.3 }}>{p.trainer_name}</Typography>
+                        <Typography sx={{ fontSize: '0.68rem', color: '#94A3B8' }}>{p.trainer_email}</Typography>
                       </TableCell>
-                      <TableCell sx={{ fontSize: '0.65rem', color: '#64748B', py: 0.6 }}>{p.role}</TableCell>
-                      <TableCell sx={{ fontSize: '0.65rem', color: '#64748B', py: 0.6 }}>{p.project_name}</TableCell>
-                      <TableCell sx={{ fontSize: '0.65rem', color: '#64748B', py: 0.6 }}>{p.pod_lead_name}</TableCell>
-                      <TableCell align="center" sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#475569', py: 0.6 }}>{p.new_tasks}</TableCell>
-                      <TableCell align="center" sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#475569', py: 0.6 }}>{p.rework}</TableCell>
-                      <TableCell align="center" sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#475569', py: 0.6 }}>{p.total_reviews}</TableCell>
-                      <TableCell align="center" sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#475569', py: 0.6 }}>{p.jibble_hours.toFixed(1)}</TableCell>
-                      <TableCell align="center" sx={{ py: 0.6 }}>
-                        <Typography component="span" sx={{ fontSize: '0.7rem', fontWeight: 700, color: '#DC2626' }}>{p.tasks_per_8hrs.toFixed(1)}</Typography>
-                        <Typography component="span" sx={{ fontSize: '0.6rem', color: '#94A3B8' }}> / {p.daily_target}</Typography>
-                        <Typography component="span" sx={{ fontSize: '0.5rem', color: '#94A3B8', ml: 0.3 }}>{isReviewRole ? 'rev' : 'tasks'}</Typography>
+                      <TableCell sx={{ fontSize: '0.78rem', color: '#64748B', py: 1 }}>{p.role}</TableCell>
+                      <TableCell sx={{ fontSize: '0.78rem', color: '#64748B', py: 1 }}>{p.project_name}</TableCell>
+                      <TableCell sx={{ fontSize: '0.78rem', color: '#64748B', py: 1 }}>{p.pod_lead_name}</TableCell>
+                      <TableCell align="center" sx={{ fontSize: '0.82rem', fontWeight: 600, color: '#475569', py: 1 }}>{p.new_tasks}</TableCell>
+                      <TableCell align="center" sx={{ fontSize: '0.82rem', fontWeight: 600, color: '#475569', py: 1 }}>{p.rework}</TableCell>
+                      <TableCell align="center" sx={{ fontSize: '0.82rem', fontWeight: 600, color: '#475569', py: 1 }}>{p.total_reviews}</TableCell>
+                      <TableCell align="center" sx={{ fontSize: '0.82rem', fontWeight: 600, color: '#475569', py: 1 }}>{p.jibble_hours.toFixed(1)}</TableCell>
+                      <TableCell align="center" sx={{ py: 1 }}>
+                        <Typography component="span" sx={{ fontSize: '0.82rem', fontWeight: 700, color: '#DC2626' }}>{p.tasks_per_8hrs.toFixed(1)}</Typography>
+                        <Typography component="span" sx={{ fontSize: '0.72rem', color: '#94A3B8' }}> / {p.daily_target}</Typography>
+                        <Typography component="span" sx={{ fontSize: '0.62rem', color: '#94A3B8', ml: 0.3 }}>{isReviewRole ? 'rev' : 'tasks'}</Typography>
                       </TableCell>
-                      <TableCell align="center" sx={{ py: 0.6, bgcolor: '#FEF2F2', borderRadius: 0.5 }}>
-                        <Typography component="span" sx={{ fontSize: '0.7rem', fontWeight: 700, color: '#DC2626' }}>-{gap.toFixed(1)}</Typography>
-                        <Typography component="span" sx={{ fontSize: '0.5rem', color: '#94A3B8', ml: 0.3 }}>{isReviewRole ? 'rev' : 'tasks'}</Typography>
+                      <TableCell align="center" sx={{ py: 1, bgcolor: '#FEF2F2', borderRadius: 0.5 }}>
+                        <Typography component="span" sx={{ fontSize: '0.82rem', fontWeight: 700, color: '#DC2626' }}>-{gap.toFixed(1)}</Typography>
+                        <Typography component="span" sx={{ fontSize: '0.62rem', color: '#94A3B8', ml: 0.3 }}>{isReviewRole ? 'rev' : 'tasks'}</Typography>
                       </TableCell>
                     </TableRow>
                   )
@@ -1250,19 +1250,19 @@ function JibbleHoursDialog({ open, onClose }: { open: boolean; onClose: () => vo
   ]
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth PaperProps={{ sx: { borderRadius: 2 } }}>
+    <Dialog open={open} onClose={onClose} maxWidth="lg" fullWidth PaperProps={{ sx: { borderRadius: 2, maxHeight: '85vh' } }}>
       <DialogTitle sx={{ display: 'flex', alignItems: 'center', gap: 1, py: 1.5, px: 2.5, bgcolor: '#EFF6FF', borderBottom: '1px solid #BFDBFE' }}>
-        <AccessTimeIcon sx={{ fontSize: 20, color: '#2563EB' }} />
-        <Typography sx={{ fontSize: '0.95rem', fontWeight: 700, color: '#1E40AF', flex: 1 }}>
+        <AccessTimeIcon sx={{ fontSize: 22, color: '#2563EB' }} />
+        <Typography sx={{ fontSize: '1.05rem', fontWeight: 700, color: '#1E40AF', flex: 1 }}>
           Jibble Hours
         </Typography>
         <Chip
           label={`${filtered.length} people · ${totalHours.toFixed(1)} hrs`}
           size="small"
-          sx={{ height: 22, fontSize: '0.65rem', fontWeight: 700, bgcolor: '#DBEAFE', color: '#1E40AF', border: '1px solid #BFDBFE' }}
+          sx={{ height: 24, fontSize: '0.75rem', fontWeight: 700, bgcolor: '#DBEAFE', color: '#1E40AF', border: '1px solid #BFDBFE' }}
         />
         <IconButton size="small" onClick={onClose} sx={{ ml: 0.5 }}>
-          <CloseIcon sx={{ fontSize: 18 }} />
+          <CloseIcon sx={{ fontSize: 20 }} />
         </IconButton>
       </DialogTitle>
       <DialogContent sx={{ p: 0 }}>
@@ -1301,21 +1301,21 @@ function JibbleHoursDialog({ open, onClose }: { open: boolean; onClose: () => vo
             <Typography sx={{ color: '#64748B', fontSize: '0.85rem' }}>No Jibble hours found for this selection.</Typography>
           </Box>
         ) : (
-          <TableContainer sx={{ maxHeight: '55vh' }}>
+          <TableContainer sx={{ maxHeight: '68vh' }}>
             <Table stickyHeader size="small">
               <TableHead>
                 <TableRow>
-                  <TableCell sx={{ bgcolor: '#EFF6FF', py: 0.75, borderBottom: '2px solid #BFDBFE', width: 40 }}>
-                    <Typography sx={{ fontSize: '0.7rem', fontWeight: 700, color: '#1E40AF' }}>#</Typography>
+                  <TableCell sx={{ bgcolor: '#EFF6FF', py: 1, borderBottom: '2px solid #BFDBFE', width: 40 }}>
+                    <Typography sx={{ fontSize: '0.8rem', fontWeight: 700, color: '#1E40AF' }}>#</Typography>
                   </TableCell>
                   {columns.map(col => (
-                    <TableCell key={col.key} align={col.align} sx={{ bgcolor: '#EFF6FF', py: 0.75, borderBottom: '2px solid #BFDBFE', whiteSpace: 'nowrap' }}>
+                    <TableCell key={col.key} align={col.align} sx={{ bgcolor: '#EFF6FF', py: 1, borderBottom: '2px solid #BFDBFE', whiteSpace: 'nowrap' }}>
                       <Tooltip title={col.tooltip} arrow placement="top">
                         <TableSortLabel
                           active={sortKey === col.key}
                           direction={sortKey === col.key ? sortDir : 'asc'}
                           onClick={() => handleSort(col.key)}
-                          sx={{ fontSize: '0.7rem', fontWeight: 700, color: '#1E40AF', '&.Mui-active': { color: '#1E40AF' }, '& .MuiTableSortLabel-icon': { color: '#1E40AF !important' } }}
+                          sx={{ fontSize: '0.8rem', fontWeight: 700, color: '#1E40AF', '&.Mui-active': { color: '#1E40AF' }, '& .MuiTableSortLabel-icon': { color: '#1E40AF !important' } }}
                         >
                           {col.label}
                         </TableSortLabel>
@@ -1327,18 +1327,18 @@ function JibbleHoursDialog({ open, onClose }: { open: boolean; onClose: () => vo
               <TableBody>
                 {sorted.map((r, idx) => (
                   <TableRow key={`${r.member_code}-${r.project}-${idx}`} sx={{ '&:hover': { bgcolor: '#EFF6FF' } }}>
-                    <TableCell sx={{ fontSize: '0.65rem', color: '#94A3B8', py: 0.5 }}>{idx + 1}</TableCell>
-                    <TableCell sx={{ py: 0.5 }}>
-                      <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#1E293B', lineHeight: 1.2 }}>{r.full_name || '-'}</Typography>
+                    <TableCell sx={{ fontSize: '0.78rem', color: '#94A3B8', py: 0.85 }}>{idx + 1}</TableCell>
+                    <TableCell sx={{ py: 0.85 }}>
+                      <Typography sx={{ fontSize: '0.82rem', fontWeight: 600, color: '#1E293B', lineHeight: 1.3 }}>{r.full_name || '-'}</Typography>
                       {r.jibble_email && r.jibble_email !== r.turing_email && (
-                        <Typography sx={{ fontSize: '0.55rem', color: '#94A3B8' }}>{r.jibble_email}</Typography>
+                        <Typography sx={{ fontSize: '0.68rem', color: '#94A3B8' }}>{r.jibble_email}</Typography>
                       )}
                     </TableCell>
-                    <TableCell sx={{ fontSize: '0.65rem', color: r.turing_email ? '#475569' : '#DC2626', py: 0.5, fontWeight: r.turing_email ? 400 : 600 }}>
+                    <TableCell sx={{ fontSize: '0.78rem', color: r.turing_email ? '#475569' : '#DC2626', py: 0.85, fontWeight: r.turing_email ? 400 : 600 }}>
                       {r.turing_email || 'Not mapped'}
                     </TableCell>
-                    <TableCell sx={{ fontSize: '0.65rem', color: '#64748B', py: 0.5 }}>{r.project}</TableCell>
-                    <TableCell align="center" sx={{ fontSize: '0.75rem', fontWeight: 700, color: '#1E40AF', py: 0.5 }}>{r.total_hours.toFixed(1)}</TableCell>
+                    <TableCell sx={{ fontSize: '0.78rem', color: '#64748B', py: 0.85 }}>{r.project}</TableCell>
+                    <TableCell align="center" sx={{ fontSize: '0.85rem', fontWeight: 700, color: '#1E40AF', py: 0.85 }}>{r.total_hours.toFixed(1)}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
