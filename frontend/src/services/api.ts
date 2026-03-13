@@ -574,6 +574,7 @@ export interface TrainerUnderPodLead {
   completed_current: number
   reviewed: number
   calibrated: number
+  calibration_passed: number
   in_rework: number
   rework: number
   total_reviews: number
@@ -588,13 +589,13 @@ export interface TrainerUnderPodLead {
   jibble_hours: number
   accounted_hours: number
   efficiency: number | null
-  revenue: number              // Computed: delivered_tasks * bill_rate_task
+  revenue: number
   status: string
   role?: string
   tasks_per_8hrs?: number | null
   daily_target?: number | null
   below_target?: boolean
-  tasks?: TaskUnderTrainer[]  // Optional: only populated when include_tasks=true
+  tasks?: TaskUnderTrainer[]
 }
 
 // POD Lead under Project (with trainers for 3-level hierarchy)
@@ -610,6 +611,7 @@ export interface PodLeadUnderProject {
   completed_current: number
   reviewed: number
   calibrated: number
+  calibration_passed: number
   in_rework: number
   rework: number
   total_reviews: number
@@ -626,7 +628,7 @@ export interface PodLeadUnderProject {
   accounted_hours: number
   efficiency: number | null
   active_jibble_people: number
-  revenue: number              // Sum of trainer revenues (delivered_tasks * bill_rate_task)
+  revenue: number
   trainers: TrainerUnderPodLead[]
 }
 
@@ -644,6 +646,7 @@ export interface ProjectStats {
   completed_current: number
   reviewed: number
   calibrated: number
+  calibration_passed: number
   in_rework: number
   rework: number
   total_reviews: number

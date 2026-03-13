@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import {
   Box,
   Paper,
@@ -16,7 +16,7 @@ import {
 } from '@mui/material'
 import { getProjectSummary, getProjectFPY, ProjectSummaryRow } from '../services/api'
 import TimeframeSelector from '../components/common/TimeframeSelector'
-import { Timeframe, DateRange, getDateRange } from '../utils/dateUtils'
+import { Timeframe, getDateRange } from '../utils/dateUtils'
 
 const BORDER = '1px solid #E2E8F0'
 const GROUP_BORDER = '2px solid #CBD5E1'
@@ -82,7 +82,14 @@ export default function ProjectSummary() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [timeframe, setTimeframe] = useState<Timeframe>('weekly')
-  const [dateRange, setDateRange] = useState<DateRange>(getDateRange('weekly'))
+  const [weekOffset, setWeekOffset] = useState(0)
+  const [customStartDate, setCustomStartDate] = useState('')
+  const [customEndDate, setCustomEndDate] = useState('')
+
+  const dateRange = useMemo(
+    () => getDateRange(timeframe, weekOffset, customStartDate, customEndDate),
+    [timeframe, weekOffset, customStartDate, customEndDate],
+  )
 
   const fetchData = useCallback(async () => {
     setLoading(true)
@@ -114,13 +121,6 @@ export default function ProjectSummary() {
   }, [dateRange])
 
   useEffect(() => { fetchData() }, [fetchData])
-
-  const handleTimeframeChange = (tf: Timeframe) => {
-    setTimeframe(tf)
-    setDateRange(getDateRange(tf))
-  }
-
-  const handleDateRangeChange = (dr: DateRange) => setDateRange(dr)
 
   if (loading) {
     return (
@@ -154,9 +154,14 @@ export default function ProjectSummary() {
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
         <TimeframeSelector
           timeframe={timeframe}
-          dateRange={dateRange}
-          onTimeframeChange={handleTimeframeChange}
-          onDateRangeChange={handleDateRangeChange}
+          onTimeframeChange={setTimeframe}
+          weekOffset={weekOffset}
+          onWeekOffsetChange={setWeekOffset}
+          customStartDate={customStartDate}
+          onCustomStartDateChange={setCustomStartDate}
+          customEndDate={customEndDate}
+          onCustomEndDateChange={setCustomEndDate}
+          compact
         />
       </Box>
 
