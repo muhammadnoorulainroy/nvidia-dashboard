@@ -93,8 +93,8 @@ export default function TimeframeSelector({
         >
           <MenuItem value="daily">Today</MenuItem>
           <MenuItem value="d-1">Yesterday</MenuItem>
-          <MenuItem value="d-2">2 Days Ago</MenuItem>
-          <MenuItem value="d-3">3 Days Ago</MenuItem>
+          <MenuItem value="d-2">Last 2 Days</MenuItem>
+          <MenuItem value="d-3">Last 3 Days</MenuItem>
           <MenuItem value="weekly">Weekly</MenuItem>
           <MenuItem value="monthly">Monthly</MenuItem>
           <MenuItem value="custom">Custom Range</MenuItem>

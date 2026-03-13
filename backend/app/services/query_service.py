@@ -15,6 +15,9 @@ from app.constants import get_constants
 logger = logging.getLogger(__name__)
 
 
+COMPLETED_PIPELINE_STATUSES = ('Completed', 'Reviewed', 'Rework', 'Validated', 'Approval')
+
+
 class QueryService:
     """Service class for PostgreSQL query operations"""
     
@@ -23,39 +26,59 @@ class QueryService:
         self.db_service = get_db_service()
         self._allowed_quality_dimensions_cache: Optional[Set[str]] = None
         self._constants = get_constants()
+
+    @staticmethod
+    def _valid_task_ids_subquery(session, project_ids=None):
+        """Task IDs whose current derived_status is still in the completed pipeline.
+        
+        Tasks that regressed to In Progress, Unclaimed, Improper, Obsolete etc.
+        are excluded so they don't inflate unique/new/rework counts.
+        """
+        q = session.query(TaskRaw.task_id).filter(
+            TaskRaw.derived_status.in_(COMPLETED_PIPELINE_STATUSES)
+        )
+        if project_ids:
+            q = q.filter(TaskRaw.project_id.in_(project_ids))
+        return q.subquery()
     
     def _calculate_merged_aht(self, tasks_with_new: int, tasks_with_rework: int, 
-                               unique_tasks: int) -> Optional[float]:
+                               unique_tasks: int, project_id: int = None) -> Optional[float]:
         """
-        Calculate merged expected AHT using configurable constants.
+        Calculate merged expected AHT using per-project AHT when available.
         
-        NEW Formula: accounted_hours / unique_tasks
+        Formula: accounted_hours / unique_tasks
         Where accounted_hours = (tasks_with_new * NEW_AHT) + (tasks_with_rework * REWORK_AHT)
-        
-        Args:
-            tasks_with_new: Count of unique tasks where trainer did first completion
-            tasks_with_rework: Count of unique tasks where trainer did at least 1 rework
-            unique_tasks: Total unique tasks worked on
         """
         if unique_tasks == 0:
             return None
+        new_aht, rework_aht = self._get_project_aht(project_id)
         aht_config = self._constants.aht
-        return aht_config.calculate_merged_aht(tasks_with_new, tasks_with_rework, unique_tasks)
+        return aht_config.calculate_merged_aht(
+            tasks_with_new, tasks_with_rework, unique_tasks,
+            new_task_aht=new_aht, rework_aht=rework_aht
+        )
     
-    def _calculate_accounted_hours(self, tasks_with_new: int, tasks_with_rework: int) -> float:
+    def _calculate_accounted_hours(self, tasks_with_new: int, tasks_with_rework: int,
+                                    project_id: int = None) -> float:
         """
-        Calculate accounted hours using configurable constants.
+        Calculate accounted hours using per-project AHT when available.
         
-        NEW Formula: (tasks_with_new * NEW_AHT) + (tasks_with_rework * REWORK_AHT)
-        
-        Args:
-            tasks_with_new: Count of unique tasks where trainer did first completion
-            tasks_with_rework: Count of unique tasks where trainer did at least 1 rework
-        
-        Note: A task can count in both if trainer did new + rework on same task
+        Formula: (tasks_with_new * NEW_AHT) + (tasks_with_rework * REWORK_AHT)
         """
+        new_aht, rework_aht = self._get_project_aht(project_id)
         aht_config = self._constants.aht
-        return aht_config.calculate_trainer_accounted_hours(tasks_with_new, tasks_with_rework)
+        return aht_config.calculate_trainer_accounted_hours(
+            tasks_with_new, tasks_with_rework,
+            new_task_aht=new_aht, rework_aht=rework_aht
+        )
+    
+    def _get_project_aht(self, project_id: int = None) -> tuple:
+        """Return (new_task_aht, rework_aht) for a project, falling back to defaults."""
+        if project_id is not None:
+            aht = self._constants.daily_targets.get_aht(project_id)
+            return aht.get('new_task_aht', self._constants.aht.DEFAULT_NEW_TASK_AHT), \
+                   aht.get('rework_aht', self._constants.aht.DEFAULT_REWORK_AHT)
+        return None, None
     
     def _calculate_task_accounted_hours(self, is_new: bool, rework_count: int) -> float:
         """
@@ -1164,6 +1187,8 @@ class QueryService:
             with self.db_service.get_session() as session:
                 from sqlalchemy import case, distinct
                 
+                valid_tasks = self._valid_task_ids_subquery(session, filter_project_ids)
+                
                 # Get metrics from task_history_raw using actual author for proper attribution
                 history_query = session.query(
                     TaskHistoryRaw.author,
@@ -1176,8 +1201,6 @@ class QueryService:
                         (TaskHistoryRaw.completed_status_count > 1, 1),
                         else_=0
                     )).label('rework'),
-                    # NEW: Count unique tasks where trainer did at least 1 rework
-                    # This is different from 'rework' which counts total rework events
                     func.count(distinct(case(
                         (TaskHistoryRaw.completed_status_count > 1, TaskHistoryRaw.task_id),
                         else_=None
@@ -1185,7 +1208,8 @@ class QueryService:
                 ).filter(
                     TaskHistoryRaw.new_status == 'completed',
                     TaskHistoryRaw.old_status != 'completed-approval',
-                    TaskHistoryRaw.author.isnot(None)
+                    TaskHistoryRaw.author.isnot(None),
+                    TaskHistoryRaw.task_id.in_(session.query(valid_tasks))
                 )
                 
                 # Apply project filter
@@ -1478,14 +1502,8 @@ class QueryService:
                     if (rework + new_tasks) > 0:
                         rework_percent = round((rework / (rework + new_tasks)) * 100, 0)
                     
-                    # NEW: Calculate accounted hours using new logic (Feb 2026)
-                    # Formula: (tasks_with_new * NEW_AHT) + (tasks_with_rework * REWORK_AHT)
-                    # This credits only ONCE per task for rework, regardless of how many rework events
-                    accounted_hours = self._calculate_accounted_hours(new_tasks, tasks_with_rework) if (new_tasks + rework) > 0 else 0
-                    
-                    # NEW: Calculate merged expected AHT using new logic
-                    # Formula: accounted_hours / unique_tasks
-                    merged_exp_aht = self._calculate_merged_aht(new_tasks, tasks_with_rework, unique_tasks)
+                    accounted_hours = self._calculate_accounted_hours(new_tasks, tasks_with_rework, project_id=project_id) if (new_tasks + rework) > 0 else 0
+                    merged_exp_aht = self._calculate_merged_aht(new_tasks, tasks_with_rework, unique_tasks, project_id=project_id)
                     
                     # Get review stats
                     review_info = trainer_reviews_map.get(email, {})
@@ -2020,13 +2038,10 @@ class QueryService:
                 
                 # ---------------------------------------------------------
                 # STEP 1: Get metrics from task_history_raw using actual author
-                # FIX: Use task_history_raw.author (who actually made the transition) for proper attribution
-                # This ensures credit goes to the trainer who actually did the work, even if task was reassigned
-                # Unique Tasks = COUNT DISTINCT task_id WHERE new_status='completed' AND old_status <> 'completed-approval'
-                # New Tasks = COUNT WHERE completed_status_count = 1
-                # Rework = COUNT WHERE completed_status_count > 1
-                # tasks_with_rework = COUNT DISTINCT task_id WHERE completed_status_count > 1
+                # Only count tasks whose current derived_status is still in the completed pipeline
                 # ---------------------------------------------------------
+                valid_tasks_pod = self._valid_task_ids_subquery(session, filter_project_ids)
+                
                 history_query = session.query(
                     TaskHistoryRaw.author,
                     func.count(distinct(TaskHistoryRaw.task_id)).label('unique_tasks'),
@@ -2038,7 +2053,6 @@ class QueryService:
                         (TaskHistoryRaw.completed_status_count > 1, 1),
                         else_=0
                     )).label('rework'),
-                    # NEW: Count unique tasks where trainer did at least 1 rework
                     func.count(distinct(case(
                         (TaskHistoryRaw.completed_status_count > 1, TaskHistoryRaw.task_id),
                         else_=None
@@ -2047,7 +2061,8 @@ class QueryService:
                     TaskHistoryRaw.new_status == 'completed',
                     TaskHistoryRaw.old_status != 'completed-approval',
                     TaskHistoryRaw.project_id.in_(filter_project_ids),
-                    TaskHistoryRaw.author.isnot(None)
+                    TaskHistoryRaw.author.isnot(None),
+                    TaskHistoryRaw.task_id.in_(session.query(valid_tasks_pod))
                 )
                 
                 # Apply date filters on task_history_raw.date
@@ -2588,12 +2603,9 @@ class QueryService:
                         submissions = new_tasks + rework
                         avg_rework = round((submissions / unique_tasks) - 1, 2) if unique_tasks > 0 else None
                         rework_pct = round((rework / submissions) * 100, 1) if submissions > 0 else None
-                        # NEW: Use tasks_with_new (=new_tasks) and tasks_with_rework for merged AHT
-                        merged_aht = self._calculate_merged_aht(new_tasks, tasks_with_rework, unique_tasks)
-                        # AHT of Submission = jibble_hours / (new_tasks + rework)
+                        merged_aht = self._calculate_merged_aht(new_tasks, tasks_with_rework, unique_tasks, project_id=project_id)
                         aht_submission = round(jibble_hours / submissions, 2) if submissions > 0 else None
                         
-                        # Revenue: delivered_tasks * bill_rate_task (week-aware)
                         trainer_rev = round(trainer_revenue.get(trainer_email, 0), 2)
                         
                         trainers_data.append({
@@ -2668,11 +2680,11 @@ class QueryService:
                     pod_avg_rework = round((pod_total_submissions / pod_totals['unique_tasks']) - 1, 2) if pod_totals['unique_tasks'] > 0 else None
                     pod_rework_pct = round((pod_totals['rework'] / pod_total_submissions) * 100, 1) if pod_total_submissions > 0 else None
                     pod_avg_rating = round(pod_totals['total_score'] / pod_totals['total_reviews'], 2) if pod_totals['total_reviews'] > 0 else None
-                    # NEW: Use tasks_with_new (=new_tasks) and tasks_with_rework for merged AHT
                     pod_merged_aht = self._calculate_merged_aht(
                         pod_totals['new_tasks'], 
                         pod_totals.get('tasks_with_rework', 0), 
-                        pod_totals['unique_tasks']
+                        pod_totals['unique_tasks'],
+                        project_id=project_id
                     )
                     
                     # Agentic review metrics at POD level
@@ -2810,14 +2822,11 @@ class QueryService:
                         submissions = new_tasks + rework
                         avg_rework = round((submissions / unique_tasks) - 1, 2) if unique_tasks > 0 else None
                         rework_pct = round((rework / submissions) * 100, 1) if submissions > 0 else None
-                        # NEW: Use tasks_with_new (=new_tasks) and tasks_with_rework for merged AHT
-                        merged_aht = self._calculate_merged_aht(new_tasks, tasks_with_rework, unique_tasks)
+                        merged_aht = self._calculate_merged_aht(new_tasks, tasks_with_rework, unique_tasks, project_id=project_id)
                         aht_submission = round(jibble_hours / submissions, 2) if submissions > 0 else None
                         
-                        # Revenue
                         trainer_rev = round(trainer_revenue.get(trainer_email, 0), 2)
                         
-                        # Only include trainers with actual data (task data OR delivery data)
                         if unique_tasks > 0 or new_tasks > 0 or rework > 0 or total_reviews > 0 or delivered > 0 or in_queue > 0:
                             unmapped_trainers_data.append({
                                 'trainer_name': trainer_name,
@@ -2865,11 +2874,11 @@ class QueryService:
                         no_pod_avg_rework = round((no_pod_submissions / no_pod_totals['unique_tasks']) - 1, 2) if no_pod_totals['unique_tasks'] > 0 else None
                         no_pod_rework_pct = round((no_pod_totals['rework'] / no_pod_submissions) * 100, 1) if no_pod_submissions > 0 else None
                         no_pod_avg_rating = round(no_pod_totals['total_score'] / no_pod_totals['total_reviews'], 2) if no_pod_totals['total_reviews'] > 0 else None
-                        # NEW: Use tasks_with_new (=new_tasks) and tasks_with_rework for merged AHT
                         no_pod_merged_aht = self._calculate_merged_aht(
                             no_pod_totals['new_tasks'], 
                             no_pod_totals.get('tasks_with_rework', 0), 
-                            no_pod_totals['unique_tasks']
+                            no_pod_totals['unique_tasks'],
+                            project_id=project_id
                         )
                         no_pod_agentic_rating = round(no_pod_totals['agentic_score'] / no_pod_totals['agentic_reviews'], 2) if no_pod_totals['agentic_reviews'] > 0 else None
                         no_pod_aht_submission = round(no_pod_totals['trainer_jibble_hours'] / no_pod_submissions, 2) if no_pod_submissions > 0 else None
@@ -2954,20 +2963,40 @@ class QueryService:
                         if mapping.trainer_name:
                             name_to_pod[mapping.trainer_name.lower().strip()] = trainer_to_pod[trainer_email]
                 
+                # Build calibrator email set once (shared across all projects)
+                calibrator_emails_set: set = set()
+                pod_role_rows = session.query(PodLeadMapping.trainer_email, PodLeadMapping.role).all()
+                for pr in pod_role_rows:
+                    if pr.trainer_email and pr.role:
+                        rl = pr.role.lower().strip()
+                        if rl in ('calibrator', 'auditor', 'team lead'):
+                            calibrator_emails_set.add(pr.trainer_email.lower().strip())
+                try:
+                    from app.services.quality_rubrics_service import QualityRubricsService
+                    qr_svc = QualityRubricsService()
+                    for email, role in qr_svc._fetch_team_roles().items():
+                        if role == 'calibrator':
+                            calibrator_emails_set.add(email.lower().strip())
+                except Exception:
+                    pass
+                
                 # For each project
                 for project_id in all_project_ids:
                     project_name = project_names.get(project_id, f"Project {project_id}")
                     
+                    valid_tasks_proj = self._valid_task_ids_subquery(session, [project_id])
+                    
                     # ---------------------------------------------------------
                     # FIX: Get TRUE unique_tasks count at project level
-                    # This prevents overcounting when tasks are worked on by multiple trainers
+                    # Only count tasks still in completed pipeline
                     # ---------------------------------------------------------
                     true_unique_query = session.query(
                         func.count(distinct(TaskHistoryRaw.task_id)).label('unique_tasks')
                     ).filter(
                         TaskHistoryRaw.new_status == 'completed',
                         TaskHistoryRaw.old_status != 'completed-approval',
-                        TaskHistoryRaw.project_id == project_id
+                        TaskHistoryRaw.project_id == project_id,
+                        TaskHistoryRaw.task_id.in_(session.query(valid_tasks_proj))
                     )
                     
                     if start_date:
@@ -2997,7 +3026,8 @@ class QueryService:
                     ).filter(
                         TaskHistoryRaw.new_status == 'completed',
                         TaskHistoryRaw.old_status != 'completed-approval',
-                        TaskHistoryRaw.project_id == project_id
+                        TaskHistoryRaw.project_id == project_id,
+                        TaskHistoryRaw.task_id.in_(session.query(valid_tasks_proj))
                     )
                     
                     if start_date:
@@ -3009,8 +3039,6 @@ class QueryService:
                     project_true_tasks_with_new = true_aht_result.tasks_with_new if true_aht_result else 0
                     project_true_tasks_with_rework = true_aht_result.tasks_with_rework if true_aht_result else 0
                     
-                    # Get metrics from task_history_raw for this project
-                    # FIX: Use task_history_raw.author for proper attribution
                     history_query = session.query(
                         TaskHistoryRaw.author,
                         func.count(distinct(TaskHistoryRaw.task_id)).label('unique_tasks'),
@@ -3022,7 +3050,6 @@ class QueryService:
                             (TaskHistoryRaw.completed_status_count > 1, 1),
                             else_=0
                         )).label('rework'),
-                        # NEW: Count unique tasks where trainer did at least 1 rework
                         func.count(distinct(case(
                             (TaskHistoryRaw.completed_status_count > 1, TaskHistoryRaw.task_id),
                             else_=None
@@ -3031,7 +3058,8 @@ class QueryService:
                         TaskHistoryRaw.new_status == 'completed',
                         TaskHistoryRaw.old_status != 'completed-approval',
                         TaskHistoryRaw.project_id == project_id,
-                        TaskHistoryRaw.author.isnot(None)
+                        TaskHistoryRaw.author.isnot(None),
+                        TaskHistoryRaw.task_id.in_(session.query(valid_tasks_proj))
                     )
                     
                     if start_date:
@@ -3070,7 +3098,8 @@ class QueryService:
                             TaskHistoryRaw.new_status == 'completed',
                             TaskHistoryRaw.old_status != 'completed-approval',
                             TaskHistoryRaw.project_id == project_id,
-                            TaskHistoryRaw.author.isnot(None)
+                            TaskHistoryRaw.author.isnot(None),
+                            TaskHistoryRaw.task_id.in_(session.query(valid_tasks_proj))
                         )
                         
                         if start_date:
@@ -3146,6 +3175,9 @@ class QueryService:
                             )
                             
                             for task in task_raw_query.all():
+                                reviewer_email = (task.reviewer or '').lower().strip()
+                                is_calibrated = 1 if reviewer_email and reviewer_email in calibrator_emails_set else 0
+                                cal_passed = 1 if is_calibrated and (task.review_action_type or '').lower() != 'rework' else 0
                                 task_details[task.task_id] = {
                                     'task_id': task.task_id,
                                     'colab_link': task.colab_link,
@@ -3158,6 +3190,8 @@ class QueryService:
                                     'last_completed_date': task.last_completed_date.isoformat() if task.last_completed_date else None,
                                     'created_date': task.created_date.isoformat() if task.created_date else None,
                                     'task_duration': task.task_duration,  # AHT in minutes
+                                    'is_calibrated': is_calibrated,
+                                    'calibration_passed': cal_passed,
                                 }
                         
                         # Get per-task agentic review data
@@ -3243,9 +3277,11 @@ class QueryService:
                                     'is_in_queue': is_in_queue,
                                     'task_status': task_info.get('task_status'),
                                     'last_completed_date': completion_info.get('completion_date').isoformat() if completion_info.get('completion_date') else task_info.get('last_completed_date'),
-                                    'aht_mins': task_merged_aht,  # Merged AHT in hours (same as trainer level)
+                                    'aht_mins': task_merged_aht,
                                     'accounted_hours': task_accounted_hrs,
                                     'rework_percent': task_rework_pct,
+                                    'is_calibrated': task_info.get('is_calibrated', 0),
+                                    'calibration_passed': task_info.get('calibration_passed', 0),
                                 })
                             
                             # Sort tasks by last_completed_date (most recent first)
@@ -3532,6 +3568,48 @@ class QueryService:
                     
                     logger.info(f"Project {project_name}: {len(email_to_jibble)} trainers mapped via turing_email")
                     
+                    # ---------------------------------------------------------
+                    # Task pipeline status counts from TaskRaw.derived_status
+                    # ---------------------------------------------------------
+                    status_q = session.query(
+                        TaskRaw.trainer,
+                        TaskRaw.derived_status,
+                        func.count(TaskRaw.task_id).label('cnt')
+                    ).filter(
+                        TaskRaw.project_id == project_id,
+                        TaskRaw.trainer.isnot(None),
+                        TaskRaw.derived_status.isnot(None),
+                    ).group_by(TaskRaw.trainer, TaskRaw.derived_status)
+                    
+                    trainer_status_map: dict = defaultdict(lambda: defaultdict(int))
+                    for sr in status_q.all():
+                        if sr.trainer:
+                            trainer_status_map[sr.trainer.lower().strip()][sr.derived_status] = sr.cnt
+                    
+                    # Count tasks reviewed by calibrators per trainer
+                    trainer_calibrated_map: dict = defaultdict(int)
+                    trainer_cal_passed_map: dict = defaultdict(int)
+                    if calibrator_emails_set:
+                        cal_q = session.query(
+                            TaskRaw.trainer,
+                            func.count(TaskRaw.task_id).label('cnt'),
+                            func.sum(case(
+                                (func.lower(TaskRaw.review_action_type) != 'rework', 1),
+                                else_=0
+                            )).label('passed')
+                        ).filter(
+                            TaskRaw.project_id == project_id,
+                            TaskRaw.trainer.isnot(None),
+                            TaskRaw.reviewer.isnot(None),
+                            TaskRaw.count_reviews > 0,
+                            func.lower(TaskRaw.reviewer).in_(calibrator_emails_set),
+                        ).group_by(TaskRaw.trainer)
+                        
+                        for cr in cal_q.all():
+                            if cr.trainer:
+                                trainer_cal_passed_map[cr.trainer.lower().strip()] = cr.passed or 0
+                                trainer_calibrated_map[cr.trainer.lower().strip()] = cr.cnt
+                    
                     # Get contributor name by email for fallback matching
                     contributors = session.query(Contributor).all()
                     email_to_name = {}
@@ -3544,7 +3622,15 @@ class QueryService:
                         'unique_tasks': 0,
                         'new_tasks': 0,
                         'rework': 0,
-                        'tasks_with_rework': 0,  # NEW: unique tasks with at least 1 rework
+                        'tasks_with_rework': 0,
+                        'target': 0,
+                        'claimed': 0,
+                        'in_progress': 0,
+                        'completed_current': 0,
+                        'reviewed': 0,
+                        'calibrated': 0,
+                        'calibration_passed': 0,
+                        'in_rework': 0,
                         'total_reviews': 0,
                         'agentic_reviews': 0,
                         'agentic_score': 0.0,
@@ -3553,9 +3639,9 @@ class QueryService:
                         'trainer_count': 0,
                         'trainer_jibble_hours': 0.0,
                         'accounted_hours': 0.0,
-                        'total_score': 0.0,  # For weighted avg rating
-                        'rated_reviews': 0,   # Count of reviews with ratings
-                        'trainers': []  # List of trainer details
+                        'total_score': 0.0,
+                        'rated_reviews': 0,
+                        'trainers': []
                     })
                     
                     # Special key for trainers without POD Lead mapping
@@ -3639,12 +3725,38 @@ class QueryService:
                             jibble_hours=trainer_jibble,
                         )
 
+                        # Pipeline status counts from TaskRaw (cumulative/waterfall)
+                        # Hierarchy: Unclaimed < In Progress < Completed < Reviewed < Validated < Delivered
+                        # Each level includes tasks that progressed beyond it,
+                        # but excludes tasks that regressed below it (e.g. sent to rework).
+                        sc = trainer_status_map.get(trainer_email, {})
+                        t_claimed = sum(sc.get(s, 0) for s in ('In Progress', 'Completed', 'Reviewed', 'Rework', 'Validated', 'Approval'))
+                        t_in_progress = sc.get('In Progress', 0)
+                        t_completed_current = sum(sc.get(s, 0) for s in ('Completed', 'Reviewed', 'Validated', 'Approval'))
+                        t_reviewed = sum(sc.get(s, 0) for s in ('Reviewed', 'Validated'))
+                        t_calibrated = trainer_calibrated_map.get(trainer_email, 0)
+                        t_cal_passed = trainer_cal_passed_map.get(trainer_email, 0)
+                        t_in_rework = sc.get('Rework', 0)
+                        
+                        # Target: jibble_hours / new_task_aht
+                        proj_aht = self._constants.daily_targets.get_aht(project_id)
+                        t_new_task_aht = proj_aht.get('new_task_aht', self._constants.daily_targets.DEFAULT_NEW_TASK_AHT)
+                        t_target = round(trainer_jibble / t_new_task_aht, 1) if t_new_task_aht > 0 and trainer_jibble > 0 else 0
+                        
                         # Create trainer entry with all columns from Trainer wise tab
                         trainer_entry = {
                             'trainer_name': trainer_name,
                             'trainer_email': trainer_email,
+                            'target': t_target,
                             'unique_tasks': t_unique,
                             'new_tasks': t_new,
+                            'claimed': t_claimed,
+                            'in_progress': t_in_progress,
+                            'completed_current': t_completed_current,
+                            'reviewed': t_reviewed,
+                            'calibrated': t_calibrated,
+                            'calibration_passed': t_cal_passed,
+                            'in_rework': t_in_rework,
                             'rework': t_rework,
                             'total_reviews': t_reviews,
                             'agentic_reviews': t_agentic_reviews,
@@ -3674,7 +3786,15 @@ class QueryService:
                         pod_aggregates[pod_email]['unique_tasks'] += t_unique
                         pod_aggregates[pod_email]['new_tasks'] += t_new
                         pod_aggregates[pod_email]['rework'] += t_rework
-                        pod_aggregates[pod_email]['tasks_with_rework'] += t_tasks_with_rework  # NEW
+                        pod_aggregates[pod_email]['tasks_with_rework'] += t_tasks_with_rework
+                        pod_aggregates[pod_email]['target'] += t_target
+                        pod_aggregates[pod_email]['claimed'] += t_claimed
+                        pod_aggregates[pod_email]['in_progress'] += t_in_progress
+                        pod_aggregates[pod_email]['completed_current'] += t_completed_current
+                        pod_aggregates[pod_email]['reviewed'] += t_reviewed
+                        pod_aggregates[pod_email]['calibrated'] += t_calibrated
+                        pod_aggregates[pod_email]['calibration_passed'] += t_cal_passed
+                        pod_aggregates[pod_email]['in_rework'] += t_in_rework
                         pod_aggregates[pod_email]['total_reviews'] += t_reviews
                         pod_aggregates[pod_email]['agentic_reviews'] += t_agentic_reviews
                         pod_aggregates[pod_email]['agentic_score'] += trainer_agentic_scores.get(trainer_email, 0)
@@ -3747,8 +3867,16 @@ class QueryService:
                                 pod_aggregates[pod_email]['trainers'].append({
                                     'trainer_name': trainer_name,
                                     'trainer_email': trainer_email,
+                                    'target': 0,
                                     'unique_tasks': 0,
                                     'new_tasks': 0,
+                                    'claimed': 0,
+                                    'in_progress': 0,
+                                    'completed_current': 0,
+                                    'reviewed': 0,
+                                    'calibrated': 0,
+                                    'calibration_passed': 0,
+                                    'in_rework': 0,
                                     'rework': 0,
                                     'total_reviews': 0,
                                     'agentic_reviews': 0,
@@ -3772,13 +3900,122 @@ class QueryService:
                                 pod_aggregates[pod_email]['revenue'] = pod_aggregates[pod_email].get('revenue', 0) + _extra_rev
                                 pod_aggregates[pod_email]['trainer_count'] += 1
                     
+                    # ---------------------------------------------------------
+                    # Include trainers who logged Jibble hours but have NO task history
+                    # Target = Jibble Hours / AHT regardless of completions.
+                    # This surfaces time-logging without output.
+                    # ---------------------------------------------------------
+                    already_processed = processed_trainers | unprocessed_delivery_trainers
+                    jibble_only_trainers = set(email_to_jibble.keys()) - already_processed
+                    
+                    proj_aht = self._constants.daily_targets.get_aht(project_id)
+                    _jibble_aht = proj_aht.get('new_task_aht', self._constants.daily_targets.DEFAULT_NEW_TASK_AHT)
+                    
+                    jibble_only_count = 0
+                    for trainer_email in jibble_only_trainers:
+                        trainer_jibble = email_to_jibble.get(trainer_email, 0)
+                        if trainer_jibble <= 0:
+                            continue
+                        
+                        pod_info = trainer_to_pod.get(trainer_email)
+                        if not pod_info:
+                            contributor_name = email_to_name.get(trainer_email, '').lower().strip()
+                            if contributor_name and contributor_name in name_to_pod:
+                                pod_info = name_to_pod[contributor_name]
+                        
+                        if pod_info:
+                            pod_email = pod_info['pod_lead_email']
+                            trainer_name = pod_info.get('trainer_name', trainer_email.split('@')[0])
+                            trainer_role = pod_info.get('role', 'Trainer')
+                            trainer_status = pod_info.get('status', 'active')
+                        else:
+                            pod_email = NO_POD_LEAD_EMAIL
+                            trainer_name = email_to_name.get(trainer_email, trainer_email.split('@')[0])
+                            trainer_role = 'Trainer'
+                            trainer_status = 'unmapped'
+                        
+                        t_target = round(trainer_jibble / _jibble_aht, 1) if _jibble_aht > 0 else 0
+                        _jt_del_target = self._constants.daily_targets.get_target(project_id, trainer_role)
+                        
+                        sc = trainer_status_map.get(trainer_email, {})
+                        t_claimed = sum(sc.get(s, 0) for s in ('In Progress', 'Completed', 'Reviewed', 'Rework', 'Validated', 'Approval'))
+                        t_in_progress = sc.get('In Progress', 0)
+                        t_completed_current = sum(sc.get(s, 0) for s in ('Completed', 'Reviewed', 'Validated', 'Approval'))
+                        t_reviewed = sum(sc.get(s, 0) for s in ('Reviewed', 'Validated'))
+                        t_calibrated = trainer_calibrated_map.get(trainer_email, 0)
+                        t_cal_passed = trainer_cal_passed_map.get(trainer_email, 0)
+                        t_in_rework = sc.get('Rework', 0)
+
+                        trainer_entry = {
+                            'trainer_name': trainer_name,
+                            'trainer_email': trainer_email,
+                            'target': t_target,
+                            'unique_tasks': 0,
+                            'new_tasks': 0,
+                            'claimed': t_claimed,
+                            'in_progress': t_in_progress,
+                            'completed_current': t_completed_current,
+                            'reviewed': t_reviewed,
+                            'calibrated': t_calibrated,
+                            'calibration_passed': t_cal_passed,
+                            'in_rework': t_in_rework,
+                            'rework': 0,
+                            'total_reviews': trainer_reviews.get(trainer_email, 0),
+                            'agentic_reviews': trainer_agentic_reviews.get(trainer_email, 0),
+                            'agentic_rating': trainer_agentic_rating.get(trainer_email),
+                            'delivered': trainer_delivered.get(trainer_email, 0),
+                            'in_queue': trainer_in_queue.get(trainer_email, 0),
+                            'avg_rework': None,
+                            'rework_percent': None,
+                            'avg_rating': trainer_avg_rating.get(trainer_email),
+                            'merged_exp_aht': None,
+                            'jibble_hours': round(trainer_jibble, 2),
+                            'accounted_hours': 0,
+                            'efficiency': 0,
+                            'revenue': round(trainer_revenue_map.get(trainer_email, 0), 2),
+                            'status': trainer_status,
+                            'role': trainer_role,
+                            'tasks_per_8hrs': None,
+                            'daily_target': _jt_del_target,
+                            'below_target': True if t_target > 0 else False,
+                        }
+                        
+                        pod_aggregates[pod_email]['target'] += t_target
+                        pod_aggregates[pod_email]['claimed'] += t_claimed
+                        pod_aggregates[pod_email]['in_progress'] += t_in_progress
+                        pod_aggregates[pod_email]['completed_current'] += t_completed_current
+                        pod_aggregates[pod_email]['reviewed'] += t_reviewed
+                        pod_aggregates[pod_email]['calibrated'] += t_calibrated
+                        pod_aggregates[pod_email]['calibration_passed'] += t_cal_passed
+                        pod_aggregates[pod_email]['in_rework'] += t_in_rework
+                        pod_aggregates[pod_email]['delivered'] += trainer_entry['delivered']
+                        pod_aggregates[pod_email]['in_queue'] += trainer_entry['in_queue']
+                        pod_aggregates[pod_email]['trainer_count'] += 1
+                        if trainer_email.lower().strip() != pod_email.lower().strip():
+                            pod_aggregates[pod_email]['trainer_jibble_hours'] += trainer_jibble
+                        pod_aggregates[pod_email]['revenue'] = pod_aggregates[pod_email].get('revenue', 0) + trainer_entry['revenue']
+                        pod_aggregates[pod_email]['trainers'].append(trainer_entry)
+                        pod_trainer_emails[pod_email].append(trainer_email)
+                        jibble_only_count += 1
+                    
+                    if jibble_only_count > 0:
+                        logger.info(f"Project {project_name}: Added {jibble_only_count} trainers with Jibble hours but no task completions")
+                    
                     # Build POD Lead list for this project
                     pod_leads_list = []
                     project_totals = {
                         'unique_tasks': 0,
                         'new_tasks': 0,
                         'rework': 0,
-                        'tasks_with_rework': 0,  # NEW: for accounted hours calculation
+                        'tasks_with_rework': 0,
+                        'target': 0,
+                        'claimed': 0,
+                        'in_progress': 0,
+                        'completed_current': 0,
+                        'reviewed': 0,
+                        'calibrated': 0,
+                        'calibration_passed': 0,
+                        'in_rework': 0,
                         'total_reviews': 0,
                         'agentic_reviews': 0,
                         'agentic_score': 0.0,
@@ -3819,7 +4056,8 @@ class QueryService:
                                 TaskHistoryRaw.new_status == 'completed',
                                 TaskHistoryRaw.old_status != 'completed-approval',
                                 TaskHistoryRaw.project_id == project_id,
-                                func.lower(TaskHistoryRaw.author).in_([t.lower() for t in pod_trainers])
+                                func.lower(TaskHistoryRaw.author).in_([t.lower() for t in pod_trainers]),
+                                TaskHistoryRaw.task_id.in_(session.query(valid_tasks_proj))
                             )
                             
                             if start_date:
@@ -3841,13 +4079,15 @@ class QueryService:
                         merged_aht = self._calculate_merged_aht(
                             pod_true_tasks_with_new, 
                             pod_true_tasks_with_rework, 
-                            pod_true_unique
+                            pod_true_unique,
+                            project_id=project_id
                         )
                         
                         # Calculate TRUE accounted hours for POD level
                         pod_accounted = self._calculate_accounted_hours(
                             pod_true_tasks_with_new, 
-                            pod_true_tasks_with_rework
+                            pod_true_tasks_with_rework,
+                            project_id=project_id
                         )
                         
                         # Get POD Lead's own Jibble hours via turing_email
@@ -3885,8 +4125,16 @@ class QueryService:
                             'pod_lead_name': display_name,
                             'pod_lead_email': pod_email,
                             'trainer_count': agg['trainer_count'],
-                            'unique_tasks': pod_true_unique,  # FIX: Use TRUE unique tasks
+                            'target': round(agg['target'], 1),
+                            'unique_tasks': pod_true_unique,
                             'new_tasks': agg['new_tasks'],
+                            'claimed': agg['claimed'],
+                            'in_progress': agg['in_progress'],
+                            'completed_current': agg['completed_current'],
+                            'reviewed': agg['reviewed'],
+                            'calibrated': agg['calibrated'],
+                            'calibration_passed': agg['calibration_passed'],
+                            'in_rework': agg['in_rework'],
                             'rework': agg['rework'],
                             'total_reviews': agg['total_reviews'],
                             'agentic_reviews': agg['agentic_reviews'],
@@ -3910,7 +4158,15 @@ class QueryService:
                         project_totals['unique_tasks'] += agg['unique_tasks']
                         project_totals['new_tasks'] += agg['new_tasks']
                         project_totals['rework'] += agg['rework']
-                        project_totals['tasks_with_rework'] += agg.get('tasks_with_rework', 0)  # NEW
+                        project_totals['tasks_with_rework'] += agg.get('tasks_with_rework', 0)
+                        project_totals['target'] += agg['target']
+                        project_totals['claimed'] += agg['claimed']
+                        project_totals['in_progress'] += agg['in_progress']
+                        project_totals['completed_current'] += agg['completed_current']
+                        project_totals['reviewed'] += agg['reviewed']
+                        project_totals['calibrated'] += agg['calibrated']
+                        project_totals['calibration_passed'] += agg.get('calibration_passed', 0)
+                        project_totals['in_rework'] += agg['in_rework']
                         project_totals['total_reviews'] += agg['total_reviews']
                         project_totals['agentic_reviews'] += agg['agentic_reviews']
                         project_totals['agentic_score'] += agg['agentic_score']
@@ -3941,13 +4197,15 @@ class QueryService:
                     proj_merged_aht = self._calculate_merged_aht(
                         project_true_tasks_with_new, 
                         project_true_tasks_with_rework, 
-                        project_true_unique_tasks
+                        project_true_unique_tasks,
+                        project_id=project_id
                     )
                     
                     # Also recalculate accounted hours using true project-level values
                     proj_accounted = self._calculate_accounted_hours(
                         project_true_tasks_with_new, 
-                        project_true_tasks_with_rework
+                        project_true_tasks_with_rework,
+                        project_id=project_id
                     )
                     
                     # Calculate logged hours - query directly from Jibble data at project level
@@ -3989,8 +4247,16 @@ class QueryService:
                         'project_name': project_name,
                         'pod_lead_count': len(pod_leads_list),
                         'trainer_count': project_totals['trainer_count'],
-                        'unique_tasks': project_true_unique_tasks,  # FIX: Use true unique count, not summed per-trainer
+                        'target': round(project_totals['target'], 1),
+                        'unique_tasks': project_true_unique_tasks,
                         'new_tasks': project_totals['new_tasks'],
+                        'claimed': project_totals['claimed'],
+                        'in_progress': project_totals['in_progress'],
+                        'completed_current': project_totals['completed_current'],
+                        'reviewed': project_totals['reviewed'],
+                        'calibrated': project_totals['calibrated'],
+                        'calibration_passed': project_totals['calibration_passed'],
+                        'in_rework': project_totals['in_rework'],
                         'rework': project_totals['rework'],
                         'total_reviews': project_totals['total_reviews'],
                         'agentic_reviews': project_totals['agentic_reviews'],
@@ -4239,6 +4505,260 @@ class QueryService:
             import traceback
             traceback.print_exc()
             return result
+
+
+    # ================================================================
+    # PROJECT SUMMARY (Executive View)
+    # ================================================================
+
+    def _compute_fpy_from_reviews(
+        self,
+        project_ids: list[int],
+        start_date: str = None,
+        end_date: str = None,
+    ) -> dict:
+        """Compute Reviewer FPY and Auditor FPY per project from BigQuery reviews.
+
+        Logic:
+        - For each task, get ALL published reviews ordered by time.
+        - Determine reviewer role (reviewer vs calibrator) using the team sheet
+          for Math Proof Eval, or PodLeadMapping.role for other projects.
+        - For each task+role combo, check the FIRST review action:
+            approved (action_type != 'rework') → FPY pass
+            rework  (action_type == 'rework')  → FPY fail
+        - Reviewer FPY  = reviewer-pass / reviewer-total
+        - Auditor  FPY  = calibrator-pass / calibrator-total  (null if no calibrators)
+        """
+        from collections import defaultdict
+        from app.config import get_settings
+        from app.models.db_models import PodLeadMapping
+
+        if not project_ids:
+            return {}
+
+        s = get_settings()
+        bq_client = self._get_bq_client()
+        if not bq_client:
+            return {}
+
+        p, d = s.gcp_project_id, s.bigquery_dataset
+        pid_list = ','.join(str(i) for i in project_ids)
+
+        date_clause = ""
+        if start_date:
+            date_clause += f" AND DATE(r.submitted_at) >= '{start_date}'"
+        if end_date:
+            date_clause += f" AND DATE(r.submitted_at) <= '{end_date}'"
+
+        query = f"""
+        SELECT
+            conv.project_id,
+            r.conversation_id,
+            cont.turing_email AS reviewer_email,
+            JSON_EXTRACT_SCALAR(r.review_action, '$.type') AS action_type,
+            r.submitted_at
+        FROM `{p}.{d}.review` r
+        JOIN `{p}.{d}.conversation` conv ON conv.id = r.conversation_id
+        LEFT JOIN `{p}.{d}.contributor` cont ON cont.id = r.reviewer_id
+        WHERE conv.project_id IN ({pid_list})
+          AND r.review_type = 'manual'
+          AND r.status = 'published'
+          AND r.submitted_at IS NOT NULL
+          {date_clause}
+        ORDER BY r.conversation_id, r.submitted_at ASC
+        """
+
+        try:
+            rows = list(bq_client.query(query).result())
+        except Exception as e:
+            logger.error(f"FPY BigQuery query failed: {e}")
+            return {}
+
+        # Build role mapping: email → 'reviewer' | 'calibrator'
+        role_map: dict[str, str] = {}
+
+        # From PodLeadMapping (all projects)
+        with self.db_service.get_session() as session:
+            pod_rows = session.query(
+                PodLeadMapping.trainer_email,
+                PodLeadMapping.role
+            ).all()
+            for pr in pod_rows:
+                if pr.trainer_email and pr.role:
+                    role_lower = pr.role.lower().strip()
+                    email_lower = pr.trainer_email.lower().strip()
+                    if role_lower in ('pod lead', 'sub pod lead', 'pod_lead'):
+                        role_map[email_lower] = 'reviewer'
+                    elif role_lower in ('calibrator', 'auditor', 'team lead'):
+                        role_map[email_lower] = 'calibrator'
+
+        # Try team sheet for Math Proof Eval (has calibrator mapping)
+        try:
+            from app.services.quality_rubrics_service import QualityRubricsService
+            qr_service = QualityRubricsService()
+            team_roles = qr_service._fetch_team_roles()
+            for email, role in team_roles.items():
+                role_map[email.lower().strip()] = role
+        except Exception as e:
+            logger.warning(f"Could not load team sheet roles for FPY: {e}")
+
+        # Group reviews by (project_id, conversation_id)
+        # Key: (project_id, conversation_id) → list of (reviewer_email, action_type)
+        reviews_by_task: dict[tuple, list] = defaultdict(list)
+        for row in rows:
+            key = (row['project_id'], row['conversation_id'])
+            reviews_by_task[key].append({
+                'reviewer_email': (row['reviewer_email'] or '').lower().strip(),
+                'action_type': (row['action_type'] or '').lower(),
+            })
+
+        # Compute FPY per project
+        # For each task, find the FIRST review by a reviewer and by a calibrator
+        project_fpy: dict[int, dict] = {pid: {
+            'r_total': 0, 'r_pass': 0,
+            'a_total': 0, 'a_pass': 0,
+        } for pid in project_ids}
+
+        for (pid, conv_id), reviews in reviews_by_task.items():
+            first_reviewer_seen = False
+            first_calibrator_seen = False
+
+            for rev in reviews:  # already sorted by submitted_at ASC
+                email = rev['reviewer_email']
+                action = rev['action_type']
+                role = role_map.get(email, 'reviewer')  # default to reviewer
+
+                if role == 'reviewer' and not first_reviewer_seen:
+                    first_reviewer_seen = True
+                    project_fpy[pid]['r_total'] += 1
+                    if action != 'rework':
+                        project_fpy[pid]['r_pass'] += 1
+
+                elif role == 'calibrator' and not first_calibrator_seen:
+                    first_calibrator_seen = True
+                    project_fpy[pid]['a_total'] += 1
+                    if action != 'rework':
+                        project_fpy[pid]['a_pass'] += 1
+
+        result = {}
+        for pid in project_ids:
+            counts = project_fpy[pid]
+            r_fpy = round(counts['r_pass'] / counts['r_total'] * 100, 1) if counts['r_total'] > 0 else None
+            a_fpy = round(counts['a_pass'] / counts['a_total'] * 100, 1) if counts['a_total'] > 0 else None
+            result[pid] = {
+                'reviewer_fpy': r_fpy,
+                'auditor_fpy': a_fpy,
+            }
+
+        logger.info(f"FPY computed for {len(project_ids)} projects from {len(rows)} reviews")
+        return result
+
+    def _get_bq_client(self):
+        """Get BigQuery client, returning None if unavailable."""
+        try:
+            from app.config import get_settings
+            from google.cloud import bigquery
+            s = get_settings()
+            if s.google_application_credentials:
+                from google.oauth2 import service_account
+                creds = service_account.Credentials.from_service_account_file(
+                    s.google_application_credentials
+                )
+                return bigquery.Client(project=s.gcp_project_id, credentials=creds)
+            return bigquery.Client(project=s.gcp_project_id)
+        except Exception as e:
+            logger.warning(f"BigQuery client unavailable for FPY: {e}")
+            return None
+
+    def get_project_summary(self, start_date: str = None, end_date: str = None) -> list:
+        """
+        Return one row per project with metrics for the executive summary page.
+
+        Re-uses the fully-computed data from get_project_stats_with_pod_leads
+        (which already has financials, accounted hours, targets, etc.) and
+        adds FPY% on top by querying BigQuery reviews.
+        """
+        from app.models.db_models import PodLeadMapping
+
+        project_stats = self.get_project_stats_with_pod_leads(
+            start_date=start_date, end_date=end_date, include_tasks=False
+        )
+
+        # ---------- FPY: skip in main call for performance ----------
+        # FPY is computed via a separate endpoint to keep this fast.
+        fpy_by_project = {}
+
+        summaries = []
+        for proj in project_stats:
+            pid = proj['project_id']
+            fpy = fpy_by_project.get(pid, {})
+            reviewer_fpy = fpy.get('reviewer_fpy')
+            auditor_fpy = fpy.get('auditor_fpy')
+
+            trainer_count = proj.get('trainer_count', 0) or 0
+            pod_lead_count = proj.get('pod_lead_count', 0) or 0
+            resources_jibble = proj.get('active_jibble_people', 0) or 0
+            hours_submitted = proj.get('logged_hours', 0) or 0
+            accounted_hours = proj.get('accounted_hours', 0) or 0
+            target = proj.get('target', 0) or 0
+            delivered = (proj.get('delivered', 0) or 0) + (proj.get('in_queue', 0) or 0)
+            rework_rate = proj.get('rework_percent', None)
+            avg_rework = proj.get('avg_rework', None)
+            revenue = proj.get('revenue', 0) or 0
+            cost = proj.get('cost', 0) or 0
+            margin = proj.get('margin', 0) or 0
+            margin_pct = proj.get('margin_percent', None)
+
+            # ------- Project Status (Red / Yellow / Green) -------
+            is_red = False
+            red_reasons = []
+
+            total_team = trainer_count + pod_lead_count
+            if total_team > 0 and total_team < resources_jibble:
+                is_red = True
+                red_reasons.append('Resources in labeling tool < Jibble')
+            if target > 0 and delivered < target:
+                is_red = True
+                red_reasons.append('Tasks delivered < target')
+            if rework_rate is not None and rework_rate > 50:
+                is_red = True
+                red_reasons.append('Rework rate > 50%')
+            if margin_pct is not None and margin_pct < 10:
+                is_red = True
+                red_reasons.append('Margin < 10%')
+
+            if is_red:
+                project_status = 'Red'
+            elif margin_pct is not None and margin_pct < 30:
+                project_status = 'Yellow'
+            else:
+                project_status = 'Green'
+
+            summaries.append({
+                'project_id': pid,
+                'project_name': proj.get('project_name', ''),
+                'project_status': project_status,
+                'status_reasons': red_reasons,
+                'trainer_count': trainer_count,
+                'pod_lead_count': pod_lead_count,
+                'total_team_size': total_team,
+                'resources_labeling_tool': total_team,
+                'resources_jibble': resources_jibble,
+                'hours_submitted': round(hours_submitted, 1),
+                'accounted_hours': round(accounted_hours, 1) if accounted_hours else 0,
+                'target': round(target, 1),
+                'delivered': delivered,
+                'reviewer_fpy_pct': reviewer_fpy,
+                'auditor_fpy_pct': auditor_fpy,
+                'rework_rate': round(rework_rate, 1) if rework_rate is not None else None,
+                'avg_rework_per_task': round(avg_rework, 2) if avg_rework is not None else None,
+                'revenue': round(revenue, 2),
+                'cost': round(cost, 2),
+                'margin': round(margin, 2),
+                'margin_pct': round(margin_pct, 1) if margin_pct is not None else None,
+            })
+
+        return summaries
 
 
 _query_service = None

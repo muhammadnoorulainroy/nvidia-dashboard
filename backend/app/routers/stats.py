@@ -574,6 +574,49 @@ async def get_project_stats(
         raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
 
 
+@router.get(
+    "/project-summary",
+    summary="Get project summary report with FPY and status indicators"
+)
+async def get_project_summary(
+    start_date: Optional[str] = Query(None, description="Start date (YYYY-MM-DD)"),
+    end_date: Optional[str] = Query(None, description="End date (YYYY-MM-DD)"),
+) -> List[Dict[str, Any]]:
+    """Project-level summary for executive view.
+    
+    Returns one row per project with: people counts, hours, delivery,
+    quality (FPY), finances, and an overall Red/Yellow/Green status.
+    """
+    try:
+        service = get_query_service()
+        result = service.get_project_summary(start_date=start_date, end_date=end_date)
+        return result
+    except Exception as e:
+        logger.error(f"Error getting project summary: {e}")
+        raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
+
+
+@router.get(
+    "/project-summary/fpy",
+    summary="Get FPY data for all projects (separate call for performance)"
+)
+async def get_project_fpy(
+    start_date: Optional[str] = Query(None, description="Start date (YYYY-MM-DD)"),
+    end_date: Optional[str] = Query(None, description="End date (YYYY-MM-DD)"),
+) -> Dict[str, Any]:
+    """Compute Reviewer/Auditor FPY per project from BigQuery reviews."""
+    try:
+        service = get_query_service()
+        raw = service._compute_fpy_from_reviews(
+            project_ids=service.settings.all_project_ids_list,
+            start_date=start_date, end_date=end_date,
+        )
+        return {str(k): v for k, v in raw.items()}
+    except Exception as e:
+        logger.error(f"Error computing FPY: {e}")
+        return {}
+
+
 # =============================================================================
 # Target vs Actual Comparison Endpoints
 # =============================================================================

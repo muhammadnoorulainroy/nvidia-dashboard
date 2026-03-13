@@ -139,8 +139,9 @@ class Settings(BaseSettings):
     jibble_email_mapping_sheet_id: str = "1nR15UwSHx2WwQYFePAQIyIORf2aSCNp4ny33jetETZ8"
     jibble_email_mapping_sheet_gid: str = "1375209319"
     
-    # Math Proof Eval team structure sheet
+    # Math Proof Eval team structure sheet (cols A-D: Email, Name, Role, Reporting to)
     math_proof_eval_team_sheet_id: str = '1jPoZeco1t7YaAOd0NJrzNIO3F_CfPBBMm3J3fxHfot8'
+    math_proof_eval_team_sheet_tab: str = 'Sheet1'
     
     # Quality Rubrics sheet (Advanced Math EVAL Quality Report)
     quality_rubrics_sheet_id: str = '1n0kYJNO5DwQso1DlaNzikXBWt-yVHV1dhitX_n5M6Ls'

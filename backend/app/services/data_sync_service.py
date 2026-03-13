@@ -1507,11 +1507,12 @@ class DataSyncService:
                     derived_status = None
                 elif task_status == 'completed':
                     if count_reviews > 0:
-                        # Check if r_submitted_date > created_date
-                        if r_submitted_date and created_date and r_submitted_date > created_date:
-                            derived_status = 'Rework' if review_action_type == 'rework' else 'Reviewed'
+                        if review_action_type == 'rework':
+                            # Task was sent for rework but trainer re-completed it.
+                            # Current status is 'completed', so it's awaiting re-review.
+                            derived_status = 'Completed'
                         else:
-                            derived_status = 'Completed' if review_action_type == 'rework' else 'Reviewed'
+                            derived_status = 'Reviewed'
                     else:
                         derived_status = 'Completed'
                 elif task_status == 'pending':
@@ -1855,20 +1856,21 @@ class DataSyncService:
             credentials = self._get_google_sheets_credentials()
             gc = gspread.authorize(credentials)
             spreadsheet = gc.open_by_key(sheet_id)
-            worksheet = spreadsheet.get_worksheet(0)
+            tab_name = settings.math_proof_eval_team_sheet_tab
+            worksheet = spreadsheet.worksheet(tab_name)
             all_values = worksheet.get_all_values()
             
-            logger.info(f"Read {len(all_values)} rows from Math Proof Eval team sheet")
+            logger.info(f"Read {len(all_values)} rows from Math Proof Eval team sheet (tab: {tab_name})")
             
-            # Parse columns F-I (indices 5-8), skip header rows (row 1 = title, row 2 = headers)
+            # Parse columns A-D (indices 0-3), skip header rows (row 1 = title, row 2 = headers)
             people = []
             for row in all_values[2:]:  # skip first 2 rows
-                if len(row) < 9:
+                if len(row) < 4:
                     continue
-                email = (row[5] or '').strip()
-                name = (row[6] or '').strip()
-                role = (row[7] or '').strip()
-                reporting_to = (row[8] or '').strip()
+                email = (row[0] or '').strip()
+                name = (row[1] or '').strip()
+                role = (row[2] or '').strip()
+                reporting_to = (row[3] or '').strip()
                 if email and name and role:
                     people.append({
                         'email': email.lower(),

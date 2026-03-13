@@ -24,6 +24,14 @@ export const COLUMN_TOOLTIPS: Record<string, string> = {
   pod_lead_count: 'Total number of POD Leads in this project',
   
   // Task columns
+  target: 'Expected number of new tasks based on Jibble hours and AHT (Jibble Hours / New Task AHT)',
+  claimed: 'All tasks ever claimed (entered any active state). Only removed if explicitly unclaimed',
+  in_progress: 'Tasks currently being worked on (status: In Progress)',
+  completed_current: 'Tasks that reached Completed or higher (Reviewed, Validated). Excludes tasks sent back to Rework',
+  reviewed: 'Tasks that reached Reviewed or higher (Validated). Excludes tasks sent back to Rework or Completed',
+  calibrated: 'Total tasks reviewed by a calibrator (Team Lead, Calibrator, or Auditor)',
+  calibration_passed: 'Tasks approved by a calibrator (reviewed and not sent to rework)',
+  in_rework: 'Number of tasks whose current status is Rework (actively in rework right now)',
   unique_tasks: 'Total number of distinct tasks worked on (each task counted once regardless of how many times it was submitted)',
   tasks_reviewed: 'Total number of distinct tasks that have been reviewed',
   new_tasks: 'Number of first-time task completions (task completed for the first time, not a rework)',
@@ -31,7 +39,7 @@ export const COLUMN_TOOLTIPS: Record<string, string> = {
   new_tasks_reviewed: 'Number of new task submissions that have been reviewed',
   
   // Rework columns
-  rework: 'Number of times tasks were sent back for rework and re-completed (subsequent completions after the first)',
+  rework: 'Total number of rework submissions (times tasks were re-completed after being sent back)',
   rework_submitted: 'Number of rework submissions (task re-completed after being sent back)',
   rework_reviewed: 'Number of rework submissions that have been reviewed',
   rework_count: 'Total number of times this task was sent to rework status',
@@ -60,9 +68,9 @@ export const COLUMN_TOOLTIPS: Record<string, string> = {
   tasks_ready_for_delivery: 'Deprecated - see Approved Tasks',
   
   // Percentage columns
-  avg_rework: 'Average Rework = (Total Submissions / Unique Tasks) - 1. Shows the average number of additional submissions per task (<1 Green, 1-2.5 Yellow, >2.5 Red)',
-  avg_rework_percent: 'Average rework percentage across all tasks. Higher values indicate more iterations needed per task',
-  rework_percent: 'Rework % = (Rework / (New Tasks + Rework)) × 100. Lower is better (≤10% Green, 10-30% Yellow, >30% Red)',
+  avg_rework: '(Total Completions / Unique Tasks) - 1',
+  avg_rework_percent: 'Average rework percentage across all tasks',
+  rework_percent: '(Rework Events / Total Submissions) × 100',
   
   // Rating columns
   avg_rating: 'Average manual review rating (>4.8 Green, 4-4.8 Yellow, <4 Red)',
@@ -85,7 +93,7 @@ export const COLUMN_TOOLTIPS: Record<string, string> = {
   trainer_jibble_hours: 'Hours logged by trainers in Jibble',
   pod_jibble_hours: 'Hours logged by POD Lead in Jibble',
   active_jibble_people: 'Number of people who logged Jibble hours in the selected time range',
-  accounted_hours: 'Accounted Hours: AHT-based (New×10 + Rework×4) or target-based (output/target × 8) for projects with daily targets',
+  accounted_hours: 'Accounted Hours: (New Tasks × New Task AHT) + (Rework × Rework AHT). AHT values are project-specific',
   efficiency: 'Efficiency = (Accounted Hrs / Jibble Hrs) × 100 (≥90% Green, 70-90% Yellow, <70% Red)',
   
   // Task-specific columns
@@ -222,8 +230,16 @@ export const HEADER_TO_KEY_MAP: Record<string, string> = {
   'Name': 'name',
   'Email': 'trainer_email',
   'Size': 'size',
+  'Target': 'target',
   'Uniq': 'unique_tasks',
   'New': 'new_tasks',
+  'Claimed': 'claimed',
+  'InProg': 'in_progress',
+  'CompCur': 'completed_current',
+  'Revwd': 'reviewed',
+  'Calib': 'calibrated',
+  'CalPass': 'calibration_passed',
+  'InRwk': 'in_rework',
   'Rwk': 'rework',
   'Appr': 'approved_tasks',
   'Del': 'delivered',

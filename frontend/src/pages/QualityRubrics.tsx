@@ -21,7 +21,6 @@ import {
   CircularProgress,
   Alert,
   IconButton,
-  Collapse,
   Link,
 } from '@mui/material'
 import {
@@ -41,17 +40,19 @@ import {
   Refresh as RefreshIcon,
 } from '@mui/icons-material'
 import { getQualityRubricsData, type QualityRubricsData } from '../services/api'
+import TimeframeSelector from '../components/common/TimeframeSelector'
+import { type Timeframe, getDateRange } from '../utils/dateUtils'
 
 // ============================================================================
-// RUBRIC CATEGORY METADATA (colors / short labels)
+// CONSTANTS
 // ============================================================================
 
-const CATEGORY_META: Record<string, { short: string; color: string; bg: string; border: string }> = {
-  'Labeling Accuracy': { short: 'LA', color: '#3B82F6', bg: '#EFF6FF', border: '#93C5FD' },
-  'Step coverage and discipline': { short: 'SCD', color: '#8B5CF6', bg: '#F5F3FF', border: '#C4B5FD' },
-  'Failure resolution quality': { short: 'FRQ', color: '#F59E0B', bg: '#FFFBEB', border: '#FCD34D' },
-  'Mathematical Correctness of Critique': { short: 'MCC', color: '#10B981', bg: '#ECFDF5', border: '#6EE7B7' },
-}
+const HEADER_BORDER = '1px solid #CBD5E1'
+const CAT_BORDER = '2px solid #94A3B8'
+
+// Sticky header row heights (px) for proper stacking on scroll
+const ROW1_H = 28
+const ROW2_H = 24
 
 // ============================================================================
 // STYLE HELPERS
@@ -59,16 +60,14 @@ const CATEGORY_META: Record<string, { short: string; color: string; bg: string; 
 
 const getFPYStyle = (v: number | null) => {
   if (v === null) return { color: '#94A3B8', bgcolor: 'transparent' }
-  if (v >= 95) return { color: '#065F46', bgcolor: '#D1FAE5' }
-  if (v >= 80) return { color: '#92400E', bgcolor: '#FEF3C7' }
-  return { color: '#991B1B', bgcolor: '#FEE2E2' }
+  if (v >= 80) return { color: '#334155', bgcolor: 'transparent' }
+  return { color: '#DC2626', bgcolor: 'transparent' }
 }
 
 const getReworkStyle = (v: number | null) => {
   if (v === null) return { color: '#94A3B8', bgcolor: 'transparent' }
-  if (v <= 5) return { color: '#065F46', bgcolor: '#D1FAE5' }
-  if (v <= 20) return { color: '#92400E', bgcolor: '#FEF3C7' }
-  return { color: '#991B1B', bgcolor: '#FEE2E2' }
+  if (v <= 20) return { color: '#334155', bgcolor: 'transparent' }
+  return { color: '#DC2626', bgcolor: 'transparent' }
 }
 
 const getStatusColor = (status: string) => {
@@ -149,10 +148,59 @@ function FPYGauge({ label, value, target, action }: { label: string; value: numb
   )
 }
 
-function DailyRollupView({ data }: { data: QualityRubricsData['daily_rollup'] }) {
+function FPYOverallStatusBar({ data }: { data: QualityRubricsData['daily_rollup'] }) {
   const sc = getStatusColor(data.overall_status)
   return (
+    <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', position: 'sticky', left: 0 }}>
+      <Paper sx={{ p: 2, borderRadius: 2, border: '1px solid #E2E8F0', flex: 2, minWidth: 300 }}>
+        <Typography sx={{ fontSize: '0.75rem', fontWeight: 700, color: '#1E293B', mb: 1.5, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+          First Pass Yield
+        </Typography>
+        <Box sx={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}>
+          <FPYGauge label="Reviewer FPY" value={data.reviewer_fpy} target={95} action={data.reviewer_fpy_action} />
+          <FPYGauge label="Auditor FPY" value={data.auditor_fpy} target={95} action={data.auditor_fpy_action} />
+        </Box>
+      </Paper>
+
+      <Paper sx={{
+        p: 2, borderRadius: 2, border: `2px solid ${sc.border}`, bgcolor: sc.bg,
+        flex: 0, minWidth: 140, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 0.75,
+      }}>
+        <Typography sx={{ fontSize: '0.65rem', fontWeight: 700, color: sc.main, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+          Overall Status
+        </Typography>
+        <Tooltip arrow title={
+          <Box sx={{ fontSize: '0.7rem', lineHeight: 1.6 }}>
+            <b>Based on Reviewer FPY:</b><br />
+            Good: FPY &ge; 95%<br />
+            OK: FPY &ge; 80%<br />
+            Risk: FPY &lt; 80%<br />
+            N/A: No reviews yet
+          </Box>
+        }>
+          <Box sx={{
+            width: 50, height: 50, borderRadius: '50%', bgcolor: sc.main,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            boxShadow: `0 4px 16px ${sc.main}40`, cursor: 'help',
+          }}>
+            <Typography sx={{ color: '#FFF', fontWeight: 800, fontSize: '0.85rem' }}>
+              {data.overall_status.toUpperCase()}
+            </Typography>
+          </Box>
+        </Tooltip>
+        <Typography sx={{ fontSize: '0.55rem', color: '#64748B' }}>
+          Updated: {data.updated_date || '--'}
+        </Typography>
+      </Paper>
+    </Box>
+  )
+}
+
+function DailyRollupView({ data }: { data: QualityRubricsData['daily_rollup'] }) {
+  return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
+      <FPYOverallStatusBar data={data} />
+
       <Paper sx={{ p: 2.5, borderRadius: 2, border: '1px solid #E2E8F0' }}>
         <Typography sx={{ fontSize: '0.8rem', fontWeight: 700, color: '#1E293B', mb: 2, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
           Review Pipeline
@@ -190,39 +238,6 @@ function DailyRollupView({ data }: { data: QualityRubricsData['daily_rollup'] })
             <StatCard label="Medium Severity" value={data.medium_severity} color="#B45309" bg="#FEF3C7" border="#FCD34D" />
             <StatCard label="Ready to Ship" value={data.total_ready_to_ship} color="#065F46" bg="#ECFDF5" border="#6EE7B7" icon={<ShipIcon sx={{ fontSize: 20 }} />} />
           </Box>
-        </Paper>
-      </Box>
-
-      <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
-        <Paper sx={{ p: 2.5, borderRadius: 2, border: '1px solid #E2E8F0', flex: 2, minWidth: 350 }}>
-          <Typography sx={{ fontSize: '0.8rem', fontWeight: 700, color: '#1E293B', mb: 2, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-            First Pass Yield
-          </Typography>
-          <Box sx={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}>
-            <FPYGauge label="Reviewer FPY" value={data.reviewer_fpy} target={95} action={data.reviewer_fpy_action} />
-            <FPYGauge label="Auditor FPY" value={data.auditor_fpy} target={95} action={data.auditor_fpy_action} />
-          </Box>
-        </Paper>
-
-        <Paper sx={{
-          p: 2.5, borderRadius: 2, border: `2px solid ${sc.border}`, bgcolor: sc.bg,
-          flex: 1, minWidth: 180, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 1,
-        }}>
-          <Typography sx={{ fontSize: '0.7rem', fontWeight: 700, color: sc.main, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-            Overall Status
-          </Typography>
-          <Box sx={{
-            width: 56, height: 56, borderRadius: '50%', bgcolor: sc.main,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: `0 4px 16px ${sc.main}40`,
-          }}>
-            <Typography sx={{ color: '#FFF', fontWeight: 800, fontSize: '1.1rem' }}>
-              {data.overall_status.toUpperCase()}
-            </Typography>
-          </Box>
-          <Typography sx={{ fontSize: '0.6rem', color: '#64748B' }}>
-            Updated: {data.updated_date || '--'}
-          </Typography>
         </Paper>
       </Box>
     </Box>
@@ -305,20 +320,16 @@ function BatchQualityView({ batchData, rubricFpy }: {
             </TableHead>
             <TableBody>
               {rubricFpy.map((item) => {
-                const meta = CATEGORY_META[item.category]
                 const isCatSummary = item.is_category_summary
 
                 if (isCatSummary) {
                   return (
-                    <TableRow key={`cat-${item.category}`} sx={{ bgcolor: meta?.bg || '#F8FAFC' }}>
+                    <TableRow key={`cat-${item.category}`} sx={{ bgcolor: '#F8FAFC' }}>
                       <TableCell sx={{
-                        fontWeight: 800, fontSize: '0.7rem', color: meta?.color || '#334155',
-                        borderTop: '2px solid #E2E8F0', py: 0.75,
+                        fontWeight: 800, fontSize: '0.75rem', color: '#1E293B',
+                        borderTop: '2px solid #E2E8F0', py: 0.5,
                       }}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                          <Box sx={{ width: 8, height: 8, borderRadius: 1, bgcolor: meta?.color || '#64748B', flexShrink: 0 }} />
-                          {item.category}
-                        </Box>
+                        {item.category}
                       </TableCell>
                       <FPYCell value={item.reviewer_fpy} />
                       <ReworkCell value={item.reviewer_rework} />
@@ -330,7 +341,7 @@ function BatchQualityView({ batchData, rubricFpy }: {
 
                 return (
                   <TableRow key={item.rubric_item} sx={{ '&:hover': { bgcolor: '#F8FAFC' } }}>
-                    <TableCell sx={{ fontSize: '0.65rem', color: '#334155', pl: 3.5, py: 0.5 }}>
+                    <TableCell sx={{ fontSize: '0.7rem', color: '#334155', pl: 2.5, py: 0.4 }}>
                       {item.rubric_item}
                     </TableCell>
                     <FPYCell value={item.reviewer_fpy} />
@@ -353,8 +364,8 @@ function BatchQualityView({ batchData, rubricFpy }: {
           </Typography>
           {avgFPY !== null && (
             <Box sx={{ display: 'flex', gap: 1, mt: 0.5 }}>
-              <Chip label={`Avg Reviewer FPY: ${avgFPY.toFixed(1)}%`} size="small" sx={{ ...getFPYStyle(avgFPY), fontWeight: 600, fontSize: '0.6rem', height: 20 }} />
-              <Chip label={`Avg Auditor FPY: ${(avgAuditorFPY ?? 0).toFixed(1)}%`} size="small" sx={{ ...getFPYStyle(avgAuditorFPY), fontWeight: 600, fontSize: '0.6rem', height: 20 }} />
+              <Chip label={`Avg Reviewer FPY: ${avgFPY.toFixed(1)}%`} size="small" sx={{ ...getFPYStyle(avgFPY), fontWeight: 600, fontSize: '0.6rem', height: 20, border: '1px solid #E2E8F0' }} />
+              <Chip label={`Avg Auditor FPY: ${(avgAuditorFPY ?? 0).toFixed(1)}%`} size="small" sx={{ ...getFPYStyle(avgAuditorFPY), fontWeight: 600, fontSize: '0.6rem', height: 20, border: '1px solid #E2E8F0' }} />
             </Box>
           )}
         </Box>
@@ -436,191 +447,214 @@ function TaskDetailRow({ task, allRubricItems, categories }: {
     return false
   }, [task, allRubricItems])
 
-  const taskLabel = task.task_link && task.task_link.startsWith('http')
-    ? (
-      <Link href={task.task_link} target="_blank" rel="noopener" sx={{ fontSize: '0.65rem', fontWeight: 500, color: '#2563EB', display: 'flex', alignItems: 'center', gap: 0.3 }}>
-        {task.task}
-        <OpenInNewIcon sx={{ fontSize: 10 }} />
-      </Link>
-    )
-    : <Typography sx={{ fontSize: '0.65rem', fontWeight: 500, color: '#475569' }}>{task.task}</Typography>
+  const hasAnyScore = useMemo(() => {
+    for (const rubric of allRubricItems) {
+      if (task.reviewer.scores[rubric]?.trim()) return true
+      if (task.auditor.scores[rubric]?.trim()) return true
+    }
+    return false
+  }, [task, allRubricItems])
+
+  const isExpandable = hasReasons || hasAnyScore
+
+  const labelingToolUrl = `https://labeling-n.turing.com/conversations/${task.task}/view`
+
+  const taskLabel = (
+    <Link
+      href={labelingToolUrl}
+      target="_blank"
+      rel="noopener"
+      onClick={(e: React.MouseEvent) => e.stopPropagation()}
+      sx={{ fontSize: '0.8rem', fontWeight: 500, color: '#2563EB', display: 'flex', alignItems: 'center', gap: 0.25 }}
+    >
+      {task.task}
+      <OpenInNewIcon sx={{ fontSize: 11 }} />
+    </Link>
+  )
 
   return (
     <>
       <TableRow sx={{
-        bgcolor: '#FFF', '&:hover': { bgcolor: '#F8FAFC' },
-        cursor: hasReasons ? 'pointer' : 'default',
+        bgcolor: '#FFF', '&:hover': { bgcolor: '#FAFAFA' },
+        cursor: isExpandable ? 'pointer' : 'default',
       }}
-        onClick={hasReasons ? () => setExpanded(!expanded) : undefined}
+        onClick={isExpandable ? () => setExpanded(!expanded) : undefined}
       >
-        <TableCell sx={{ py: 0.3, px: 0.5, fontSize: '0.65rem', fontWeight: 700, color: '#1E293B', borderBottom: '1px solid #E2E8F0' }}>
+        <TableCell sx={{ py: 0.25, px: 0.75, fontSize: '0.8rem', fontWeight: 600, color: '#1E293B', borderBottom: '1px solid #E8ECF0', borderRight: HEADER_BORDER }}>
           {task.batch}
         </TableCell>
-        <TableCell sx={{ py: 0.3, px: 0.5, borderBottom: '1px solid #E2E8F0', borderRight: '2px solid #CBD5E1' }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-            {hasReasons && (
+        <TableCell sx={{ py: 0.25, px: 0.75, borderBottom: '1px solid #E8ECF0', borderRight: CAT_BORDER }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.3 }}>
+            {isExpandable && (
               <IconButton size="small" sx={{ p: 0, width: 16, height: 16 }}>
-                {expanded ? <CollapseIcon sx={{ fontSize: 14 }} /> : <ExpandIcon sx={{ fontSize: 14 }} />}
+                {expanded ? <CollapseIcon sx={{ fontSize: 14, color: '#64748B' }} /> : <ExpandIcon sx={{ fontSize: 14, color: '#64748B' }} />}
               </IconButton>
             )}
             {taskLabel}
           </Box>
         </TableCell>
 
-        {allRubricItems.map((item, i) => {
-          const val = task.reviewer.scores[item] || ''
-          const isPass = val.toUpperCase() === 'PASS'
-          const isEmpty = !val
-          const isLastOverall = i === allRubricItems.length - 1
-          return (
-            <TableCell key={`r-${i}`} align="center" sx={{
-              py: 0.25, px: 0.2,
-              bgcolor: isEmpty ? '#F8FAFC' : isPass ? '#ECFDF5' : '#FEF2F2',
-              borderBottom: '1px solid #E2E8F0',
-              borderRight: isLastOverall ? '3px solid #1E40AF' : undefined,
-            }}>
-              {!isEmpty && (isPass
-                ? <PassIcon sx={{ fontSize: 13, color: '#059669' }} />
-                : <FailIcon sx={{ fontSize: 13, color: '#DC2626' }} />
-              )}
-            </TableCell>
-          )
+        {categories.map((cat, ci) => {
+          const isLastCat = ci === categories.length - 1
+          return cat.items.map((item, ii) => {
+            const val = task.reviewer.scores[item] || ''
+            const isPass = val.toUpperCase() === 'PASS'
+            const isEmpty = !val
+            const isLastInCat = ii === cat.items.length - 1
+            return (
+              <TableCell key={`r-${ci}-${ii}`} align="center" sx={{
+                py: 0.15, px: 0.15,
+                borderBottom: '1px solid #E8ECF0',
+                borderRight: (isLastInCat && isLastCat) ? CAT_BORDER
+                  : isLastInCat ? HEADER_BORDER : undefined,
+              }}>
+                {!isEmpty && (isPass
+                  ? <PassIcon sx={{ fontSize: 18, color: '#16A34A' }} />
+                  : <FailIcon sx={{ fontSize: 18, color: '#DC2626' }} />
+                )}
+              </TableCell>
+            )
+          })
         })}
 
-        {allRubricItems.map((item, i) => {
-          const val = task.auditor.scores[item] || ''
-          const isPass = val.toUpperCase() === 'PASS'
-          const isEmpty = !val
-          return (
-            <TableCell key={`a-${i}`} align="center" sx={{
-              py: 0.25, px: 0.2,
-              bgcolor: isEmpty ? '#F8FAFC' : isPass ? '#ECFDF5' : '#FEF2F2',
-              borderBottom: '1px solid #E2E8F0',
-            }}>
-              {!isEmpty && (isPass
-                ? <PassIcon sx={{ fontSize: 13, color: '#059669' }} />
-                : <FailIcon sx={{ fontSize: 13, color: '#DC2626' }} />
-              )}
-            </TableCell>
-          )
+        {categories.map((cat, ci) => {
+          const isLastCat = ci === categories.length - 1
+          return cat.items.map((item, ii) => {
+            const val = task.auditor.scores[item] || ''
+            const isPass = val.toUpperCase() === 'PASS'
+            const isEmpty = !val
+            const isLastInCat = ii === cat.items.length - 1
+            return (
+              <TableCell key={`a-${ci}-${ii}`} align="center" sx={{
+                py: 0.15, px: 0.15,
+                borderBottom: '1px solid #E8ECF0',
+                borderRight: (isLastInCat && !isLastCat) ? HEADER_BORDER : undefined,
+              }}>
+                {!isEmpty && (isPass
+                  ? <PassIcon sx={{ fontSize: 18, color: '#16A34A' }} />
+                  : <FailIcon sx={{ fontSize: 18, color: '#DC2626' }} />
+                )}
+              </TableCell>
+            )
+          })
         })}
       </TableRow>
 
-      {/* Expandable reasons row */}
-      <TableRow>
-        <TableCell colSpan={2 + allRubricItems.length * 2} sx={{ p: 0, borderBottom: expanded ? '2px solid #CBD5E1' : 'none' }}>
-          <Collapse in={expanded} timeout="auto" unmountOnExit>
-            <Box sx={{ p: 2, bgcolor: '#F8FAFC' }}>
-              <Typography sx={{ fontSize: '0.75rem', fontWeight: 700, color: '#1E293B', mb: 1.5 }}>
-                Detailed Reasons — {task.task}
+      {/* Expandable details — each rubric item gets its own row for perfect side-by-side alignment */}
+      {expanded && isExpandable && (
+        <>
+          {/* Title row */}
+          <TableRow>
+            <TableCell colSpan={2 + allRubricItems.length * 2} sx={{ bgcolor: '#FAFAFA', py: 0.75, px: 1.5, borderBottom: 'none' }}>
+              <Typography sx={{ fontSize: '0.85rem', fontWeight: 700, color: '#1E293B' }}>
+                Task {task.task} — Details
               </Typography>
-              <Box sx={{ display: 'flex', gap: 3, flexDirection: { xs: 'column', md: 'row' } }}>
-                {/* Reviewer reasons */}
-                <Box sx={{ flex: 1 }}>
-                  <Typography sx={{ fontSize: '0.7rem', fontWeight: 700, color: '#1E40AF', mb: 1, pb: 0.5, borderBottom: '2px solid #93C5FD' }}>
-                    Reviewer
-                  </Typography>
-                  {categories.map((cat) => {
-                    const meta = CATEGORY_META[cat.name]
-                    const itemsWithContent = cat.items.filter((item) => {
-                      const reasons = task.reviewer.reasons[item]
-                      const score = task.reviewer.scores[item]
-                      return (reasons && reasons.length > 0) || !!score
-                    })
-                    if (itemsWithContent.length === 0) return null
-                    return (
-                      <Box key={cat.name} sx={{ mb: 1.5 }}>
-                        <Typography sx={{ fontSize: '0.65rem', fontWeight: 700, color: meta?.color || '#334155', mb: 0.5 }}>
-                          {cat.name}
-                        </Typography>
-                        {itemsWithContent.map((item) => {
-                          const score = task.reviewer.scores[item] || ''
-                          const reasons = task.reviewer.reasons[item] || []
-                          const isFail = score.toUpperCase() === 'FAIL'
-                          return (
-                            <Box key={item} sx={{ pl: 1, mb: 0.75, borderLeft: `3px solid ${isFail ? '#FCA5A5' : '#CBD5E1'}` }}>
-                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.25 }}>
-                                {isFail
-                                  ? <FailIcon sx={{ fontSize: 12, color: '#DC2626' }} />
-                                  : score ? <PassIcon sx={{ fontSize: 12, color: '#059669' }} /> : null
-                                }
-                                <Typography sx={{ fontSize: '0.65rem', fontWeight: 600, color: '#334155' }}>
-                                  {item}
-                                </Typography>
-                              </Box>
-                              {reasons.map((reason, ri) => (
-                                <Box key={ri} sx={{ pl: 2.2, mb: 0.3 }}>
-                                  <Typography sx={{ fontSize: '0.55rem', fontWeight: 600, color: '#94A3B8', mb: 0.1 }}>
-                                    {reason.label}
-                                  </Typography>
-                                  <Typography sx={{ fontSize: '0.6rem', color: '#64748B' }}>
-                                    {reason.text}
-                                  </Typography>
-                                </Box>
-                              ))}
-                            </Box>
-                          )
-                        })}
-                      </Box>
-                    )
-                  })}
-                </Box>
+            </TableCell>
+          </TableRow>
+          {/* Column headers: Reviewer | Auditor */}
+          <TableRow>
+            <TableCell colSpan={2} sx={{ bgcolor: '#F1F5F9', p: 0, borderBottom: '1px solid #CBD5E1' }} />
+            <TableCell colSpan={allRubricItems.length} sx={{ bgcolor: '#F1F5F9', borderRight: CAT_BORDER, borderBottom: '1px solid #CBD5E1', px: 1.5, py: 0.5 }}>
+              <Typography sx={{ fontSize: '0.8rem', fontWeight: 700, color: '#334155' }}>Reviewer</Typography>
+            </TableCell>
+            <TableCell colSpan={allRubricItems.length} sx={{ bgcolor: '#F1F5F9', borderBottom: '1px solid #CBD5E1', px: 1.5, py: 0.5 }}>
+              <Typography sx={{ fontSize: '0.8rem', fontWeight: 700, color: '#334155' }}>Auditor</Typography>
+            </TableCell>
+          </TableRow>
+          {/* One row per category header + one row per rubric item */}
+          {categories.map((cat, catIdx) => {
+            const allItems = cat.items.filter((item) => {
+              const rs = task.reviewer.scores[item]
+              const rr = task.reviewer.reasons[item]
+              const as_ = task.auditor.scores[item]
+              const ar = task.auditor.reasons[item]
+              return !!rs || (rr && rr.length > 0) || !!as_ || (ar && ar.length > 0)
+            })
+            if (allItems.length === 0) return null
+            return [
+              categories.length > 1 && (
+                <TableRow key={`cat-hdr-${cat.name}`}>
+                  <TableCell colSpan={2} sx={{ bgcolor: '#F8FAFC', p: 0, borderBottom: '1px solid #E8ECF0' }} />
+                  <TableCell colSpan={allRubricItems.length} sx={{ bgcolor: '#F8FAFC', borderRight: CAT_BORDER, borderBottom: '1px solid #E8ECF0', px: 1.5, py: 0.4 }}>
+                    <Typography sx={{ fontSize: '0.75rem', fontWeight: 700, color: '#475569' }}>{cat.name}</Typography>
+                  </TableCell>
+                  <TableCell colSpan={allRubricItems.length} sx={{ bgcolor: '#F8FAFC', borderBottom: '1px solid #E8ECF0', px: 1.5, py: 0.4 }}>
+                    <Typography sx={{ fontSize: '0.75rem', fontWeight: 700, color: '#475569' }}>{cat.name}</Typography>
+                  </TableCell>
+                </TableRow>
+              ),
+              ...allItems.map((item, ii) => {
+                const rScore = task.reviewer.scores[item] || ''
+                const rReasons = task.reviewer.reasons[item] || []
+                const rFail = rScore.toUpperCase() === 'FAIL'
+                const rHas = !!rScore || rReasons.length > 0
 
-                {/* Auditor reasons */}
-                <Box sx={{ flex: 1 }}>
-                  <Typography sx={{ fontSize: '0.7rem', fontWeight: 700, color: '#166534', mb: 1, pb: 0.5, borderBottom: '2px solid #86EFAC' }}>
-                    Auditor
-                  </Typography>
-                  {categories.map((cat) => {
-                    const meta = CATEGORY_META[cat.name]
-                    const itemsWithContent = cat.items.filter((item) => {
-                      const reasons = task.auditor.reasons[item]
-                      const score = task.auditor.scores[item]
-                      return (reasons && reasons.length > 0) || !!score
-                    })
-                    if (itemsWithContent.length === 0) return null
-                    return (
-                      <Box key={cat.name} sx={{ mb: 1.5 }}>
-                        <Typography sx={{ fontSize: '0.65rem', fontWeight: 700, color: meta?.color || '#334155', mb: 0.5 }}>
-                          {cat.name}
-                        </Typography>
-                        {itemsWithContent.map((item) => {
-                          const score = task.auditor.scores[item] || ''
-                          const reasons = task.auditor.reasons[item] || []
-                          const isFail = score.toUpperCase() === 'FAIL'
-                          return (
-                            <Box key={item} sx={{ pl: 1, mb: 0.75, borderLeft: `3px solid ${isFail ? '#FCA5A5' : '#CBD5E1'}` }}>
-                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.25 }}>
-                                {isFail
-                                  ? <FailIcon sx={{ fontSize: 12, color: '#DC2626' }} />
-                                  : score ? <PassIcon sx={{ fontSize: 12, color: '#059669' }} /> : null
-                                }
-                                <Typography sx={{ fontSize: '0.65rem', fontWeight: 600, color: '#334155' }}>
-                                  {item}
-                                </Typography>
-                              </Box>
-                              {reasons.map((reason, ri) => (
-                                <Box key={ri} sx={{ pl: 2.2, mb: 0.3 }}>
-                                  <Typography sx={{ fontSize: '0.55rem', fontWeight: 600, color: '#94A3B8', mb: 0.1 }}>
-                                    {reason.label}
-                                  </Typography>
-                                  <Typography sx={{ fontSize: '0.6rem', color: '#64748B' }}>
-                                    {reason.text}
-                                  </Typography>
-                                </Box>
-                              ))}
+                const aScore = task.auditor.scores[item] || ''
+                const aReasons = task.auditor.reasons[item] || []
+                const aFail = aScore.toUpperCase() === 'FAIL'
+                const aHas = !!aScore || aReasons.length > 0
+
+                const isLastItem = catIdx === categories.length - 1 && ii === allItems.length - 1
+                const bottomBorder = isLastItem ? '2px solid #CBD5E1' : '1px solid #E8ECF0'
+
+                return (
+                  <TableRow key={`detail-${cat.name}-${item}`}>
+                    <TableCell colSpan={2} sx={{ bgcolor: '#FAFAFA', p: 0, borderBottom: bottomBorder }} />
+                    <TableCell colSpan={allRubricItems.length} sx={{
+                      bgcolor: '#FAFAFA', verticalAlign: 'top', borderRight: CAT_BORDER,
+                      borderBottom: bottomBorder, px: 1.5, py: 0.5,
+                      overflowWrap: 'break-word', wordBreak: 'break-word',
+                    }}>
+                      {rHas ? (
+                        <Box sx={{ pl: 1, borderLeft: `2px solid ${rFail ? '#FCA5A5' : '#E2E8F0'}` }}>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.4 }}>
+                            {rFail
+                              ? <FailIcon sx={{ fontSize: 13, color: '#DC2626' }} />
+                              : <PassIcon sx={{ fontSize: 13, color: '#16A34A' }} />}
+                            <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: '#334155' }}>{item}</Typography>
+                          </Box>
+                          {rReasons.map((reason, ri) => (
+                            <Box key={ri} sx={{ pl: 2, mt: 0.15 }}>
+                              <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#94A3B8' }}>{reason.label}</Typography>
+                              <Typography sx={{ fontSize: '0.75rem', color: '#475569', lineHeight: 1.4 }}>{reason.text}</Typography>
                             </Box>
-                          )
-                        })}
-                      </Box>
-                    )
-                  })}
-                </Box>
-              </Box>
-            </Box>
-          </Collapse>
-        </TableCell>
-      </TableRow>
+                          ))}
+                        </Box>
+                      ) : (
+                        <Typography sx={{ fontSize: '0.7rem', color: '#CBD5E1', fontStyle: 'italic', pl: 1 }}>—</Typography>
+                      )}
+                    </TableCell>
+                    <TableCell colSpan={allRubricItems.length} sx={{
+                      bgcolor: '#FAFAFA', verticalAlign: 'top',
+                      borderBottom: bottomBorder, px: 1.5, py: 0.5,
+                      overflowWrap: 'break-word', wordBreak: 'break-word',
+                    }}>
+                      {aHas ? (
+                        <Box sx={{ pl: 1, borderLeft: `2px solid ${aFail ? '#FCA5A5' : '#E2E8F0'}` }}>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.4 }}>
+                            {aFail
+                              ? <FailIcon sx={{ fontSize: 13, color: '#DC2626' }} />
+                              : <PassIcon sx={{ fontSize: 13, color: '#16A34A' }} />}
+                            <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: '#334155' }}>{item}</Typography>
+                          </Box>
+                          {aReasons.map((reason, ri) => (
+                            <Box key={ri} sx={{ pl: 2, mt: 0.15 }}>
+                              <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#94A3B8' }}>{reason.label}</Typography>
+                              <Typography sx={{ fontSize: '0.75rem', color: '#475569', lineHeight: 1.4 }}>{reason.text}</Typography>
+                            </Box>
+                          ))}
+                        </Box>
+                      ) : (
+                        <Typography sx={{ fontSize: '0.7rem', color: '#CBD5E1', fontStyle: 'italic', pl: 1 }}>—</Typography>
+                      )}
+                    </TableCell>
+                  </TableRow>
+                )
+              }),
+            ]
+          })}
+        </>
+      )}
     </>
   )
 }
@@ -655,101 +689,129 @@ function TaskRubricsView({ data, categories }: {
 
   return (
     <Box>
-      <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mb: 2, flexWrap: 'wrap' }}>
-        <FormControl size="small" sx={{ minWidth: 140 }}>
-          <InputLabel sx={{ fontSize: '0.75rem' }}>Batch</InputLabel>
-          <Select value={batchFilter} label="Batch" onChange={(e) => setBatchFilter(e.target.value)} sx={{ fontSize: '0.75rem', height: 32 }}>
-            <MenuItem value="all" sx={{ fontSize: '0.75rem' }}>All Batches</MenuItem>
+      {/* Filter bar */}
+      <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center', p: 1, px: 1.5, flexWrap: 'wrap', position: 'sticky', left: 0 }}>
+        <FormControl size="small" sx={{ minWidth: 130 }}>
+          <InputLabel sx={{ fontSize: '0.8rem' }}>Batch</InputLabel>
+          <Select value={batchFilter} label="Batch" onChange={(e) => setBatchFilter(e.target.value)} sx={{ fontSize: '0.8rem', height: 32 }}>
+            <MenuItem value="all" sx={{ fontSize: '0.8rem' }}>All Batches</MenuItem>
             {batches.map((b) => (
-              <MenuItem key={b} value={b} sx={{ fontSize: '0.75rem' }}>{b}</MenuItem>
+              <MenuItem key={b} value={b} sx={{ fontSize: '0.8rem' }}>{b}</MenuItem>
             ))}
           </Select>
         </FormControl>
         <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center' }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.4 }}>
-            <PassIcon sx={{ fontSize: 14, color: '#059669' }} />
-            <Typography sx={{ fontSize: '0.7rem', color: '#334155' }}>= Pass</Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.3 }}>
+            <PassIcon sx={{ fontSize: 16, color: '#16A34A' }} />
+            <Typography sx={{ fontSize: '0.8rem', color: '#334155' }}>= Pass</Typography>
           </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.4 }}>
-            <FailIcon sx={{ fontSize: 14, color: '#DC2626' }} />
-            <Typography sx={{ fontSize: '0.7rem', color: '#334155' }}>= Fail</Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.3 }}>
+            <FailIcon sx={{ fontSize: 16, color: '#DC2626' }} />
+            <Typography sx={{ fontSize: '0.8rem', color: '#334155' }}>= Fail</Typography>
           </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.4 }}>
-            <ExpandIcon sx={{ fontSize: 14, color: '#64748B' }} />
-            <Typography sx={{ fontSize: '0.7rem', color: '#334155' }}>= Click row for reasons</Typography>
-          </Box>
+          <Typography sx={{ fontSize: '0.75rem', color: '#94A3B8' }}>
+            <ExpandIcon sx={{ fontSize: 14, verticalAlign: 'middle', mr: 0.3 }} />
+            = Click row for reasons
+          </Typography>
         </Box>
-        <Typography sx={{ fontSize: '0.7rem', color: '#64748B', ml: 'auto' }}>
+        <Typography sx={{ fontSize: '0.8rem', color: '#64748B', ml: 'auto' }}>
           {filtered.length} tasks ({tasksWithData.length} with data)
         </Typography>
       </Box>
 
       {/* Pass Rate Summary */}
-      <Paper sx={{ p: 1.5, mb: 2, borderRadius: 2, border: '1px solid #E2E8F0' }}>
-        <Typography sx={{ fontSize: '0.7rem', fontWeight: 700, color: '#1E293B', mb: 1 }}>
+      <Box sx={{ p: 1.5, mx: 1.5, mb: 1, borderRadius: 1, border: '1px solid #E2E8F0', position: 'sticky', left: 0 }}>
+        <Typography sx={{ fontSize: '0.85rem', fontWeight: 700, color: '#1E293B', mb: 0.75 }}>
           Rubric Pass Rates (Reviewer)
         </Typography>
         <Box sx={{ display: 'flex', gap: 0.5, flexWrap: 'wrap' }}>
           {allRubricItems.map((item, i) => {
             const rate = passRates.reviewer[i]
-            const s = getFPYStyle(rate)
             return (
-              <Tooltip key={item} title={`${item}: ${rate.toFixed(0)}%`} arrow>
-                <Chip
-                  label={`${item}: ${rate.toFixed(0)}%`}
-                  size="small"
-                  sx={{ fontSize: '0.55rem', fontWeight: 600, bgcolor: s.bgcolor, color: s.color, height: 22 }}
-                />
-              </Tooltip>
+              <Chip
+                key={item}
+                label={`${item}: ${rate.toFixed(0)}%`}
+                size="small"
+                sx={{
+                  fontSize: '0.75rem',
+                  fontWeight: 500,
+                  height: 24,
+                  bgcolor: '#FFF',
+                  color: '#334155',
+                  border: '1px solid #E2E8F0',
+                }}
+              />
             )
           })}
         </Box>
-      </Paper>
+      </Box>
 
-      {/* Task-level Rubric Table */}
-      <Paper sx={{ borderRadius: 2, border: '1px solid #E2E8F0', overflow: 'hidden' }}>
-        <TableContainer sx={{ maxHeight: 'calc(100vh - 320px)' }}>
-          <Table size="small" stickyHeader sx={{ tableLayout: 'fixed', minWidth: 1200 }}>
+      {/* Table — header sticks at top of page scroll container */}
+          <Table size="small">
             <TableHead>
-              {/* Top group header */}
+              {/* Row 1: Task | Reviewer → Trainer | Auditor → Reviewer / Trainer */}
               <TableRow>
-                <TableCell colSpan={2} sx={{ fontWeight: 700, fontSize: '0.65rem', bgcolor: '#F1F5F9', color: '#475569', borderBottom: '1px solid #CBD5E1', borderRight: '2px solid #CBD5E1', width: 150 }}>
+                <TableCell rowSpan={3} sx={{
+                  fontWeight: 700, fontSize: '0.8rem', bgcolor: '#FFF', color: '#1E293B',
+                  borderBottom: HEADER_BORDER, borderRight: HEADER_BORDER,
+                  width: 60, position: 'sticky', top: 0, zIndex: 5,
+                  verticalAlign: 'bottom', py: 0.5, px: 0.75,
+                }}>
+                  Batch
+                </TableCell>
+                <TableCell rowSpan={3} sx={{
+                  fontWeight: 700, fontSize: '0.8rem', bgcolor: '#FFF', color: '#1E293B',
+                  borderBottom: HEADER_BORDER, borderRight: CAT_BORDER,
+                  width: 70, position: 'sticky', top: 0, zIndex: 5,
+                  verticalAlign: 'bottom', py: 0.5, px: 0.75,
+                }}>
                   Task
                 </TableCell>
-                <TableCell colSpan={allRubricItems.length} align="center" sx={{ fontWeight: 700, fontSize: '0.7rem', bgcolor: '#EFF6FF', color: '#1E40AF', borderBottom: '1px solid #93C5FD', borderRight: '3px solid #1E40AF' }}>
-                  Reviewer → Trainer
+                <TableCell colSpan={allRubricItems.length} align="center" sx={{
+                  fontWeight: 700, fontSize: '0.85rem', bgcolor: '#FFF', color: '#1E293B',
+                  borderBottom: HEADER_BORDER, borderRight: CAT_BORDER,
+                  position: 'sticky', top: 0, zIndex: 4,
+                  height: ROW1_H, py: 0.4,
+                }}>
+                  Reviewer &rarr; Trainer
                 </TableCell>
-                <TableCell colSpan={allRubricItems.length} align="center" sx={{ fontWeight: 700, fontSize: '0.7rem', bgcolor: '#F0FDF4', color: '#166534', borderBottom: '1px solid #86EFAC' }}>
-                  Auditor → Reviewer / Trainer
+                <TableCell colSpan={allRubricItems.length} align="center" sx={{
+                  fontWeight: 700, fontSize: '0.85rem', bgcolor: '#FFF', color: '#1E293B',
+                  borderBottom: HEADER_BORDER,
+                  position: 'sticky', top: 0, zIndex: 4,
+                  height: ROW1_H, py: 0.4,
+                }}>
+                  Auditor &rarr; Reviewer / Trainer
                 </TableCell>
               </TableRow>
 
-              {/* Category header row */}
+              {/* Row 2: Category group headers */}
               <TableRow>
-                <TableCell sx={{ fontWeight: 600, fontSize: '0.55rem', bgcolor: '#F8FAFC', borderBottom: '1px solid #CBD5E1', width: 70, zIndex: 3 }}>Batch</TableCell>
-                <TableCell sx={{ fontWeight: 600, fontSize: '0.55rem', bgcolor: '#F8FAFC', borderBottom: '1px solid #CBD5E1', borderRight: '2px solid #CBD5E1', width: 80, zIndex: 3 }}>Task</TableCell>
-
                 {categories.map((cat, ci) => {
-                  const meta = CATEGORY_META[cat.name] || { short: '?', color: '#64748B', bg: '#F1F5F9', border: '#CBD5E1' }
+                  const isLastCat = ci === categories.length - 1
                   return (
-                    <TableCell key={`r-${cat.name}`} colSpan={cat.items.length} align="center" sx={{
-                      fontWeight: 700, fontSize: '0.45rem', bgcolor: meta.bg, color: meta.color,
-                      borderBottom: `2px solid ${meta.border}`,
-                      borderRight: ci === categories.length - 1 ? '3px solid #1E40AF' : `1px solid ${meta.border}`,
-                      letterSpacing: '0.02em', lineHeight: 1.2,
+                    <TableCell key={`rc-${cat.name}`} colSpan={cat.items.length} align="center" sx={{
+                      fontWeight: 700, fontSize: '0.75rem',
+                      bgcolor: '#FFF', color: '#334155',
+                      borderBottom: HEADER_BORDER,
+                      borderRight: isLastCat ? CAT_BORDER : HEADER_BORDER,
+                      position: 'sticky', top: ROW1_H, zIndex: 3,
+                      height: ROW2_H, py: 0.3, whiteSpace: 'nowrap',
                     }}>
                       {cat.name}
                     </TableCell>
                   )
                 })}
                 {categories.map((cat, ci) => {
-                  const meta = CATEGORY_META[cat.name] || { short: '?', color: '#64748B', bg: '#F1F5F9', border: '#CBD5E1' }
+                  const isLastCat = ci === categories.length - 1
                   return (
-                    <TableCell key={`a-${cat.name}`} colSpan={cat.items.length} align="center" sx={{
-                      fontWeight: 700, fontSize: '0.45rem', bgcolor: meta.bg, color: meta.color,
-                      borderBottom: `2px solid ${meta.border}`,
-                      borderRight: ci === categories.length - 1 ? undefined : `1px solid ${meta.border}`,
-                      letterSpacing: '0.02em', lineHeight: 1.2,
+                    <TableCell key={`ac-${cat.name}`} colSpan={cat.items.length} align="center" sx={{
+                      fontWeight: 700, fontSize: '0.75rem',
+                      bgcolor: '#FFF', color: '#334155',
+                      borderBottom: HEADER_BORDER,
+                      borderRight: !isLastCat ? HEADER_BORDER : undefined,
+                      position: 'sticky', top: ROW1_H, zIndex: 3,
+                      height: ROW2_H, py: 0.3, whiteSpace: 'nowrap',
                     }}>
                       {cat.name}
                     </TableCell>
@@ -757,51 +819,52 @@ function TaskRubricsView({ data, categories }: {
                 })}
               </TableRow>
 
-              {/* Individual rubric item headers */}
+              {/* Row 3: Individual rubric item headers */}
               <TableRow>
-                <TableCell sx={{ bgcolor: '#F8FAFC', borderBottom: '2px solid #CBD5E1', zIndex: 3 }} />
-                <TableCell sx={{ bgcolor: '#F8FAFC', borderBottom: '2px solid #CBD5E1', borderRight: '2px solid #CBD5E1', zIndex: 3 }} />
-
-                {allRubricItems.map((item, idx) => {
-                  const catIdx = categories.findIndex((c) => c.items.includes(item))
-                  const cat = categories[catIdx]
-                  const meta = CATEGORY_META[cat.name] || { color: '#64748B', bg: '#F1F5F9', border: '#CBD5E1' }
-                  const isLastInCat = cat.items[cat.items.length - 1] === item
-                  const isLastOverall = idx === allRubricItems.length - 1
-                  return (
-                    <Tooltip key={`rh-${item}`} title={item} arrow>
-                      <TableCell align="center" sx={{
-                        fontWeight: 600, fontSize: '0.38rem', bgcolor: meta.bg, color: meta.color,
-                        borderBottom: `2px solid ${meta.border}`,
-                        borderRight: isLastOverall ? '3px solid #1E40AF' : isLastInCat ? `1px solid ${meta.border}` : undefined,
-                        overflow: 'hidden', textOverflow: 'ellipsis',
-                        maxWidth: 65, lineHeight: 1.15, py: 0.5,
-                        wordBreak: 'break-word', whiteSpace: 'normal',
-                      }}>
-                        {item}
-                      </TableCell>
-                    </Tooltip>
-                  )
+                {categories.map((cat, ci) => {
+                  const isLastCat = ci === categories.length - 1
+                  return cat.items.map((item, ii) => {
+                    const isLastInCat = ii === cat.items.length - 1
+                    return (
+                      <Tooltip key={`rh-${item}`} title={item} arrow>
+                        <TableCell align="center" sx={{
+                          fontWeight: 600, fontSize: '0.65rem',
+                          bgcolor: '#FFF', color: '#475569',
+                          borderBottom: CAT_BORDER,
+                          borderRight: (isLastInCat && isLastCat) ? CAT_BORDER
+                            : isLastInCat ? HEADER_BORDER : undefined,
+                          position: 'sticky', top: ROW1_H + ROW2_H, zIndex: 2,
+                          lineHeight: 1.15, py: 0.3, px: 0.25,
+                          wordBreak: 'break-word', whiteSpace: 'normal',
+                          maxWidth: 55, minWidth: 30,
+                        }}>
+                          {item}
+                        </TableCell>
+                      </Tooltip>
+                    )
+                  })
                 })}
-                {allRubricItems.map((item) => {
-                  const catIdx = categories.findIndex((c) => c.items.includes(item))
-                  const cat = categories[catIdx]
-                  const meta = CATEGORY_META[cat.name] || { color: '#64748B', bg: '#F1F5F9', border: '#CBD5E1' }
-                  const isLastInCat = cat.items[cat.items.length - 1] === item
-                  return (
-                    <Tooltip key={`ah-${item}`} title={item} arrow>
-                      <TableCell align="center" sx={{
-                        fontWeight: 600, fontSize: '0.38rem', bgcolor: meta.bg, color: meta.color,
-                        borderBottom: `2px solid ${meta.border}`,
-                        borderRight: isLastInCat ? `1px solid ${meta.border}` : undefined,
-                        overflow: 'hidden', textOverflow: 'ellipsis',
-                        maxWidth: 65, lineHeight: 1.15, py: 0.5,
-                        wordBreak: 'break-word', whiteSpace: 'normal',
-                      }}>
-                        {item}
-                      </TableCell>
-                    </Tooltip>
-                  )
+                {categories.map((cat, ci) => {
+                  const isLastCat = ci === categories.length - 1
+                  return cat.items.map((item, ii) => {
+                    const isLastInCat = ii === cat.items.length - 1
+                    return (
+                      <Tooltip key={`ah-${item}`} title={item} arrow>
+                        <TableCell align="center" sx={{
+                          fontWeight: 600, fontSize: '0.65rem',
+                          bgcolor: '#FFF', color: '#475569',
+                          borderBottom: CAT_BORDER,
+                          borderRight: (isLastInCat && !isLastCat) ? HEADER_BORDER : undefined,
+                          position: 'sticky', top: ROW1_H + ROW2_H, zIndex: 2,
+                          lineHeight: 1.15, py: 0.3, px: 0.25,
+                          wordBreak: 'break-word', whiteSpace: 'normal',
+                          maxWidth: 55, minWidth: 30,
+                        }}>
+                          {item}
+                        </TableCell>
+                      </Tooltip>
+                    )
+                  })
                 })}
               </TableRow>
             </TableHead>
@@ -817,15 +880,13 @@ function TaskRubricsView({ data, categories }: {
               ))}
               {filtered.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={2 + allRubricItems.length * 2} align="center" sx={{ py: 4, color: '#94A3B8' }}>
+                  <TableCell colSpan={2 + allRubricItems.length * 2} align="center" sx={{ py: 4, color: '#94A3B8', fontSize: '0.85rem' }}>
                     No task data available
                   </TableCell>
                 </TableRow>
               )}
             </TableBody>
           </Table>
-        </TableContainer>
-      </Paper>
     </Box>
   )
 }
@@ -840,25 +901,38 @@ export default function QualityRubrics() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
+  const [timeframe, setTimeframe] = useState<Timeframe>('overall')
+  const [weekOffset, setWeekOffset] = useState(0)
+  const [customStartDate, setCustomStartDate] = useState('')
+  const [customEndDate, setCustomEndDate] = useState('')
+
+  const dateRange = useMemo(
+    () => getDateRange(timeframe, weekOffset, customStartDate, customEndDate),
+    [timeframe, weekOffset, customStartDate, customEndDate],
+  )
+
   const fetchData = useCallback(async (refresh = false) => {
     setLoading(true)
     setError(null)
     try {
-      const result = await getQualityRubricsData(refresh)
+      const result = await getQualityRubricsData(refresh, dateRange.startDate, dateRange.endDate)
       setData(result)
     } catch (err: any) {
       setError(err?.response?.data?.detail || err?.message || 'Failed to load quality rubrics data')
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [dateRange.startDate, dateRange.endDate])
 
   useEffect(() => { fetchData() }, [fetchData])
 
   return (
-    <Box>
-      {/* Page Header */}
-      <Box sx={{ mb: 2.5 }}>
+    <Box sx={{
+      height: { xs: 'calc(100vh - 104px)', sm: 'calc(100vh - 48px)' },
+      overflow: 'auto',
+    }}>
+      {/* Page Header — scrolls away, sticks left during horizontal scroll */}
+      <Box sx={{ mb: 1, position: 'sticky', left: 0 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 0.5 }}>
           <Box sx={{
             width: 36, height: 36, borderRadius: 1.5,
@@ -876,7 +950,20 @@ export default function QualityRubrics() {
               Advanced Math EVAL Quality Report
             </Typography>
           </Box>
-          <Tooltip title="Refresh data from Google Sheet" arrow>
+        </Box>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 1 }}>
+          <TimeframeSelector
+            timeframe={timeframe}
+            onTimeframeChange={setTimeframe}
+            weekOffset={weekOffset}
+            onWeekOffsetChange={setWeekOffset}
+            customStartDate={customStartDate}
+            onCustomStartDateChange={setCustomStartDate}
+            customEndDate={customEndDate}
+            onCustomEndDateChange={setCustomEndDate}
+            compact
+          />
+          <Tooltip title="Refresh data" arrow>
             <IconButton onClick={() => fetchData(true)} disabled={loading} size="small"
               sx={{ bgcolor: '#F1F5F9', '&:hover': { bgcolor: '#E2E8F0' } }}>
               <RefreshIcon sx={{ fontSize: 18, color: '#475569' }} />
@@ -885,28 +972,30 @@ export default function QualityRubrics() {
         </Box>
       </Box>
 
-      {/* Tabs */}
-      <Paper sx={{ borderRadius: 2, border: '1px solid #E2E8F0', mb: 2, overflow: 'hidden' }}>
-        <Tabs
-          value={activeTab}
-          onChange={(_, v) => setActiveTab(v)}
-          sx={{
-            bgcolor: '#F8FAFC',
-            borderBottom: '1px solid #E2E8F0',
-            minHeight: 40,
-            '& .MuiTab-root': {
-              minHeight: 40, py: 1, fontSize: '0.8rem', fontWeight: 600,
-              textTransform: 'none', color: '#64748B',
-              '&.Mui-selected': { color: '#4F46E5' },
-            },
-            '& .MuiTabs-indicator': { bgcolor: '#4F46E5', height: 3 },
-          }}
-        >
-          <Tab icon={<TrendingUpIcon sx={{ fontSize: 16 }} />} iconPosition="start" label="Daily Rollup" />
-          <Tab icon={<AssessmentIcon sx={{ fontSize: 16 }} />} iconPosition="start" label="Batch Quality" />
-          <Tab icon={<GradingIcon sx={{ fontSize: 16 }} />} iconPosition="start" label="Task Rubrics" />
-        </Tabs>
-      </Paper>
+      {/* Tabs — scrolls away, sticks left during horizontal scroll */}
+      <Box sx={{ position: 'sticky', left: 0, mb: 1.5 }}>
+        <Paper sx={{ borderRadius: 2, border: '1px solid #E2E8F0', overflow: 'hidden' }}>
+          <Tabs
+            value={activeTab}
+            onChange={(_, v) => setActiveTab(v)}
+            sx={{
+              bgcolor: '#F8FAFC',
+              borderBottom: '1px solid #E2E8F0',
+              minHeight: 40,
+              '& .MuiTab-root': {
+                minHeight: 40, py: 1, fontSize: '0.8rem', fontWeight: 600,
+                textTransform: 'none', color: '#64748B',
+                '&.Mui-selected': { color: '#4F46E5' },
+              },
+              '& .MuiTabs-indicator': { bgcolor: '#4F46E5', height: 3 },
+            }}
+          >
+            <Tab icon={<TrendingUpIcon sx={{ fontSize: 16 }} />} iconPosition="start" label="Daily Rollup" />
+            <Tab icon={<AssessmentIcon sx={{ fontSize: 16 }} />} iconPosition="start" label="Batch Quality" />
+            <Tab icon={<GradingIcon sx={{ fontSize: 16 }} />} iconPosition="start" label="Task Rubrics" />
+          </Tabs>
+        </Paper>
+      </Box>
 
       {/* Loading / Error / Content */}
       {loading && (

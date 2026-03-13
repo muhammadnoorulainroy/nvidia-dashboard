@@ -179,19 +179,19 @@ export function getDateRange(
     
     case 'd-2': {
       const d2 = new Date(today)
-      d2.setDate(today.getDate() - 2)
+      d2.setDate(today.getDate() - 1)
       startDate = formatDate(d2)
-      endDate = startDate
-      displayLabel = `2 days ago (${formatDateDisplay(startDate)})`
+      endDate = formatDate(today)
+      displayLabel = `Last 2 days (${formatDateDisplay(startDate)} – ${formatDateDisplay(endDate)})`
       break
     }
     
     case 'd-3': {
       const d3 = new Date(today)
-      d3.setDate(today.getDate() - 3)
+      d3.setDate(today.getDate() - 2)
       startDate = formatDate(d3)
-      endDate = startDate
-      displayLabel = `3 days ago (${formatDateDisplay(startDate)})`
+      endDate = formatDate(today)
+      displayLabel = `Last 3 days (${formatDateDisplay(startDate)} – ${formatDateDisplay(endDate)})`
       break
     }
     

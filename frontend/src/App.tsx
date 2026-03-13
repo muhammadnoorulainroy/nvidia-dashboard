@@ -18,6 +18,7 @@ const Configuration = lazy(() => import('./components/configuration/Configuratio
 const Analytics = lazy(() => import('./pages/Analytics'))
 const TeamOverview = lazy(() => import('./pages/TeamOverview'))
 const QualityRubrics = lazy(() => import('./pages/QualityRubrics'))
+const ProjectSummary = lazy(() => import('./pages/ProjectSummary'))
 const UserManagement = lazy(() => import('./pages/UserManagement'))
 
 function PageLoader() {
@@ -83,6 +84,7 @@ function App() {
                         <Route path="/analytics" element={<Analytics />} />
                         <Route path="/team-overview" element={<TeamOverview />} />
                         <Route path="/quality-rubrics" element={<QualityRubrics />} />
+                        <Route path="/project-summary" element={<ProjectSummary />} />
                         <Route
                           path="/users"
                           element={

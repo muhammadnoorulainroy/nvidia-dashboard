@@ -25,6 +25,7 @@ import {
   FactCheck as FactCheckIcon,
   People as PeopleIcon,
   Logout as LogoutIcon,
+  Summarize as SummarizeIcon,
 } from '@mui/icons-material'
 import SyncStatus from './common/SyncStatus'
 import { useAuth } from '../contexts/AuthContext'
@@ -40,6 +41,7 @@ interface MenuItem {
 
 const menuItems: MenuItem[] = [
   { text: 'Task Metrics', icon: <BusinessIcon />, path: '/task-metrics' },
+  { text: 'Project Summary', icon: <SummarizeIcon />, path: '/project-summary' },
   { text: 'Team Overview', icon: <GridViewIcon />, path: '/team-overview' },
   { text: 'Analytics', icon: <AnalyticsIcon />, path: '/analytics' },
   { text: 'Quality Rubrics', icon: <FactCheckIcon />, path: '/quality-rubrics' },

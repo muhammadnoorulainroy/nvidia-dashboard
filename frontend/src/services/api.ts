@@ -15,7 +15,7 @@ const API_BASE_URL = import.meta.env.VITE_API_PREFIX || '/api'
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 30000,
+  timeout: 60000,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -555,17 +555,26 @@ export interface TaskUnderTrainer {
   is_in_queue: boolean
   task_status: string | null
   last_completed_date: string | null
-  aht_mins: number | null       // AHT in minutes
-  accounted_hours: number       // Accounted hours for this task
-  rework_percent: number        // 0 for new, 100 for rework
+  aht_mins: number | null
+  accounted_hours: number
+  rework_percent: number
+  is_calibrated: number
+  calibration_passed: number
 }
 
 // Trainer under POD Lead (for 3-level hierarchy, with optional tasks for 4-level)
 export interface TrainerUnderPodLead {
   trainer_name: string
   trainer_email: string
+  target: number
   unique_tasks: number
   new_tasks: number
+  claimed: number
+  in_progress: number
+  completed_current: number
+  reviewed: number
+  calibrated: number
+  in_rework: number
   rework: number
   total_reviews: number
   agentic_reviews: number
@@ -593,8 +602,15 @@ export interface PodLeadUnderProject {
   pod_lead_name: string
   pod_lead_email: string
   trainer_count: number
+  target: number
   unique_tasks: number
   new_tasks: number
+  claimed: number
+  in_progress: number
+  completed_current: number
+  reviewed: number
+  calibrated: number
+  in_rework: number
   rework: number
   total_reviews: number
   agentic_reviews: number
@@ -620,8 +636,15 @@ export interface ProjectStats {
   project_name: string
   pod_lead_count: number
   trainer_count: number
+  target: number
   unique_tasks: number
   new_tasks: number
+  claimed: number
+  in_progress: number
+  completed_current: number
+  reviewed: number
+  calibrated: number
+  in_rework: number
   rework: number
   total_reviews: number
   agentic_reviews: number
@@ -1153,15 +1176,87 @@ export interface QualityRubricsData {
   }
 }
 
-export const getQualityRubricsData = async (refresh = false): Promise<QualityRubricsData> => {
-  const cacheKey = '/quality-rubrics/data'
+export const getQualityRubricsData = async (
+  refresh = false,
+  startDate?: string,
+  endDate?: string,
+): Promise<QualityRubricsData> => {
+  const params = new URLSearchParams()
+  if (refresh) params.append('refresh', 'true')
+  if (startDate) params.append('start_date', startDate)
+  if (endDate) params.append('end_date', endDate)
+
+  const qs = params.toString()
+  const cacheKey = `/quality-rubrics/data?${qs}`
+
   if (!refresh) {
     const cached = getFromCache<QualityRubricsData>(cacheKey)
     if (cached) return cached
   }
 
   const response = await apiClient.get<QualityRubricsData>(
-    `/quality-rubrics/data${refresh ? '?refresh=true' : ''}`
+    `/quality-rubrics/data${qs ? `?${qs}` : ''}`
+  )
+  setCache(cacheKey, response.data)
+  return response.data
+}
+
+// ─── Project Summary ────────────────────────────────────────────
+export interface ProjectSummaryRow {
+  project_id: number
+  project_name: string
+  project_status: 'Red' | 'Yellow' | 'Green'
+  status_reasons: string[]
+  trainer_count: number
+  pod_lead_count: number
+  total_team_size: number
+  resources_labeling_tool: number
+  resources_jibble: number
+  hours_submitted: number
+  accounted_hours: number
+  target: number
+  delivered: number
+  reviewer_fpy_pct: number | null
+  auditor_fpy_pct: number | null
+  rework_rate: number
+  avg_rework_per_task: number
+  revenue: number
+  cost: number
+  margin: number
+  margin_pct: number | null
+}
+
+export const getProjectSummary = async (
+  startDate?: string,
+  endDate?: string
+): Promise<ProjectSummaryRow[]> => {
+  const params = new URLSearchParams()
+  if (startDate) params.append('start_date', startDate)
+  if (endDate) params.append('end_date', endDate)
+  const qs = params.toString()
+  const cacheKey = `/project-summary?${qs}`
+  const cached = getFromCache<ProjectSummaryRow[]>(cacheKey)
+  if (cached) return cached
+  const response = await apiClient.get<ProjectSummaryRow[]>(
+    `/project-summary${qs ? `?${qs}` : ''}`
+  )
+  setCache(cacheKey, response.data)
+  return response.data
+}
+
+export const getProjectFPY = async (
+  startDate?: string,
+  endDate?: string
+): Promise<Record<string, { reviewer_fpy: number | null; auditor_fpy: number | null }>> => {
+  const params = new URLSearchParams()
+  if (startDate) params.append('start_date', startDate)
+  if (endDate) params.append('end_date', endDate)
+  const qs = params.toString()
+  const cacheKey = `/project-summary/fpy?${qs}`
+  const cached = getFromCache<Record<string, { reviewer_fpy: number | null; auditor_fpy: number | null }>>(cacheKey)
+  if (cached) return cached
+  const response = await apiClient.get<Record<string, { reviewer_fpy: number | null; auditor_fpy: number | null }>>(
+    `/project-summary/fpy${qs ? `?${qs}` : ''}`
   )
   setCache(cacheKey, response.data)
   return response.data

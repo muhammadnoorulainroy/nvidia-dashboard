@@ -1,17 +1,44 @@
 """
-Service for reading and serving quality rubrics data from a Google Sheet.
+Service for reading and serving quality rubrics data.
 
-Reads directly from the sheet (no PostgreSQL storage) with in-memory caching.
+Supports two data sources:
+- Google Sheet (legacy, for test projects)
+- BigQuery (for live projects like project 60)
+
+Both paths return the same response shape so the frontend works without changes.
 """
 import os
+import json
 import time
 import logging
+from collections import defaultdict
 from typing import Any
 from dotenv import load_dotenv
 
 logger = logging.getLogger(__name__)
 
 CACHE_TTL_SECONDS = 300  # 5 minutes
+
+BIGQUERY_PROJECT_IDS = {60}
+
+# Maps additional_data JSON keys to human-readable names and their
+# associated text-explanation keys (used as feedback/reasons).
+ADDITIONAL_INFO_FIELDS: list[dict[str, str | None]] = [
+    {"key": "globalScoreCorrect", "name": "Global score is correct", "reason_key": "reasonGlobalScoreIncorrect"},
+    {"key": "majorMinorLabelCorrect", "name": "Major vs Minor label at issue level is correct", "reason_key": "reasonMajorMinorIncorrect"},
+    {"key": "allIssuesAddressed", "name": "Have all issues been addressed up to Major issue", "reason_key": "explainMissingIssue"},
+    {"key": "stopAfterFirstMajor", "name": "Stop after the first Major issue", "reason_key": None},
+    {"key": "issuesInRightOrder", "name": "Issues are in the right order [top to bottom]", "reason_key": "justificationForOrder"},
+    {"key": "minorIssueHasWorkableFix", "name": "Each minor issue has a workable fix", "reason_key": "explainWorkableFix"},
+    {"key": "workableFixCorrect", "name": "Is the workable fix correct or incorrect?", "reason_key": "incorrectWorkableFixIssueIds"},
+    {"key": "issuesMathematicallySound", "name": "Issues are mathematically sound", "reason_key": "reasonsMathematicallySound"},
+    {"key": "outputFieldsComplete", "name": "Output fields are complete", "reason_key": None},
+    {"key": "issueDescriptionsIdentifyWhere", "name": "Issue descriptions identify where in the proof,  the issue occurred", "reason_key": None},
+    {"key": "issueDescriptionsPrecise", "name": "Issue descriptions are precise, without ambiguous language", "reason_key": "explanationAmbiguity"},
+]
+
+# Standalone text field not tied to a boolean; attached as a general note
+_STANDALONE_TEXT_KEY = "explanationAgreementDisagreement"
 
 RUBRIC_CATEGORIES = [
     {
@@ -53,6 +80,14 @@ _RUBRIC_ITEM_LOOKUP: dict[str, str] = {}
 for item in ALL_RUBRIC_ITEMS:
     _RUBRIC_ITEM_LOOKUP[item.strip().lower()] = item
 
+# BigQuery quality_dimension.name → our RUBRIC_CATEGORIES name (case-insensitive keys)
+_BQ_DIM_TO_CATEGORY: dict[str, str] = {
+    "labeling accuracy": "Labeling Accuracy",
+    "step coverage and review discipline": "Step coverage and discipline",
+    "failure resolution quality": "Failure resolution quality",
+    "critique precision and output completeness": "Mathematical Correctness of Critique",
+}
+
 
 def _normalize_header(h: str) -> str:
     return h.strip().lower()
@@ -70,11 +105,16 @@ def _match_rubric_item(header: str) -> str | None:
 
 
 class QualityRubricsService:
-    """Reads quality rubrics data from Google Sheets with caching."""
+    """Reads quality rubrics data from Google Sheets or BigQuery with caching."""
 
     def __init__(self):
-        self._cache: dict[str, Any] | None = None
-        self._cache_time: float = 0
+        self._cache: dict[str, dict[str, Any]] = {}
+        self._cache_times: dict[str, float] = {}
+        self._bq_client = None
+
+    # ------------------------------------------------------------------
+    # Google Sheet credentials
+    # ------------------------------------------------------------------
 
     def _get_credentials(self):
         load_dotenv()
@@ -100,24 +140,139 @@ class QualityRubricsService:
         ]
         return Credentials.from_service_account_info(credentials_dict, scopes=scopes)
 
-    def get_data(self, force_refresh: bool = False) -> dict[str, Any]:
-        """Return all quality rubrics data, from cache if still fresh."""
-        now = time.time()
-        if not force_refresh and self._cache and (now - self._cache_time) < CACHE_TTL_SECONDS:
-            return self._cache
+    # ------------------------------------------------------------------
+    # Team structure: email → "reviewer" | "calibrator"
+    # ------------------------------------------------------------------
 
-        logger.info("Fetching quality rubrics data from Google Sheet...")
+    _team_roles_cache: dict[str, str] | None = None
+    _team_roles_cache_time: float = 0
+
+    TEAM_SHEET_ID = "1jPoZeco1t7YaAOd0NJrzNIO3F_CfPBBMm3J3fxHfot8"
+
+    def _fetch_team_roles(self) -> dict[str, str]:
+        """Fetch Math Proof Eval team sheet and return email → role bucket mapping.
+
+        Pod Lead / Sub Pod Lead           → "reviewer"
+        Calibrator / Team Lead / Auditor  → "calibrator"
+        Sheet cols A-C (indices 0-2): Email, Name, Role. Data from row 3.
+        """
+        now = time.time()
+        if (
+            self._team_roles_cache is not None
+            and (now - self._team_roles_cache_time) < CACHE_TTL_SECONDS
+        ):
+            return self._team_roles_cache
+
+        import gspread
+
         try:
-            data = self._fetch_and_parse()
-            self._cache = data
-            self._cache_time = time.time()
-            logger.info("Quality rubrics data fetched and cached successfully")
+            credentials = self._get_credentials()
+            gc = gspread.authorize(credentials)
+            spreadsheet = gc.open_by_key(self.TEAM_SHEET_ID)
+            ws = spreadsheet.get_worksheet(0)
+            rows = ws.get_all_values()
+        except Exception as err:
+            logger.error(f"Cannot access team sheet {self.TEAM_SHEET_ID}: {err}")
+            self._team_roles_cache = {}
+            self._team_roles_cache_time = now
+            return {}
+
+        REVIEWER_ROLES = {"pod lead", "sub pod lead"}
+        CALIBRATOR_ROLES = {"calibrator", "auditor", "team lead"}
+
+        roles: dict[str, str] = {}
+        for row in rows[2:]:
+            if len(row) < 3:
+                continue
+            email = (row[0] or "").strip().lower()
+            role_raw = (row[2] or "").strip().lower()
+            if not email or not role_raw:
+                continue
+            if role_raw in REVIEWER_ROLES:
+                roles[email] = "reviewer"
+            elif role_raw in CALIBRATOR_ROLES:
+                roles[email] = "calibrator"
+
+        logger.info(
+            f"Team roles loaded: {sum(1 for v in roles.values() if v == 'reviewer')} reviewers, "
+            f"{sum(1 for v in roles.values() if v == 'calibrator')} calibrators"
+        )
+        self._team_roles_cache = roles
+        self._team_roles_cache_time = now
+        return roles
+
+    # ------------------------------------------------------------------
+    # BigQuery client (lazy init)
+    # ------------------------------------------------------------------
+
+    def _get_bq_client(self):
+        if self._bq_client is not None:
+            return self._bq_client
+
+        from google.cloud import bigquery
+        from app.config import get_settings
+
+        settings = get_settings()
+        credentials_path = settings.google_application_credentials
+
+        if credentials_path and os.path.exists(credentials_path):
+            from google.oauth2 import service_account
+            credentials = service_account.Credentials.from_service_account_file(credentials_path)
+            self._bq_client = bigquery.Client(
+                credentials=credentials,
+                project=settings.gcp_project_id,
+            )
+        else:
+            self._bq_client = bigquery.Client(project=settings.gcp_project_id)
+
+        return self._bq_client
+
+    # ------------------------------------------------------------------
+    # Public entry point
+    # ------------------------------------------------------------------
+
+    def get_data(
+        self,
+        project_id: int | None = None,
+        force_refresh: bool = False,
+        start_date: str | None = None,
+        end_date: str | None = None,
+    ) -> dict[str, Any]:
+        """Return quality rubrics data from the appropriate source.
+
+        - project_id in BIGQUERY_PROJECT_IDS -> BigQuery
+        - otherwise -> Google Sheet (legacy, ignores date filters)
+        """
+        use_bigquery = project_id is not None and project_id in BIGQUERY_PROJECT_IDS
+        date_suffix = f":{start_date}:{end_date}" if start_date or end_date else ""
+        cache_key = f"bq:{project_id}{date_suffix}" if use_bigquery else "sheet"
+
+        now = time.time()
+        if (
+            not force_refresh
+            and cache_key in self._cache
+            and (now - self._cache_times.get(cache_key, 0)) < CACHE_TTL_SECONDS
+        ):
+            return self._cache[cache_key]
+
+        source_label = f"BigQuery (project {project_id})" if use_bigquery else "Google Sheet"
+        logger.info(f"Fetching quality rubrics data from {source_label}...")
+
+        try:
+            data = (
+                self._fetch_from_bigquery(project_id, start_date=start_date, end_date=end_date)
+                if use_bigquery
+                else self._fetch_and_parse()
+            )
+            self._cache[cache_key] = data
+            self._cache_times[cache_key] = time.time()
+            logger.info(f"Quality rubrics data from {source_label} cached successfully")
             return data
         except Exception as e:
-            logger.error(f"Error fetching quality rubrics data: {e}")
-            if self._cache:
+            logger.error(f"Error fetching quality rubrics data from {source_label}: {e}")
+            if cache_key in self._cache:
                 logger.warning("Returning stale cache due to fetch error")
-                return self._cache
+                return self._cache[cache_key]
             raise
 
     def _fetch_and_parse(self) -> dict[str, Any]:
@@ -455,8 +610,6 @@ class QualityRubricsService:
         canonical list, then fills in computed FPY from Details data.
         If the Summary tab has pre-filled FPY values, those take priority.
         """
-        from collections import defaultdict
-
         batches_from_details: dict[str, list[dict]] = defaultdict(list)
         for td in task_details:
             if td["has_data"]:
@@ -489,23 +642,28 @@ class QualityRubricsService:
                 })
             elif batch_name in batches_from_details:
                 tasks = batches_from_details[batch_name]
-                total = len(tasks)
+                reviewer_tasks = [t for t in tasks if any(v.strip() for v in t["reviewer"]["scores"].values())]
+                auditor_tasks = [t for t in tasks if any(v.strip() for v in t["auditor"]["scores"].values())]
+
                 reviewer_passed = sum(
-                    1 for t in tasks
-                    if all(v.upper() == "PASS" for v in t["reviewer"]["scores"].values() if v)
+                    1 for t in reviewer_tasks
+                    if all(v.upper() == "PASS" for v in t["reviewer"]["scores"].values() if v.strip())
                 )
                 auditor_passed = sum(
-                    1 for t in tasks
-                    if all(v.upper() == "PASS" for v in t["auditor"]["scores"].values() if v)
+                    1 for t in auditor_tasks
+                    if all(v.upper() == "PASS" for v in t["auditor"]["scores"].values() if v.strip())
                 )
+
+                r_total = len(reviewer_tasks)
+                a_total = len(auditor_tasks)
                 results.append({
                     "batch": batch_name,
-                    "reviewer_to_trainer_fpy": round(reviewer_passed / total * 100, 1),
-                    "reviewer_to_trainer_rework": round((total - reviewer_passed) / total * 100, 1),
-                    "auditor_to_reviewer_fpy": round(auditor_passed / total * 100, 1),
-                    "auditor_to_trainer_rework": round((total - auditor_passed) / total * 100, 1),
+                    "reviewer_to_trainer_fpy": round(reviewer_passed / r_total * 100, 1) if r_total else None,
+                    "reviewer_to_trainer_rework": round((r_total - reviewer_passed) / r_total * 100, 1) if r_total else None,
+                    "auditor_to_reviewer_fpy": round(auditor_passed / a_total * 100, 1) if a_total else None,
+                    "auditor_to_trainer_rework": round((a_total - auditor_passed) / a_total * 100, 1) if a_total else None,
                     "source": "computed",
-                    "task_count": total,
+                    "task_count": len(tasks),
                 })
             else:
                 results.append({
@@ -599,6 +757,610 @@ class QualityRubricsService:
                     })
 
         return results
+
+    # ==================================================================
+    # BigQuery-based data fetching (for live projects like 60)
+    # ==================================================================
+
+    @staticmethod
+    def _score_to_label(
+        score: float | None,
+        score_text: str | None,
+        review_display: dict | str | None,
+    ) -> str:
+        """Convert a BigQuery QDV score into a human-readable label.
+
+        BOOLEAN_CHOICE rubrics -> "Pass" / "Fail"
+        STAR_RATING rubrics   -> numeric string like "4.5"
+        """
+        if review_display and isinstance(review_display, str):
+            review_display = json.loads(review_display)
+
+        display_type = (review_display or {}).get("type", "STAR_RATING")
+
+        if display_type == "BOOLEAN_CHOICE":
+            if score_text and score_text.strip().upper() in ("PASS", "FAIL"):
+                return score_text.strip().capitalize()
+            if score is not None:
+                return "Pass" if score >= 5.0 else "Fail"
+            return ""
+
+        # STAR_RATING or unknown
+        if score is not None:
+            return str(int(score)) if score == int(score) else str(score)
+        return ""
+
+    @staticmethod
+    def _date_filter_sql(alias: str, start_date: str | None, end_date: str | None) -> str:
+        """Build SQL date-filter clauses on ``<alias>.created_at``."""
+        parts: list[str] = []
+        if start_date:
+            parts.append(f"AND {alias}.created_at >= '{start_date}'")
+        if end_date:
+            parts.append(f"AND {alias}.created_at < DATE_ADD('{end_date}', INTERVAL 1 DAY)")
+        return "\n          ".join(parts)
+
+    def _build_conversations_query(
+        self, project_id: int, start_date: str | None = None, end_date: str | None = None,
+    ) -> str:
+        """Fetch all reviewed conversations (completed, validated, or rework) with batch info."""
+        from app.config import get_settings
+
+        s = get_settings()
+        p, d = s.gcp_project_id, s.bigquery_dataset
+
+        date_filter = self._date_filter_sql("c", start_date, end_date)
+        return f"""
+        SELECT
+            c.id AS conversation_id,
+            c.colab_link,
+            c.title,
+            b.name AS batch_name
+        FROM `{p}.{d}.conversation` c
+        LEFT JOIN `{p}.{d}.batch` b ON b.id = c.batch_id
+        WHERE c.project_id = {project_id}
+          AND c.status IN ('completed', 'validated', 'rework')
+          {date_filter}
+        """
+
+    def _build_additional_data_query(
+        self, project_id: int, start_date: str | None = None, end_date: str | None = None,
+    ) -> str:
+        """Query to fetch review.additional_data for the latest review per conversation."""
+        from app.config import get_settings
+
+        s = get_settings()
+        p, d = s.gcp_project_id, s.bigquery_dataset
+
+        date_filter = self._date_filter_sql("c", start_date, end_date)
+        return f"""
+        WITH latest AS (
+            SELECT
+                r.conversation_id,
+                r.audit,
+                r.reviewer_id,
+                TO_JSON_STRING(r.additional_data) AS additional_data_json,
+                ROW_NUMBER() OVER (
+                    PARTITION BY r.conversation_id, r.audit
+                    ORDER BY r.id DESC
+                ) AS rn
+            FROM `{p}.{d}.review` r
+            JOIN `{p}.{d}.conversation` c ON c.id = r.conversation_id
+            WHERE c.project_id = {project_id}
+              AND r.review_type = 'manual'
+              AND r.status = 'published'
+              AND r.additional_data IS NOT NULL
+              {date_filter}
+        )
+        SELECT l.conversation_id, l.audit, l.additional_data_json,
+               cont.turing_email AS reviewer_email
+        FROM latest l
+        LEFT JOIN `{p}.{d}.contributor` cont ON cont.id = l.reviewer_id
+        WHERE l.rn = 1
+        """
+
+    def _build_quality_dimensions_query(
+        self, project_id: int, start_date: str | None = None, end_date: str | None = None,
+    ) -> str:
+        """Fetch quality dimension Pass/Fail for the latest review per conversation per audit flag.
+
+        Used as a fallback when review.additional_data is NULL but quality
+        dimension scores exist.
+        """
+        from app.config import get_settings
+
+        s = get_settings()
+        p, d = s.gcp_project_id, s.bigquery_dataset
+
+        date_filter = self._date_filter_sql("c", start_date, end_date)
+        return f"""
+        WITH latest_review AS (
+            SELECT
+                r.id AS review_id,
+                r.conversation_id,
+                r.audit,
+                r.reviewer_id,
+                ROW_NUMBER() OVER (
+                    PARTITION BY r.conversation_id, r.audit
+                    ORDER BY r.id DESC
+                ) AS rn
+            FROM `{p}.{d}.review` r
+            JOIN `{p}.{d}.conversation` c ON c.id = r.conversation_id
+            WHERE c.project_id = {project_id}
+              AND r.review_type = 'manual'
+              AND r.status = 'published'
+              {date_filter}
+        )
+        SELECT
+            lr.conversation_id,
+            lr.audit,
+            qd.name AS dimension_name,
+            rqdv.score_text,
+            rqdv.score,
+            cont.turing_email AS reviewer_email
+        FROM latest_review lr
+        JOIN `{p}.{d}.review_quality_dimension_value` rqdv ON rqdv.review_id = lr.review_id
+        JOIN `{p}.{d}.quality_dimension` qd ON qd.id = rqdv.quality_dimension_id
+        LEFT JOIN `{p}.{d}.contributor` cont ON cont.id = lr.reviewer_id
+        WHERE lr.rn = 1
+        """
+
+    def _resolve_role_bucket(
+        self,
+        reviewer_email: str | None,
+        audit: int | None,
+        team_roles: dict[str, str],
+    ) -> str:
+        """Determine whether a review belongs to 'reviewer' or 'calibrator'.
+
+        Priority: sheet role > BigQuery audit flag > default to 'reviewer'.
+        """
+        if reviewer_email:
+            bucket = team_roles.get(reviewer_email.lower())
+            if bucket:
+                return bucket
+        if audit == 1:
+            return "calibrator"
+        return "reviewer"
+
+    def _fetch_from_bigquery(
+        self,
+        project_id: int,
+        start_date: str | None = None,
+        end_date: str | None = None,
+    ) -> dict[str, Any]:
+        """Fetch rubrics data from BigQuery matching prod structure.
+
+        Prod shows 4 categories with 11 items (all from review.additional_data).
+        Quality dimension scores are category-level and not shown as table columns.
+        """
+        client = self._get_bq_client()
+
+        rubric_categories = list(RUBRIC_CATEGORIES)
+
+        team_roles = self._fetch_team_roles()
+
+        # 1. Fetch all conversations for this project
+        conv_query = self._build_conversations_query(project_id, start_date, end_date)
+        conv_rows = [dict(r) for r in client.query(conv_query).result()]
+
+        conv_map: dict[int, dict[str, Any]] = {}
+        for row in conv_rows:
+            cid = row["conversation_id"]
+            conv_map[cid] = {
+                "conversation_id": cid,
+                "colab_link": row.get("colab_link") or "",
+                "title": row.get("title") or "",
+                "batch_name": row.get("batch_name") or "",
+                "reviewer_scores": {},
+                "reviewer_reasons": {},
+                "auditor_scores": {},
+                "auditor_reasons": {},
+            }
+
+        logger.info(f"Found {len(conv_map)} conversations for project {project_id}")
+
+        # 2. Fetch additional_data (the actual rubric items shown on prod)
+        ad_query = self._build_additional_data_query(project_id, start_date, end_date)
+        ad_rows = [dict(r) for r in client.query(ad_query).result()]
+        logger.info(f"BigQuery returned {len(ad_rows)} additional_data rows for project {project_id}")
+
+        for ad_row in ad_rows:
+            cid = ad_row["conversation_id"]
+            if cid not in conv_map:
+                continue
+
+            ad_json = ad_row.get("additional_data_json")
+            if not ad_json:
+                continue
+
+            ad = json.loads(ad_json)
+            bucket = self._resolve_role_bucket(
+                ad_row.get("reviewer_email"), ad_row.get("audit"), team_roles,
+            )
+            if bucket == "calibrator":
+                target_scores = conv_map[cid]["auditor_scores"]
+                target_reasons = conv_map[cid]["auditor_reasons"]
+            else:
+                target_scores = conv_map[cid]["reviewer_scores"]
+                target_reasons = conv_map[cid]["reviewer_reasons"]
+
+            for field in ADDITIONAL_INFO_FIELDS:
+                val = ad.get(field["key"])
+                if val is None:
+                    continue
+                target_scores[field["name"]] = "Pass" if val is True else ("Fail" if val is False else str(val))
+
+                reason_key = field.get("reason_key")
+                if reason_key:
+                    reason_text = (ad.get(reason_key) or "").strip()
+                    if reason_text and reason_text.upper() not in ("N/A", "N/A.", "NA"):
+                        target_reasons.setdefault(field["name"], []).append(
+                            {"label": reason_key, "text": reason_text}
+                        )
+
+            standalone = (ad.get(_STANDALONE_TEXT_KEY) or "").strip()
+            if standalone and standalone.upper() not in ("N/A", "NA"):
+                target_reasons.setdefault("Explanation Agreement", []).append(
+                    {"label": "Agreement/Disagreement", "text": standalone}
+                )
+
+        # 2b. Fallback: fetch quality dimension scores (manual reviews only)
+        #     for conversations that have no additional_data.
+        #     Sets all items in a category to the category-level Pass/Fail.
+        cat_name_to_items: dict[str, list[str]] = {}
+        for cat in RUBRIC_CATEGORIES:
+            cat_name_to_items[cat["name"].lower()] = cat["items"]
+
+        qd_query = self._build_quality_dimensions_query(project_id, start_date, end_date)
+        try:
+            qd_rows = [dict(r) for r in client.query(qd_query).result()]
+            logger.info(f"BigQuery returned {len(qd_rows)} quality dimension rows for project {project_id}")
+        except Exception as e:
+            logger.warning(f"Quality dimension fallback query failed: {e}")
+            qd_rows = []
+
+        for qd_row in qd_rows:
+            cid = qd_row["conversation_id"]
+            if cid not in conv_map:
+                continue
+
+            bucket = self._resolve_role_bucket(
+                qd_row.get("reviewer_email"), qd_row.get("audit"), team_roles,
+            )
+            if bucket == "calibrator":
+                target_scores = conv_map[cid]["auditor_scores"]
+            else:
+                target_scores = conv_map[cid]["reviewer_scores"]
+
+            bq_dim_name = (qd_row.get("dimension_name") or "").strip()
+            our_cat_name = _BQ_DIM_TO_CATEGORY.get(bq_dim_name.lower())
+            if not our_cat_name:
+                continue
+            cat_items = cat_name_to_items.get(our_cat_name.lower(), [])
+            if not cat_items:
+                continue
+
+            already_has = any(target_scores.get(item) for item in cat_items)
+            if already_has:
+                continue
+
+            score_text = (qd_row.get("score_text") or "").strip()
+            score_val = qd_row.get("score")
+            if score_text.upper() in ("PASS", "FAIL"):
+                pf = score_text.capitalize()
+            elif score_val is not None:
+                pf = "Pass" if float(score_val) >= 1.0 else "Fail"
+            else:
+                continue
+
+            for item in cat_items:
+                target_scores[item] = pf
+
+        # 3. Build task_details in the same shape as the sheet parser
+        task_details: list[dict[str, Any]] = []
+        for cid, info in conv_map.items():
+            has_data = bool(
+                any(info["reviewer_scores"].values())
+                or any(info["auditor_scores"].values())
+            )
+            task_details.append({
+                "batch": info["batch_name"],
+                "task": str(info["conversation_id"]),
+                "task_link": info["colab_link"],
+                "has_data": has_data,
+                "reviewer": {
+                    "scores": info["reviewer_scores"],
+                    "reasons": info["reviewer_reasons"],
+                },
+                "auditor": {
+                    "scores": info["auditor_scores"],
+                    "reasons": info["auditor_reasons"],
+                },
+            })
+
+        logger.info(
+            f"Built {len(task_details)} task detail records from BigQuery "
+            f"({sum(1 for t in task_details if t['has_data'])} with data)"
+        )
+
+        # 4. Compute aggregates
+        empty_summary: dict[str, Any] = {
+            "batch_list": [],
+            "batch_fpy": {},
+            "category_fpy": {},
+            "rubric_item_fpy": {},
+        }
+        batch_quality = self._compute_batch_quality(task_details, empty_summary)
+        rubric_fpy = self._compute_rubric_fpy_dynamic(task_details, rubric_categories)
+
+        # 5. Compute daily rollup from BigQuery data
+        daily_rollup = self._compute_daily_rollup_from_bq(
+            client, project_id, task_details, team_roles,
+            start_date=start_date, end_date=end_date,
+        )
+
+        return {
+            "daily_rollup": daily_rollup,
+            "batch_quality": batch_quality,
+            "rubric_fpy": rubric_fpy,
+            "task_details": task_details,
+            "rubric_categories": rubric_categories,
+            "summary": empty_summary,
+        }
+
+    # ------------------------------------------------------------------
+    # Dynamic rubric FPY computation (for BigQuery data)
+    # ------------------------------------------------------------------
+
+    @staticmethod
+    def _compute_rubric_fpy_dynamic(
+        task_details: list[dict],
+        categories: list[dict],
+    ) -> list[dict]:
+        """Compute per-rubric-item FPY% using dynamic categories (no Summary tab)."""
+        tasks_with_data = [t for t in task_details if t["has_data"]]
+        results: list[dict] = []
+
+        for cat in categories:
+            cat_reviewer_total = 0
+            cat_reviewer_pass = 0
+            cat_auditor_total = 0
+            cat_auditor_pass = 0
+
+            item_results: list[dict] = []
+
+            for item in cat["items"]:
+                reviewer_total = 0
+                reviewer_pass = 0
+                auditor_total = 0
+                auditor_pass = 0
+
+                for t in tasks_with_data:
+                    rv = t["reviewer"]["scores"].get(item, "").strip().upper()
+                    if rv:
+                        reviewer_total += 1
+                        if rv == "PASS":
+                            reviewer_pass += 1
+
+                    av = t["auditor"]["scores"].get(item, "").strip().upper()
+                    if av:
+                        auditor_total += 1
+                        if av == "PASS":
+                            auditor_pass += 1
+
+                cat_reviewer_total += reviewer_total
+                cat_reviewer_pass += reviewer_pass
+                cat_auditor_total += auditor_total
+                cat_auditor_pass += auditor_pass
+
+                r_fpy = round(reviewer_pass / reviewer_total * 100, 1) if reviewer_total else None
+                r_rework = round(100 - r_fpy, 1) if r_fpy is not None else None
+                a_fpy = round(auditor_pass / auditor_total * 100, 1) if auditor_total else None
+                a_rework = round(100 - a_fpy, 1) if a_fpy is not None else None
+
+                item_results.append({
+                    "rubric_item": item,
+                    "category": cat["name"],
+                    "is_category_summary": False,
+                    "reviewer_fpy": r_fpy,
+                    "reviewer_rework": r_rework,
+                    "auditor_fpy": a_fpy,
+                    "auditor_rework": a_rework,
+                    "source": "computed",
+                })
+
+            cat_r_fpy = round(cat_reviewer_pass / cat_reviewer_total * 100, 1) if cat_reviewer_total else None
+            cat_r_rework = round(100 - cat_r_fpy, 1) if cat_r_fpy is not None else None
+            cat_a_fpy = round(cat_auditor_pass / cat_auditor_total * 100, 1) if cat_auditor_total else None
+            cat_a_rework = round(100 - cat_a_fpy, 1) if cat_a_fpy is not None else None
+
+            results.append({
+                "rubric_item": cat["name"],
+                "category": cat["name"],
+                "is_category_summary": True,
+                "reviewer_fpy": cat_r_fpy,
+                "reviewer_rework": cat_r_rework,
+                "auditor_fpy": cat_a_fpy,
+                "auditor_rework": cat_a_rework,
+                "source": "computed",
+            })
+            results.extend(item_results)
+
+        return results
+
+    # ------------------------------------------------------------------
+    # Helpers
+    # ------------------------------------------------------------------
+
+    @staticmethod
+    def _empty_daily_rollup() -> dict[str, Any]:
+        return {
+            "total_annotations_l1": 0,
+            "total_reviewed_l2": 0,
+            "total_reviewed_l2_action": "",
+            "total_passed_l2": 0,
+            "total_flagged_rework": 0,
+            "total_flagged_rework_action": "",
+            "total_calibrated": 0,
+            "passed_calibrator": 0,
+            "failed_calibration": 0,
+            "failed_calibration_action": "",
+            "total_defects": 0,
+            "high_severity": 0,
+            "medium_severity": 0,
+            "total_ready_to_ship": 0,
+            "reviewer_fpy": 0,
+            "reviewer_fpy_action": "",
+            "auditor_fpy": 0,
+            "auditor_fpy_action": "",
+            "overall_status": "N/A",
+            "updated_date": "",
+        }
+
+    def _compute_daily_rollup_from_bq(
+        self,
+        client,
+        project_id: int,
+        task_details: list[dict],
+        team_roles: dict[str, str],
+        start_date: str | None = None,
+        end_date: str | None = None,
+    ) -> dict[str, Any]:
+        """Compute Daily Rollup metrics from BigQuery data.
+
+        Uses conversation statuses + already-fetched task_details rubric scores.
+        """
+        from app.config import get_settings
+        from datetime import datetime
+
+        s = get_settings()
+        p, d = s.gcp_project_id, s.bigquery_dataset
+
+        date_filter = self._date_filter_sql("c", start_date, end_date)
+        # --- Pipeline counts from conversation statuses ---
+        status_query = f"""
+        SELECT c.status, COUNT(*) AS cnt
+        FROM `{p}.{d}.conversation` c
+        WHERE c.project_id = {project_id}
+          {date_filter}
+        GROUP BY c.status
+        """
+        status_counts: dict[str, int] = {}
+        for row in client.query(status_query).result():
+            status_counts[row["status"]] = row["cnt"]
+
+        # L1 Annotations = all tasks that were ever worked on (completed + validated + rework)
+        total_annotations_l1 = (
+            status_counts.get("completed", 0)
+            + status_counts.get("validated", 0)
+            + status_counts.get("rework", 0)
+        )
+
+        # Tasks with reviewer data
+        tasks_with_reviewer = [
+            t for t in task_details
+            if t["has_data"] and any(v.strip() for v in t["reviewer"]["scores"].values())
+        ]
+
+        # Tasks with auditor data
+        tasks_with_auditor = [
+            t for t in task_details
+            if t["has_data"] and any(v.strip() for v in t["auditor"]["scores"].values())
+        ]
+
+        total_reviewed_l2 = len(tasks_with_reviewer)
+
+        # L2 Passed = reviewer reviewed and ALL rubrics passed
+        reviewer_all_pass = [
+            t for t in tasks_with_reviewer
+            if all(v.upper() == "PASS" for v in t["reviewer"]["scores"].values() if v.strip())
+        ]
+        total_passed_l2 = len(reviewer_all_pass)
+
+        # Flagged for Rework = conversations currently in rework status
+        total_flagged_rework = status_counts.get("rework", 0)
+
+        # --- Calibration metrics ---
+        total_calibrated = len(tasks_with_auditor)
+
+        auditor_all_pass = [
+            t for t in tasks_with_auditor
+            if all(v.upper() == "PASS" for v in t["auditor"]["scores"].values() if v.strip())
+        ]
+        passed_calibrator = len(auditor_all_pass)
+        failed_calibration = total_calibrated - passed_calibrator
+
+        # --- Defects: tasks where reviewer found at least one FAIL ---
+        tasks_with_defects = [
+            t for t in tasks_with_reviewer
+            if any(v.upper() == "FAIL" for v in t["reviewer"]["scores"].values() if v.strip())
+        ]
+        total_defects = len(tasks_with_defects)
+
+        # High severity = 3+ fails, Medium severity = 1-2 fails
+        high_severity = 0
+        medium_severity = 0
+        for t in tasks_with_defects:
+            fail_count = sum(1 for v in t["reviewer"]["scores"].values() if v.strip() and v.upper() == "FAIL")
+            if fail_count >= 3:
+                high_severity += 1
+            else:
+                medium_severity += 1
+
+        total_ready_to_ship = total_passed_l2
+
+        # --- FPY ---
+        reviewer_fpy = round(total_passed_l2 / total_reviewed_l2 * 100, 1) if total_reviewed_l2 > 0 else 0
+        auditor_fpy = round(passed_calibrator / total_calibrated * 100, 1) if total_calibrated > 0 else 0
+
+        # --- Overall Status ---
+        if total_reviewed_l2 == 0:
+            overall_status = "N/A"
+        elif reviewer_fpy >= 95:
+            overall_status = "Good"
+        elif reviewer_fpy >= 80:
+            overall_status = "OK"
+        else:
+            overall_status = "Risk"
+
+        return {
+            "total_annotations_l1": total_annotations_l1,
+            "total_reviewed_l2": total_reviewed_l2,
+            "total_reviewed_l2_action": "",
+            "total_passed_l2": total_passed_l2,
+            "total_flagged_rework": total_flagged_rework,
+            "total_flagged_rework_action": f"{total_flagged_rework} tasks need rework" if total_flagged_rework > 0 else "",
+            "total_calibrated": total_calibrated,
+            "passed_calibrator": passed_calibrator,
+            "failed_calibration": failed_calibration,
+            "failed_calibration_action": f"{failed_calibration} tasks failed calibration" if failed_calibration > 0 else "",
+            "total_defects": total_defects,
+            "high_severity": high_severity,
+            "medium_severity": medium_severity,
+            "total_ready_to_ship": total_ready_to_ship,
+            "reviewer_fpy": reviewer_fpy,
+            "reviewer_fpy_action": "",
+            "auditor_fpy": auditor_fpy,
+            "auditor_fpy_action": "",
+            "overall_status": overall_status,
+            "updated_date": datetime.now().strftime("%Y-%m-%d %H:%M"),
+        }
+
+    def _empty_response(self, project_id: int) -> dict[str, Any]:
+        return {
+            "daily_rollup": self._empty_daily_rollup(),
+            "batch_quality": [],
+            "rubric_fpy": [],
+            "task_details": [],
+            "rubric_categories": [],
+            "summary": {
+                "batch_list": [],
+                "batch_fpy": {},
+                "category_fpy": {},
+                "rubric_item_fpy": {},
+            },
+        }
 
 
 # Singleton instance

@@ -187,7 +187,7 @@ function getSortValue(item: any, sortColumn: string, level: HierarchyLevel): any
     case 'size':
       if (level === 'podLead') return item.trainer_count ?? 0
       if (level === 'trainer') return 0
-      return item.pod_lead_count ?? 0
+      return (item.trainer_count ?? 0) + (item.pod_lead_count ?? 0)
     case 'logged_hours':
       if (level === 'podLead') return (item.trainer_jibble_hours ?? 0) + (item.pod_jibble_hours ?? 0)
       if (level === 'trainer') return item.jibble_hours ?? 0
@@ -271,6 +271,7 @@ function TaskRow({ task }: { task: TaskUnderTrainer }) {
       <TableCell align="center" sx={{ ...cellStyle, color: '#94A3B8', borderRight: `2px solid ${COLUMN_GROUPS.overview.borderColor}` }}>-</TableCell>
 
       {/* Tasks Group */}
+      <TableCell align="center" sx={{ ...cellStyle, color: '#94A3B8' }}>-</TableCell>
       <TableCell align="center" sx={{ ...cellStyle }}>
         <Typography sx={{ fontSize: dataFontSize, fontWeight: 500, color: '#94A3B8' }}>1</Typography>
       </TableCell>
@@ -284,15 +285,37 @@ function TaskRow({ task }: { task: TaskUnderTrainer }) {
           {task.rework_count > 0 ? task.rework_count : '-'}
         </Typography>
       </TableCell>
+      <TableCell align="center" sx={{ ...cellStyle, color: '#94A3B8' }}>-</TableCell>
+      <TableCell align="center" sx={{ ...cellStyle, color: '#94A3B8' }}>-</TableCell>
+      <TableCell align="center" sx={{ ...cellStyle, color: '#94A3B8' }}>-</TableCell>
+      <TableCell align="center" sx={{ ...cellStyle, color: '#94A3B8' }}>-</TableCell>
+      <TableCell align="center" sx={{ ...cellStyle }}>
+        <Typography sx={{ fontSize: dataFontSize, fontWeight: 500, color: task.is_calibrated ? '#7C3AED' : '#94A3B8' }}>
+          {task.is_calibrated ? '1' : '-'}
+        </Typography>
+      </TableCell>
+      <TableCell align="center" sx={{ ...cellStyle }}>
+        <Typography sx={{ fontSize: dataFontSize, fontWeight: 500, color: task.calibration_passed ? '#059669' : '#94A3B8' }}>
+          {task.calibration_passed ? '1' : '-'}
+        </Typography>
+      </TableCell>
+      <TableCell align="center" sx={{ ...cellStyle }}>
+        <Typography sx={{ fontSize: dataFontSize, fontWeight: 500, color: task.task_status?.toLowerCase() === 'rework' ? '#DC2626' : '#94A3B8' }}>
+          {task.task_status?.toLowerCase() === 'rework' ? 'Yes' : 'No'}
+        </Typography>
+      </TableCell>
       <TableCell align="center" sx={{ ...cellStyle }}>
         <Typography sx={{ fontSize: dataFontSize, fontWeight: 500, color: task.is_delivered ? '#059669' : '#94A3B8' }}>
           {task.is_delivered ? '1' : '-'}
         </Typography>
       </TableCell>
-      <TableCell align="center" sx={{ ...cellStyle, borderRight: `1px solid ${COLUMN_GROUPS.tasks.borderColor}` }}>
+      <TableCell align="center" sx={{ ...cellStyle }}>
         <Typography sx={{ fontSize: dataFontSize, fontWeight: 500, color: task.is_in_queue ? '#D97706' : '#94A3B8' }}>
           {task.is_in_queue ? '1' : '-'}
         </Typography>
+      </TableCell>
+      <TableCell align="center" sx={{ ...cellStyle, borderRight: `1px solid ${COLUMN_GROUPS.tasks.borderColor}` }}>
+        <Typography sx={{ fontSize: dataFontSize, color: '#94A3B8' }}>-</Typography>
       </TableCell>
 
       {/* Quality Group */}
@@ -315,9 +338,6 @@ function TaskRow({ task }: { task: TaskUnderTrainer }) {
         <Typography sx={{ fontSize: dataFontSize, fontWeight: 500 }}>
           {task.agentic_rating !== null ? task.agentic_rating.toFixed(2) : '-'}
         </Typography>
-      </TableCell>
-      <TableCell align="center" sx={{ ...cellStyle }}>
-        <Typography sx={{ fontSize: dataFontSize, color: '#94A3B8' }}>-</Typography>
       </TableCell>
       <TableCell align="center" sx={{ ...cellStyle, borderRight: `1px solid ${COLUMN_GROUPS.quality.borderColor}`, ...getReworkPercentStyle(task.rework_percent) }}>
         <Typography sx={{ fontSize: dataFontSize, fontWeight: 500 }}>
@@ -428,30 +448,49 @@ function TrainerRow({
           )}
         </TableCell>
 
-        {/* Tasks Group - NO COLOR CODING (not in PMO requirements) */}
+        {/* Tasks Group */}
         <TableCell align="center" sx={{ ...cellStyle }}>
-          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#475569' }}>
-            {trainer.unique_tasks}
-          </Typography>
+          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#64748B' }}>{trainer.target || '-'}</Typography>
         </TableCell>
         <TableCell align="center" sx={{ ...cellStyle }}>
-          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#475569' }}>
-            {trainer.new_tasks}
-          </Typography>
+          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#475569' }}>{trainer.unique_tasks}</Typography>
         </TableCell>
         <TableCell align="center" sx={{ ...cellStyle }}>
-          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#475569' }}>
-            {trainer.rework}
-          </Typography>
+          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#475569' }}>{trainer.new_tasks}</Typography>
         </TableCell>
         <TableCell align="center" sx={{ ...cellStyle }}>
-          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#64748B' }}>
-            {trainer.delivered ?? '-'}
-          </Typography>
+          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#475569' }}>{trainer.rework || '-'}</Typography>
         </TableCell>
-        <TableCell align="center" sx={{ ...cellStyle, borderRight: `1px solid ${COLUMN_GROUPS.tasks.borderColor}` }}>
-          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#64748B' }}>
-            {trainer.in_queue ?? '-'}
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#475569' }}>{trainer.claimed || '-'}</Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#475569' }}>{trainer.in_progress || '-'}</Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#475569' }}>{trainer.completed_current || '-'}</Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#475569' }}>{trainer.reviewed || '-'}</Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#475569' }}>{trainer.calibrated || '-'}</Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#475569' }}>{trainer.calibration_passed || '-'}</Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#475569' }}>{trainer.in_rework || '-'}</Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#64748B' }}>{trainer.delivered ?? '-'}</Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#64748B' }}>{trainer.in_queue ?? '-'}</Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle, borderRight: `1px solid ${COLUMN_GROUPS.tasks.borderColor}`, ...getAvgReworkStyle(trainer.avg_rework) }}>
+          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600 }}>
+            {trainer.avg_rework !== null ? trainer.avg_rework.toFixed(2) : '-'}
           </Typography>
         </TableCell>
 
@@ -474,11 +513,6 @@ function TrainerRow({
         <TableCell align="center" sx={{ ...cellStyle, ...getRatingStyle(trainer.agentic_rating) }}>
           <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600 }}>
             {trainer.agentic_rating !== null ? trainer.agentic_rating.toFixed(2) : '-'}
-          </Typography>
-        </TableCell>
-        <TableCell align="center" sx={{ ...cellStyle, ...getAvgReworkStyle(trainer.avg_rework) }}>
-          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600 }}>
-            {trainer.avg_rework !== null ? trainer.avg_rework.toFixed(2) : '-'}
           </Typography>
         </TableCell>
         <TableCell align="center" sx={{ ...cellStyle, borderRight: `1px solid ${COLUMN_GROUPS.quality.borderColor}`, ...getReworkPercentStyle(trainer.rework_percent) }}>
@@ -606,30 +640,49 @@ function PodLeadRow({
           <Typography sx={{ fontSize: dataFontSize, fontWeight: 600, color: '#64748B' }}>{podLead.trainer_count}</Typography>
         </TableCell>
 
-        {/* Tasks Group - NO COLOR CODING (not in PMO requirements) */}
+        {/* Tasks Group */}
         <TableCell align="center" sx={{ ...cellStyle }}>
-          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#475569' }}>
-            {podLead.unique_tasks}
-          </Typography>
+          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#64748B' }}>{podLead.target || '-'}</Typography>
         </TableCell>
         <TableCell align="center" sx={{ ...cellStyle }}>
-          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#475569' }}>
-            {podLead.new_tasks}
-          </Typography>
+          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#475569' }}>{podLead.unique_tasks}</Typography>
         </TableCell>
         <TableCell align="center" sx={{ ...cellStyle }}>
-          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#475569' }}>
-            {podLead.rework}
-          </Typography>
+          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#475569' }}>{podLead.new_tasks}</Typography>
         </TableCell>
         <TableCell align="center" sx={{ ...cellStyle }}>
-          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#64748B' }}>
-            {podLead.delivered ?? '-'}
-          </Typography>
+          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#475569' }}>{podLead.rework || '-'}</Typography>
         </TableCell>
-        <TableCell align="center" sx={{ ...cellStyle, borderRight: `1px solid ${COLUMN_GROUPS.tasks.borderColor}` }}>
-          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#64748B' }}>
-            {podLead.in_queue ?? '-'}
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#475569' }}>{podLead.claimed || '-'}</Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#475569' }}>{podLead.in_progress || '-'}</Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#475569' }}>{podLead.completed_current || '-'}</Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#475569' }}>{podLead.reviewed || '-'}</Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#475569' }}>{podLead.calibrated || '-'}</Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#475569' }}>{podLead.calibration_passed || '-'}</Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#475569' }}>{podLead.in_rework || '-'}</Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#64748B' }}>{podLead.delivered ?? '-'}</Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#64748B' }}>{podLead.in_queue ?? '-'}</Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle, borderRight: `1px solid ${COLUMN_GROUPS.tasks.borderColor}`, ...getAvgReworkStyle(podLead.avg_rework) }}>
+          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600 }}>
+            {podLead.avg_rework !== null ? podLead.avg_rework.toFixed(2) : '-'}
           </Typography>
         </TableCell>
 
@@ -652,11 +705,6 @@ function PodLeadRow({
         <TableCell align="center" sx={{ ...cellStyle, ...getRatingStyle(podLead.agentic_rating) }}>
           <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600 }}>
             {podLead.agentic_rating !== null ? podLead.agentic_rating.toFixed(2) : '-'}
-          </Typography>
-        </TableCell>
-        <TableCell align="center" sx={{ ...cellStyle, ...getAvgReworkStyle(podLead.avg_rework) }}>
-          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600 }}>
-            {podLead.avg_rework !== null ? podLead.avg_rework.toFixed(2) : '-'}
           </Typography>
         </TableCell>
         <TableCell align="center" sx={{ ...cellStyle, borderRight: `1px solid ${COLUMN_GROUPS.quality.borderColor}`, ...getReworkPercentStyle(podLead.rework_percent) }}>
@@ -787,34 +835,53 @@ function ProjectRow({
           </Box>
         </TableCell>
         <TableCell align="center" sx={{ ...cellStyle, borderRight: `2px solid ${COLUMN_GROUPS.overview.borderColor}` }}>
-          <Typography sx={{ fontSize: { xs: '0.58rem', sm: '0.65rem', md: '0.7rem' }, fontWeight: 700, color: '#4F46E5' }}>{project.pod_lead_count}</Typography>
-          <Typography sx={{ fontSize: { xs: '0.42rem', sm: '0.45rem', md: '0.48rem' }, color: '#64748B' }}>{project.trainer_count}t</Typography>
+          <Typography sx={{ fontSize: { xs: '0.58rem', sm: '0.65rem', md: '0.7rem' }, fontWeight: 700, color: '#4F46E5' }}>{project.trainer_count + project.pod_lead_count}</Typography>
+          <Typography sx={{ fontSize: { xs: '0.42rem', sm: '0.45rem', md: '0.48rem' }, color: '#64748B' }}>{project.trainer_count}T, {project.pod_lead_count}P</Typography>
         </TableCell>
 
-        {/* Tasks Group - NO COLOR CODING (not in PMO requirements) */}
+        {/* Tasks Group */}
         <TableCell align="center" sx={{ ...cellStyle }}>
-          <Typography sx={{ fontSize: projectFontSize, fontWeight: 700, color: '#1E293B' }}>
-            {project.unique_tasks}
-          </Typography>
+          <Typography sx={{ fontSize: projectFontSize, fontWeight: 700, color: '#64748B' }}>{project.target || '-'}</Typography>
         </TableCell>
         <TableCell align="center" sx={{ ...cellStyle }}>
-          <Typography sx={{ fontSize: projectFontSize, fontWeight: 700, color: '#1E293B' }}>
-            {project.new_tasks}
-          </Typography>
+          <Typography sx={{ fontSize: projectFontSize, fontWeight: 700, color: '#1E293B' }}>{project.unique_tasks}</Typography>
         </TableCell>
         <TableCell align="center" sx={{ ...cellStyle }}>
-          <Typography sx={{ fontSize: projectFontSize, fontWeight: 700, color: '#1E293B' }}>
-            {project.rework}
-          </Typography>
+          <Typography sx={{ fontSize: projectFontSize, fontWeight: 700, color: '#1E293B' }}>{project.new_tasks}</Typography>
         </TableCell>
         <TableCell align="center" sx={{ ...cellStyle }}>
-          <Typography sx={{ fontSize: projectFontSize, fontWeight: 700, color: '#64748B' }}>
-            {project.delivered ?? '-'}
-          </Typography>
+          <Typography sx={{ fontSize: projectFontSize, fontWeight: 700, color: '#1E293B' }}>{project.rework || '-'}</Typography>
         </TableCell>
-        <TableCell align="center" sx={{ ...cellStyle, borderRight: `1px solid ${COLUMN_GROUPS.tasks.borderColor}` }}>
-          <Typography sx={{ fontSize: projectFontSize, fontWeight: 700, color: '#64748B' }}>
-            {project.in_queue ?? '-'}
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: projectFontSize, fontWeight: 700, color: '#1E293B' }}>{project.claimed || '-'}</Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: projectFontSize, fontWeight: 700, color: '#1E293B' }}>{project.in_progress || '-'}</Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: projectFontSize, fontWeight: 700, color: '#1E293B' }}>{project.completed_current || '-'}</Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: projectFontSize, fontWeight: 700, color: '#1E293B' }}>{project.reviewed || '-'}</Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: projectFontSize, fontWeight: 700, color: '#1E293B' }}>{project.calibrated || '-'}</Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: projectFontSize, fontWeight: 700, color: '#1E293B' }}>{project.calibration_passed || '-'}</Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: projectFontSize, fontWeight: 700, color: '#1E293B' }}>{project.in_rework || '-'}</Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: projectFontSize, fontWeight: 700, color: '#64748B' }}>{project.delivered ?? '-'}</Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: projectFontSize, fontWeight: 700, color: '#64748B' }}>{project.in_queue ?? '-'}</Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle, borderRight: `1px solid ${COLUMN_GROUPS.tasks.borderColor}`, ...getAvgReworkStyle(project.avg_rework) }}>
+          <Typography sx={{ fontSize: projectFontSize, fontWeight: 700 }}>
+            {project.avg_rework !== null ? project.avg_rework.toFixed(2) : '-'}
           </Typography>
         </TableCell>
 
@@ -837,11 +904,6 @@ function ProjectRow({
         <TableCell align="center" sx={{ ...cellStyle, ...getRatingStyle(project.agentic_rating) }}>
           <Typography sx={{ fontSize: projectFontSize, fontWeight: 700 }}>
             {project.agentic_rating !== null ? project.agentic_rating.toFixed(2) : '-'}
-          </Typography>
-        </TableCell>
-        <TableCell align="center" sx={{ ...cellStyle, ...getAvgReworkStyle(project.avg_rework) }}>
-          <Typography sx={{ fontSize: projectFontSize, fontWeight: 700 }}>
-            {project.avg_rework !== null ? project.avg_rework.toFixed(2) : '-'}
           </Typography>
         </TableCell>
         <TableCell align="center" sx={{ ...cellStyle, borderRight: `1px solid ${COLUMN_GROUPS.quality.borderColor}`, ...getReworkPercentStyle(project.rework_percent) }}>
@@ -1299,6 +1361,7 @@ export function ProjectsTab({ onSummaryUpdate, onSummaryLoading }: ProjectsTabPr
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
+  const [selectedProjectId, setSelectedProjectId] = useState<number | ''>('')
   const [timeframe, setTimeframe] = useState<Timeframe>('overall')
   const [weekOffset, setWeekOffset] = useState<number>(0)
   const [customStartDate, setCustomStartDate] = useState('')
@@ -1321,16 +1384,17 @@ export function ProjectsTab({ onSummaryUpdate, onSummaryLoading }: ProjectsTabPr
 
   useEffect(() => { fetchData() }, [timeframe, weekOffset, customStartDate, customEndDate])
 
-  // Report summary stats to parent when data changes
+  // Report summary stats to parent when data or filter changes
   useEffect(() => {
     if (data.length > 0 && onSummaryUpdate) {
-      const totalTasks = data.reduce((sum, p) => sum + (p.unique_tasks || 0), 0)
-      const totalTrainers = data.reduce((sum, p) => sum + p.pod_leads.reduce((s, pl) => s + (pl.trainers?.length || 0), 0), 0)
-      const totalPodLeads = data.reduce((sum, p) => sum + (p.pod_leads?.length || 0), 0)
-      const totalProjects = data.length
-      const totalReviews = data.reduce((sum, p) => sum + (p.total_reviews || 0), 0)
-      const newTasks = data.reduce((sum, p) => sum + (p.new_tasks || 0), 0)
-      const rework = data.reduce((sum, p) => sum + (p.rework || 0), 0)
+      const source = selectedProjectId !== '' ? data.filter(p => p.project_id === selectedProjectId) : data
+      const totalTasks = source.reduce((sum, p) => sum + (p.unique_tasks || 0), 0)
+      const totalTrainers = source.reduce((sum, p) => sum + p.pod_leads.reduce((s, pl) => s + (pl.trainers?.length || 0), 0), 0)
+      const totalPodLeads = source.reduce((sum, p) => sum + (p.pod_leads?.length || 0), 0)
+      const totalProjects = source.length
+      const totalReviews = source.reduce((sum, p) => sum + (p.total_reviews || 0), 0)
+      const newTasks = source.reduce((sum, p) => sum + (p.new_tasks || 0), 0)
+      const rework = source.reduce((sum, p) => sum + (p.rework || 0), 0)
       
       onSummaryUpdate({
         totalTasks,
@@ -1342,7 +1406,7 @@ export function ProjectsTab({ onSummaryUpdate, onSummaryLoading }: ProjectsTabPr
         rework
       })
     }
-  }, [data, onSummaryUpdate])
+  }, [data, selectedProjectId, onSummaryUpdate])
 
   const fetchData = async () => {
     setLoading(true)
@@ -1360,13 +1424,16 @@ export function ProjectsTab({ onSummaryUpdate, onSummaryLoading }: ProjectsTabPr
     }
   }
 
-  const filteredData = data.filter(project =>
-    project.project_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    project.pod_leads.some(pl => 
-      pl.pod_lead_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      pl.pod_lead_email.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  )
+  const filteredData = data.filter(project => {
+    if (selectedProjectId !== '' && project.project_id !== selectedProjectId) return false
+    if (!searchTerm) return true
+    const s = searchTerm.toLowerCase()
+    return project.project_name.toLowerCase().includes(s) ||
+      project.pod_leads.some(pl =>
+        pl.pod_lead_name.toLowerCase().includes(s) ||
+        pl.pod_lead_email.toLowerCase().includes(s)
+      )
+  })
 
   const sortedData = [...filteredData].sort((a, b) => {
     if (!sortColumn) return 0
@@ -1374,7 +1441,7 @@ export function ProjectsTab({ onSummaryUpdate, onSummaryLoading }: ProjectsTabPr
     switch (sortColumn) {
       // Overview
       case 'project_name': aVal = a.project_name || ''; bVal = b.project_name || ''; break
-      case 'size': aVal = a.pod_lead_count ?? 0; bVal = b.pod_lead_count ?? 0; break
+      case 'size': aVal = (a.trainer_count ?? 0) + (a.pod_lead_count ?? 0); bVal = (b.trainer_count ?? 0) + (b.pod_lead_count ?? 0); break
       // Tasks
       case 'unique_tasks': aVal = a.unique_tasks ?? 0; bVal = b.unique_tasks ?? 0; break
       case 'new_tasks': aVal = a.new_tasks ?? 0; bVal = b.new_tasks ?? 0; break
@@ -1498,6 +1565,21 @@ export function ProjectsTab({ onSummaryUpdate, onSummaryLoading }: ProjectsTabPr
             customStartDate={customStartDate} onCustomStartDateChange={setCustomStartDate}
             customEndDate={customEndDate} onCustomEndDateChange={setCustomEndDate}
           />
+          <FormControl size="small" sx={{ minWidth: { xs: 100, sm: 140, md: 160 } }}>
+            <Select
+              displayEmpty
+              value={selectedProjectId}
+              onChange={(e) => setSelectedProjectId(e.target.value as number | '')}
+              sx={{ fontSize: { xs: '0.65rem', sm: '0.7rem' }, height: { xs: 26, sm: 28, md: 30 } }}
+            >
+              <MenuItem value="" sx={{ fontSize: '0.75rem' }}>All Projects</MenuItem>
+              {data.map(p => (
+                <MenuItem key={p.project_id} value={p.project_id} sx={{ fontSize: '0.75rem' }}>
+                  {p.project_name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
           <TextField
             size="small" placeholder="Search..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}
             sx={{ 
@@ -1612,7 +1694,7 @@ export function ProjectsTab({ onSummaryUpdate, onSummaryLoading }: ProjectsTabPr
                   <Typography sx={{ fontSize: { xs: '0.5rem', sm: '0.55rem', md: '0.6rem' }, fontWeight: 700, letterSpacing: '0.02em' }}>OVERVIEW</Typography>
                 </TableCell>
                 <TableCell 
-                  colSpan={5} 
+                  colSpan={14} 
                   align="center"
                   sx={{ 
                     ...headerCellStyle, 
@@ -1625,7 +1707,7 @@ export function ProjectsTab({ onSummaryUpdate, onSummaryLoading }: ProjectsTabPr
                   <Typography sx={{ fontSize: { xs: '0.5rem', sm: '0.55rem', md: '0.6rem' }, fontWeight: 700, letterSpacing: '0.02em' }}>TASKS</Typography>
                 </TableCell>
                 <TableCell 
-                  colSpan={6} 
+                  colSpan={5} 
                   align="center"
                   sx={{ 
                     ...headerCellStyle, 
@@ -1684,18 +1766,26 @@ export function ProjectsTab({ onSummaryUpdate, onSummaryLoading }: ProjectsTabPr
                 <SubHeader label="Size" columnKey="size" group="overview" tooltipKey="Size" isLastInGroup />
 
                 {/* Tasks - All sortable */}
+                <SubHeader label="Target" columnKey="target" group="tasks" tooltipKey="Target" />
                 <SubHeader label="Unique" columnKey="unique_tasks" group="tasks" tooltipKey="Uniq" />
                 <SubHeader label="New" columnKey="new_tasks" group="tasks" tooltipKey="New" />
                 <SubHeader label="Rework" columnKey="rework" group="tasks" tooltipKey="Rwk" />
+                <SubHeader label="Claimed" columnKey="claimed" group="tasks" tooltipKey="Claimed" />
+                <SubHeader label="In Prog" columnKey="in_progress" group="tasks" tooltipKey="InProg" />
+                <SubHeader label="Completed" columnKey="completed_current" group="tasks" tooltipKey="CompCur" />
+                <SubHeader label="Reviewed" columnKey="reviewed" group="tasks" tooltipKey="Revwd" />
+                <SubHeader label="Calibrated" columnKey="calibrated" group="tasks" tooltipKey="Calib" />
+                <SubHeader label="Cal Passed" columnKey="calibration_passed" group="tasks" tooltipKey="CalPass" />
+                <SubHeader label="In Rework" columnKey="in_rework" group="tasks" tooltipKey="InRwk" />
                 <SubHeader label="Delivered" columnKey="delivered" group="tasks" tooltipKey="Del" />
-                <SubHeader label="Queue" columnKey="in_queue" group="tasks" tooltipKey="Queue" isLastInGroup />
+                <SubHeader label="Queue" columnKey="in_queue" group="tasks" tooltipKey="Queue" />
+                <SubHeader label="Avg Rwk" columnKey="avg_rework" group="tasks" tooltipKey="AvgR" isLastInGroup />
 
                 {/* Quality - All sortable */}
                 <SubHeader label="Reviews" columnKey="total_reviews" group="quality" tooltipKey="Rev" />
                 <SubHeader label="Rating" columnKey="avg_rating" group="quality" tooltipKey="Rate" />
                 <SubHeader label="Agentic" columnKey="agentic_reviews" group="quality" tooltipKey="Agt" customColor="#7C3AED" />
                 <SubHeader label="Agt Rate" columnKey="agentic_rating" group="quality" tooltipKey="AgtR" customColor="#7C3AED" />
-                <SubHeader label="Avg Rwk" columnKey="avg_rework" group="quality" tooltipKey="AvgR" />
                 <SubHeader label="Rwk %" columnKey="rework_percent" group="quality" tooltipKey="R%" isLastInGroup />
 
                 {/* Time & Efficiency - All sortable */}
