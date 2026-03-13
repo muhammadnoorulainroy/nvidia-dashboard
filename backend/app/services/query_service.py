@@ -3898,7 +3898,8 @@ class QueryService:
                                     'below_target': False,
                                 })
                                 pod_aggregates[pod_email]['revenue'] = pod_aggregates[pod_email].get('revenue', 0) + _extra_rev
-                                pod_aggregates[pod_email]['trainer_count'] += 1
+                                # NOTE: Do NOT increment trainer_count here.
+                                # Size should only reflect trainers who completed new/rework tasks in the date range.
                     
                     # ---------------------------------------------------------
                     # Include trainers who logged Jibble hours but have NO task history
@@ -3990,7 +3991,8 @@ class QueryService:
                         pod_aggregates[pod_email]['in_rework'] += t_in_rework
                         pod_aggregates[pod_email]['delivered'] += trainer_entry['delivered']
                         pod_aggregates[pod_email]['in_queue'] += trainer_entry['in_queue']
-                        pod_aggregates[pod_email]['trainer_count'] += 1
+                        # NOTE: Do NOT increment trainer_count here.
+                        # Size should only reflect trainers who completed new/rework tasks in the date range.
                         if trainer_email.lower().strip() != pod_email.lower().strip():
                             pod_aggregates[pod_email]['trainer_jibble_hours'] += trainer_jibble
                         pod_aggregates[pod_email]['revenue'] = pod_aggregates[pod_email].get('revenue', 0) + trainer_entry['revenue']
@@ -4245,7 +4247,7 @@ class QueryService:
                     project_results.append({
                         'project_id': project_id,
                         'project_name': project_name,
-                        'pod_lead_count': len(pod_leads_list),
+                        'pod_lead_count': sum(1 for pl in pod_leads_list if pl.get('trainer_count', 0) > 0),
                         'trainer_count': project_totals['trainer_count'],
                         'target': round(project_totals['target'], 1),
                         'unique_tasks': project_true_unique_tasks,
