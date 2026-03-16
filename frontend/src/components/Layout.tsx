@@ -15,6 +15,14 @@ import {
   Tooltip,
   useTheme,
   useMediaQuery,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  Button,
+  Alert,
+  CircularProgress,
 } from '@mui/material'
 import {
   Menu as MenuIcon,
@@ -26,9 +34,13 @@ import {
   People as PeopleIcon,
   Logout as LogoutIcon,
   Summarize as SummarizeIcon,
+  Lock as LockIcon,
 } from '@mui/icons-material'
+import axios from 'axios'
 import SyncStatus from './common/SyncStatus'
 import { useAuth } from '../contexts/AuthContext'
+
+const API_BASE = import.meta.env.VITE_API_PREFIX || '/api'
 
 const drawerWidth = 64
 
@@ -53,8 +65,132 @@ interface LayoutProps {
   children: React.ReactNode
 }
 
+function ChangePasswordDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const { token, updateToken } = useAuth()
+  const [currentPassword, setCurrentPassword] = useState('')
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [error, setError] = useState('')
+  const [success, setSuccess] = useState(false)
+  const [loading, setLoading] = useState(false)
+
+  const reset = () => {
+    setCurrentPassword('')
+    setNewPassword('')
+    setConfirmPassword('')
+    setError('')
+    setSuccess(false)
+  }
+
+  const handleClose = () => {
+    reset()
+    onClose()
+  }
+
+  const handleSubmit = async () => {
+    setError('')
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      setError('All fields are required')
+      return
+    }
+    if (newPassword.length < 8) {
+      setError('New password must be at least 8 characters')
+      return
+    }
+    if (newPassword !== confirmPassword) {
+      setError('New passwords do not match')
+      return
+    }
+    if (currentPassword === newPassword) {
+      setError('New password must be different from current password')
+      return
+    }
+
+    setLoading(true)
+    try {
+      const res = await axios.post(
+        `${API_BASE}/auth/change-password`,
+        { current_password: currentPassword, new_password: newPassword },
+        { headers: { Authorization: `Bearer ${token}` } },
+      )
+      if (res.data.access_token) {
+        updateToken(res.data.access_token)
+      }
+      setSuccess(true)
+      setTimeout(handleClose, 1500)
+    } catch (err: any) {
+      setError(err?.response?.data?.detail || 'Failed to change password')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <Dialog open={open} onClose={handleClose} maxWidth="xs" fullWidth PaperProps={{ sx: { borderRadius: 2 } }}>
+      <DialogTitle sx={{ pb: 0.5 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <LockIcon sx={{ fontSize: 20, color: '#4F46E5' }} />
+          <Typography sx={{ fontSize: '1rem', fontWeight: 700, color: '#0F172A' }}>Change Password</Typography>
+        </Box>
+      </DialogTitle>
+      <DialogContent sx={{ pt: 2 }}>
+        {error && <Alert severity="error" sx={{ mb: 2, fontSize: '0.8rem' }}>{error}</Alert>}
+        {success && <Alert severity="success" sx={{ mb: 2, fontSize: '0.8rem' }}>Password changed successfully</Alert>}
+        <TextField
+          label="Current Password"
+          type="password"
+          fullWidth
+          size="small"
+          value={currentPassword}
+          onChange={(e) => setCurrentPassword(e.target.value)}
+          disabled={loading || success}
+          sx={{ mb: 2, mt: 1 }}
+          autoFocus
+        />
+        <TextField
+          label="New Password"
+          type="password"
+          fullWidth
+          size="small"
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
+          disabled={loading || success}
+          helperText="Minimum 8 characters"
+          sx={{ mb: 2 }}
+        />
+        <TextField
+          label="Confirm New Password"
+          type="password"
+          fullWidth
+          size="small"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          disabled={loading || success}
+          sx={{ mb: 1 }}
+          onKeyDown={(e) => { if (e.key === 'Enter') handleSubmit() }}
+        />
+      </DialogContent>
+      <DialogActions sx={{ px: 3, pb: 2 }}>
+        <Button onClick={handleClose} size="small" sx={{ color: '#64748B', textTransform: 'none', fontWeight: 600 }}>
+          Cancel
+        </Button>
+        <Button
+          onClick={handleSubmit}
+          variant="contained"
+          size="small"
+          disabled={loading || success}
+          sx={{ textTransform: 'none', fontWeight: 600, bgcolor: '#4F46E5', '&:hover': { bgcolor: '#4338CA' } }}
+        >
+          {loading ? <CircularProgress size={18} sx={{ color: '#fff' }} /> : 'Change Password'}
+        </Button>
+      </DialogActions>
+    </Dialog>
+  )
+}
+
 export default function Layout({ children }: LayoutProps) {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [pwDialogOpen, setPwDialogOpen] = useState(false)
   const navigate = useNavigate()
   const location = useLocation()
   const theme = useTheme()
@@ -151,9 +287,14 @@ export default function Layout({ children }: LayoutProps) {
 
       {user && (
         <Box sx={{ mt: 'auto', p: 1, borderTop: '1px solid rgba(255,255,255,0.08)', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0.5 }}>
-          <Tooltip title={`${user.name || user.email}\n${user.email}`} placement="right" arrow>
+          <Tooltip title={`${user.name || user.email} — Change Password`} placement="right" arrow>
             <Avatar
-              sx={{ width: 30, height: 30, bgcolor: '#76B900', fontSize: '0.8rem', fontWeight: 700, cursor: 'default' }}
+              onClick={() => setPwDialogOpen(true)}
+              sx={{
+                width: 30, height: 30, bgcolor: '#76B900', fontSize: '0.8rem', fontWeight: 700,
+                cursor: 'pointer', transition: 'box-shadow 0.15s',
+                '&:hover': { boxShadow: '0 0 0 2px #76B900' },
+              }}
             >
               {user.name?.[0]?.toUpperCase() || user.email[0].toUpperCase()}
             </Avatar>
@@ -257,6 +398,7 @@ export default function Layout({ children }: LayoutProps) {
         </Box>
         {children}
       </Box>
+      <ChangePasswordDialog open={pwDialogOpen} onClose={() => setPwDialogOpen(false)} />
     </Box>
   )
 }
