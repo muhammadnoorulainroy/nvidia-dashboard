@@ -21,7 +21,7 @@ from apscheduler.triggers.interval import IntervalTrigger
 # from slowapi.middleware import SlowAPIMiddleware
 
 from app.config import get_settings
-from app.routers import stats, jibble, config, analytics, quality_rubrics
+from app.routers import stats, jibble, config, analytics, quality_rubrics, shared
 from app.routers import auth as auth_router, users as users_router
 from app.auth import get_current_user, seed_initial_admin  # noqa: F401 – used in router deps
 from app.schemas.response_schemas import HealthResponse, ErrorResponse
@@ -203,6 +203,9 @@ async def health_full() -> HealthCheckResponse:
 # =============================================================================
 # Auth routes are public (no dependency)
 app.include_router(auth_router.router, prefix=settings.api_prefix)
+
+# Share link routes: public data endpoint + admin CRUD (auth handled per-endpoint)
+app.include_router(shared.router, prefix=settings.api_prefix)
 
 # All data routes require a valid JWT
 _auth_dep = [Depends(get_current_user)]
@@ -446,10 +449,10 @@ async def startup_event():
         #     except Exception as e:
         #         logger.error(f"Scheduled Jibble project sync failed: {e}")
         
-        # Main data sync job (every sync_interval_hours)
+        # Main data sync job (every sync_interval_minutes)
         scheduler.add_job(
             sync_job,
-            trigger=IntervalTrigger(hours=settings.sync_interval_hours),
+            trigger=IntervalTrigger(minutes=settings.sync_interval_minutes),
             id='data_sync_job',
             name='Periodic Data Sync',
             replace_existing=True
@@ -473,7 +476,7 @@ async def startup_event():
         # )
         
         scheduler.start()
-        logger.info(f"Scheduled data sync every {settings.sync_interval_hours} hour(s)")
+        logger.info(f"Scheduled data sync every {settings.sync_interval_minutes} minute(s)")
         logger.info("Jibble API sync disabled - using BigQuery for Jibble data")
         
         from app.core.resilience import StartupResult

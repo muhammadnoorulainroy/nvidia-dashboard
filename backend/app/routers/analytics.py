@@ -108,3 +108,50 @@ async def get_time_series(
             status_code=500,
             detail=f"Failed to fetch analytics data: {str(e)}"
         )
+
+
+@router.get("/daily-by-project")
+async def get_daily_by_project(
+    start_date: Optional[str] = Query(default=None),
+    end_date: Optional[str] = Query(default=None),
+) -> Dict[str, Any]:
+    """
+    Get daily time-series for EACH project in one call.
+    Returns { project_id: [AnalyticsDataPoint, ...], ... }
+    """
+    _validate_date(start_date, "start_date")
+    _validate_date(end_date, "end_date")
+    if not end_date:
+        end_date = datetime.now().strftime('%Y-%m-%d')
+    if not start_date:
+        start_date = (datetime.now() - timedelta(weeks=1)).strftime('%Y-%m-%d')
+
+    from app.constants import get_constants
+    from app.services.analytics_service import prefetch_fpy_data
+    constants = get_constants()
+    project_ids = constants.projects.ALL_PROJECT_IDS
+
+    try:
+        db_service = get_db_service()
+        session = db_service.SessionLocal()
+        try:
+            fpy_reviews, fpy_roles = prefetch_fpy_data(session, start_date, end_date)
+            result: Dict[str, list] = {}
+            for pid in project_ids:
+                ts = get_analytics_time_series(
+                    session=session,
+                    start_date=start_date,
+                    end_date=end_date,
+                    granularity='daily',
+                    project_id=pid,
+                    skip_bigquery_fpy=True,
+                    prefetched_fpy_reviews=fpy_reviews,
+                    prefetched_fpy_role_map=fpy_roles,
+                )
+                result[str(pid)] = ts.get('data', [])
+            return result
+        finally:
+            session.close()
+    except Exception as e:
+        logger.error(f"Daily-by-project error: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))

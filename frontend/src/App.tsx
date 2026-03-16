@@ -20,6 +20,7 @@ const TeamOverview = lazy(() => import('./pages/TeamOverview'))
 const QualityRubrics = lazy(() => import('./pages/QualityRubrics'))
 const ProjectSummary = lazy(() => import('./pages/ProjectSummary'))
 const UserManagement = lazy(() => import('./pages/UserManagement'))
+const SharedTaskRubrics = lazy(() => import('./pages/SharedTaskRubrics'))
 
 function PageLoader() {
   return (
@@ -59,6 +60,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/shared/:token" element={<SharedTaskRubrics />} />
           <Route
             path="/change-password"
             element={

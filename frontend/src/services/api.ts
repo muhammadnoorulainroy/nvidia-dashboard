@@ -659,6 +659,8 @@ export interface ProjectStats {
   avg_rating: number | null
   merged_exp_aht: number | null
   logged_hours: number
+  trainer_jibble_hours: number
+  reviewer_jibble_hours: number
   active_jibble_people: number
   total_pod_hours: number
   accounted_hours: number
@@ -719,6 +721,44 @@ export const getJibbleProjectHours = async (
   const url = queryString ? `/jibble/project-hours?${queryString}` : '/jibble/project-hours'
   const response = await apiClient.get<JibbleUserHours[]>(url)
   return response.data
+}
+
+
+// ============================================================================
+// TIME THEFT API FUNCTIONS
+// ============================================================================
+
+export interface TimeTheftEntry {
+  full_name: string | null
+  turing_email: string | null
+  jibble_email: string | null
+  total_hours: number
+  project: string
+  excluded: boolean
+}
+
+export const getTimeTheft = async (
+  projectId?: number,
+  startDate?: string,
+  endDate?: string,
+  showExcluded?: boolean,
+): Promise<TimeTheftEntry[]> => {
+  const params = new URLSearchParams()
+  if (projectId) params.append('project_id', String(projectId))
+  if (startDate) params.append('start_date', startDate)
+  if (endDate) params.append('end_date', endDate)
+  if (showExcluded) params.append('show_excluded', 'true')
+  const qs = params.toString()
+  const response = await apiClient.get<TimeTheftEntry[]>(`/jibble/time-theft${qs ? `?${qs}` : ''}`)
+  return response.data
+}
+
+export const excludeFromTimeTheft = async (turingEmail: string, reason?: string): Promise<void> => {
+  await apiClient.post('/jibble/time-theft/exclude', { turing_email: turingEmail, reason })
+}
+
+export const removeTimeTheftExclusion = async (turingEmail: string): Promise<void> => {
+  await apiClient.delete(`/jibble/time-theft/exclude?turing_email=${encodeURIComponent(turingEmail)}`)
 }
 
 
@@ -1077,6 +1117,9 @@ export interface AnalyticsDataPoint {
   human_avg_rating: number | null
   agentic_avg_rating: number | null
   rework_percent: number | null
+  reviewer_fpy_pct: number | null
+  auditor_fpy_pct: number | null
+  avg_rework_per_task: number | null
   // Time & Efficiency
   aht_avg: number | null
   accounted_hours: number
@@ -1092,6 +1135,12 @@ export interface AnalyticsDataPoint {
   // People
   trainers_active: number
   team_size: number
+  labeling_tool_people: number
+  jibble_people: number
+  // Additional delivery
+  completed: number
+  reviewed: number
+  target: number
 }
 
 export interface AnalyticsResponse {
@@ -1158,11 +1207,21 @@ export interface QualityRubricsData {
     task: string
     task_link: string
     has_data: boolean
+    reviewer_rework_count?: number
+    auditor_rework_count?: number
     reviewer: {
       scores: Record<string, string>
       reasons: Record<string, ReasonEntry[]>
     }
     auditor: {
+      scores: Record<string, string>
+      reasons: Record<string, ReasonEntry[]>
+    }
+    first_reviewer?: {
+      scores: Record<string, string>
+      reasons: Record<string, ReasonEntry[]>
+    }
+    first_auditor?: {
       scores: Record<string, string>
       reasons: Record<string, ReasonEntry[]>
     }
@@ -1219,6 +1278,8 @@ export interface ProjectSummaryRow {
   accounted_hours: number
   target: number
   delivered: number
+  completed: number
+  reviewed: number
   reviewer_fpy_pct: number | null
   auditor_fpy_pct: number | null
   rework_rate: number
@@ -1286,5 +1347,70 @@ export const getAnalyticsTimeSeries = async (options: {
     `/analytics/time-series${queryString ? '?' + queryString : ''}`
   )
   setCache(cacheKey, response.data)
+  return response.data
+}
+
+export const getDailyByProject = async (
+  startDate: string,
+  endDate: string,
+): Promise<Record<string, AnalyticsDataPoint[]>> => {
+  const params = new URLSearchParams()
+  params.append('start_date', startDate)
+  params.append('end_date', endDate)
+  const qs = params.toString()
+  const cacheKey = `/analytics/daily-by-project?${qs}`
+  const cached = getFromCache<Record<string, AnalyticsDataPoint[]>>(cacheKey)
+  if (cached) return cached
+  const response = await apiClient.get<Record<string, AnalyticsDataPoint[]>>(
+    `/analytics/daily-by-project?${qs}`
+  )
+  setCache(cacheKey, response.data)
+  return response.data
+}
+
+// ─── Share Links ─────────────────────────────────────────────────────
+
+export interface ShareLink {
+  id: number
+  token: string
+  page: string
+  project_id: number | null
+  label: string | null
+  is_active: boolean
+  expires_at: string | null
+  created_by: string
+  created_at: string
+}
+
+export const createShareLink = async (options: {
+  page?: string
+  project_id?: number
+  label?: string
+  expires_in_days?: number
+}): Promise<ShareLink> => {
+  const response = await apiClient.post<ShareLink>('/shared/links', options)
+  return response.data
+}
+
+export const listShareLinks = async (): Promise<ShareLink[]> => {
+  const response = await apiClient.get<ShareLink[]>('/shared/links')
+  return response.data
+}
+
+export const revokeShareLink = async (linkId: number): Promise<void> => {
+  await apiClient.delete(`/shared/links/${linkId}`)
+}
+
+export const getSharedQualityRubricsData = async (
+  token: string,
+  startDate?: string,
+  endDate?: string,
+): Promise<QualityRubricsData> => {
+  const params = new URLSearchParams()
+  if (startDate) params.append('start_date', startDate)
+  if (endDate) params.append('end_date', endDate)
+  const qs = params.toString()
+  const url = `${API_BASE_URL}/shared/${token}/quality-rubrics/data${qs ? `?${qs}` : ''}`
+  const response = await axios.get<QualityRubricsData>(url)
   return response.data
 }

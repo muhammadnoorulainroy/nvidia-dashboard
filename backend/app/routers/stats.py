@@ -406,13 +406,13 @@ async def get_sync_info() -> Dict[str, Any]:
             current_utc = datetime.now(timezone.utc)
             
             # Calculate next sync time based on last sync + interval
-            sync_interval_minutes = settings.sync_interval_hours * 60
+            sync_interval_minutes = settings.sync_interval_minutes
             next_sync_time = None
             seconds_until_next_sync = None
             
             if last_sync and last_sync.sync_completed_at:
                 last_sync_utc = last_sync.sync_completed_at.replace(tzinfo=timezone.utc) if last_sync.sync_completed_at.tzinfo is None else last_sync.sync_completed_at
-                next_sync = last_sync_utc + timedelta(hours=settings.sync_interval_hours)
+                next_sync = last_sync_utc + timedelta(minutes=settings.sync_interval_minutes)
                 next_sync_time = next_sync.isoformat()
                 seconds_until_next_sync = max(0, int((next_sync - current_utc).total_seconds()))
             

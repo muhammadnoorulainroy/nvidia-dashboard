@@ -20,10 +20,12 @@ from sqlalchemy import func, case, distinct, extract, text, and_, or_, literal
 from sqlalchemy.orm import Session
 
 from app.models.db_models import (
+    Task,
     TaskHistoryRaw,
     TaskRaw,
     ContributorDailyStats,
     Contributor,
+    ReviewDetail,
     JibbleHours,
     ProjectRevenueWeekly,
     ProjectCostDaily,
@@ -51,6 +53,9 @@ KPI_DEFINITIONS = [
     {"key": "human_avg_rating", "label": "Human Avg Rating", "group": "Quality", "unit": "rating", "color": "#9C27B0"},
     {"key": "agentic_avg_rating", "label": "Agentic Avg Rating", "group": "Quality", "unit": "rating", "color": "#FF9800"},
     {"key": "rework_percent", "label": "Rework %", "group": "Quality", "unit": "percent", "color": "#FF5722"},
+    {"key": "reviewer_fpy_pct", "label": "Reviewer FPY %", "group": "Quality", "unit": "percent", "color": "#3B82F6"},
+    {"key": "auditor_fpy_pct", "label": "Auditor FPY %", "group": "Quality", "unit": "percent", "color": "#8B5CF6"},
+    {"key": "avg_rework_per_task", "label": "Avg Rework/Task", "group": "Quality", "unit": "ratio", "color": "#F97316"},
     # Time & Efficiency group
     {"key": "aht_avg", "label": "AHT (hrs/task)", "group": "Time & Efficiency", "unit": "hours", "color": "#009688"},
     {"key": "accounted_hours", "label": "Accounted Hours", "group": "Time & Efficiency", "unit": "hours", "color": "#00BCD4"},
@@ -129,12 +134,95 @@ def _get_project_ids_filter(project_id: Optional[int]) -> List[int]:
     return constants.projects.PRIMARY_PROJECT_IDS
 
 
+def prefetch_fpy_data(
+    session: Session,
+    start_date: str,
+    end_date: str,
+) -> tuple:
+    """
+    Fetch ALL FPY review data from BigQuery in one call (all projects).
+    Returns (fpy_reviews_by_date, fpy_role_map) to pass into get_analytics_time_series.
+    """
+    from datetime import datetime, date
+    parsed_start = datetime.strptime(start_date, '%Y-%m-%d').date()
+    parsed_end = datetime.strptime(end_date, '%Y-%m-%d').date()
+    constants = get_constants()
+    all_project_ids = constants.projects.ALL_PROJECT_IDS
+
+    fpy_reviews_by_date: Dict[date, list] = defaultdict(list)
+    fpy_role_map: dict = {}
+
+    try:
+        from app.config import get_settings
+        settings = get_settings()
+        from google.cloud import bigquery as bq_module
+        bq_client = bq_module.Client(project=settings.gcp_project_id)
+        gcp_p, gcp_d = settings.gcp_project_id, settings.bigquery_dataset
+        pid_list = ','.join(str(i) for i in all_project_ids)
+
+        fpy_query = f"""
+        SELECT
+            conv.project_id,
+            r.conversation_id,
+            cont.turing_email AS reviewer_email,
+            JSON_EXTRACT_SCALAR(r.review_action, '$.type') AS action_type,
+            DATE(r.submitted_at) AS review_date
+        FROM `{gcp_p}.{gcp_d}.review` r
+        JOIN `{gcp_p}.{gcp_d}.conversation` conv ON conv.id = r.conversation_id
+        LEFT JOIN `{gcp_p}.{gcp_d}.contributor` cont ON cont.id = r.reviewer_id
+        WHERE conv.project_id IN ({pid_list})
+          AND r.review_type = 'manual'
+          AND r.status = 'published'
+          AND r.submitted_at IS NOT NULL
+          AND DATE(r.submitted_at) >= '{parsed_start.isoformat()}'
+          AND DATE(r.submitted_at) <= '{parsed_end.isoformat()}'
+        ORDER BY r.conversation_id, r.submitted_at ASC
+        """
+        fpy_rows = list(bq_client.query(fpy_query).result())
+        for row in fpy_rows:
+            rd = row['review_date']
+            if isinstance(rd, datetime):
+                rd = rd.date()
+            fpy_reviews_by_date[rd].append({
+                'project_id': row['project_id'],
+                'conversation_id': row['conversation_id'],
+                'reviewer_email': (row['reviewer_email'] or '').lower().strip(),
+                'action_type': (row['action_type'] or '').lower(),
+            })
+
+        pod_rows = session.query(PodLeadMapping.trainer_email, PodLeadMapping.role).all()
+        for pr in pod_rows:
+            if pr.trainer_email and pr.role:
+                rl = pr.role.lower().strip()
+                em = pr.trainer_email.lower().strip()
+                if rl in ('pod lead', 'sub pod lead', 'pod_lead'):
+                    fpy_role_map[em] = 'reviewer'
+                elif rl in ('calibrator', 'auditor', 'team lead'):
+                    fpy_role_map[em] = 'calibrator'
+        try:
+            from app.services.quality_rubrics_service import QualityRubricsService
+            qr_svc = QualityRubricsService()
+            for email, role in qr_svc._fetch_team_roles().items():
+                fpy_role_map[email.lower().strip()] = role
+        except Exception:
+            pass
+
+        logger.info(f"Prefetch FPY: Loaded {len(fpy_rows)} review rows for all projects")
+    except Exception as e:
+        logger.warning(f"Prefetch FPY failed (non-fatal): {e}")
+
+    return fpy_reviews_by_date, fpy_role_map
+
+
 def get_analytics_time_series(
     session: Session,
     start_date: str,
     end_date: str,
     granularity: str = 'weekly',
     project_id: Optional[int] = None,
+    skip_bigquery_fpy: bool = False,
+    prefetched_fpy_reviews: Optional[Dict] = None,
+    prefetched_fpy_role_map: Optional[Dict] = None,
 ) -> Dict[str, Any]:
     """
     Get time-series data for the Analytics page.
@@ -169,23 +257,33 @@ def get_analytics_time_series(
     })
     
     try:
-        task_rows = session.query(
+        # Count DISTINCT tasks per day, split into new (first completion) vs rework
+        # Use a subquery to get per-task max completed_status_count per day,
+        # then count distinct tasks by category
+        from sqlalchemy import and_
+        task_sub = session.query(
             TaskHistoryRaw.date,
-            func.count(distinct(TaskHistoryRaw.task_id)).label('unique_tasks'),
-            func.sum(case(
-                (TaskHistoryRaw.completed_status_count == 1, 1),
-                else_=0
-            )).label('new_tasks'),
-            func.sum(case(
-                (TaskHistoryRaw.completed_status_count > 1, 1),
-                else_=0
-            )).label('rework_tasks'),
+            TaskHistoryRaw.task_id,
+            func.max(TaskHistoryRaw.completed_status_count).label('max_csc'),
         ).filter(
             TaskHistoryRaw.new_status == 'completed',
             TaskHistoryRaw.project_id.in_(project_ids),
             TaskHistoryRaw.date >= parsed_start,
             TaskHistoryRaw.date <= parsed_end,
-        ).group_by(TaskHistoryRaw.date).all()
+        ).group_by(TaskHistoryRaw.date, TaskHistoryRaw.task_id).subquery()
+
+        task_rows = session.query(
+            task_sub.c.date,
+            func.count(task_sub.c.task_id).label('unique_tasks'),
+            func.sum(case(
+                (task_sub.c.max_csc == 1, 1),
+                else_=0
+            )).label('new_tasks'),
+            func.sum(case(
+                (task_sub.c.max_csc > 1, 1),
+                else_=0
+            )).label('rework_tasks'),
+        ).group_by(task_sub.c.date).all()
         
         for row in task_rows:
             key = row.date
@@ -317,11 +415,147 @@ def get_analytics_time_series(
         logger.error(f"Analytics: Error querying team size: {e}")
     
     # =========================================================================
-    # QUERY 6: Jibble hours
+    # QUERY 6: Labeling-tool-active emails (for filtering Jibble hours)
+    # Only sum Jibble hours for people who created tasks OR reviewed tasks.
+    # Excludes managers/delivery leads with Jibble hours but zero tool activity.
     # =========================================================================
-    jibble_data = defaultdict(float)
+    labeling_active_emails: set = set()
     
     try:
+        # Task creators: anyone who completed tasks (from people_data_by_day)
+        for emails in people_data_by_day.values():
+            labeling_active_emails.update(e.lower().strip() for e in emails if e)
+        
+        # Task creators: anyone who has tasks assigned (any status) from TaskRaw
+        task_author_rows = session.query(
+            distinct(func.lower(TaskRaw.trainer))
+        ).filter(
+            TaskRaw.project_id.in_(project_ids),
+            TaskRaw.trainer.isnot(None),
+        ).all()
+        for row in task_author_rows:
+            if row[0]:
+                labeling_active_emails.add(row[0].lower().strip())
+        
+        # Reviewers: people from ReviewDetail who actually reviewed tasks
+        reviewer_rows = session.query(
+            distinct(func.lower(Contributor.turing_email))
+        ).join(
+            ReviewDetail, ReviewDetail.reviewer_id == Contributor.id
+        ).join(
+            Task, ReviewDetail.conversation_id == Task.id
+        ).filter(
+            Task.project_id.in_(project_ids),
+            Contributor.turing_email.isnot(None),
+            ReviewDetail.updated_at >= parsed_start,
+            ReviewDetail.updated_at <= parsed_end,
+        ).all()
+        for row in reviewer_rows:
+            if row[0]:
+                labeling_active_emails.add(row[0].lower().strip())
+        
+        logger.info(f"Analytics: {len(labeling_active_emails)} labeling-active emails for Jibble filter")
+    except Exception as e:
+        logger.warning(f"Analytics: Could not build active-emails set: {e}")
+
+    # =========================================================================
+    # QUERY 6a-ii: Reviewers active per day (from ReviewDetail)
+    # =========================================================================
+    reviewer_emails_by_day: Dict[date, set] = defaultdict(set)
+    try:
+        rev_activity_rows = session.query(
+            func.date(ReviewDetail.updated_at).label('rev_date'),
+            func.lower(Contributor.turing_email).label('email'),
+        ).join(
+            Contributor, ReviewDetail.reviewer_id == Contributor.id
+        ).join(
+            Task, ReviewDetail.conversation_id == Task.id
+        ).filter(
+            Task.project_id.in_(project_ids),
+            Contributor.turing_email.isnot(None),
+            ReviewDetail.updated_at >= parsed_start,
+            ReviewDetail.updated_at <= parsed_end,
+        ).all()
+        for row in rev_activity_rows:
+            if row.email and row.rev_date:
+                d = row.rev_date if isinstance(row.rev_date, date) else row.rev_date.date() if hasattr(row.rev_date, 'date') else row.rev_date
+                reviewer_emails_by_day[d].add(row.email.strip())
+    except Exception as e:
+        logger.warning(f"Analytics: Error querying daily reviewer activity: {e}")
+
+    # =========================================================================
+    # QUERY 6a-iii: Jibble people per day (distinct people who logged hours)
+    # =========================================================================
+    jibble_people_by_day: Dict[date, set] = defaultdict(set)
+
+    # =========================================================================
+    # QUERY 6a-iv: Completed & Reviewed counts per day from task_raw
+    # =========================================================================
+    reviewed_by_day: Dict[date, int] = defaultdict(int)
+    try:
+        reviewed_rows = session.query(
+            func.date(TaskRaw.r_updated_at).label('rev_date'),
+            func.count(distinct(TaskRaw.task_id)).label('cnt'),
+        ).filter(
+            TaskRaw.project_id.in_(project_ids),
+            TaskRaw.r_updated_at.isnot(None),
+            func.date(TaskRaw.r_updated_at) >= parsed_start,
+            func.date(TaskRaw.r_updated_at) <= parsed_end,
+            TaskRaw.count_reviews > 0,
+        ).group_by(func.date(TaskRaw.r_updated_at)).all()
+        for row in reviewed_rows:
+            reviewed_by_day[row.rev_date] = int(row.cnt or 0)
+    except Exception as e:
+        logger.warning(f"Analytics: Error querying reviewed daily: {e}")
+
+    # =========================================================================
+    # QUERY 6b: Jibble hours (filtered to labeling-tool-active people)
+    #           Also split into reviewer vs trainer hours for target calc.
+    # =========================================================================
+    jibble_data = defaultdict(float)
+    reviewer_jibble_data = defaultdict(float)
+
+    # Build reviewer/calibrator email set, scoped to the current project(s)
+    review_role_emails: set = set()
+    try:
+        pod_q = session.query(PodLeadMapping.trainer_email, PodLeadMapping.role)
+        if project_id:
+            proj_jibble_names = constants.jibble.PROJECT_ID_TO_JIBBLE_NAMES.get(project_id, [])
+            if proj_jibble_names:
+                pod_q = pod_q.filter(PodLeadMapping.jibble_project.in_(proj_jibble_names))
+        for pr in pod_q.all():
+            if pr.trainer_email and pr.role:
+                rl = pr.role.lower().strip()
+                if rl in ('pod lead', 'sub pod lead', 'pod_lead', 'calibrator', 'auditor', 'team lead'):
+                    review_role_emails.add(pr.trainer_email.lower().strip())
+        # Team sheet roles are specific to Math Proof Eval projects (59, 60)
+        if not project_id or project_id in (59, 60):
+            try:
+                from app.services.quality_rubrics_service import QualityRubricsService
+                qr_svc_roles = QualityRubricsService()
+                for email, role in qr_svc_roles._fetch_team_roles().items():
+                    review_role_emails.add(email.lower().strip())
+            except Exception:
+                pass
+    except Exception:
+        pass
+
+    def _build_jibble_base_filter(q):
+        """Apply common project + active-email filters to a Jibble query."""
+        if project_id:
+            jn = constants.jibble.PROJECT_ID_TO_JIBBLE_NAMES.get(project_id, [])
+            if jn:
+                q = q.filter(JibbleHours.project.in_(jn))
+        else:
+            all_jn = list(constants.jibble.JIBBLE_NAME_TO_PROJECT_ID.keys())
+            if all_jn:
+                q = q.filter(JibbleHours.project.in_(all_jn))
+        if labeling_active_emails:
+            q = q.filter(func.lower(JibbleHours.turing_email).in_(labeling_active_emails))
+        return q
+
+    try:
+        # Total Jibble hours per day
         jibble_rows = session.query(
             JibbleHours.entry_date,
             func.sum(JibbleHours.logged_hours).label('total_hours'),
@@ -329,24 +563,51 @@ def get_analytics_time_series(
             JibbleHours.entry_date >= parsed_start,
             JibbleHours.entry_date <= parsed_end,
         )
-        
-        # Filter by project if specific project selected
-        if project_id:
-            project_name = constants.projects.PROJECT_ID_TO_NAME.get(project_id, '')
-            jibble_mapping = constants.jibble.JIBBLE_NAME_TO_PROJECT_ID
-            jibble_names = [name for name, pid in jibble_mapping.items() if pid == project_id]
-            if jibble_names:
-                jibble_rows = jibble_rows.filter(JibbleHours.project.in_(jibble_names))
-        else:
-            # All nvidia projects
-            all_jibble_names = list(constants.jibble.JIBBLE_NAME_TO_PROJECT_ID.keys())
-            if all_jibble_names:
-                jibble_rows = jibble_rows.filter(JibbleHours.project.in_(all_jibble_names))
-        
+        jibble_rows = _build_jibble_base_filter(jibble_rows)
         jibble_rows = jibble_rows.group_by(JibbleHours.entry_date).all()
-        
+
         for row in jibble_rows:
             jibble_data[row.entry_date] = float(row.total_hours or 0)
+
+        # Reviewer-role Jibble hours per day (for subtracting from target calc)
+        if review_role_emails:
+            rev_jibble_rows = session.query(
+                JibbleHours.entry_date,
+                func.sum(JibbleHours.logged_hours).label('total_hours'),
+            ).filter(
+                JibbleHours.entry_date >= parsed_start,
+                JibbleHours.entry_date <= parsed_end,
+                func.lower(JibbleHours.turing_email).in_(review_role_emails),
+            )
+            rev_jibble_rows = _build_jibble_base_filter(rev_jibble_rows)
+            rev_jibble_rows = rev_jibble_rows.group_by(JibbleHours.entry_date).all()
+            for row in rev_jibble_rows:
+                reviewer_jibble_data[row.entry_date] = float(row.total_hours or 0)
+
+        # Also track distinct Jibble people per day
+        jibble_people_q = session.query(
+            JibbleHours.entry_date,
+            func.lower(JibbleHours.turing_email).label('email'),
+        ).filter(
+            JibbleHours.entry_date >= parsed_start,
+            JibbleHours.entry_date <= parsed_end,
+            JibbleHours.turing_email.isnot(None),
+        )
+        if project_id:
+            jibble_names2 = constants.jibble.PROJECT_ID_TO_JIBBLE_NAMES.get(project_id, [])
+            if jibble_names2:
+                jibble_people_q = jibble_people_q.filter(JibbleHours.project.in_(jibble_names2))
+        else:
+            all_jn = list(constants.jibble.JIBBLE_NAME_TO_PROJECT_ID.keys())
+            if all_jn:
+                jibble_people_q = jibble_people_q.filter(JibbleHours.project.in_(all_jn))
+        if labeling_active_emails:
+            jibble_people_q = jibble_people_q.filter(
+                func.lower(JibbleHours.turing_email).in_(labeling_active_emails)
+            )
+        for row in jibble_people_q.all():
+            if row.email and row.entry_date:
+                jibble_people_by_day[row.entry_date].add(row.email.strip())
     except Exception as e:
         logger.error(f"Analytics: Error querying jibble hours: {e}")
     
@@ -412,28 +673,90 @@ def get_analytics_time_series(
         logger.error(f"Analytics: Error querying cost data: {e}")
     
     # =========================================================================
-    # QUERY 9: AHT config
+    # QUERY 9: AHT config — use constants (same source as main dashboard)
     # =========================================================================
-    aht_new = constants.aht.DEFAULT_NEW_TASK_AHT
-    aht_rework = constants.aht.DEFAULT_REWORK_AHT
+    if project_id:
+        proj_aht = constants.daily_targets.get_aht(project_id)
+        aht_new = proj_aht.get('new_task_aht', constants.daily_targets.DEFAULT_NEW_TASK_AHT)
+        aht_rework = proj_aht.get('rework_aht', constants.daily_targets.DEFAULT_REWORK_AHT)
+    else:
+        aht_new = constants.daily_targets.DEFAULT_NEW_TASK_AHT
+        aht_rework = constants.daily_targets.DEFAULT_REWORK_AHT
     
-    try:
-        from app.models.db_models import AHTConfiguration
-        # Get average AHT across projects
-        aht_rows = session.query(
-            func.avg(AHTConfiguration.new_task_aht).label('avg_new'),
-            func.avg(AHTConfiguration.rework_aht).label('avg_rework'),
-        ).filter(
-            AHTConfiguration.project_id.in_(project_ids)
-        ).first()
-        
-        if aht_rows and aht_rows.avg_new:
-            aht_new = float(aht_rows.avg_new)
-        if aht_rows and aht_rows.avg_rework:
-            aht_rework = float(aht_rows.avg_rework)
-    except Exception as e:
-        logger.warning(f"Analytics: Using default AHT values: {e}")
-    
+    # =========================================================================
+    # QUERY 10: FPY from BigQuery reviews (reviewer & auditor, per date)
+    # =========================================================================
+    fpy_reviews_by_date: Dict[date, list] = defaultdict(list)
+    fpy_role_map: dict = {}
+
+    if prefetched_fpy_reviews is not None and prefetched_fpy_role_map is not None:
+        # Use pre-fetched data — filter to this project's IDs
+        for d, revs in prefetched_fpy_reviews.items():
+            for rev in revs:
+                if rev['project_id'] in project_ids:
+                    fpy_reviews_by_date[d].append(rev)
+        fpy_role_map = prefetched_fpy_role_map
+    elif not skip_bigquery_fpy:
+        try:
+            from app.config import get_settings
+            settings = get_settings()
+            from google.cloud import bigquery as bq_module
+            bq_client = bq_module.Client(project=settings.gcp_project_id)
+            gcp_p, gcp_d = settings.gcp_project_id, settings.bigquery_dataset
+            pid_list = ','.join(str(i) for i in project_ids)
+
+            fpy_query = f"""
+            SELECT
+                conv.project_id,
+                r.conversation_id,
+                cont.turing_email AS reviewer_email,
+                JSON_EXTRACT_SCALAR(r.review_action, '$.type') AS action_type,
+                DATE(r.submitted_at) AS review_date
+            FROM `{gcp_p}.{gcp_d}.review` r
+            JOIN `{gcp_p}.{gcp_d}.conversation` conv ON conv.id = r.conversation_id
+            LEFT JOIN `{gcp_p}.{gcp_d}.contributor` cont ON cont.id = r.reviewer_id
+            WHERE conv.project_id IN ({pid_list})
+              AND r.review_type = 'manual'
+              AND r.status = 'published'
+              AND r.submitted_at IS NOT NULL
+              AND DATE(r.submitted_at) >= '{parsed_start.isoformat()}'
+              AND DATE(r.submitted_at) <= '{parsed_end.isoformat()}'
+            ORDER BY r.conversation_id, r.submitted_at ASC
+            """
+            fpy_rows = list(bq_client.query(fpy_query).result())
+            for row in fpy_rows:
+                rd = row['review_date']
+                if isinstance(rd, datetime):
+                    rd = rd.date()
+                fpy_reviews_by_date[rd].append({
+                    'project_id': row['project_id'],
+                    'conversation_id': row['conversation_id'],
+                    'reviewer_email': (row['reviewer_email'] or '').lower().strip(),
+                    'action_type': (row['action_type'] or '').lower(),
+                })
+
+            # Build role map
+            pod_rows = session.query(PodLeadMapping.trainer_email, PodLeadMapping.role).all()
+            for pr in pod_rows:
+                if pr.trainer_email and pr.role:
+                    rl = pr.role.lower().strip()
+                    em = pr.trainer_email.lower().strip()
+                    if rl in ('pod lead', 'sub pod lead', 'pod_lead'):
+                        fpy_role_map[em] = 'reviewer'
+                    elif rl in ('calibrator', 'auditor', 'team lead'):
+                        fpy_role_map[em] = 'calibrator'
+            try:
+                from app.services.quality_rubrics_service import QualityRubricsService
+                qr_svc = QualityRubricsService()
+                for email, role in qr_svc._fetch_team_roles().items():
+                    fpy_role_map[email.lower().strip()] = role
+            except Exception:
+                pass
+
+            logger.info(f"Analytics: Loaded {len(fpy_rows)} FPY review rows for time-series")
+        except Exception as e:
+            logger.warning(f"Analytics: FPY query failed (non-fatal): {e}")
+
     # =========================================================================
     # AGGREGATE BY PERIOD
     # =========================================================================
@@ -491,7 +814,28 @@ def get_analytics_time_series(
             if p_start <= d <= p_end:
                 period_trainers.update(emails)
         active_trainers = len(period_trainers)
-        
+
+        # --- Reviewers active in period ---
+        period_reviewers: set = set()
+        for d, emails in reviewer_emails_by_day.items():
+            if p_start <= d <= p_end:
+                period_reviewers.update(emails)
+
+        # Labeling tool people = trainers + reviewers (union)
+        labeling_tool_people = len(period_trainers | period_reviewers)
+
+        # --- Jibble people in period ---
+        period_jibble_people: set = set()
+        for d, emails in jibble_people_by_day.items():
+            if p_start <= d <= p_end:
+                period_jibble_people.update(emails)
+        jibble_people = len(period_jibble_people)
+
+        # --- Completed (= unique tasks from task_history_raw, consistent with accounted) ---
+        period_completed = unique
+        # --- Reviewed ---
+        period_reviewed = sum(v for d, v in reviewed_by_day.items() if p_start <= d <= p_end)
+
         # --- Jibble Hours ---
         period_jibble = round(sum(v for d, v in jibble_data.items() if p_start <= d <= p_end), 1)
         
@@ -501,6 +845,11 @@ def get_analytics_time_series(
         
         # --- Efficiency ---
         eff_pct = round((accounted / period_jibble) * 100, 1) if period_jibble > 0 and accounted > 0 else None
+
+        # --- Target (trainer hours only / new_task_aht) ---
+        period_reviewer_jibble = round(sum(v for d, v in reviewer_jibble_data.items() if p_start <= d <= p_end), 1)
+        trainer_only_jibble = max(period_jibble - period_reviewer_jibble, 0)
+        target = round(trainer_only_jibble / aht_new, 1) if trainer_only_jibble > 0 and aht_new > 0 else 0
         
         # --- Revenue (use midpoint matching) ---
         period_revenue = 0.0
@@ -523,6 +872,39 @@ def get_analytics_time_series(
         period_margin = round(period_revenue - period_cost, 2) if period_revenue > 0 else None
         period_margin_pct = round(((period_revenue - period_cost) / period_revenue) * 100, 1) if period_revenue > 0 else None
         
+        # --- FPY (Reviewer & Auditor) ---
+        period_reviews: list = []
+        for d, revs in fpy_reviews_by_date.items():
+            if p_start <= d <= p_end:
+                period_reviews.extend(revs)
+
+        r_total, r_pass, a_total, a_pass = 0, 0, 0, 0
+        seen_fpy: dict = {}  # conv_id → {reviewer: bool, calibrator: bool}
+        for rev in period_reviews:
+            cid = rev['conversation_id']
+            email = rev['reviewer_email']
+            action = rev['action_type']
+            role = fpy_role_map.get(email, 'reviewer')
+
+            if cid not in seen_fpy:
+                seen_fpy[cid] = {}
+            if role == 'reviewer' and 'reviewer' not in seen_fpy[cid]:
+                seen_fpy[cid]['reviewer'] = True
+                r_total += 1
+                if action != 'rework':
+                    r_pass += 1
+            elif role == 'calibrator' and 'calibrator' not in seen_fpy[cid]:
+                seen_fpy[cid]['calibrator'] = True
+                a_total += 1
+                if action != 'rework':
+                    a_pass += 1
+
+        reviewer_fpy_pct = round(r_pass / r_total * 100, 1) if r_total > 0 else None
+        auditor_fpy_pct = round(a_pass / a_total * 100, 1) if a_total > 0 else None
+
+        # --- Avg Rework Per Task ---
+        avg_rework_per_task = round(rework / unique, 2) if unique > 0 else None
+        
         result_data.append({
             'period': p_start.isoformat(),
             'period_end': p_end.isoformat(),
@@ -538,6 +920,9 @@ def get_analytics_time_series(
             'human_avg_rating': human_avg_rating,
             'agentic_avg_rating': agentic_avg_rating,
             'rework_percent': rework_pct,
+            'reviewer_fpy_pct': reviewer_fpy_pct,
+            'auditor_fpy_pct': auditor_fpy_pct,
+            'avg_rework_per_task': avg_rework_per_task,
             # Time & Efficiency
             'aht_avg': aht_avg,
             'accounted_hours': accounted,
@@ -553,6 +938,12 @@ def get_analytics_time_series(
             # People
             'trainers_active': active_trainers,
             'team_size': team_size,
+            'labeling_tool_people': labeling_tool_people,
+            'jibble_people': jibble_people,
+            # Additional delivery
+            'completed': period_completed,
+            'reviewed': period_reviewed,
+            'target': target,
         })
     
     # =========================================================================

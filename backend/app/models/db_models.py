@@ -9,7 +9,7 @@ This module defines all database models with:
 
 Note: Foreign keys use ondelete="SET NULL" or "CASCADE" depending on the relationship.
 """
-from sqlalchemy import Column, Integer, String, Float, DateTime, Text, Date, BigInteger, Boolean, ForeignKey, Index
+from sqlalchemy import Column, Integer, String, Float, DateTime, Text, Date, BigInteger, Boolean, ForeignKey, Index, func
 from sqlalchemy.orm import relationship, declarative_base
 
 Base = declarative_base()
@@ -764,6 +764,36 @@ class DashboardUser(Base):
     reset_token = Column(String(255), nullable=True, unique=True)
     reset_token_expires = Column(DateTime, nullable=True)
     must_change_password = Column(Boolean, nullable=False, default=False)
+
+
+class TimeTheftExclusion(Base):
+    """
+    People excluded from the Time Theft report.
+    Managers, delivery leads, etc. who legitimately log Jibble hours
+    without labeling tool activity.
+    """
+    __tablename__ = 'time_theft_exclusion'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    turing_email = Column(String(255), nullable=False, unique=True, index=True)
+    excluded_by = Column(String(255), nullable=True)
+    reason = Column(String(500), nullable=True)
+    created_at = Column(DateTime, nullable=False, default=func.now())
+
+
+class ShareLink(Base):
+    """Secret share links for read-only external access to specific pages."""
+    __tablename__ = 'share_link'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    token = Column(String(64), unique=True, nullable=False, index=True)
+    page = Column(String(100), nullable=False)  # e.g. 'quality-rubrics'
+    project_id = Column(Integer, nullable=True)
+    label = Column(String(255), nullable=True)
+    created_by = Column(String(255), nullable=False)
+    is_active = Column(Boolean, nullable=False, default=True)
+    expires_at = Column(DateTime, nullable=True)
+    created_at = Column(DateTime, nullable=False, default=func.now())
 
 
 class ProjectFTECostMonthly(Base):

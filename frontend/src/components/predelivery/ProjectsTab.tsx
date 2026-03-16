@@ -39,8 +39,10 @@ import {
   Warning as WarningIcon,
 } from '@mui/icons-material'
 import { getTooltipForHeader } from '../../utils/columnTooltips'
-import { getProjectStats, getJibbleProjectHours, JibbleUserHours, ProjectStats, PodLeadUnderProject, TrainerUnderPodLead, TaskUnderTrainer } from '../../services/api'
+import { getProjectStats, getJibbleProjectHours, getTimeTheft, excludeFromTimeTheft, removeTimeTheftExclusion, JibbleUserHours, TimeTheftEntry, ProjectStats, PodLeadUnderProject, TrainerUnderPodLead, TaskUnderTrainer } from '../../services/api'
 import AccessTimeIcon from '@mui/icons-material/AccessTime'
+import ReportProblemIcon from '@mui/icons-material/ReportProblem'
+import { Switch, FormControlLabel, Checkbox } from '@mui/material'
 import { FormControl, InputLabel, Select, SelectChangeEvent } from '@mui/material'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import AssignmentIcon from '@mui/icons-material/Assignment'
@@ -188,6 +190,14 @@ function getSortValue(item: any, sortColumn: string, level: HierarchyLevel): any
       if (level === 'podLead') return item.trainer_count ?? 0
       if (level === 'trainer') return 0
       return (item.trainer_count ?? 0) + (item.pod_lead_count ?? 0)
+    case 'trainer_jibble_hours':
+      if (level === 'podLead') return item.trainer_jibble_hours ?? 0
+      if (level === 'trainer') return item.jibble_hours ?? 0
+      return item.trainer_jibble_hours ?? 0
+    case 'reviewer_jibble_hours':
+      if (level === 'podLead') return item.pod_jibble_hours ?? 0
+      if (level === 'trainer') return 0
+      return item.reviewer_jibble_hours ?? 0
     case 'logged_hours':
       if (level === 'podLead') return (item.trainer_jibble_hours ?? 0) + (item.pod_jibble_hours ?? 0)
       if (level === 'trainer') return item.jibble_hours ?? 0
@@ -528,6 +538,12 @@ function TrainerRow({
           </Typography>
         </TableCell>
         <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#2563EB' }}>
+            {trainer.jibble_hours > 0 ? trainer.jibble_hours.toFixed(1) : '-'}
+          </Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle, color: '#94A3B8' }}>-</TableCell>
+        <TableCell align="center" sx={{ ...cellStyle }}>
           <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#64748B' }}>
             {trainer.jibble_hours > 0 ? trainer.jibble_hours.toFixed(1) : '-'}
           </Typography>
@@ -542,7 +558,6 @@ function TrainerRow({
             {trainer.efficiency !== null ? `${trainer.efficiency.toFixed(0)}%` : '-'}
           </Typography>
         </TableCell>
-        <TableCell align="center" sx={{ ...cellStyle, color: '#94A3B8' }}>-</TableCell>
         <TableCell align="center" sx={{ ...cellStyle, borderRight: `1px solid ${COLUMN_GROUPS.time.borderColor}`, color: '#94A3B8' }}>-</TableCell>
 
         {/* Finance Group - Revenue at trainer level */}
@@ -720,6 +735,16 @@ function PodLeadRow({
           </Typography>
         </TableCell>
         <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#2563EB' }}>
+            {podLead.trainer_jibble_hours > 0 ? podLead.trainer_jibble_hours.toFixed(1) : '-'}
+          </Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#7C3AED' }}>
+            {podLead.pod_jibble_hours > 0 ? podLead.pod_jibble_hours.toFixed(1) : '-'}
+          </Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle }}>
           <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#64748B' }}>
             {(podLead.trainer_jibble_hours + podLead.pod_jibble_hours).toFixed(1)}
           </Typography>
@@ -734,14 +759,9 @@ function PodLeadRow({
             {podLead.efficiency !== null ? `${podLead.efficiency.toFixed(0)}%` : '-'}
           </Typography>
         </TableCell>
-        <TableCell align="center" sx={{ ...cellStyle }}>
+        <TableCell align="center" sx={{ ...cellStyle, borderRight: `1px solid ${COLUMN_GROUPS.time.borderColor}` }}>
           <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#0369A1' }}>
             {podLead.active_jibble_people > 0 ? podLead.active_jibble_people : '-'}
-          </Typography>
-        </TableCell>
-        <TableCell align="center" sx={{ ...cellStyle, borderRight: `1px solid ${COLUMN_GROUPS.time.borderColor}` }}>
-          <Typography sx={{ fontSize: trainerFontSize, fontWeight: 600, color: '#475569' }}>
-            {podLead.pod_jibble_hours?.toFixed(1) ?? '-'}
           </Typography>
         </TableCell>
 
@@ -918,32 +938,34 @@ function ProjectRow({
             {project.merged_exp_aht !== null ? project.merged_exp_aht.toFixed(1) : '-'}
           </Typography>
         </TableCell>
-        {/* JIB - NO COLOR CODING (not in PMO requirements) */}
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: projectFontSize, fontWeight: 700, color: '#2563EB' }}>
+            {project.trainer_jibble_hours > 0 ? project.trainer_jibble_hours.toFixed(1) : '-'}
+          </Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ ...cellStyle }}>
+          <Typography sx={{ fontSize: projectFontSize, fontWeight: 700, color: '#7C3AED' }}>
+            {project.reviewer_jibble_hours > 0 ? project.reviewer_jibble_hours.toFixed(1) : '-'}
+          </Typography>
+        </TableCell>
         <TableCell align="center" sx={{ ...cellStyle }}>
           <Typography sx={{ fontSize: projectFontSize, fontWeight: 700, color: '#64748B' }}>
             {project.logged_hours?.toFixed(1) ?? '-'}
           </Typography>
         </TableCell>
-        {/* ACCT - NO COLOR CODING (not in PMO requirements) */}
         <TableCell align="center" sx={{ ...cellStyle }}>
           <Typography sx={{ fontSize: projectFontSize, fontWeight: 700, color: '#64748B' }}>
             {project.accounted_hours > 0 ? project.accounted_hours.toFixed(1) : '-'}
           </Typography>
         </TableCell>
-        {/* EFF% - COLOR CODED: >=90% Green, 70-90% Yellow, <70% Red */}
         <TableCell align="center" sx={{ ...cellStyle, ...getEfficiencyStyle(project.efficiency) }}>
           <Typography sx={{ fontSize: projectFontSize, fontWeight: 700 }}>
             {project.efficiency !== null ? `${project.efficiency.toFixed(0)}%` : '-'}
           </Typography>
         </TableCell>
-        <TableCell align="center" sx={{ ...cellStyle }}>
+        <TableCell align="center" sx={{ ...cellStyle, borderRight: `1px solid ${COLUMN_GROUPS.time.borderColor}` }}>
           <Typography sx={{ fontSize: projectFontSize, fontWeight: 700, color: '#0369A1' }}>
             {project.active_jibble_people > 0 ? project.active_jibble_people : '-'}
-          </Typography>
-        </TableCell>
-        <TableCell align="center" sx={{ ...cellStyle, borderRight: `1px solid ${COLUMN_GROUPS.time.borderColor}` }}>
-          <Typography sx={{ fontSize: projectFontSize, fontWeight: 700, color: '#1E293B' }}>
-            {project.total_pod_hours?.toFixed(1) ?? '-'}
           </Typography>
         </TableCell>
 
@@ -1351,6 +1373,253 @@ function JibbleHoursDialog({ open, onClose }: { open: boolean; onClose: () => vo
 }
 
 
+// ============================================================================
+// Time Theft Dialog Component
+// ============================================================================
+
+type TimeTheftSortKey = 'full_name' | 'turing_email' | 'total_hours' | 'project'
+
+function TimeTheftDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const [rows, setRows] = useState<TimeTheftEntry[]>([])
+  const [loading, setLoading] = useState(false)
+  const [projectFilter, setProjectFilter] = useState<number | undefined>(undefined)
+  const [ttTimeframe, setTtTimeframe] = useState<Timeframe>('overall')
+  const [ttWeekOffset, setTtWeekOffset] = useState(0)
+  const [ttCustomStart, setTtCustomStart] = useState('')
+  const [ttCustomEnd, setTtCustomEnd] = useState('')
+  const [sortKey, setSortKey] = useState<TimeTheftSortKey>('total_hours')
+  const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc')
+  const [search, setSearch] = useState('')
+  const [adminMode, setAdminMode] = useState(false)
+  const [excluding, setExcluding] = useState<string | null>(null)
+
+  const fetchData = async () => {
+    setLoading(true)
+    try {
+      const { startDate, endDate } = getDateRange(ttTimeframe, ttWeekOffset, ttCustomStart, ttCustomEnd)
+      const data = await getTimeTheft(projectFilter, startDate, endDate, adminMode)
+      setRows(data)
+    } catch {
+      setRows([])
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    if (open) fetchData()
+  }, [open, projectFilter, ttTimeframe, ttWeekOffset, ttCustomStart, ttCustomEnd, adminMode])
+
+  const handleSort = (key: TimeTheftSortKey) => {
+    if (sortKey === key) {
+      setSortDir(prev => prev === 'asc' ? 'desc' : 'asc')
+    } else {
+      setSortKey(key)
+      setSortDir(key === 'total_hours' ? 'desc' : 'asc')
+    }
+  }
+
+  const handleExclude = async (email: string) => {
+    setExcluding(email)
+    try {
+      await excludeFromTimeTheft(email, 'Excluded via admin toggle')
+      await fetchData()
+    } finally {
+      setExcluding(null)
+    }
+  }
+
+  const handleRestore = async (email: string) => {
+    setExcluding(email)
+    try {
+      await removeTimeTheftExclusion(email)
+      await fetchData()
+    } finally {
+      setExcluding(null)
+    }
+  }
+
+  const filtered = rows.filter(r => {
+    if (!search) return true
+    const s = search.toLowerCase()
+    return (r.full_name?.toLowerCase().includes(s)) ||
+           (r.turing_email?.toLowerCase().includes(s)) ||
+           (r.jibble_email?.toLowerCase().includes(s))
+  })
+
+  const sorted = [...filtered].sort((a, b) => {
+    let aVal: any, bVal: any
+    switch (sortKey) {
+      case 'full_name': aVal = a.full_name || ''; bVal = b.full_name || ''; break
+      case 'turing_email': aVal = a.turing_email || ''; bVal = b.turing_email || ''; break
+      case 'total_hours': aVal = a.total_hours; bVal = b.total_hours; break
+      case 'project': aVal = a.project || ''; bVal = b.project || ''; break
+      default: return 0
+    }
+    if (typeof aVal === 'string') return sortDir === 'asc' ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal)
+    return sortDir === 'asc' ? aVal - bVal : bVal - aVal
+  })
+
+  const activeRows = filtered.filter(r => !r.excluded)
+  const totalHours = activeRows.reduce((s, r) => s + r.total_hours, 0)
+
+  const columns: { key: TimeTheftSortKey; label: string; align: 'left' | 'center'; tooltip: string }[] = [
+    { key: 'full_name', label: 'Name', align: 'left', tooltip: 'Full name from Jibble' },
+    { key: 'turing_email', label: 'Email', align: 'left', tooltip: 'Turing email' },
+    { key: 'project', label: 'Jibble Project', align: 'left', tooltip: 'Jibble project the hours were logged under' },
+    { key: 'total_hours', label: 'Jibble Hours', align: 'center', tooltip: 'Hours logged with zero labeling tool activity' },
+  ]
+
+  return (
+    <Dialog open={open} onClose={onClose} maxWidth="lg" fullWidth PaperProps={{ sx: { borderRadius: 2, maxHeight: '85vh' } }}>
+      <DialogTitle sx={{ display: 'flex', alignItems: 'center', gap: 1, py: 1.5, px: 2.5, bgcolor: '#FEF2F2', borderBottom: '1px solid #FECACA' }}>
+        <ReportProblemIcon sx={{ fontSize: 22, color: '#DC2626' }} />
+        <Typography sx={{ fontSize: '1.05rem', fontWeight: 700, color: '#991B1B', flex: 1 }}>
+          Time Theft Report
+        </Typography>
+        <Chip
+          label={`${activeRows.length} people · ${totalHours.toFixed(1)} hrs`}
+          size="small"
+          sx={{ height: 24, fontSize: '0.75rem', fontWeight: 700, bgcolor: '#FEE2E2', color: '#991B1B', border: '1px solid #FECACA' }}
+        />
+        <IconButton size="small" onClick={onClose} sx={{ ml: 0.5 }}>
+          <CloseIcon sx={{ fontSize: 20 }} />
+        </IconButton>
+      </DialogTitle>
+      <DialogContent sx={{ p: 0 }}>
+        <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', flexWrap: 'wrap', px: 2, py: 1.5, borderBottom: '1px solid #E2E8F0', bgcolor: '#F8FAFC' }}>
+          <FormControl size="small" sx={{ minWidth: 180 }}>
+            <InputLabel sx={{ fontSize: '0.75rem' }}>Project</InputLabel>
+            <Select
+              native
+              value={projectFilter !== undefined ? String(projectFilter) : ''}
+              label="Project"
+              onChange={(e: SelectChangeEvent) => setProjectFilter(e.target.value ? Number(e.target.value) : undefined)}
+              sx={{ fontSize: '0.75rem', height: 32 }}
+            >
+              {PROJECT_OPTIONS_JIBBLE.map(opt => (
+                <option key={opt.label} value={opt.id ?? ''}>{opt.label}</option>
+              ))}
+            </Select>
+          </FormControl>
+          <TimeframeSelector
+            timeframe={ttTimeframe} onTimeframeChange={setTtTimeframe}
+            weekOffset={ttWeekOffset} onWeekOffsetChange={setTtWeekOffset}
+            customStartDate={ttCustomStart} onCustomStartDateChange={setTtCustomStart}
+            customEndDate={ttCustomEnd} onCustomEndDateChange={setTtCustomEnd}
+          />
+          <TextField
+            size="small" placeholder="Search name or email..." value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            sx={{ minWidth: 160, '& .MuiOutlinedInput-root': { fontSize: '0.75rem', height: 32 } }}
+          />
+          <Box sx={{ ml: 'auto' }}>
+            <FormControlLabel
+              control={
+                <Switch
+                  size="small"
+                  checked={adminMode}
+                  onChange={(e) => setAdminMode(e.target.checked)}
+                  sx={{ '& .MuiSwitch-switchBase.Mui-checked': { color: '#DC2626' }, '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': { bgcolor: '#FCA5A5' } }}
+                />
+              }
+              label={
+                <Typography sx={{ fontSize: '0.72rem', fontWeight: 600, color: '#64748B' }}>
+                  Manage Exclusions
+                </Typography>
+              }
+              sx={{ mr: 0 }}
+            />
+          </Box>
+        </Box>
+
+        {loading ? (
+          <Box sx={{ py: 4, display: 'flex', justifyContent: 'center' }}><CircularProgress size={28} /></Box>
+        ) : filtered.length === 0 ? (
+          <Box sx={{ py: 4, textAlign: 'center' }}>
+            <Typography sx={{ color: '#64748B', fontSize: '0.85rem' }}>No time theft entries found for this selection.</Typography>
+          </Box>
+        ) : (
+          <TableContainer sx={{ maxHeight: '68vh' }}>
+            <Table stickyHeader size="small">
+              <TableHead>
+                <TableRow>
+                  {adminMode && (
+                    <TableCell sx={{ bgcolor: '#FEF2F2', py: 1, borderBottom: '2px solid #FECACA', width: 60 }}>
+                      <Typography sx={{ fontSize: '0.72rem', fontWeight: 700, color: '#991B1B' }}>Exclude</Typography>
+                    </TableCell>
+                  )}
+                  <TableCell sx={{ bgcolor: '#FEF2F2', py: 1, borderBottom: '2px solid #FECACA', width: 40 }}>
+                    <Typography sx={{ fontSize: '0.8rem', fontWeight: 700, color: '#991B1B' }}>#</Typography>
+                  </TableCell>
+                  {columns.map(col => (
+                    <TableCell key={col.key} align={col.align} sx={{ bgcolor: '#FEF2F2', py: 1, borderBottom: '2px solid #FECACA', whiteSpace: 'nowrap' }}>
+                      <Tooltip title={col.tooltip} arrow placement="top">
+                        <TableSortLabel
+                          active={sortKey === col.key}
+                          direction={sortKey === col.key ? sortDir : 'asc'}
+                          onClick={() => handleSort(col.key)}
+                          sx={{ fontSize: '0.8rem', fontWeight: 700, color: '#991B1B', '&.Mui-active': { color: '#991B1B' }, '& .MuiTableSortLabel-icon': { color: '#991B1B !important' } }}
+                        >
+                          {col.label}
+                        </TableSortLabel>
+                      </Tooltip>
+                    </TableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {sorted.map((r, idx) => {
+                  const email = r.turing_email || r.jibble_email || ''
+                  return (
+                    <TableRow
+                      key={`${email}-${r.project}-${idx}`}
+                      sx={{
+                        '&:hover': { bgcolor: '#FEF2F2' },
+                        opacity: r.excluded ? 0.5 : 1,
+                        textDecoration: r.excluded ? 'line-through' : 'none',
+                      }}
+                    >
+                      {adminMode && (
+                        <TableCell sx={{ py: 0.6 }}>
+                          <Checkbox
+                            size="small"
+                            checked={r.excluded}
+                            disabled={excluding === email}
+                            onChange={() => r.excluded ? handleRestore(email) : handleExclude(email)}
+                            sx={{
+                              p: 0.25,
+                              color: '#DC2626',
+                              '&.Mui-checked': { color: '#DC2626' },
+                            }}
+                          />
+                        </TableCell>
+                      )}
+                      <TableCell sx={{ fontSize: '0.78rem', color: '#94A3B8', py: 0.85 }}>{idx + 1}</TableCell>
+                      <TableCell sx={{ py: 0.85 }}>
+                        <Typography sx={{ fontSize: '0.82rem', fontWeight: 600, color: '#1E293B', lineHeight: 1.3 }}>{r.full_name || '-'}</Typography>
+                        {r.jibble_email && r.jibble_email !== r.turing_email && (
+                          <Typography sx={{ fontSize: '0.68rem', color: '#94A3B8' }}>{r.jibble_email}</Typography>
+                        )}
+                      </TableCell>
+                      <TableCell sx={{ fontSize: '0.78rem', color: email ? '#475569' : '#DC2626', py: 0.85, fontWeight: email ? 400 : 600 }}>
+                        {r.turing_email || r.jibble_email || 'Unknown'}
+                      </TableCell>
+                      <TableCell sx={{ fontSize: '0.78rem', color: '#64748B', py: 0.85 }}>{r.project}</TableCell>
+                      <TableCell align="center" sx={{ fontSize: '0.85rem', fontWeight: 700, color: '#DC2626', py: 0.85 }}>{r.total_hours.toFixed(1)}</TableCell>
+                    </TableRow>
+                  )
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+
 interface ProjectsTabProps {
   onSummaryUpdate?: (stats: TabSummaryStats) => void
   onSummaryLoading?: () => void
@@ -1372,6 +1641,7 @@ export function ProjectsTab({ onSummaryUpdate, onSummaryLoading }: ProjectsTabPr
   const [activeFilterColumn, setActiveFilterColumn] = useState<string>('')
   const [flaggedOpen, setFlaggedOpen] = useState(false)
   const [jibbleOpen, setJibbleOpen] = useState(false)
+  const [timeTheftOpen, setTimeTheftOpen] = useState(false)
   
   const [colorSettings, setColorSettings] = useColorSettings('projectsColorSettings')
   const [colorApplyLevel, setColorApplyLevel] = useState<ColorApplyLevel>('both')
@@ -1629,6 +1899,22 @@ export function ProjectsTab({ onSummaryUpdate, onSummaryLoading }: ProjectsTabPr
           >
             Jibble Hours
           </Button>
+          <Button
+            variant="contained"
+            startIcon={<ReportProblemIcon sx={{ fontSize: { xs: 12, md: 14 } }} />}
+            onClick={() => setTimeTheftOpen(true)}
+            sx={{
+              bgcolor: '#DC2626',
+              fontSize: { xs: '0.6rem', sm: '0.65rem', md: '0.7rem' },
+              textTransform: 'none',
+              px: { xs: 1, sm: 1.5 },
+              py: 0.3,
+              minHeight: { xs: 24, sm: 26, md: 28 },
+              '&:hover': { bgcolor: '#B91C1C' },
+            }}
+          >
+            Time Theft
+          </Button>
           <Button variant="contained" startIcon={<DownloadIcon sx={{ fontSize: { xs: 12, md: 14 } }} />} onClick={handleExport}
             sx={{ 
               bgcolor: '#10B981', 
@@ -1672,6 +1958,7 @@ export function ProjectsTab({ onSummaryUpdate, onSummaryLoading }: ProjectsTabPr
 
       <FlaggedDialog open={flaggedOpen} onClose={() => setFlaggedOpen(false)} projects={sortedData} />
       <JibbleHoursDialog open={jibbleOpen} onClose={() => setJibbleOpen(false)} />
+      <TimeTheftDialog open={timeTheftOpen} onClose={() => setTimeTheftOpen(false)} />
 
       {/* Table - Bigger height, responsive */}
       <Paper sx={{ width: '100%', overflow: 'hidden', borderRadius: 1, border: '1px solid #E2E8F0' }}>
@@ -1720,7 +2007,7 @@ export function ProjectsTab({ onSummaryUpdate, onSummaryLoading }: ProjectsTabPr
                   <Typography sx={{ fontSize: { xs: '0.5rem', sm: '0.55rem', md: '0.6rem' }, fontWeight: 700, letterSpacing: '0.02em' }}>QUALITY</Typography>
                 </TableCell>
                 <TableCell 
-                  colSpan={6} 
+                  colSpan={7} 
                   align="center"
                   sx={{ 
                     ...headerCellStyle, 
@@ -1790,11 +2077,12 @@ export function ProjectsTab({ onSummaryUpdate, onSummaryLoading }: ProjectsTabPr
 
                 {/* Time & Efficiency - All sortable */}
                 <SubHeader label="AHT" columnKey="merged_exp_aht" group="time" tooltipKey="AHT" />
+                <SubHeader label="Trnr Hrs" columnKey="trainer_jibble_hours" group="time" tooltipKey="TrnrHrs" />
+                <SubHeader label="Rvwr Hrs" columnKey="reviewer_jibble_hours" group="time" tooltipKey="RvwrHrs" />
                 <SubHeader label="Jibble Hrs" columnKey="logged_hours" group="time" tooltipKey="Jib" />
                 <SubHeader label="Acct Hrs" columnKey="accounted_hours" group="time" tooltipKey="Acct" />
                 <SubHeader label="Eff %" columnKey="efficiency" group="time" tooltipKey="Eff%" />
-                <SubHeader label="Active" columnKey="active_jibble_people" group="time" tooltipKey="Active" />
-                <SubHeader label="POD Hrs" columnKey="total_pod_hours" group="time" tooltipKey="POD" isLastInGroup />
+                <SubHeader label="Active" columnKey="active_jibble_people" group="time" tooltipKey="Active" isLastInGroup />
 
                 {/* Finance - Project level only */}
                 <SubHeader label="Revenue" columnKey="revenue" group="finance" tooltipKey="Rev$" />

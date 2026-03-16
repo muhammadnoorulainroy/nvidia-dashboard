@@ -89,7 +89,7 @@ class Settings(BaseSettings):
     # ==========================================================================
     # Data Sync Settings (sensible defaults)
     # ==========================================================================
-    sync_interval_hours: int = 1
+    sync_interval_minutes: int = 15
     initial_sync_on_startup: bool = True
     
     # ==========================================================================

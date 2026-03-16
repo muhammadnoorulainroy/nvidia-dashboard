@@ -3738,10 +3738,14 @@ class QueryService:
                         t_cal_passed = trainer_cal_passed_map.get(trainer_email, 0)
                         t_in_rework = sc.get('Rework', 0)
                         
-                        # Target: jibble_hours / new_task_aht
+                        # Target = tasks that should be created (trainer work only)
+                        # Review roles don't create tasks, so their target is 0
                         proj_aht = self._constants.daily_targets.get_aht(project_id)
                         t_new_task_aht = proj_aht.get('new_task_aht', self._constants.daily_targets.DEFAULT_NEW_TASK_AHT)
-                        t_target = round(trainer_jibble / t_new_task_aht, 1) if t_new_task_aht > 0 and trainer_jibble > 0 else 0
+                        if self._constants.daily_targets.is_review_role(trainer_role):
+                            t_target = 0
+                        else:
+                            t_target = round(trainer_jibble / t_new_task_aht, 1) if t_new_task_aht > 0 and trainer_jibble > 0 else 0
                         
                         # Create trainer entry with all columns from Trainer wise tab
                         trainer_entry = {
@@ -3903,19 +3907,32 @@ class QueryService:
                     
                     # ---------------------------------------------------------
                     # Include trainers who logged Jibble hours but have NO task history
-                    # Target = Jibble Hours / AHT regardless of completions.
-                    # This surfaces time-logging without output.
+                    # ONLY if they have some labeling tool activity (reviews, delivered, pipeline status).
+                    # Trainers with Jibble hours but ZERO labeling tool activity (managers,
+                    # delivery leads) are excluded to avoid inflating Efficiency/Target.
                     # ---------------------------------------------------------
                     already_processed = processed_trainers | unprocessed_delivery_trainers
                     jibble_only_trainers = set(email_to_jibble.keys()) - already_processed
                     
                     proj_aht = self._constants.daily_targets.get_aht(project_id)
-                    _jibble_aht = proj_aht.get('new_task_aht', self._constants.daily_targets.DEFAULT_NEW_TASK_AHT)
+                    _jibble_new_aht = proj_aht.get('new_task_aht', self._constants.daily_targets.DEFAULT_NEW_TASK_AHT)
                     
                     jibble_only_count = 0
+                    jibble_excluded_count = 0
                     for trainer_email in jibble_only_trainers:
                         trainer_jibble = email_to_jibble.get(trainer_email, 0)
                         if trainer_jibble <= 0:
+                            continue
+                        
+                        # Check if this person has labeling tool activity:
+                        # 1) Created any task (has tasks in any status)
+                        # 2) Reviewed any task (their work was reviewed, implying task creation)
+                        sc = trainer_status_map.get(trainer_email, {})
+                        has_tasks = any(sc.get(s, 0) > 0 for s in ('In Progress', 'Completed', 'Reviewed', 'Rework', 'Validated', 'Approval', 'Unclaimed'))
+                        has_reviews = trainer_reviews.get(trainer_email, 0) > 0
+                        
+                        if not (has_tasks or has_reviews):
+                            jibble_excluded_count += 1
                             continue
                         
                         pod_info = trainer_to_pod.get(trainer_email)
@@ -3935,10 +3952,12 @@ class QueryService:
                             trainer_role = 'Trainer'
                             trainer_status = 'unmapped'
                         
-                        t_target = round(trainer_jibble / _jibble_aht, 1) if _jibble_aht > 0 else 0
+                        if self._constants.daily_targets.is_review_role(trainer_role):
+                            t_target = 0
+                        else:
+                            t_target = round(trainer_jibble / _jibble_new_aht, 1) if _jibble_new_aht > 0 else 0
                         _jt_del_target = self._constants.daily_targets.get_target(project_id, trainer_role)
                         
-                        sc = trainer_status_map.get(trainer_email, {})
                         t_claimed = sum(sc.get(s, 0) for s in ('In Progress', 'Completed', 'Reviewed', 'Rework', 'Validated', 'Approval'))
                         t_in_progress = sc.get('In Progress', 0)
                         t_completed_current = sum(sc.get(s, 0) for s in ('Completed', 'Reviewed', 'Validated', 'Approval'))
@@ -3991,8 +4010,6 @@ class QueryService:
                         pod_aggregates[pod_email]['in_rework'] += t_in_rework
                         pod_aggregates[pod_email]['delivered'] += trainer_entry['delivered']
                         pod_aggregates[pod_email]['in_queue'] += trainer_entry['in_queue']
-                        # NOTE: Do NOT increment trainer_count here.
-                        # Size should only reflect trainers who completed new/rework tasks in the date range.
                         if trainer_email.lower().strip() != pod_email.lower().strip():
                             pod_aggregates[pod_email]['trainer_jibble_hours'] += trainer_jibble
                         pod_aggregates[pod_email]['revenue'] = pod_aggregates[pod_email].get('revenue', 0) + trainer_entry['revenue']
@@ -4001,7 +4018,9 @@ class QueryService:
                         jibble_only_count += 1
                     
                     if jibble_only_count > 0:
-                        logger.info(f"Project {project_name}: Added {jibble_only_count} trainers with Jibble hours but no task completions")
+                        logger.info(f"Project {project_name}: Added {jibble_only_count} trainers with Jibble hours and labeling activity but no task completions")
+                    if jibble_excluded_count > 0:
+                        logger.info(f"Project {project_name}: Excluded {jibble_excluded_count} Jibble-only people with zero labeling tool activity")
                     
                     # Build POD Lead list for this project
                     pod_leads_list = []
@@ -4086,11 +4105,17 @@ class QueryService:
                         )
                         
                         # Calculate TRUE accounted hours for POD level
-                        pod_accounted = self._calculate_accounted_hours(
+                        # Task accounted: trainers' task work
+                        pod_task_accounted = self._calculate_accounted_hours(
                             pod_true_tasks_with_new, 
                             pod_true_tasks_with_rework,
                             project_id=project_id
                         )
+                        # Review accounted: pod lead's review work
+                        _pod_aht = self._constants.daily_targets.get_aht(project_id)
+                        _pod_review_aht = _pod_aht.get('review_aht', 0)
+                        pod_review_accounted = agg['total_reviews'] * _pod_review_aht if _pod_review_aht > 0 else 0
+                        pod_accounted = pod_task_accounted + pod_review_accounted
                         
                         # Get POD Lead's own Jibble hours via turing_email
                         pod_own_jibble = email_to_jibble.get(pod_email.lower().strip(), 0)
@@ -4203,24 +4228,51 @@ class QueryService:
                         project_id=project_id
                     )
                     
-                    # Also recalculate accounted hours using true project-level values
-                    proj_accounted = self._calculate_accounted_hours(
-                        project_true_tasks_with_new, 
+                    # Project accounted hours:
+                    #   Task work: new_tasks * new_aht + rework * rework_aht
+                    #   Review work: total_reviews * review_aht (pod leads/calibrators)
+                    # These are separate: trainers create tasks, reviewers review them.
+                    proj_aht_cfg = self._constants.daily_targets.get_aht(project_id)
+                    proj_review_aht = proj_aht_cfg.get('review_aht', 0)
+                    task_accounted = self._calculate_accounted_hours(
+                        project_true_tasks_with_new,
                         project_true_tasks_with_rework,
                         project_id=project_id
                     )
+                    review_accounted = project_totals['total_reviews'] * proj_review_aht if proj_review_aht > 0 else 0
+                    proj_accounted = task_accounted + review_accounted
                     
-                    # Calculate logged hours - query directly from Jibble data at project level
-                    # This ensures hours show even when no trainers are mapped to the project
-                    # No swap - use original project names to match client PnL sheet
+                    # Calculate logged hours - ONLY for people with labeling tool activity.
+                    # Labeling tool activity = created any task OR reviewed any task.
+                    # This excludes managers/delivery leads who log Jibble hours but
+                    # never touch the labeling tool, preventing inflated Efficiency/Target.
+                    labeling_active_emails: set = set()
+                    # Task creators: anyone with tasks assigned (any status)
+                    labeling_active_emails.update(e.lower().strip() for e in processed_trainers)
+                    labeling_active_emails.update(e.lower().strip() for e in unprocessed_delivery_trainers)
+                    labeling_active_emails.update(e.lower().strip() for e in trainer_status_map.keys())
+                    # Reviewers: pod leads / calibrators who actually reviewed tasks
+                    for pe, agg in pod_aggregates.items():
+                        if pe != NO_POD_LEAD_EMAIL:
+                            pod_reviews = agg.get('total_reviews', 0)
+                            if pod_reviews > 0:
+                                labeling_active_emails.add(pe.lower().strip())
+                        for t in agg.get('trainers', []):
+                            te = (t.get('trainer_email') or '').lower().strip()
+                            if te and (t.get('unique_tasks', 0) > 0 or t.get('total_reviews', 0) > 0):
+                                labeling_active_emails.add(te)
+
                     jibble_project_names = jibble_config.PROJECT_ID_TO_JIBBLE_NAMES.get(project_id, [])
                     
                     active_jibble_people = 0
-                    if jibble_project_names:
+                    if jibble_project_names and labeling_active_emails:
                         direct_jibble_query = session.query(
                             func.sum(JibbleHours.logged_hours).label('total'),
-                            func.count(func.distinct(JibbleHours.member_code)).label('active_people')
-                        ).filter(JibbleHours.project.in_(jibble_project_names))
+                            func.count(func.distinct(JibbleHours.turing_email)).label('active_people')
+                        ).filter(
+                            JibbleHours.project.in_(jibble_project_names),
+                            func.lower(JibbleHours.turing_email).in_(labeling_active_emails),
+                        )
                         if start_date:
                             direct_jibble_query = direct_jibble_query.filter(JibbleHours.entry_date >= start_date)
                         if end_date:
@@ -4228,6 +4280,14 @@ class QueryService:
                         direct_result = direct_jibble_query.one()
                         total_logged_hours = float(direct_result.total or 0)
                         active_jibble_people = int(direct_result.active_people or 0)
+                    elif jibble_project_names:
+                        # Fallback if no active emails found - use pod totals
+                        total_logged_hours = project_totals['trainer_jibble_hours'] + project_totals['pod_jibble_hours']
+                        active_jibble_people = sum(
+                            1 for pe, agg in pod_aggregates.items()
+                            for t in agg.get('trainers', [])
+                            if t.get('jibble_hours', 0) > 0
+                        )
                     else:
                         total_logged_hours = project_totals['trainer_jibble_hours'] + project_totals['pod_jibble_hours']
                     
@@ -4270,6 +4330,8 @@ class QueryService:
                         'avg_rating': proj_avg_rating,
                         'merged_exp_aht': proj_merged_aht,
                         'logged_hours': round(total_logged_hours, 2),
+                        'trainer_jibble_hours': round(total_logged_hours - project_totals['pod_jibble_hours'], 2),
+                        'reviewer_jibble_hours': round(project_totals['pod_jibble_hours'], 2),
                         'active_jibble_people': active_jibble_people,
                         'total_pod_hours': round(project_totals['pod_jibble_hours'], 2),
                         'accounted_hours': proj_accounted,
@@ -4704,6 +4766,8 @@ class QueryService:
             accounted_hours = proj.get('accounted_hours', 0) or 0
             target = proj.get('target', 0) or 0
             delivered = (proj.get('delivered', 0) or 0) + (proj.get('in_queue', 0) or 0)
+            completed_current = proj.get('completed_current', 0) or 0
+            reviewed = proj.get('reviewed', 0) or 0
             rework_rate = proj.get('rework_percent', None)
             avg_rework = proj.get('avg_rework', None)
             revenue = proj.get('revenue', 0) or 0
@@ -4750,6 +4814,8 @@ class QueryService:
                 'accounted_hours': round(accounted_hours, 1) if accounted_hours else 0,
                 'target': round(target, 1),
                 'delivered': delivered,
+                'completed': completed_current,
+                'reviewed': reviewed,
                 'reviewer_fpy_pct': reviewer_fpy,
                 'auditor_fpy_pct': auditor_fpy,
                 'rework_rate': round(rework_rate, 1) if rework_rate is not None else None,

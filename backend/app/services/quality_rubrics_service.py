@@ -826,7 +826,11 @@ class QualityRubricsService:
     def _build_additional_data_query(
         self, project_id: int, start_date: str | None = None, end_date: str | None = None,
     ) -> str:
-        """Query to fetch review.additional_data for the latest review per conversation."""
+        """Query to fetch review.additional_data for both the latest and first review per conversation.
+
+        Returns rows where rn=1 (latest) and rn=total_reviews (first).
+        When only one review exists, a single row has rn=1 and total_reviews=1.
+        """
         from app.config import get_settings
 
         s = get_settings()
@@ -834,7 +838,7 @@ class QualityRubricsService:
 
         date_filter = self._date_filter_sql("c", start_date, end_date)
         return f"""
-        WITH latest AS (
+        WITH ranked AS (
             SELECT
                 r.conversation_id,
                 r.audit,
@@ -843,26 +847,29 @@ class QualityRubricsService:
                 ROW_NUMBER() OVER (
                     PARTITION BY r.conversation_id, r.audit
                     ORDER BY r.id DESC
-                ) AS rn
+                ) AS rn,
+                COUNT(*) OVER (
+                    PARTITION BY r.conversation_id, r.audit
+                ) AS total_reviews
             FROM `{p}.{d}.review` r
             JOIN `{p}.{d}.conversation` c ON c.id = r.conversation_id
             WHERE c.project_id = {project_id}
               AND r.review_type = 'manual'
               AND r.status = 'published'
-              AND r.additional_data IS NOT NULL
               {date_filter}
         )
-        SELECT l.conversation_id, l.audit, l.additional_data_json,
-               cont.turing_email AS reviewer_email
-        FROM latest l
-        LEFT JOIN `{p}.{d}.contributor` cont ON cont.id = l.reviewer_id
-        WHERE l.rn = 1
+        SELECT ranked.conversation_id, ranked.audit, ranked.additional_data_json,
+               cont.turing_email AS reviewer_email,
+               ranked.rn, ranked.total_reviews
+        FROM ranked
+        LEFT JOIN `{p}.{d}.contributor` cont ON cont.id = ranked.reviewer_id
+        WHERE ranked.rn = 1 OR ranked.rn = ranked.total_reviews
         """
 
     def _build_quality_dimensions_query(
         self, project_id: int, start_date: str | None = None, end_date: str | None = None,
     ) -> str:
-        """Fetch quality dimension Pass/Fail for the latest review per conversation per audit flag.
+        """Fetch quality dimension Pass/Fail for both the latest and first review per conversation.
 
         Used as a fallback when review.additional_data is NULL but quality
         dimension scores exist.
@@ -874,7 +881,7 @@ class QualityRubricsService:
 
         date_filter = self._date_filter_sql("c", start_date, end_date)
         return f"""
-        WITH latest_review AS (
+        WITH ranked_review AS (
             SELECT
                 r.id AS review_id,
                 r.conversation_id,
@@ -883,7 +890,10 @@ class QualityRubricsService:
                 ROW_NUMBER() OVER (
                     PARTITION BY r.conversation_id, r.audit
                     ORDER BY r.id DESC
-                ) AS rn
+                ) AS rn,
+                COUNT(*) OVER (
+                    PARTITION BY r.conversation_id, r.audit
+                ) AS total_reviews
             FROM `{p}.{d}.review` r
             JOIN `{p}.{d}.conversation` c ON c.id = r.conversation_id
             WHERE c.project_id = {project_id}
@@ -892,17 +902,19 @@ class QualityRubricsService:
               {date_filter}
         )
         SELECT
-            lr.conversation_id,
-            lr.audit,
+            rr.conversation_id,
+            rr.audit,
             qd.name AS dimension_name,
             rqdv.score_text,
             rqdv.score,
-            cont.turing_email AS reviewer_email
-        FROM latest_review lr
-        JOIN `{p}.{d}.review_quality_dimension_value` rqdv ON rqdv.review_id = lr.review_id
+            cont.turing_email AS reviewer_email,
+            rr.rn,
+            rr.total_reviews
+        FROM ranked_review rr
+        JOIN `{p}.{d}.review_quality_dimension_value` rqdv ON rqdv.review_id = rr.review_id
         JOIN `{p}.{d}.quality_dimension` qd ON qd.id = rqdv.quality_dimension_id
-        LEFT JOIN `{p}.{d}.contributor` cont ON cont.id = lr.reviewer_id
-        WHERE lr.rn = 1
+        LEFT JOIN `{p}.{d}.contributor` cont ON cont.id = rr.reviewer_id
+        WHERE rr.rn = 1 OR rr.rn = rr.total_reviews
         """
 
     def _resolve_role_bucket(
@@ -956,6 +968,12 @@ class QualityRubricsService:
                 "reviewer_reasons": {},
                 "auditor_scores": {},
                 "auditor_reasons": {},
+                "first_reviewer_scores": {},
+                "first_reviewer_reasons": {},
+                "first_auditor_scores": {},
+                "first_auditor_reasons": {},
+                "reviewer_review_count": 0,
+                "auditor_review_count": 0,
             }
 
         logger.info(f"Found {len(conv_map)} conversations for project {project_id}")
@@ -970,40 +988,64 @@ class QualityRubricsService:
             if cid not in conv_map:
                 continue
 
+            rn = ad_row.get("rn", 1)
+            total_reviews = ad_row.get("total_reviews", 1)
+
+            bucket = self._resolve_role_bucket(
+                ad_row.get("reviewer_email"), ad_row.get("audit"), team_roles,
+            )
+
+            is_latest = (rn == 1)
+            is_first = (rn == total_reviews)
+
+            if bucket == "calibrator":
+                count_key = "auditor_review_count"
+                latest_scores_key = "auditor_scores"
+                latest_reasons_key = "auditor_reasons"
+                first_scores_key = "first_auditor_scores"
+                first_reasons_key = "first_auditor_reasons"
+            else:
+                count_key = "reviewer_review_count"
+                latest_scores_key = "reviewer_scores"
+                latest_reasons_key = "reviewer_reasons"
+                first_scores_key = "first_reviewer_scores"
+                first_reasons_key = "first_reviewer_reasons"
+
+            if is_latest:
+                conv_map[cid][count_key] = max(conv_map[cid][count_key], total_reviews)
+
             ad_json = ad_row.get("additional_data_json")
             if not ad_json:
                 continue
 
             ad = json.loads(ad_json)
-            bucket = self._resolve_role_bucket(
-                ad_row.get("reviewer_email"), ad_row.get("audit"), team_roles,
-            )
-            if bucket == "calibrator":
-                target_scores = conv_map[cid]["auditor_scores"]
-                target_reasons = conv_map[cid]["auditor_reasons"]
-            else:
-                target_scores = conv_map[cid]["reviewer_scores"]
-                target_reasons = conv_map[cid]["reviewer_reasons"]
 
-            for field in ADDITIONAL_INFO_FIELDS:
-                val = ad.get(field["key"])
-                if val is None:
-                    continue
-                target_scores[field["name"]] = "Pass" if val is True else ("Fail" if val is False else str(val))
+            targets = []
+            if is_latest:
+                targets.append((conv_map[cid][latest_scores_key], conv_map[cid][latest_reasons_key]))
+            if is_first:
+                targets.append((conv_map[cid][first_scores_key], conv_map[cid][first_reasons_key]))
 
-                reason_key = field.get("reason_key")
-                if reason_key:
-                    reason_text = (ad.get(reason_key) or "").strip()
-                    if reason_text and reason_text.upper() not in ("N/A", "N/A.", "NA"):
-                        target_reasons.setdefault(field["name"], []).append(
-                            {"label": reason_key, "text": reason_text}
-                        )
+            for target_scores, target_reasons in targets:
+                for field in ADDITIONAL_INFO_FIELDS:
+                    val = ad.get(field["key"])
+                    if val is None:
+                        continue
+                    target_scores[field["name"]] = "Pass" if val is True else ("Fail" if val is False else str(val))
 
-            standalone = (ad.get(_STANDALONE_TEXT_KEY) or "").strip()
-            if standalone and standalone.upper() not in ("N/A", "NA"):
-                target_reasons.setdefault("Explanation Agreement", []).append(
-                    {"label": "Agreement/Disagreement", "text": standalone}
-                )
+                    reason_key = field.get("reason_key")
+                    if reason_key:
+                        reason_text = (ad.get(reason_key) or "").strip()
+                        if reason_text and reason_text.upper() not in ("N/A", "N/A.", "NA"):
+                            target_reasons.setdefault(field["name"], []).append(
+                                {"label": reason_key, "text": reason_text}
+                            )
+
+                standalone = (ad.get(_STANDALONE_TEXT_KEY) or "").strip()
+                if standalone and standalone.upper() not in ("N/A", "NA"):
+                    target_reasons.setdefault("Explanation Agreement", []).append(
+                        {"label": "Agreement/Disagreement", "text": standalone}
+                    )
 
         # 2b. Fallback: fetch quality dimension scores (manual reviews only)
         #     for conversations that have no additional_data.
@@ -1025,13 +1067,27 @@ class QualityRubricsService:
             if cid not in conv_map:
                 continue
 
+            rn = qd_row.get("rn", 1)
+            total_reviews = qd_row.get("total_reviews", 1)
+
             bucket = self._resolve_role_bucket(
                 qd_row.get("reviewer_email"), qd_row.get("audit"), team_roles,
             )
+
+            is_latest = (rn == 1)
+            is_first = (rn == total_reviews)
+
             if bucket == "calibrator":
-                target_scores = conv_map[cid]["auditor_scores"]
+                count_key = "auditor_review_count"
+                latest_key = "auditor_scores"
+                first_key = "first_auditor_scores"
             else:
-                target_scores = conv_map[cid]["reviewer_scores"]
+                count_key = "reviewer_review_count"
+                latest_key = "reviewer_scores"
+                first_key = "first_reviewer_scores"
+
+            if is_latest:
+                conv_map[cid][count_key] = max(conv_map[cid][count_key], total_reviews)
 
             bq_dim_name = (qd_row.get("dimension_name") or "").strip()
             our_cat_name = _BQ_DIM_TO_CATEGORY.get(bq_dim_name.lower())
@@ -1039,10 +1095,6 @@ class QualityRubricsService:
                 continue
             cat_items = cat_name_to_items.get(our_cat_name.lower(), [])
             if not cat_items:
-                continue
-
-            already_has = any(target_scores.get(item) for item in cat_items)
-            if already_has:
                 continue
 
             score_text = (qd_row.get("score_text") or "").strip()
@@ -1054,28 +1106,61 @@ class QualityRubricsService:
             else:
                 continue
 
-            for item in cat_items:
-                target_scores[item] = pf
+            score_targets = []
+            if is_latest:
+                score_targets.append(conv_map[cid][latest_key])
+            if is_first:
+                score_targets.append(conv_map[cid][first_key])
+
+            for target_scores in score_targets:
+                already_has = any(target_scores.get(item) for item in cat_items)
+                if already_has:
+                    continue
+                for item in cat_items:
+                    target_scores[item] = pf
 
         # 3. Build task_details in the same shape as the sheet parser
         task_details: list[dict[str, Any]] = []
         for cid, info in conv_map.items():
+            r_count = info["reviewer_review_count"]
+            a_count = info["auditor_review_count"]
+
+            # Symmetric fallback: if either view is empty, copy from the other
+            latest_rev_scores = info["reviewer_scores"] or info["first_reviewer_scores"]
+            latest_rev_reasons = info["reviewer_reasons"] or info["first_reviewer_reasons"]
+            latest_aud_scores = info["auditor_scores"] or info["first_auditor_scores"]
+            latest_aud_reasons = info["auditor_reasons"] or info["first_auditor_reasons"]
+            first_rev_scores = info["first_reviewer_scores"] or info["reviewer_scores"]
+            first_rev_reasons = info["first_reviewer_reasons"] or info["reviewer_reasons"]
+            first_aud_scores = info["first_auditor_scores"] or info["auditor_scores"]
+            first_aud_reasons = info["first_auditor_reasons"] or info["auditor_reasons"]
+
             has_data = bool(
-                any(info["reviewer_scores"].values())
-                or any(info["auditor_scores"].values())
+                any(latest_rev_scores.values()) or any(latest_aud_scores.values())
             )
+
             task_details.append({
                 "batch": info["batch_name"],
                 "task": str(info["conversation_id"]),
                 "task_link": info["colab_link"],
                 "has_data": has_data,
+                "reviewer_rework_count": max(r_count - 1, 0),
+                "auditor_rework_count": max(a_count - 1, 0),
                 "reviewer": {
-                    "scores": info["reviewer_scores"],
-                    "reasons": info["reviewer_reasons"],
+                    "scores": latest_rev_scores,
+                    "reasons": latest_rev_reasons,
                 },
                 "auditor": {
-                    "scores": info["auditor_scores"],
-                    "reasons": info["auditor_reasons"],
+                    "scores": latest_aud_scores,
+                    "reasons": latest_aud_reasons,
+                },
+                "first_reviewer": {
+                    "scores": first_rev_scores,
+                    "reasons": first_rev_reasons,
+                },
+                "first_auditor": {
+                    "scores": first_aud_scores,
+                    "reasons": first_aud_reasons,
                 },
             })
 

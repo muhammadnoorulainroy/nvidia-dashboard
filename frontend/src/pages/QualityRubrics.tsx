@@ -22,6 +22,14 @@ import {
   Alert,
   IconButton,
   Link,
+  ToggleButtonGroup,
+  ToggleButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  Button,
+  TextField,
+  Snackbar,
 } from '@mui/material'
 import {
   CheckCircleOutline as PassIcon,
@@ -38,8 +46,20 @@ import {
   KeyboardArrowUp as CollapseIcon,
   OpenInNew as OpenInNewIcon,
   Refresh as RefreshIcon,
+  Share as ShareIcon,
+  ContentCopy as CopyIcon,
+  LinkOff as RevokeIcon,
+  Add as AddIcon,
 } from '@mui/icons-material'
-import { getQualityRubricsData, type QualityRubricsData } from '../services/api'
+import {
+  getQualityRubricsData,
+  createShareLink,
+  listShareLinks,
+  revokeShareLink,
+  type QualityRubricsData,
+  type ShareLink as ShareLinkType,
+} from '../services/api'
+import { useAuth } from '../contexts/AuthContext'
 import TimeframeSelector from '../components/common/TimeframeSelector'
 import { type Timeframe, getDateRange } from '../utils/dateUtils'
 
@@ -430,32 +450,38 @@ function BatchQualityView({ batchData, rubricFpy }: {
 // TASK RUBRICS TAB
 // ============================================================================
 
-function TaskDetailRow({ task, allRubricItems, categories }: {
+function TaskDetailRow({ task, allRubricItems, categories, reviewView }: {
   task: QualityRubricsData['task_details'][0]
   allRubricItems: string[]
   categories: QualityRubricsData['rubric_categories']
+  reviewView: 'latest' | 'first'
 }) {
   const [expanded, setExpanded] = useState(false)
 
+  const activeReviewer = reviewView === 'first' && task.first_reviewer ? task.first_reviewer : task.reviewer
+  const activeAuditor = reviewView === 'first' && task.first_auditor ? task.first_auditor : task.auditor
+
   const hasReasons = useMemo(() => {
     for (const rubric of allRubricItems) {
-      const rr = task.reviewer.reasons[rubric]
+      const rr = activeReviewer.reasons[rubric]
       if (rr && rr.length > 0) return true
-      const ar = task.auditor.reasons[rubric]
+      const ar = activeAuditor.reasons[rubric]
       if (ar && ar.length > 0) return true
     }
     return false
-  }, [task, allRubricItems])
+  }, [activeReviewer, activeAuditor, allRubricItems])
 
   const hasAnyScore = useMemo(() => {
     for (const rubric of allRubricItems) {
-      if (task.reviewer.scores[rubric]?.trim()) return true
-      if (task.auditor.scores[rubric]?.trim()) return true
+      if (activeReviewer.scores[rubric]?.trim()) return true
+      if (activeAuditor.scores[rubric]?.trim()) return true
     }
     return false
-  }, [task, allRubricItems])
+  }, [activeReviewer, activeAuditor, allRubricItems])
 
   const isExpandable = hasReasons || hasAnyScore
+
+  const totalReworks = (task.reviewer_rework_count || 0) + (task.auditor_rework_count || 0)
 
   const labelingToolUrl = `https://labeling-n.turing.com/conversations/${task.task}/view`
 
@@ -483,7 +509,7 @@ function TaskDetailRow({ task, allRubricItems, categories }: {
         <TableCell sx={{ py: 0.25, px: 0.75, fontSize: '0.8rem', fontWeight: 600, color: '#1E293B', borderBottom: '1px solid #E8ECF0', borderRight: HEADER_BORDER }}>
           {task.batch}
         </TableCell>
-        <TableCell sx={{ py: 0.25, px: 0.75, borderBottom: '1px solid #E8ECF0', borderRight: CAT_BORDER }}>
+        <TableCell sx={{ py: 0.25, px: 0.75, borderBottom: '1px solid #E8ECF0', borderRight: HEADER_BORDER }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.3 }}>
             {isExpandable && (
               <IconButton size="small" sx={{ p: 0, width: 16, height: 16 }}>
@@ -493,11 +519,19 @@ function TaskDetailRow({ task, allRubricItems, categories }: {
             {taskLabel}
           </Box>
         </TableCell>
+        <TableCell align="center" sx={{
+          py: 0.25, px: 0.5,
+          borderBottom: '1px solid #E8ECF0', borderRight: CAT_BORDER,
+          fontSize: '0.75rem', fontWeight: 600,
+          color: totalReworks > 0 ? '#DC2626' : '#94A3B8',
+        }}>
+          {totalReworks > 0 ? totalReworks : '-'}
+        </TableCell>
 
         {categories.map((cat, ci) => {
           const isLastCat = ci === categories.length - 1
           return cat.items.map((item, ii) => {
-            const val = task.reviewer.scores[item] || ''
+            const val = activeReviewer.scores[item] || ''
             const isPass = val.toUpperCase() === 'PASS'
             const isEmpty = !val
             const isLastInCat = ii === cat.items.length - 1
@@ -520,7 +554,7 @@ function TaskDetailRow({ task, allRubricItems, categories }: {
         {categories.map((cat, ci) => {
           const isLastCat = ci === categories.length - 1
           return cat.items.map((item, ii) => {
-            const val = task.auditor.scores[item] || ''
+            const val = activeAuditor.scores[item] || ''
             const isPass = val.toUpperCase() === 'PASS'
             const isEmpty = !val
             const isLastInCat = ii === cat.items.length - 1
@@ -545,7 +579,7 @@ function TaskDetailRow({ task, allRubricItems, categories }: {
         <>
           {/* Title row */}
           <TableRow>
-            <TableCell colSpan={2 + allRubricItems.length * 2} sx={{ bgcolor: '#FAFAFA', py: 0.75, px: 1.5, borderBottom: 'none' }}>
+            <TableCell colSpan={3 + allRubricItems.length * 2} sx={{ bgcolor: '#FAFAFA', py: 0.75, px: 1.5, borderBottom: 'none' }}>
               <Typography sx={{ fontSize: '0.85rem', fontWeight: 700, color: '#1E293B' }}>
                 Task {task.task} — Details
               </Typography>
@@ -553,7 +587,7 @@ function TaskDetailRow({ task, allRubricItems, categories }: {
           </TableRow>
           {/* Column headers: Reviewer | Auditor */}
           <TableRow>
-            <TableCell colSpan={2} sx={{ bgcolor: '#F1F5F9', p: 0, borderBottom: '1px solid #CBD5E1' }} />
+            <TableCell colSpan={3} sx={{ bgcolor: '#F1F5F9', p: 0, borderBottom: '1px solid #CBD5E1' }} />
             <TableCell colSpan={allRubricItems.length} sx={{ bgcolor: '#F1F5F9', borderRight: CAT_BORDER, borderBottom: '1px solid #CBD5E1', px: 1.5, py: 0.5 }}>
               <Typography sx={{ fontSize: '0.8rem', fontWeight: 700, color: '#334155' }}>Reviewer</Typography>
             </TableCell>
@@ -564,17 +598,17 @@ function TaskDetailRow({ task, allRubricItems, categories }: {
           {/* One row per category header + one row per rubric item */}
           {categories.map((cat, catIdx) => {
             const allItems = cat.items.filter((item) => {
-              const rs = task.reviewer.scores[item]
-              const rr = task.reviewer.reasons[item]
-              const as_ = task.auditor.scores[item]
-              const ar = task.auditor.reasons[item]
+              const rs = activeReviewer.scores[item]
+              const rr = activeReviewer.reasons[item]
+              const as_ = activeAuditor.scores[item]
+              const ar = activeAuditor.reasons[item]
               return !!rs || (rr && rr.length > 0) || !!as_ || (ar && ar.length > 0)
             })
             if (allItems.length === 0) return null
             return [
               categories.length > 1 && (
                 <TableRow key={`cat-hdr-${cat.name}`}>
-                  <TableCell colSpan={2} sx={{ bgcolor: '#F8FAFC', p: 0, borderBottom: '1px solid #E8ECF0' }} />
+                  <TableCell colSpan={3} sx={{ bgcolor: '#F8FAFC', p: 0, borderBottom: '1px solid #E8ECF0' }} />
                   <TableCell colSpan={allRubricItems.length} sx={{ bgcolor: '#F8FAFC', borderRight: CAT_BORDER, borderBottom: '1px solid #E8ECF0', px: 1.5, py: 0.4 }}>
                     <Typography sx={{ fontSize: '0.75rem', fontWeight: 700, color: '#475569' }}>{cat.name}</Typography>
                   </TableCell>
@@ -584,13 +618,13 @@ function TaskDetailRow({ task, allRubricItems, categories }: {
                 </TableRow>
               ),
               ...allItems.map((item, ii) => {
-                const rScore = task.reviewer.scores[item] || ''
-                const rReasons = task.reviewer.reasons[item] || []
+                const rScore = activeReviewer.scores[item] || ''
+                const rReasons = activeReviewer.reasons[item] || []
                 const rFail = rScore.toUpperCase() === 'FAIL'
                 const rHas = !!rScore || rReasons.length > 0
 
-                const aScore = task.auditor.scores[item] || ''
-                const aReasons = task.auditor.reasons[item] || []
+                const aScore = activeAuditor.scores[item] || ''
+                const aReasons = activeAuditor.reasons[item] || []
                 const aFail = aScore.toUpperCase() === 'FAIL'
                 const aHas = !!aScore || aReasons.length > 0
 
@@ -599,7 +633,7 @@ function TaskDetailRow({ task, allRubricItems, categories }: {
 
                 return (
                   <TableRow key={`detail-${cat.name}-${item}`}>
-                    <TableCell colSpan={2} sx={{ bgcolor: '#FAFAFA', p: 0, borderBottom: bottomBorder }} />
+                    <TableCell colSpan={3} sx={{ bgcolor: '#FAFAFA', p: 0, borderBottom: bottomBorder }} />
                     <TableCell colSpan={allRubricItems.length} sx={{
                       bgcolor: '#FAFAFA', verticalAlign: 'top', borderRight: CAT_BORDER,
                       borderBottom: bottomBorder, px: 1.5, py: 0.5,
@@ -659,11 +693,12 @@ function TaskDetailRow({ task, allRubricItems, categories }: {
   )
 }
 
-function TaskRubricsView({ data, categories }: {
+export function TaskRubricsView({ data, categories }: {
   data: QualityRubricsData['task_details']
   categories: QualityRubricsData['rubric_categories']
 }) {
   const [batchFilter, setBatchFilter] = useState<string>('all')
+  const [reviewView, setReviewView] = useState<'latest' | 'first'>('latest')
 
   const allRubricItems = useMemo(() => categories.flatMap((c) => c.items), [categories])
   const batches = useMemo(() => Array.from(new Set(data.map((d) => d.batch))), [data])
@@ -674,18 +709,25 @@ function TaskRubricsView({ data, categories }: {
   const tasksWithData = useMemo(() => filtered.filter((t) => t.has_data), [filtered])
 
   const passRates = useMemo(() => {
+    const getScores = (t: QualityRubricsData['task_details'][0], role: 'reviewer' | 'auditor') => {
+      if (reviewView === 'first') {
+        const first = role === 'reviewer' ? t.first_reviewer : t.first_auditor
+        if (first) return first.scores
+      }
+      return t[role].scores
+    }
     const reviewer = allRubricItems.map((item) => {
-      const total = tasksWithData.filter((t) => t.reviewer.scores[item]?.trim()).length
-      const passed = tasksWithData.filter((t) => t.reviewer.scores[item]?.toUpperCase() === 'PASS').length
+      const total = tasksWithData.filter((t) => getScores(t, 'reviewer')[item]?.trim()).length
+      const passed = tasksWithData.filter((t) => getScores(t, 'reviewer')[item]?.toUpperCase() === 'PASS').length
       return total > 0 ? (passed / total) * 100 : 0
     })
     const auditor = allRubricItems.map((item) => {
-      const total = tasksWithData.filter((t) => t.auditor.scores[item]?.trim()).length
-      const passed = tasksWithData.filter((t) => t.auditor.scores[item]?.toUpperCase() === 'PASS').length
+      const total = tasksWithData.filter((t) => getScores(t, 'auditor')[item]?.trim()).length
+      const passed = tasksWithData.filter((t) => getScores(t, 'auditor')[item]?.toUpperCase() === 'PASS').length
       return total > 0 ? (passed / total) * 100 : 0
     })
     return { reviewer, auditor }
-  }, [tasksWithData, allRubricItems])
+  }, [tasksWithData, allRubricItems, reviewView])
 
   return (
     <Box>
@@ -714,6 +756,20 @@ function TaskRubricsView({ data, categories }: {
             = Click row for reasons
           </Typography>
         </Box>
+        <ToggleButtonGroup
+          size="small"
+          exclusive
+          value={reviewView}
+          onChange={(_, v) => { if (v) setReviewView(v) }}
+          sx={{ height: 28, ml: 1 }}
+        >
+          <ToggleButton value="latest" sx={{ fontSize: '0.72rem', px: 1.25, textTransform: 'none', fontWeight: 600 }}>
+            Latest Review
+          </ToggleButton>
+          <ToggleButton value="first" sx={{ fontSize: '0.72rem', px: 1.25, textTransform: 'none', fontWeight: 600 }}>
+            First Review
+          </ToggleButton>
+        </ToggleButtonGroup>
         <Typography sx={{ fontSize: '0.8rem', color: '#64748B', ml: 'auto' }}>
           {filtered.length} tasks ({tasksWithData.length} with data)
         </Typography>
@@ -761,12 +817,22 @@ function TaskRubricsView({ data, categories }: {
                 </TableCell>
                 <TableCell rowSpan={3} sx={{
                   fontWeight: 700, fontSize: '0.8rem', bgcolor: '#FFF', color: '#1E293B',
-                  borderBottom: HEADER_BORDER, borderRight: CAT_BORDER,
+                  borderBottom: HEADER_BORDER, borderRight: HEADER_BORDER,
                   width: 70, position: 'sticky', top: 0, zIndex: 5,
                   verticalAlign: 'bottom', py: 0.5, px: 0.75,
                 }}>
                   Task
                 </TableCell>
+                <Tooltip title="Total reworks (Reviewer + Auditor)" arrow>
+                  <TableCell rowSpan={3} align="center" sx={{
+                    fontWeight: 700, fontSize: '0.75rem', bgcolor: '#FFF', color: '#1E293B',
+                    borderBottom: HEADER_BORDER, borderRight: CAT_BORDER,
+                    width: 36, position: 'sticky', top: 0, zIndex: 5,
+                    verticalAlign: 'bottom', py: 0.5, px: 0.25,
+                  }}>
+                    Rwk
+                  </TableCell>
+                </Tooltip>
                 <TableCell colSpan={allRubricItems.length} align="center" sx={{
                   fontWeight: 700, fontSize: '0.85rem', bgcolor: '#FFF', color: '#1E293B',
                   borderBottom: HEADER_BORDER, borderRight: CAT_BORDER,
@@ -876,6 +942,7 @@ function TaskRubricsView({ data, categories }: {
                   task={row}
                   allRubricItems={allRubricItems}
                   categories={categories}
+                  reviewView={reviewView}
                 />
               ))}
               {filtered.length === 0 && (
@@ -892,14 +959,189 @@ function TaskRubricsView({ data, categories }: {
 }
 
 // ============================================================================
+// SHARE LINK DIALOG
+// ============================================================================
+
+function ShareLinkDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const [links, setLinks] = useState<ShareLinkType[]>([])
+  const [loading, setLoading] = useState(false)
+  const [label, setLabel] = useState('')
+  const [expiryDays, setExpiryDays] = useState<string>('')
+  const [snackMsg, setSnackMsg] = useState('')
+
+  const fetchLinks = useCallback(async () => {
+    setLoading(true)
+    try {
+      const result = await listShareLinks()
+      setLinks(result.filter((l) => l.page === 'quality-rubrics'))
+    } catch { /* ignore */ }
+    setLoading(false)
+  }, [])
+
+  useEffect(() => {
+    if (open) fetchLinks()
+  }, [open, fetchLinks])
+
+  const handleCreate = async () => {
+    try {
+      const days = expiryDays ? parseInt(expiryDays, 10) : undefined
+      await createShareLink({
+        page: 'quality-rubrics',
+        project_id: 60,
+        label: label || undefined,
+        expires_in_days: days && days > 0 ? days : undefined,
+      })
+      setLabel('')
+      setExpiryDays('')
+      fetchLinks()
+      setSnackMsg('Share link created')
+    } catch {
+      setSnackMsg('Failed to create link')
+    }
+  }
+
+  const handleRevoke = async (id: number) => {
+    try {
+      await revokeShareLink(id)
+      fetchLinks()
+      setSnackMsg('Link revoked')
+    } catch {
+      setSnackMsg('Failed to revoke link')
+    }
+  }
+
+  const copyLink = (token: string) => {
+    const url = `${window.location.origin}/shared/${token}`
+    navigator.clipboard.writeText(url)
+    setSnackMsg('Link copied to clipboard')
+  }
+
+  const activeLinks = links.filter((l) => l.is_active)
+  const revokedLinks = links.filter((l) => !l.is_active)
+
+  return (
+    <>
+      <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth PaperProps={{ sx: { borderRadius: 2 } }}>
+        <DialogTitle sx={{ fontSize: '1rem', fontWeight: 700, color: '#0F172A', pb: 0.5 }}>
+          Share Task Rubrics
+          <Typography sx={{ fontSize: '0.75rem', color: '#64748B', fontWeight: 400 }}>
+            Generate a secret link for external read-only access
+          </Typography>
+        </DialogTitle>
+        <DialogContent>
+          {/* Create new link */}
+          <Box sx={{ mb: 2.5, p: 1.5, bgcolor: '#F8FAFC', borderRadius: 1.5, border: '1px solid #E2E8F0' }}>
+            <Typography sx={{ fontSize: '0.8rem', fontWeight: 600, color: '#334155', mb: 1 }}>New Link</Typography>
+            <Box sx={{ display: 'flex', gap: 1, alignItems: 'flex-end', flexWrap: 'wrap' }}>
+              <TextField
+                size="small"
+                label="Label (optional)"
+                value={label}
+                onChange={(e) => setLabel(e.target.value)}
+                sx={{ flex: 1, minWidth: 140, '& .MuiInputBase-root': { fontSize: '0.8rem', height: 34 }, '& .MuiInputLabel-root': { fontSize: '0.8rem' } }}
+              />
+              <TextField
+                size="small"
+                label="Expires in (days)"
+                type="number"
+                value={expiryDays}
+                onChange={(e) => setExpiryDays(e.target.value)}
+                placeholder="Never"
+                sx={{ width: 130, '& .MuiInputBase-root': { fontSize: '0.8rem', height: 34 }, '& .MuiInputLabel-root': { fontSize: '0.8rem' } }}
+              />
+              <Button
+                variant="contained"
+                size="small"
+                startIcon={<AddIcon sx={{ fontSize: 16 }} />}
+                onClick={handleCreate}
+                sx={{
+                  height: 34, fontSize: '0.78rem', fontWeight: 600, textTransform: 'none',
+                  bgcolor: '#4F46E5', '&:hover': { bgcolor: '#4338CA' },
+                }}
+              >
+                Generate
+              </Button>
+            </Box>
+          </Box>
+
+          {/* Active links */}
+          {loading ? (
+            <Box sx={{ display: 'flex', justifyContent: 'center', py: 3 }}>
+              <CircularProgress size={24} />
+            </Box>
+          ) : activeLinks.length === 0 ? (
+            <Typography sx={{ fontSize: '0.8rem', color: '#94A3B8', textAlign: 'center', py: 2 }}>
+              No active share links
+            </Typography>
+          ) : (
+            activeLinks.map((link) => (
+              <Box key={link.id} sx={{
+                display: 'flex', alignItems: 'center', gap: 1, py: 1, px: 1,
+                borderBottom: '1px solid #F1F5F9',
+                '&:hover': { bgcolor: '#FAFAFA' },
+              }}>
+                <Box sx={{ flex: 1, minWidth: 0 }}>
+                  <Typography sx={{ fontSize: '0.8rem', fontWeight: 600, color: '#1E293B' }}>
+                    {link.label || 'Untitled'}
+                  </Typography>
+                  <Typography sx={{ fontSize: '0.7rem', color: '#94A3B8' }}>
+                    Created {new Date(link.created_at).toLocaleDateString()}
+                    {link.expires_at && ` · Expires ${new Date(link.expires_at).toLocaleDateString()}`}
+                  </Typography>
+                </Box>
+                <Tooltip title="Copy link" arrow>
+                  <IconButton size="small" onClick={() => copyLink(link.token)}
+                    sx={{ color: '#4F46E5', '&:hover': { bgcolor: '#EEF2FF' } }}>
+                    <CopyIcon sx={{ fontSize: 16 }} />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Revoke link" arrow>
+                  <IconButton size="small" onClick={() => handleRevoke(link.id)}
+                    sx={{ color: '#DC2626', '&:hover': { bgcolor: '#FEF2F2' } }}>
+                    <RevokeIcon sx={{ fontSize: 16 }} />
+                  </IconButton>
+                </Tooltip>
+              </Box>
+            ))
+          )}
+
+          {/* Revoked links */}
+          {revokedLinks.length > 0 && (
+            <Box sx={{ mt: 2 }}>
+              <Typography sx={{ fontSize: '0.72rem', fontWeight: 600, color: '#94A3B8', mb: 0.5 }}>Revoked</Typography>
+              {revokedLinks.map((link) => (
+                <Box key={link.id} sx={{ display: 'flex', alignItems: 'center', gap: 1, py: 0.5, px: 1, opacity: 0.5 }}>
+                  <Typography sx={{ fontSize: '0.75rem', color: '#94A3B8', textDecoration: 'line-through', flex: 1 }}>
+                    {link.label || 'Untitled'} — {new Date(link.created_at).toLocaleDateString()}
+                  </Typography>
+                </Box>
+              ))}
+            </Box>
+          )}
+        </DialogContent>
+      </Dialog>
+      <Snackbar
+        open={!!snackMsg}
+        autoHideDuration={2500}
+        onClose={() => setSnackMsg('')}
+        message={snackMsg}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      />
+    </>
+  )
+}
+
+// ============================================================================
 // MAIN PAGE COMPONENT
 // ============================================================================
 
 export default function QualityRubrics() {
+  const { isAdmin } = useAuth()
   const [activeTab, setActiveTab] = useState(0)
   const [data, setData] = useState<QualityRubricsData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [shareDialogOpen, setShareDialogOpen] = useState(false)
 
   const [timeframe, setTimeframe] = useState<Timeframe>('overall')
   const [weekOffset, setWeekOffset] = useState(0)
@@ -969,8 +1211,18 @@ export default function QualityRubrics() {
               <RefreshIcon sx={{ fontSize: 18, color: '#475569' }} />
             </IconButton>
           </Tooltip>
+          {isAdmin && (
+            <Tooltip title="Share Task Rubrics externally" arrow>
+              <IconButton onClick={() => setShareDialogOpen(true)} size="small"
+                sx={{ bgcolor: '#EEF2FF', '&:hover': { bgcolor: '#E0E7FF' } }}>
+                <ShareIcon sx={{ fontSize: 18, color: '#4F46E5' }} />
+              </IconButton>
+            </Tooltip>
+          )}
         </Box>
       </Box>
+
+      {isAdmin && <ShareLinkDialog open={shareDialogOpen} onClose={() => setShareDialogOpen(false)} />}
 
       {/* Tabs — scrolls away, sticks left during horizontal scroll */}
       <Box sx={{ position: 'sticky', left: 0, mb: 1.5 }}>

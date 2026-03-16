@@ -140,6 +140,7 @@ class DatabaseService:
                 'contributor',
                 'data_sync_log',
                 'work_item',
+                'time_theft_exclusion',
                 'task_reviewed_info',
                 'pod_lead_mapping',
                 'jibble_hours',
