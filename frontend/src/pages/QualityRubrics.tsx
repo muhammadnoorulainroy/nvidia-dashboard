@@ -1012,8 +1012,30 @@ function ShareLinkDialog({ open, onClose }: { open: boolean; onClose: () => void
 
   const copyLink = (token: string) => {
     const url = `${window.location.origin}/shared/${token}`
-    navigator.clipboard.writeText(url)
-    setSnackMsg('Link copied to clipboard')
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(url).then(
+        () => setSnackMsg('Link copied to clipboard'),
+        () => fallbackCopy(url),
+      )
+    } else {
+      fallbackCopy(url)
+    }
+  }
+
+  const fallbackCopy = (text: string) => {
+    const ta = document.createElement('textarea')
+    ta.value = text
+    ta.style.position = 'fixed'
+    ta.style.opacity = '0'
+    document.body.appendChild(ta)
+    ta.select()
+    try {
+      document.execCommand('copy')
+      setSnackMsg('Link copied to clipboard')
+    } catch {
+      setSnackMsg('Copy failed — select and copy manually: ' + text)
+    }
+    document.body.removeChild(ta)
   }
 
   const activeLinks = links.filter((l) => l.is_active)
