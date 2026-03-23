@@ -1010,28 +1010,13 @@ function ShareLinkDialog({ open, onClose }: { open: boolean; onClose: () => void
     }
   }
 
-  const [visibleLinkToken, setVisibleLinkToken] = useState<string | null>(null)
-
-  const copyLink = (token: string) => {
-    const url = `${window.location.origin}/shared/${token}`
-    try {
-      const ta = document.createElement('textarea')
-      ta.value = url
-      ta.setAttribute('readonly', '')
-      ta.style.position = 'absolute'
-      ta.style.left = '-9999px'
-      document.body.appendChild(ta)
-      ta.select()
-      ta.setSelectionRange(0, url.length)
-      const ok = document.execCommand('copy')
-      document.body.removeChild(ta)
-      if (ok) {
-        setSnackMsg('Link copied to clipboard')
-        return
-      }
-    } catch { /* fallback below */ }
-    setVisibleLinkToken(token)
-    setSnackMsg('Select the link below and copy manually')
+  const copyLink = (inputId: string) => {
+    const input = document.getElementById(inputId) as HTMLInputElement | null
+    if (!input) return
+    input.select()
+    input.setSelectionRange(0, input.value.length)
+    try { document.execCommand('copy') } catch { /* user can Ctrl+C */ }
+    setSnackMsg('Link selected — press Ctrl+C to copy')
   }
 
   const activeLinks = links.filter((l) => l.is_active)
@@ -1092,43 +1077,50 @@ function ShareLinkDialog({ open, onClose }: { open: boolean; onClose: () => void
               No active share links
             </Typography>
           ) : (
-            activeLinks.map((link) => (
-              <Box key={link.id} sx={{ py: 1, px: 1, borderBottom: '1px solid #F1F5F9', '&:hover': { bgcolor: '#FAFAFA' } }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <Box sx={{ flex: 1, minWidth: 0 }}>
-                    <Typography sx={{ fontSize: '0.8rem', fontWeight: 600, color: '#1E293B' }}>
-                      {link.label || 'Untitled'}
-                    </Typography>
-                    <Typography sx={{ fontSize: '0.7rem', color: '#94A3B8' }}>
-                      Created {new Date(link.created_at).toLocaleDateString()}
-                      {link.expires_at && ` · Expires ${new Date(link.expires_at).toLocaleDateString()}`}
-                    </Typography>
+            activeLinks.map((link) => {
+              const inputId = `share-url-${link.id}`
+              return (
+                <Box key={link.id} sx={{ py: 1, px: 1, borderBottom: '1px solid #F1F5F9' }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.75 }}>
+                    <Box sx={{ flex: 1, minWidth: 0 }}>
+                      <Typography sx={{ fontSize: '0.8rem', fontWeight: 600, color: '#1E293B' }}>
+                        {link.label || 'Untitled'}
+                      </Typography>
+                      <Typography sx={{ fontSize: '0.7rem', color: '#94A3B8' }}>
+                        Created {new Date(link.created_at).toLocaleDateString()}
+                        {link.expires_at && ` · Expires ${new Date(link.expires_at).toLocaleDateString()}`}
+                      </Typography>
+                    </Box>
+                    <Tooltip title="Revoke link" arrow>
+                      <IconButton size="small" onClick={() => handleRevoke(link.id)}
+                        sx={{ color: '#DC2626', '&:hover': { bgcolor: '#FEF2F2' } }}>
+                        <RevokeIcon sx={{ fontSize: 16 }} />
+                      </IconButton>
+                    </Tooltip>
                   </Box>
-                  <Tooltip title="Copy link" arrow>
-                    <IconButton size="small" onClick={() => copyLink(link.token)}
-                      sx={{ color: '#4F46E5', '&:hover': { bgcolor: '#EEF2FF' } }}>
-                      <CopyIcon sx={{ fontSize: 16 }} />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Revoke link" arrow>
-                    <IconButton size="small" onClick={() => handleRevoke(link.id)}
-                      sx={{ color: '#DC2626', '&:hover': { bgcolor: '#FEF2F2' } }}>
-                      <RevokeIcon sx={{ fontSize: 16 }} />
-                    </IconButton>
-                  </Tooltip>
+                  <Box sx={{ display: 'flex', gap: 0.5, alignItems: 'center' }}>
+                    <input
+                      id={inputId}
+                      readOnly
+                      value={`${window.location.origin}/shared/${link.token}`}
+                      onClick={(e) => (e.target as HTMLInputElement).select()}
+                      style={{
+                        flex: 1, fontSize: '0.72rem', padding: '5px 8px',
+                        border: '1px solid #E2E8F0', borderRadius: 4,
+                        background: '#F8FAFC', color: '#334155', outline: 'none',
+                        fontFamily: 'monospace',
+                      }}
+                    />
+                    <Tooltip title="Select & copy" arrow>
+                      <IconButton size="small" onClick={() => copyLink(inputId)}
+                        sx={{ color: '#4F46E5', '&:hover': { bgcolor: '#EEF2FF' } }}>
+                        <CopyIcon sx={{ fontSize: 16 }} />
+                      </IconButton>
+                    </Tooltip>
+                  </Box>
                 </Box>
-                {visibleLinkToken === link.token && (
-                  <TextField
-                    fullWidth
-                    size="small"
-                    value={`${window.location.origin}/shared/${link.token}`}
-                    onClick={(e) => (e.target as HTMLInputElement).select()}
-                    InputProps={{ readOnly: true }}
-                    sx={{ mt: 0.75, '& .MuiInputBase-root': { fontSize: '0.72rem', height: 30, bgcolor: '#F1F5F9' } }}
-                  />
-                )}
-              </Box>
-            ))
+              )
+            })
           )}
 
           {/* Revoked links */}
