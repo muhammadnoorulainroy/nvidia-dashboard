@@ -1225,6 +1225,22 @@ export interface QualityRubricsData {
       scores: Record<string, string>
       reasons: Record<string, ReasonEntry[]>
     }
+    second_reviewer?: {
+      scores: Record<string, string>
+      reasons: Record<string, ReasonEntry[]>
+    }
+    second_auditor?: {
+      scores: Record<string, string>
+      reasons: Record<string, ReasonEntry[]>
+    }
+    third_reviewer?: {
+      scores: Record<string, string>
+      reasons: Record<string, ReasonEntry[]>
+    }
+    third_auditor?: {
+      scores: Record<string, string>
+      reasons: Record<string, ReasonEntry[]>
+    }
   }[]
   rubric_categories: {
     name: string
@@ -1236,6 +1252,15 @@ export interface QualityRubricsData {
     category_fpy: Record<string, Record<string, number | null>>
     rubric_item_fpy: Record<string, Record<string, number | null>>
   }
+  batch_yield_stats?: {
+    batch: string
+    role: 'Reviewer' | 'Auditor'
+    rework_total: number
+    fpy: number | null
+    spy: number | null
+    tpy: number | null
+    lpy: number | null
+  }[]
 }
 
 export const getQualityRubricsData = async (

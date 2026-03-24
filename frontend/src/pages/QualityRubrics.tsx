@@ -454,12 +454,23 @@ function TaskDetailRow({ task, allRubricItems, categories, reviewView }: {
   task: QualityRubricsData['task_details'][0]
   allRubricItems: string[]
   categories: QualityRubricsData['rubric_categories']
-  reviewView: 'latest' | 'first'
+  reviewView: 'latest' | 'first' | 'second' | 'third'
 }) {
   const [expanded, setExpanded] = useState(false)
 
-  const activeReviewer = reviewView === 'first' && task.first_reviewer ? task.first_reviewer : task.reviewer
-  const activeAuditor = reviewView === 'first' && task.first_auditor ? task.first_auditor : task.auditor
+  const resolveRole = (role: 'reviewer' | 'auditor') => {
+    const keyMap: Record<string, string> = {
+      first: `first_${role}`,
+      second: `second_${role}`,
+      third: `third_${role}`,
+      latest: role,
+    }
+    const key = keyMap[reviewView] as keyof typeof task
+    const obj = task[key] as { scores: Record<string, string>; reasons: Record<string, unknown[]> } | undefined
+    return obj || task[role]
+  }
+  const activeReviewer = resolveRole('reviewer')
+  const activeAuditor = resolveRole('auditor')
 
   const hasReasons = useMemo(() => {
     for (const rubric of allRubricItems) {
@@ -693,12 +704,13 @@ function TaskDetailRow({ task, allRubricItems, categories, reviewView }: {
   )
 }
 
-export function TaskRubricsView({ data, categories }: {
+export function TaskRubricsView({ data, categories, batchYieldStats: serverYieldStats }: {
   data: QualityRubricsData['task_details']
   categories: QualityRubricsData['rubric_categories']
+  batchYieldStats?: QualityRubricsData['batch_yield_stats']
 }) {
   const [batchFilter, setBatchFilter] = useState<string>('all')
-  const [reviewView, setReviewView] = useState<'latest' | 'first'>('latest')
+  const [reviewView, setReviewView] = useState<'latest' | 'first' | 'second' | 'third'>('latest')
 
   const allRubricItems = useMemo(() => categories.flatMap((c) => c.items), [categories])
   const batches = useMemo(() => Array.from(new Set(data.map((d) => d.batch))), [data])
@@ -708,26 +720,70 @@ export function TaskRubricsView({ data, categories }: {
   )
   const tasksWithData = useMemo(() => filtered.filter((t) => t.has_data), [filtered])
 
-  const passRates = useMemo(() => {
-    const getScores = (t: QualityRubricsData['task_details'][0], role: 'reviewer' | 'auditor') => {
-      if (reviewView === 'first') {
-        const first = role === 'reviewer' ? t.first_reviewer : t.first_auditor
-        if (first) return first.scores
-      }
-      return t[role].scores
+  type YieldRow = {
+    batch: string
+    role: 'Reviewer' | 'Auditor'
+    reworkTotal: number
+    fpy: number | null
+    spy: number | null
+    tpy: number | null
+    lpy: number | null
+  }
+
+  const batchYieldStats = useMemo<YieldRow[]>(() => {
+    if (serverYieldStats && serverYieldStats.length > 0) {
+      const mapped = serverYieldStats.map((s) => ({
+        batch: s.batch,
+        role: s.role,
+        reworkTotal: s.rework_total,
+        fpy: s.fpy,
+        spy: s.spy,
+        tpy: s.tpy,
+        lpy: s.lpy,
+      }))
+      if (batchFilter === 'all') return mapped
+      return mapped.filter((r) => r.batch === batchFilter)
     }
-    const reviewer = allRubricItems.map((item) => {
-      const total = tasksWithData.filter((t) => getScores(t, 'reviewer')[item]?.trim()).length
-      const passed = tasksWithData.filter((t) => getScores(t, 'reviewer')[item]?.toUpperCase() === 'PASS').length
-      return total > 0 ? (passed / total) * 100 : 0
-    })
-    const auditor = allRubricItems.map((item) => {
-      const total = tasksWithData.filter((t) => getScores(t, 'auditor')[item]?.trim()).length
-      const passed = tasksWithData.filter((t) => getScores(t, 'auditor')[item]?.toUpperCase() === 'PASS').length
-      return total > 0 ? (passed / total) * 100 : 0
-    })
-    return { reviewer, auditor }
-  }, [tasksWithData, allRubricItems, reviewView])
+
+    // Fallback: approximate yield from rework counts when backend stats unavailable.
+    // FPY/SPY/TPY pass at review K when total_reviews == K (no further rework).
+    // LPY cannot be determined without review_action data; left as null.
+    type Task = QualityRubricsData['task_details'][0]
+
+    const batchGroups = new Map<string, Task[]>()
+    for (const t of tasksWithData) {
+      const arr = batchGroups.get(t.batch)
+      if (arr) arr.push(t); else batchGroups.set(t.batch, [t])
+    }
+
+    const computeYield = (tasks: Task[], roleKey: 'reviewer' | 'auditor', stage: 'first' | 'second' | 'third' | 'latest') => {
+      const reworkKey = `${roleKey}_rework_count` as keyof Task
+      if (stage === 'latest') return null
+      const k = { first: 1, second: 2, third: 3 }[stage]!
+      const eligible = tasks.filter((t) => ((t[reworkKey] as number) || 0) + 1 >= k)
+      if (eligible.length === 0) return null
+      const passed = eligible.filter((t) => ((t[reworkKey] as number) || 0) + 1 === k).length
+      return (passed / eligible.length) * 100
+    }
+
+    const rows: YieldRow[] = []
+    for (const [batch, tasks] of batchGroups) {
+      for (const roleKey of ['reviewer', 'auditor'] as const) {
+        const rwkKey = `${roleKey}_rework_count` as keyof Task
+        const reworkTotal = tasks.reduce((s, t) => s + ((t[rwkKey] as number) || 0), 0)
+        rows.push({
+          batch,
+          role: roleKey === 'reviewer' ? 'Reviewer' : 'Auditor',
+          reworkTotal,
+          fpy: computeYield(tasks, roleKey, 'first'),
+          spy: computeYield(tasks, roleKey, 'second'),
+          tpy: computeYield(tasks, roleKey, 'third'),
+          lpy: computeYield(tasks, roleKey, 'latest'),
+        })
+      }
+    }
+    return rows
+  }, [serverYieldStats, batchFilter, tasksWithData])
 
   return (
     <Box>
@@ -763,11 +819,17 @@ export function TaskRubricsView({ data, categories }: {
           onChange={(_, v) => { if (v) setReviewView(v) }}
           sx={{ height: 28, ml: 1 }}
         >
-          <ToggleButton value="latest" sx={{ fontSize: '0.72rem', px: 1.25, textTransform: 'none', fontWeight: 600 }}>
-            Latest Review
-          </ToggleButton>
           <ToggleButton value="first" sx={{ fontSize: '0.72rem', px: 1.25, textTransform: 'none', fontWeight: 600 }}>
-            First Review
+            1st Review
+          </ToggleButton>
+          <ToggleButton value="second" sx={{ fontSize: '0.72rem', px: 1.25, textTransform: 'none', fontWeight: 600 }}>
+            2nd Review
+          </ToggleButton>
+          <ToggleButton value="third" sx={{ fontSize: '0.72rem', px: 1.25, textTransform: 'none', fontWeight: 600 }}>
+            3rd Review
+          </ToggleButton>
+          <ToggleButton value="latest" sx={{ fontSize: '0.72rem', px: 1.25, textTransform: 'none', fontWeight: 600 }}>
+            Last Review
           </ToggleButton>
         </ToggleButtonGroup>
         <Typography sx={{ fontSize: '0.8rem', color: '#64748B', ml: 'auto' }}>
@@ -775,32 +837,60 @@ export function TaskRubricsView({ data, categories }: {
         </Typography>
       </Box>
 
-      {/* Pass Rate Summary */}
-      <Box sx={{ p: 1.5, mx: 1.5, mb: 1, borderRadius: 1, border: '1px solid #E2E8F0', position: 'sticky', left: 0 }}>
-        <Typography sx={{ fontSize: '0.85rem', fontWeight: 700, color: '#1E293B', mb: 0.75 }}>
-          Rubric Pass Rates (Reviewer)
-        </Typography>
-        <Box sx={{ display: 'flex', gap: 0.5, flexWrap: 'wrap' }}>
-          {allRubricItems.map((item, i) => {
-            const rate = passRates.reviewer[i]
-            return (
-              <Chip
-                key={item}
-                label={`${item}: ${rate.toFixed(0)}%`}
-                size="small"
-                sx={{
-                  fontSize: '0.75rem',
-                  fontWeight: 500,
-                  height: 24,
-                  bgcolor: '#FFF',
-                  color: '#334155',
-                  border: '1px solid #E2E8F0',
-                }}
-              />
-            )
-          })}
-        </Box>
+      {/* Batch Pass Yield Summary */}
+      {batchYieldStats.length > 0 && (
+      <Box sx={{ mx: 1.5, mb: 1, borderRadius: 1, border: '1px solid #E2E8F0', position: 'sticky', left: 0, overflow: 'hidden' }}>
+        <Table size="small">
+          <TableHead>
+            <TableRow sx={{ bgcolor: '#F8FAFC' }}>
+              {['Batch', 'Role', 'Rwk Total', 'FPY', 'Rework %', 'SPY', 'Rework %', 'TPY', 'Rework %', 'LPY', 'Rework %'].map((h, i) => (
+                <TableCell key={i} align={i >= 2 ? 'center' : 'left'} sx={{
+                  fontWeight: 700, fontSize: '0.72rem', color: '#475569', py: 0.5, px: 1,
+                  borderBottom: '2px solid #CBD5E1', whiteSpace: 'nowrap',
+                  ...(i === 2 || i === 4 || i === 6 || i === 8 || i === 10 ? { borderRight: '1px solid #E2E8F0' } : {}),
+                }}>
+                  {h}
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {batchYieldStats.map((row, idx) => {
+              const isFirstOfBatch = idx === 0 || batchYieldStats[idx - 1].batch !== row.batch
+              const batchRowCount = batchYieldStats.filter((r) => r.batch === row.batch).length
+              const fmt = (v: number | null) => v !== null ? `${v.toFixed(2)}%` : '—'
+              const rwk = (v: number | null) => v !== null ? `${(100 - v).toFixed(2)}%` : '—'
+              return (
+                <TableRow key={idx} sx={{ '&:last-child td': { borderBottom: 0 }, bgcolor: idx % 4 < 2 ? '#FFF' : '#FAFBFC' }}>
+                  {isFirstOfBatch && (
+                    <TableCell rowSpan={batchRowCount} sx={{
+                      fontWeight: 600, fontSize: '0.78rem', color: '#1E293B', py: 0.4, px: 1,
+                      borderBottom: '1px solid #E2E8F0', verticalAlign: 'top',
+                    }}>
+                      {row.batch}
+                    </TableCell>
+                  )}
+                  <TableCell sx={{ fontSize: '0.75rem', color: '#334155', py: 0.4, px: 1, borderBottom: '1px solid #E2E8F0' }}>
+                    {row.role}
+                  </TableCell>
+                  <TableCell align="center" sx={{ fontSize: '0.75rem', fontWeight: 600, color: '#1E293B', py: 0.4, px: 1, borderBottom: '1px solid #E2E8F0', borderRight: '1px solid #E2E8F0' }}>
+                    {row.reworkTotal}
+                  </TableCell>
+                  <TableCell align="center" sx={{ fontSize: '0.75rem', fontWeight: 600, color: '#1E293B', py: 0.4, px: 1, borderBottom: '1px solid #E2E8F0' }}>{fmt(row.fpy)}</TableCell>
+                  <TableCell align="center" sx={{ fontSize: '0.75rem', color: row.fpy !== null && row.fpy < 100 ? '#DC2626' : '#64748B', py: 0.4, px: 1, borderBottom: '1px solid #E2E8F0', borderRight: '1px solid #E2E8F0' }}>{rwk(row.fpy)}</TableCell>
+                  <TableCell align="center" sx={{ fontSize: '0.75rem', fontWeight: 600, color: '#1E293B', py: 0.4, px: 1, borderBottom: '1px solid #E2E8F0' }}>{fmt(row.spy)}</TableCell>
+                  <TableCell align="center" sx={{ fontSize: '0.75rem', color: row.spy !== null && row.spy < 100 ? '#DC2626' : '#64748B', py: 0.4, px: 1, borderBottom: '1px solid #E2E8F0', borderRight: '1px solid #E2E8F0' }}>{rwk(row.spy)}</TableCell>
+                  <TableCell align="center" sx={{ fontSize: '0.75rem', fontWeight: 600, color: '#1E293B', py: 0.4, px: 1, borderBottom: '1px solid #E2E8F0' }}>{fmt(row.tpy)}</TableCell>
+                  <TableCell align="center" sx={{ fontSize: '0.75rem', color: row.tpy !== null && row.tpy < 100 ? '#DC2626' : '#64748B', py: 0.4, px: 1, borderBottom: '1px solid #E2E8F0', borderRight: '1px solid #E2E8F0' }}>{rwk(row.tpy)}</TableCell>
+                  <TableCell align="center" sx={{ fontSize: '0.75rem', fontWeight: 600, color: '#1E293B', py: 0.4, px: 1, borderBottom: '1px solid #E2E8F0' }}>{fmt(row.lpy)}</TableCell>
+                  <TableCell align="center" sx={{ fontSize: '0.75rem', color: row.lpy !== null && row.lpy < 100 ? '#DC2626' : '#64748B', py: 0.4, px: 1, borderBottom: '1px solid #E2E8F0' }}>{rwk(row.lpy)}</TableCell>
+                </TableRow>
+              )
+            })}
+          </TableBody>
+        </Table>
       </Box>
+      )}
 
       {/* Table — header sticks at top of page scroll container */}
           <Table size="small">
@@ -1155,7 +1245,7 @@ function ShareLinkDialog({ open, onClose }: { open: boolean; onClose: () => void
 
 export default function QualityRubrics() {
   const { isAdmin } = useAuth()
-  const [activeTab, setActiveTab] = useState(0)
+  const [activeTab, setActiveTab] = useState(2)
   const [data, setData] = useState<QualityRubricsData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -1283,7 +1373,7 @@ export default function QualityRubrics() {
         <>
           {activeTab === 0 && <DailyRollupView data={data.daily_rollup} />}
           {activeTab === 1 && <BatchQualityView batchData={data.batch_quality} rubricFpy={data.rubric_fpy} categories={data.rubric_categories} />}
-          {activeTab === 2 && <TaskRubricsView data={data.task_details} categories={data.rubric_categories} />}
+          {activeTab === 2 && <TaskRubricsView data={data.task_details} categories={data.rubric_categories} batchYieldStats={data.batch_yield_stats} />}
         </>
       )}
     </Box>

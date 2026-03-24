@@ -24,17 +24,17 @@ BIGQUERY_PROJECT_IDS = {60}
 # Maps additional_data JSON keys to human-readable names and their
 # associated text-explanation keys (used as feedback/reasons).
 ADDITIONAL_INFO_FIELDS: list[dict[str, str | None]] = [
-    {"key": "globalScoreCorrect", "name": "Global score is correct", "reason_key": "reasonGlobalScoreIncorrect"},
-    {"key": "majorMinorLabelCorrect", "name": "Major vs Minor label at issue level is correct", "reason_key": "reasonMajorMinorIncorrect"},
-    {"key": "allIssuesAddressed", "name": "Have all issues been addressed up to Major issue", "reason_key": "explainMissingIssue"},
-    {"key": "stopAfterFirstMajor", "name": "Stop after the first Major issue", "reason_key": None},
-    {"key": "issuesInRightOrder", "name": "Issues are in the right order [top to bottom]", "reason_key": "justificationForOrder"},
-    {"key": "minorIssueHasWorkableFix", "name": "Each minor issue has a workable fix", "reason_key": "explainWorkableFix"},
-    {"key": "workableFixCorrect", "name": "Is the workable fix correct or incorrect?", "reason_key": "incorrectWorkableFixIssueIds"},
-    {"key": "issuesMathematicallySound", "name": "Issues are mathematically sound", "reason_key": "reasonsMathematicallySound"},
-    {"key": "outputFieldsComplete", "name": "Output fields are complete", "reason_key": None},
-    {"key": "issueDescriptionsIdentifyWhere", "name": "Issue descriptions identify where in the proof,  the issue occurred", "reason_key": None},
-    {"key": "issueDescriptionsPrecise", "name": "Issue descriptions are precise, without ambiguous language", "reason_key": "explanationAmbiguity"},
+    {"key": "globalScoreCorrect", "name": "Global Score Correct", "reason_key": "reasonGlobalScoreIncorrect"},
+    {"key": "majorMinorLabelCorrect", "name": "Major Minor Label Correct", "reason_key": "reasonMajorMinorIncorrect"},
+    {"key": "allIssuesAddressed", "name": "All Issues Addressed", "reason_key": "explainMissingIssue"},
+    {"key": "stopAfterFirstMajor", "name": "Stop After First Major", "reason_key": None},
+    {"key": "issuesInRightOrder", "name": "Issues In Right Order", "reason_key": "justificationForOrder"},
+    {"key": "minorIssueHasWorkableFix", "name": "Minor Issue Has Workable Fix", "reason_key": "explainWorkableFix"},
+    {"key": "workableFixCorrect", "name": "Workable Fix Correct", "reason_key": "incorrectWorkableFixIssueIds"},
+    {"key": "issuesMathematicallySound", "name": "Issues Mathematically Sound", "reason_key": "reasonsMathematicallySound"},
+    {"key": "outputFieldsComplete", "name": "Output Fields Correct", "reason_key": None},
+    {"key": "issueDescriptionsIdentifyWhere", "name": "Issue Descriptions Identify Where", "reason_key": None},
+    {"key": "issueDescriptionsPrecise", "name": "Issue Descriptions Precise", "reason_key": "explanationAmbiguity"},
 ]
 
 # Standalone text field not tied to a boolean; attached as a general note
@@ -42,34 +42,34 @@ _STANDALONE_TEXT_KEY = "explanationAgreementDisagreement"
 
 RUBRIC_CATEGORIES = [
     {
-        "name": "Labeling Accuracy",
+        "name": "Labelling Accuracy",
         "items": [
-            "Global score is correct",
-            "Major vs Minor label at issue level is correct",
-            "Have all issues been addressed up to Major issue",
+            "Global Score Correct",
+            "Major Minor Label Correct",
+            "All Issues Addressed",
         ],
     },
     {
-        "name": "Step coverage and discipline",
+        "name": "Step Coverage and Review Discipline",
         "items": [
-            "Stop after the first Major issue",
-            "Issues are in the right order [top to bottom]",
-            "Each minor issue has a workable fix",
-            "Is the workable fix correct or incorrect?",
+            "Stop After First Major",
+            "Issues In Right Order",
+            "Minor Issue Has Workable Fix",
+            "Workable Fix Correct",
         ],
     },
     {
-        "name": "Failure resolution quality",
+        "name": "Failure Resolution Quality",
         "items": [
-            "Issues are mathematically sound",
-            "Output fields are complete",
+            "Issues Mathematically Sound",
+            "Output Fields Correct",
         ],
     },
     {
-        "name": "Mathematical Correctness of Critique",
+        "name": "Critique Precision and Output Completeness",
         "items": [
-            "Issue descriptions identify where in the proof,  the issue occurred",
-            "Issue descriptions are precise, without ambiguous language",
+            "Issue Descriptions Identify Where",
+            "Issue Descriptions Precise",
         ],
     },
 ]
@@ -82,10 +82,11 @@ for item in ALL_RUBRIC_ITEMS:
 
 # BigQuery quality_dimension.name → our RUBRIC_CATEGORIES name (case-insensitive keys)
 _BQ_DIM_TO_CATEGORY: dict[str, str] = {
-    "labeling accuracy": "Labeling Accuracy",
-    "step coverage and review discipline": "Step coverage and discipline",
-    "failure resolution quality": "Failure resolution quality",
-    "critique precision and output completeness": "Mathematical Correctness of Critique",
+    "labeling accuracy": "Labelling Accuracy",
+    "labelling accuracy": "Labelling Accuracy",
+    "step coverage and review discipline": "Step Coverage and Review Discipline",
+    "failure resolution quality": "Failure Resolution Quality",
+    "critique precision and output completeness": "Critique Precision and Output Completeness",
 }
 
 
@@ -863,7 +864,7 @@ class QualityRubricsService:
                ranked.rn, ranked.total_reviews
         FROM ranked
         LEFT JOIN `{p}.{d}.contributor` cont ON cont.id = ranked.reviewer_id
-        WHERE ranked.rn = 1 OR ranked.rn = ranked.total_reviews
+        WHERE ranked.rn = 1 OR ranked.rn >= ranked.total_reviews - 2
         """
 
     def _build_quality_dimensions_query(
@@ -914,7 +915,7 @@ class QualityRubricsService:
         JOIN `{p}.{d}.review_quality_dimension_value` rqdv ON rqdv.review_id = rr.review_id
         JOIN `{p}.{d}.quality_dimension` qd ON qd.id = rqdv.quality_dimension_id
         LEFT JOIN `{p}.{d}.contributor` cont ON cont.id = rr.reviewer_id
-        WHERE rr.rn = 1 OR rr.rn = rr.total_reviews
+        WHERE rr.rn = 1 OR rr.rn >= rr.total_reviews - 2
         """
 
     def _resolve_role_bucket(
@@ -970,8 +971,16 @@ class QualityRubricsService:
                 "auditor_reasons": {},
                 "first_reviewer_scores": {},
                 "first_reviewer_reasons": {},
+                "second_reviewer_scores": {},
+                "second_reviewer_reasons": {},
+                "third_reviewer_scores": {},
+                "third_reviewer_reasons": {},
                 "first_auditor_scores": {},
                 "first_auditor_reasons": {},
+                "second_auditor_scores": {},
+                "second_auditor_reasons": {},
+                "third_auditor_scores": {},
+                "third_auditor_reasons": {},
                 "reviewer_review_count": 0,
                 "auditor_review_count": 0,
             }
@@ -996,20 +1005,10 @@ class QualityRubricsService:
             )
 
             is_latest = (rn == 1)
-            is_first = (rn == total_reviews)
+            review_number = total_reviews - rn + 1  # chronological: 1=first, 2=second, ...
 
-            if bucket == "calibrator":
-                count_key = "auditor_review_count"
-                latest_scores_key = "auditor_scores"
-                latest_reasons_key = "auditor_reasons"
-                first_scores_key = "first_auditor_scores"
-                first_reasons_key = "first_auditor_reasons"
-            else:
-                count_key = "reviewer_review_count"
-                latest_scores_key = "reviewer_scores"
-                latest_reasons_key = "reviewer_reasons"
-                first_scores_key = "first_reviewer_scores"
-                first_reasons_key = "first_reviewer_reasons"
+            role_prefix = "auditor" if bucket == "calibrator" else "reviewer"
+            count_key = f"{role_prefix}_review_count"
 
             if is_latest:
                 conv_map[cid][count_key] = max(conv_map[cid][count_key], total_reviews)
@@ -1020,11 +1019,13 @@ class QualityRubricsService:
 
             ad = json.loads(ad_json)
 
+            _REVIEW_NUM_TO_PREFIX = {1: "first", 2: "second", 3: "third"}
             targets = []
             if is_latest:
-                targets.append((conv_map[cid][latest_scores_key], conv_map[cid][latest_reasons_key]))
-            if is_first:
-                targets.append((conv_map[cid][first_scores_key], conv_map[cid][first_reasons_key]))
+                targets.append((conv_map[cid][f"{role_prefix}_scores"], conv_map[cid][f"{role_prefix}_reasons"]))
+            prefix = _REVIEW_NUM_TO_PREFIX.get(review_number)
+            if prefix:
+                targets.append((conv_map[cid][f"{prefix}_{role_prefix}_scores"], conv_map[cid][f"{prefix}_{role_prefix}_reasons"]))
 
             for target_scores, target_reasons in targets:
                 for field in ADDITIONAL_INFO_FIELDS:
@@ -1075,16 +1076,10 @@ class QualityRubricsService:
             )
 
             is_latest = (rn == 1)
-            is_first = (rn == total_reviews)
+            review_number = total_reviews - rn + 1
 
-            if bucket == "calibrator":
-                count_key = "auditor_review_count"
-                latest_key = "auditor_scores"
-                first_key = "first_auditor_scores"
-            else:
-                count_key = "reviewer_review_count"
-                latest_key = "reviewer_scores"
-                first_key = "first_reviewer_scores"
+            role_prefix = "auditor" if bucket == "calibrator" else "reviewer"
+            count_key = f"{role_prefix}_review_count"
 
             if is_latest:
                 conv_map[cid][count_key] = max(conv_map[cid][count_key], total_reviews)
@@ -1106,11 +1101,13 @@ class QualityRubricsService:
             else:
                 continue
 
+            _REVIEW_NUM_TO_PREFIX = {1: "first", 2: "second", 3: "third"}
             score_targets = []
             if is_latest:
-                score_targets.append(conv_map[cid][latest_key])
-            if is_first:
-                score_targets.append(conv_map[cid][first_key])
+                score_targets.append(conv_map[cid][f"{role_prefix}_scores"])
+            prefix = _REVIEW_NUM_TO_PREFIX.get(review_number)
+            if prefix:
+                score_targets.append(conv_map[cid][f"{prefix}_{role_prefix}_scores"])
 
             for target_scores in score_targets:
                 already_has = any(target_scores.get(item) for item in cat_items)
@@ -1119,25 +1116,42 @@ class QualityRubricsService:
                 for item in cat_items:
                     target_scores[item] = pf
 
+        # 2c. Compute batch yield stats from review_action outcomes
+        batch_yield_stats = self._compute_batch_yield_stats(
+            client, conv_map, project_id, team_roles, start_date, end_date,
+        )
+
         # 3. Build task_details in the same shape as the sheet parser
         task_details: list[dict[str, Any]] = []
         for cid, info in conv_map.items():
             r_count = info["reviewer_review_count"]
             a_count = info["auditor_review_count"]
 
-            # Symmetric fallback: if either view is empty, copy from the other
-            latest_rev_scores = info["reviewer_scores"] or info["first_reviewer_scores"]
-            latest_rev_reasons = info["reviewer_reasons"] or info["first_reviewer_reasons"]
-            latest_aud_scores = info["auditor_scores"] or info["first_auditor_scores"]
-            latest_aud_reasons = info["auditor_reasons"] or info["first_auditor_reasons"]
-            first_rev_scores = info["first_reviewer_scores"] or info["reviewer_scores"]
-            first_rev_reasons = info["first_reviewer_reasons"] or info["reviewer_reasons"]
-            first_aud_scores = info["first_auditor_scores"] or info["auditor_scores"]
-            first_aud_reasons = info["first_auditor_reasons"] or info["auditor_reasons"]
+            # Cascading fallback per role: 1st → 2nd → 3rd → latest
+            def _cascade(info: dict, role: str) -> tuple:
+                first_s = info[f"first_{role}_scores"]
+                first_r = info[f"first_{role}_reasons"]
+                second_s = info[f"second_{role}_scores"]
+                second_r = info[f"second_{role}_reasons"]
+                third_s = info[f"third_{role}_scores"]
+                third_r = info[f"third_{role}_reasons"]
+                latest_s = info[f"{role}_scores"]
+                latest_r = info[f"{role}_reasons"]
 
-            has_data = bool(
-                any(latest_rev_scores.values()) or any(latest_aud_scores.values())
-            )
+                f_s = first_s or latest_s
+                f_r = first_r or latest_r
+                s_s = second_s or f_s
+                s_r = second_r or f_r
+                t_s = third_s or s_s
+                t_r = third_r or s_r
+                l_s = latest_s or t_s
+                l_r = latest_r or t_r
+                return f_s, f_r, s_s, s_r, t_s, t_r, l_s, l_r
+
+            fr_s, fr_r, sr_s, sr_r, tr_s, tr_r, lr_s, lr_r = _cascade(info, "reviewer")
+            fa_s, fa_r, sa_s, sa_r, ta_s, ta_r, la_s, la_r = _cascade(info, "auditor")
+
+            has_data = bool(any(lr_s.values()) or any(la_s.values()))
 
             task_details.append({
                 "batch": info["batch_name"],
@@ -1146,22 +1160,14 @@ class QualityRubricsService:
                 "has_data": has_data,
                 "reviewer_rework_count": max(r_count - 1, 0),
                 "auditor_rework_count": max(a_count - 1, 0),
-                "reviewer": {
-                    "scores": latest_rev_scores,
-                    "reasons": latest_rev_reasons,
-                },
-                "auditor": {
-                    "scores": latest_aud_scores,
-                    "reasons": latest_aud_reasons,
-                },
-                "first_reviewer": {
-                    "scores": first_rev_scores,
-                    "reasons": first_rev_reasons,
-                },
-                "first_auditor": {
-                    "scores": first_aud_scores,
-                    "reasons": first_aud_reasons,
-                },
+                "reviewer": {"scores": lr_s, "reasons": lr_r},
+                "auditor": {"scores": la_s, "reasons": la_r},
+                "first_reviewer": {"scores": fr_s, "reasons": fr_r},
+                "first_auditor": {"scores": fa_s, "reasons": fa_r},
+                "second_reviewer": {"scores": sr_s, "reasons": sr_r},
+                "second_auditor": {"scores": sa_s, "reasons": sa_r},
+                "third_reviewer": {"scores": tr_s, "reasons": tr_r},
+                "third_auditor": {"scores": ta_s, "reasons": ta_r},
             })
 
         logger.info(
@@ -1192,6 +1198,7 @@ class QualityRubricsService:
             "task_details": task_details,
             "rubric_categories": rubric_categories,
             "summary": empty_summary,
+            "batch_yield_stats": batch_yield_stats,
         }
 
     # ------------------------------------------------------------------
@@ -1273,6 +1280,124 @@ class QualityRubricsService:
             results.extend(item_results)
 
         return results
+
+    # ------------------------------------------------------------------
+    # Batch yield stats (based on review_action outcomes from BigQuery)
+    # ------------------------------------------------------------------
+
+    def _compute_batch_yield_stats(
+        self,
+        client: Any,
+        conv_map: dict[int, dict[str, Any]],
+        project_id: int,
+        team_roles: dict[str, str],
+        start_date: str | None = None,
+        end_date: str | None = None,
+    ) -> list[dict[str, Any]]:
+        """Compute FPY / SPY / TPY / LPY per batch+role from review actions.
+
+        Fetches ALL published manual reviews and resolves each reviewer's
+        role in Python via ``_resolve_role_bucket`` so that total_reviews
+        is counted per *resolved* role, not the raw ``audit`` flag.
+        """
+        from app.config import get_settings
+
+        s = get_settings()
+        p, d = s.gcp_project_id, s.bigquery_dataset
+        date_filter = self._date_filter_sql("c", start_date, end_date)
+
+        query = f"""
+        SELECT r.conversation_id, r.id AS review_id, r.audit,
+               JSON_EXTRACT_SCALAR(
+                   TO_JSON_STRING(r.review_action), '$.type'
+               ) AS action_type,
+               cont.turing_email AS reviewer_email
+        FROM `{p}.{d}.review` r
+        JOIN `{p}.{d}.conversation` c ON c.id = r.conversation_id
+        LEFT JOIN `{p}.{d}.contributor` cont ON cont.id = r.reviewer_id
+        WHERE c.project_id = {project_id}
+          AND r.review_type = 'manual'
+          AND r.status = 'published'
+          {date_filter}
+        ORDER BY r.conversation_id, r.id DESC
+        """
+
+        rows = [dict(r) for r in client.query(query).result()]
+
+        # Group reviews by (cid, resolved_role), ordered by review_id DESC
+        groups: dict[tuple[int, str], list[dict[str, Any]]] = defaultdict(list)
+        for row in rows:
+            cid = row["conversation_id"]
+            if cid not in conv_map:
+                continue
+            bucket = self._resolve_role_bucket(
+                row.get("reviewer_email"), row.get("audit"), team_roles,
+            )
+            role = "auditor" if bucket == "calibrator" else "reviewer"
+            groups[(cid, role)].append(row)
+
+        # Derive per-conversation per-role summary
+        conv_role: dict[int, dict[str, dict[str, Any]]] = {}
+        for (cid, role), reviews in groups.items():
+            total = len(reviews)
+            latest_action = (reviews[0].get("action_type") or "").lower()
+            conv_role.setdefault(cid, {})[role] = {
+                "total": total,
+                "latest_action": latest_action,
+            }
+
+        # Group by batch
+        batch_groups: dict[str, dict[str, list[dict[str, Any]]]] = {}
+        for cid, roles in conv_role.items():
+            batch = conv_map[cid]["batch_name"]
+            bg = batch_groups.setdefault(batch, {})
+            for role, entry in roles.items():
+                bg.setdefault(role, []).append(entry)
+
+        def _yield_pct(
+            entries: list[dict[str, Any]], stage: str,
+        ) -> float | None:
+            """Yield = approved / eligible.
+
+            For review K (K < total): always rejected (subsequent review exists).
+            For latest (K == total): approved if action != 'rework'.
+            """
+            review_k = {"first": 1, "second": 2, "third": 3}
+            if stage == "latest":
+                eligible = entries
+                if not eligible:
+                    return None
+                approved = sum(
+                    1 for e in eligible if e["latest_action"] != "rework"
+                )
+                return round(approved / len(eligible) * 100, 2)
+
+            k = review_k[stage]
+            eligible = [e for e in entries if e["total"] >= k]
+            if not eligible:
+                return None
+            approved = sum(
+                1 for e in eligible
+                if e["total"] == k and e["latest_action"] != "rework"
+            )
+            return round(approved / len(eligible) * 100, 2)
+
+        stats: list[dict[str, Any]] = []
+        for batch_name in sorted(batch_groups):
+            role_data = batch_groups[batch_name]
+            for role in ("reviewer", "auditor"):
+                entries = role_data.get(role, [])
+                rework_total = sum(max(e["total"] - 1, 0) for e in entries)
+                stats.append({
+                    "batch": batch_name,
+                    "role": "Reviewer" if role == "reviewer" else "Auditor",
+                    "rework_total": rework_total,
+                    "fpy": _yield_pct(entries, "first"),
+                    "spy": _yield_pct(entries, "second"),
+                    "tpy": _yield_pct(entries, "third"),
+                    "lpy": _yield_pct(entries, "latest"),
+                })
+        return stats
 
     # ------------------------------------------------------------------
     # Helpers

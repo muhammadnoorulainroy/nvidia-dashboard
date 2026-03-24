@@ -130,7 +130,7 @@ export default function SharedTaskRubrics() {
         )}
 
         {!loading && !error && data && (
-          <TaskRubricsView data={data.task_details} categories={data.rubric_categories} />
+          <TaskRubricsView data={data.task_details} categories={data.rubric_categories} batchYieldStats={data.batch_yield_stats} />
         )}
       </Box>
     </Box>
