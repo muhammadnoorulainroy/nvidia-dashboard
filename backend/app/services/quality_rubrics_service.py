@@ -1424,6 +1424,10 @@ class QualityRubricsService:
                     "tpy": _yield_pct(entries, "third"),
                     "tpy_rework": _stage_rework_count(entries, 3),
                     "lpy": _yield_pct(entries, "latest"),
+                    "lpy_rework": sum(
+                        1 for e in entries
+                        if e["latest_action"] == "rework"
+                    ) if entries else None,
                 })
 
         # Per-conversation rework counts for task_details

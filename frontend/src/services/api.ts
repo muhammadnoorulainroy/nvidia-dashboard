@@ -1263,6 +1263,7 @@ export interface QualityRubricsData {
     tpy: number | null
     tpy_rework: number | null
     lpy: number | null
+    lpy_rework: number | null
   }[]
 }
 

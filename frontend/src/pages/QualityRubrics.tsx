@@ -732,6 +732,7 @@ export function TaskRubricsView({ data, categories, batchYieldStats: serverYield
     tpy: number | null
     tpyRework: number | null
     lpy: number | null
+    lpyRework: number | null
   }
 
   const batchYieldStats = useMemo<YieldRow[]>(() => {
@@ -747,6 +748,7 @@ export function TaskRubricsView({ data, categories, batchYieldStats: serverYield
         tpy: s.tpy,
         tpyRework: s.tpy_rework ?? null,
         lpy: s.lpy,
+        lpyRework: s.lpy_rework ?? null,
       }))
       if (batchFilter === 'all') return mapped
       return mapped.filter((r) => r.batch === batchFilter)
@@ -788,6 +790,7 @@ export function TaskRubricsView({ data, categories, batchYieldStats: serverYield
           tpy: computeYield(tasks, roleKey, 'third'),
           tpyRework: null,
           lpy: computeYield(tasks, roleKey, 'latest'),
+          lpyRework: null,
         })
       }
     }
@@ -802,8 +805,8 @@ export function TaskRubricsView({ data, categories, batchYieldStats: serverYield
         <Table size="small">
           <TableHead>
             <TableRow sx={{ bgcolor: '#F8FAFC' }}>
-              {['Batch', 'Role', 'Rwk Total', 'FPY', 'Rwk Cnt', 'Rework %', 'SPY', 'Rwk Cnt', 'Rework %', 'TPY', 'Rwk Cnt', 'Rework %', 'LPY', 'Rework %'].map((h, i) => {
-                const borderRightIndices = [2, 5, 8, 11, 13]
+              {['Batch', 'Role', 'Rwk Total', 'FPY', 'Rwk Cnt', 'Rework %', 'SPY', 'Rwk Cnt', 'Rework %', 'TPY', 'Rwk Cnt', 'Rework %', 'LPY', 'Rwk Cnt', 'Rework %'].map((h, i) => {
+                const borderRightIndices = [2, 5, 8, 11, 14]
                 return (
                 <TableCell key={i} align={i >= 2 ? 'center' : 'left'} sx={{
                   fontWeight: 700, fontSize: '0.72rem', color: '#475569', py: 0.5, px: 1,
@@ -848,6 +851,7 @@ export function TaskRubricsView({ data, categories, batchYieldStats: serverYield
                   <TableCell align="center" sx={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748B', py: 0.4, px: 1, borderBottom: '1px solid #E2E8F0' }}>{cnt(row.tpyRework)}</TableCell>
                   <TableCell align="center" sx={{ fontSize: '0.75rem', color: row.tpy !== null && row.tpy < 100 ? '#DC2626' : '#64748B', py: 0.4, px: 1, borderBottom: '1px solid #E2E8F0', borderRight: '1px solid #E2E8F0' }}>{rwk(row.tpy)}</TableCell>
                   <TableCell align="center" sx={{ fontSize: '0.75rem', fontWeight: 600, color: '#1E293B', py: 0.4, px: 1, borderBottom: '1px solid #E2E8F0' }}>{fmt(row.lpy)}</TableCell>
+                  <TableCell align="center" sx={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748B', py: 0.4, px: 1, borderBottom: '1px solid #E2E8F0' }}>{cnt(row.lpyRework)}</TableCell>
                   <TableCell align="center" sx={{ fontSize: '0.75rem', color: row.lpy !== null && row.lpy < 100 ? '#DC2626' : '#64748B', py: 0.4, px: 1, borderBottom: '1px solid #E2E8F0' }}>{rwk(row.lpy)}</TableCell>
                 </TableRow>
               )
