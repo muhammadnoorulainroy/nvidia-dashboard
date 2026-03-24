@@ -1357,30 +1357,34 @@ class QualityRubricsService:
         def _yield_pct(
             entries: list[dict[str, Any]], stage: str,
         ) -> float | None:
-            """Yield = approved / eligible.
+            """Cumulative yield — all stages share the same denominator.
 
-            For review K (K < total): always rejected (subsequent review exists).
-            For latest (K == total): approved if action != 'rework'.
+            FPY = approved by review 1 / all tasks
+            SPY = approved by review 1 or 2 / all tasks
+            TPY = approved by review 1, 2, or 3 / all tasks
+            LPY = all currently approved / all tasks
+
+            A task is "approved by review K" when total_reviews == K
+            and the latest action is not 'rework'.
+            Guarantees FPY <= SPY <= TPY <= LPY.
             """
-            review_k = {"first": 1, "second": 2, "third": 3}
-            if stage == "latest":
-                eligible = entries
-                if not eligible:
-                    return None
-                approved = sum(
-                    1 for e in eligible if e["latest_action"] != "rework"
-                )
-                return round(approved / len(eligible) * 100, 2)
-
-            k = review_k[stage]
-            eligible = [e for e in entries if e["total"] >= k]
-            if not eligible:
+            if not entries:
                 return None
+
+            total = len(entries)
+
+            if stage == "latest":
+                approved = sum(
+                    1 for e in entries if e["latest_action"] != "rework"
+                )
+                return round(approved / total * 100, 2)
+
+            max_k = {"first": 1, "second": 2, "third": 3}[stage]
             approved = sum(
-                1 for e in eligible
-                if e["total"] == k and e["latest_action"] != "rework"
+                1 for e in entries
+                if e["total"] <= max_k and e["latest_action"] != "rework"
             )
-            return round(approved / len(eligible) * 100, 2)
+            return round(approved / total * 100, 2)
 
         stats: list[dict[str, Any]] = []
         for batch_name in sorted(batch_groups):

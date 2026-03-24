@@ -745,8 +745,8 @@ export function TaskRubricsView({ data, categories, batchYieldStats: serverYield
       return mapped.filter((r) => r.batch === batchFilter)
     }
 
-    // Fallback: approximate yield from rework counts when backend stats unavailable.
-    // FPY/SPY/TPY pass at review K when total_reviews == K (no further rework).
+    // Fallback: cumulative yield from rework counts when backend stats unavailable.
+    // All stages use the same denominator (all tasks for that batch+role).
     // LPY cannot be determined without review_action data; left as null.
     type Task = QualityRubricsData['task_details'][0]
 
@@ -759,11 +759,10 @@ export function TaskRubricsView({ data, categories, batchYieldStats: serverYield
     const computeYield = (tasks: Task[], roleKey: 'reviewer' | 'auditor', stage: 'first' | 'second' | 'third' | 'latest') => {
       const reworkKey = `${roleKey}_rework_count` as keyof Task
       if (stage === 'latest') return null
-      const k = { first: 1, second: 2, third: 3 }[stage]!
-      const eligible = tasks.filter((t) => ((t[reworkKey] as number) || 0) + 1 >= k)
-      if (eligible.length === 0) return null
-      const passed = eligible.filter((t) => ((t[reworkKey] as number) || 0) + 1 === k).length
-      return (passed / eligible.length) * 100
+      if (tasks.length === 0) return null
+      const maxK = { first: 1, second: 2, third: 3 }[stage]!
+      const passed = tasks.filter((t) => ((t[reworkKey] as number) || 0) + 1 <= maxK).length
+      return (passed / tasks.length) * 100
     }
 
     const rows: YieldRow[] = []
