@@ -814,6 +814,7 @@ class QualityRubricsService:
         return f"""
         SELECT
             c.id AS conversation_id,
+            c.status,
             c.colab_link,
             c.title,
             b.name AS batch_name
@@ -962,6 +963,7 @@ class QualityRubricsService:
             cid = row["conversation_id"]
             conv_map[cid] = {
                 "conversation_id": cid,
+                "status": row.get("status") or "",
                 "colab_link": row.get("colab_link") or "",
                 "title": row.get("title") or "",
                 "batch_name": row.get("batch_name") or "",
@@ -1116,7 +1118,7 @@ class QualityRubricsService:
                 for item in cat_items:
                     target_scores[item] = pf
 
-        # 2c. Compute batch yield stats from review_action outcomes
+        # 2c. Compute batch yield stats from conversation_status_history
         batch_yield_stats, conv_rework = self._compute_batch_yield_stats(
             client, conv_map, project_id, team_roles, start_date, end_date,
         )
@@ -1295,11 +1297,11 @@ class QualityRubricsService:
         start_date: str | None = None,
         end_date: str | None = None,
     ) -> list[dict[str, Any]]:
-        """Compute FPY / SPY / TPY / LPY per batch+role from review actions.
+        """Compute FPY / SPY / TPY / LPY per batch+role.
 
-        Fetches ALL published manual reviews and resolves each reviewer's
-        role in Python via ``_resolve_role_bucket`` so that total_reviews
-        is counted per *resolved* role, not the raw ``audit`` flag.
+        Uses ``conversation_status_history`` (ground truth matching the
+        labeling tool) for rework counts, and cross-references with
+        published manual reviews for per-role attribution.
         """
         from app.config import get_settings
 
@@ -1307,11 +1309,38 @@ class QualityRubricsService:
         p, d = s.gcp_project_id, s.bigquery_dataset
         date_filter = self._date_filter_sql("c", start_date, end_date)
 
-        query = f"""
+        # --- 1. Actual rework transitions from conversation_status_history ---
+        history_query = f"""
+        SELECT csh.conversation_id, csh.notes,
+               SAFE_CAST(
+                   REGEXP_EXTRACT(csh.notes, r'review #(\\d+)')
+               AS INT64) AS trigger_review_id
+        FROM `{p}.{d}.conversation_status_history` csh
+        JOIN `{p}.{d}.conversation` c ON c.id = csh.conversation_id
+        WHERE c.project_id = {project_id}
+          AND csh.new_status = 'rework'
+          {date_filter}
+        ORDER BY csh.conversation_id, csh.id ASC
+        """
+        history_rows = [dict(r) for r in client.query(history_query).result()]
+
+        # Set of review IDs that actually triggered a rework in the workflow
+        actual_rework_review_ids: set[int] = set()
+        for hr in history_rows:
+            rid = hr.get("trigger_review_id")
+            if rid:
+                actual_rework_review_ids.add(rid)
+
+        # Per-conversation history rework count
+        hist_rework: dict[int, int] = defaultdict(int)
+        for hr in history_rows:
+            cid = hr["conversation_id"]
+            if cid in conv_map:
+                hist_rework[cid] += 1
+
+        # --- 2. Fetch reviews for per-role attribution ---
+        review_query = f"""
         SELECT r.conversation_id, r.id AS review_id, r.audit,
-               JSON_EXTRACT_SCALAR(
-                   TO_JSON_STRING(r.review_action), '$.type'
-               ) AS action_type,
                cont.turing_email AS reviewer_email
         FROM `{p}.{d}.review` r
         JOIN `{p}.{d}.conversation` c ON c.id = r.conversation_id
@@ -1322,42 +1351,66 @@ class QualityRubricsService:
           {date_filter}
         ORDER BY r.conversation_id, r.id ASC
         """
+        review_rows = [dict(r) for r in client.query(review_query).result()]
 
-        rows = [dict(r) for r in client.query(query).result()]
-
-        # Group reviews by (cid, resolved_role), chronological (ASC)
-        groups: dict[tuple[int, str], list[dict[str, Any]]] = defaultdict(list)
-        for row in rows:
-            cid = row["conversation_id"]
-            if cid not in conv_map:
-                continue
+        # Map review_id → resolved role
+        review_role_map: dict[int, str] = {}
+        for row in review_rows:
             bucket = self._resolve_role_bucket(
                 row.get("reviewer_email"), row.get("audit"), team_roles,
             )
             role = "auditor" if bucket == "calibrator" else "reviewer"
-            groups[(cid, role)].append(row)
+            review_role_map[row["review_id"]] = role
 
-        # Derive per-conversation per-role summary with per-review actions
+        # --- 3. Attribute each history rework to a role ---
+        # Per-conversation per-role rework count from history
+        conv_rework: dict[int, dict[str, int]] = {}
+        for hr in history_rows:
+            cid = hr["conversation_id"]
+            if cid not in conv_map:
+                continue
+            rid = hr.get("trigger_review_id")
+            role = review_role_map.get(rid, "reviewer") if rid else "reviewer"
+            conv_rework.setdefault(cid, {}).setdefault(role, 0)
+            conv_rework[cid][role] += 1
+
+        # --- 4. Build per-conversation per-role summaries ---
+        # Group reviews by (cid, role) to count total reviews per role
+        review_groups: dict[tuple[int, str], list[int]] = defaultdict(list)
+        for row in review_rows:
+            cid = row["conversation_id"]
+            if cid not in conv_map:
+                continue
+            role = review_role_map[row["review_id"]]
+            review_groups[(cid, role)].append(row["review_id"])
+
         conv_role: dict[int, dict[str, dict[str, Any]]] = {}
-        for (cid, role), reviews in groups.items():
-            total = len(reviews)
-            latest_action = (reviews[-1].get("action_type") or "").lower()
-            rework_count = sum(
-                1 for r in reviews
-                if (r.get("action_type") or "").lower() == "rework"
-            )
-            actions_by_num = {
-                i + 1: (r.get("action_type") or "none").lower()
-                for i, r in enumerate(reviews)
-            }
+        for (cid, role), rev_ids in review_groups.items():
+            total = len(rev_ids)
+            role_rework = conv_rework.get(cid, {}).get(role, 0)
+            conv_status = conv_map[cid].get("status", "")
+
+            # Build per-review-number "rework" flag using actual history
+            actions_by_num: dict[int, str] = {}
+            rework_idx = 0
+            for i, rid in enumerate(rev_ids):
+                if rid in actual_rework_review_ids:
+                    actions_by_num[i + 1] = "rework"
+                    rework_idx += 1
+                else:
+                    actions_by_num[i + 1] = "delivery"
+
+            # A task is "in rework" only if its conversation status is 'rework'
+            is_in_rework = conv_status == "rework"
+
             conv_role.setdefault(cid, {})[role] = {
                 "total": total,
-                "latest_action": latest_action,
-                "rework_count": rework_count,
+                "is_in_rework": is_in_rework,
+                "rework_count": role_rework,
                 "actions_by_num": actions_by_num,
             }
 
-        # Group by batch
+        # --- 5. Group by batch and compute yields ---
         batch_groups: dict[str, dict[str, list[dict[str, Any]]]] = {}
         for cid, roles in conv_role.items():
             batch = conv_map[cid]["batch_name"]
@@ -1373,7 +1426,7 @@ class QualityRubricsService:
             FPY = tasks whose 1st review passed / all tasks
             SPY = tasks whose 2nd review passed / tasks that reached 2nd review
             TPY = tasks whose 3rd review passed / tasks that reached 3rd review
-            LPY = all currently approved / all tasks
+            LPY = tasks not currently in rework / all tasks
             """
             if not entries:
                 return None
@@ -1381,7 +1434,7 @@ class QualityRubricsService:
             if stage == "latest":
                 total = len(entries)
                 approved = sum(
-                    1 for e in entries if e["latest_action"] != "rework"
+                    1 for e in entries if not e["is_in_rework"]
                 )
                 return round(approved / total * 100, 2)
 
@@ -1398,7 +1451,7 @@ class QualityRubricsService:
         def _stage_rework_count(
             entries: list[dict[str, Any]], stage_num: int,
         ) -> int | None:
-            """Count tasks whose Nth review was a rework."""
+            """Count tasks whose Nth review actually triggered a rework."""
             eligible = [e for e in entries if e["total"] >= stage_num]
             if not eligible:
                 return None
@@ -1425,19 +1478,9 @@ class QualityRubricsService:
                     "tpy_rework": _stage_rework_count(entries, 3),
                     "lpy": _yield_pct(entries, "latest"),
                     "lpy_rework": sum(
-                        1 for e in entries
-                        if e["latest_action"] == "rework"
+                        1 for e in entries if e["is_in_rework"]
                     ) if entries else None,
                 })
-
-        # Per-conversation rework counts for task_details
-        conv_rework: dict[int, dict[str, int]] = {}
-        for (cid, role), reviews in groups.items():
-            rework_cnt = sum(
-                1 for r in reviews
-                if (r.get("action_type") or "").lower() == "rework"
-            )
-            conv_rework.setdefault(cid, {})[role] = rework_cnt
 
         return stats, conv_rework
 
