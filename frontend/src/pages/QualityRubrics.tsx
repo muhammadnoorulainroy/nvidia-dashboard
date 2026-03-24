@@ -658,7 +658,7 @@ function TaskDetailRow({ task, allRubricItems, categories, reviewView }: {
                               : <PassIcon sx={{ fontSize: 13, color: '#16A34A' }} />}
                             <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: '#334155' }}>{item}</Typography>
                           </Box>
-                          {rReasons.map((reason, ri) => (
+                          {rReasons.map((reason: { label: string; text: string }, ri: number) => (
                             <Box key={ri} sx={{ pl: 2, mt: 0.15 }}>
                               <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#94A3B8' }}>{reason.label}</Typography>
                               <Typography sx={{ fontSize: '0.75rem', color: '#475569', lineHeight: 1.4 }}>{reason.text}</Typography>
@@ -682,7 +682,7 @@ function TaskDetailRow({ task, allRubricItems, categories, reviewView }: {
                               : <PassIcon sx={{ fontSize: 13, color: '#16A34A' }} />}
                             <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: '#334155' }}>{item}</Typography>
                           </Box>
-                          {aReasons.map((reason, ri) => (
+                          {aReasons.map((reason: { label: string; text: string }, ri: number) => (
                             <Box key={ri} sx={{ pl: 2, mt: 0.15 }}>
                               <Typography sx={{ fontSize: '0.7rem', fontWeight: 600, color: '#94A3B8' }}>{reason.label}</Typography>
                               <Typography sx={{ fontSize: '0.75rem', color: '#475569', lineHeight: 1.4 }}>{reason.text}</Typography>
