@@ -1117,15 +1117,16 @@ class QualityRubricsService:
                     target_scores[item] = pf
 
         # 2c. Compute batch yield stats from review_action outcomes
-        batch_yield_stats = self._compute_batch_yield_stats(
+        batch_yield_stats, conv_rework = self._compute_batch_yield_stats(
             client, conv_map, project_id, team_roles, start_date, end_date,
         )
 
         # 3. Build task_details in the same shape as the sheet parser
         task_details: list[dict[str, Any]] = []
         for cid, info in conv_map.items():
-            r_count = info["reviewer_review_count"]
-            a_count = info["auditor_review_count"]
+            cid_rework = conv_rework.get(cid, {})
+            r_rework = cid_rework.get("reviewer", 0)
+            a_rework = cid_rework.get("auditor", 0)
 
             # Cascading fallback per role: 1st → 2nd → 3rd → latest
             def _cascade(info: dict, role: str) -> tuple:
@@ -1158,8 +1159,8 @@ class QualityRubricsService:
                 "task": str(info["conversation_id"]),
                 "task_link": info["colab_link"],
                 "has_data": has_data,
-                "reviewer_rework_count": max(r_count - 1, 0),
-                "auditor_rework_count": max(a_count - 1, 0),
+                "reviewer_rework_count": r_rework,
+                "auditor_rework_count": a_rework,
                 "reviewer": {"scores": lr_s, "reasons": lr_r},
                 "auditor": {"scores": la_s, "reasons": la_r},
                 "first_reviewer": {"scores": fr_s, "reasons": fr_r},
@@ -1341,9 +1342,14 @@ class QualityRubricsService:
         for (cid, role), reviews in groups.items():
             total = len(reviews)
             latest_action = (reviews[0].get("action_type") or "").lower()
+            rework_count = sum(
+                1 for r in reviews
+                if (r.get("action_type") or "").lower() == "rework"
+            )
             conv_role.setdefault(cid, {})[role] = {
                 "total": total,
                 "latest_action": latest_action,
+                "rework_count": rework_count,
             }
 
         # Group by batch
@@ -1391,7 +1397,7 @@ class QualityRubricsService:
             role_data = batch_groups[batch_name]
             for role in ("reviewer", "auditor"):
                 entries = role_data.get(role, [])
-                rework_total = sum(max(e["total"] - 1, 0) for e in entries)
+                rework_total = sum(e["rework_count"] for e in entries)
                 stats.append({
                     "batch": batch_name,
                     "role": "Reviewer" if role == "reviewer" else "Auditor",
@@ -1401,7 +1407,17 @@ class QualityRubricsService:
                     "tpy": _yield_pct(entries, "third"),
                     "lpy": _yield_pct(entries, "latest"),
                 })
-        return stats
+
+        # Per-conversation rework counts for task_details
+        conv_rework: dict[int, dict[str, int]] = {}
+        for (cid, role), reviews in groups.items():
+            rework_cnt = sum(
+                1 for r in reviews
+                if (r.get("action_type") or "").lower() == "rework"
+            )
+            conv_rework.setdefault(cid, {})[role] = rework_cnt
+
+        return stats, conv_rework
 
     # ------------------------------------------------------------------
     # Helpers
