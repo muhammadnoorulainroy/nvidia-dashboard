@@ -71,6 +71,7 @@ const HEADER_BORDER = '1px solid #CBD5E1'
 const CAT_BORDER = '2px solid #94A3B8'
 
 // Sticky header row heights (px) for proper stacking on scroll
+const CONTROLS_BAR_H = 48
 const ROW1_H = 28
 const ROW2_H = 24
 
@@ -786,56 +787,6 @@ export function TaskRubricsView({ data, categories, batchYieldStats: serverYield
 
   return (
     <Box>
-      {/* Filter bar */}
-      <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center', p: 1, px: 1.5, flexWrap: 'wrap', position: 'sticky', left: 0 }}>
-        <FormControl size="small" sx={{ minWidth: 130 }}>
-          <InputLabel sx={{ fontSize: '0.8rem' }}>Batch</InputLabel>
-          <Select value={batchFilter} label="Batch" onChange={(e) => setBatchFilter(e.target.value)} sx={{ fontSize: '0.8rem', height: 32 }}>
-            <MenuItem value="all" sx={{ fontSize: '0.8rem' }}>All Batches</MenuItem>
-            {batches.map((b) => (
-              <MenuItem key={b} value={b} sx={{ fontSize: '0.8rem' }}>{b}</MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center' }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.3 }}>
-            <PassIcon sx={{ fontSize: 16, color: '#16A34A' }} />
-            <Typography sx={{ fontSize: '0.8rem', color: '#334155' }}>= Pass</Typography>
-          </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.3 }}>
-            <FailIcon sx={{ fontSize: 16, color: '#DC2626' }} />
-            <Typography sx={{ fontSize: '0.8rem', color: '#334155' }}>= Fail</Typography>
-          </Box>
-          <Typography sx={{ fontSize: '0.75rem', color: '#94A3B8' }}>
-            <ExpandIcon sx={{ fontSize: 14, verticalAlign: 'middle', mr: 0.3 }} />
-            = Click row for reasons
-          </Typography>
-        </Box>
-        <ToggleButtonGroup
-          size="small"
-          exclusive
-          value={reviewView}
-          onChange={(_, v) => { if (v) setReviewView(v) }}
-          sx={{ height: 28, ml: 1 }}
-        >
-          <ToggleButton value="first" sx={{ fontSize: '0.72rem', px: 1.25, textTransform: 'none', fontWeight: 600 }}>
-            1st Review
-          </ToggleButton>
-          <ToggleButton value="second" sx={{ fontSize: '0.72rem', px: 1.25, textTransform: 'none', fontWeight: 600 }}>
-            2nd Review
-          </ToggleButton>
-          <ToggleButton value="third" sx={{ fontSize: '0.72rem', px: 1.25, textTransform: 'none', fontWeight: 600 }}>
-            3rd Review
-          </ToggleButton>
-          <ToggleButton value="latest" sx={{ fontSize: '0.72rem', px: 1.25, textTransform: 'none', fontWeight: 600 }}>
-            Last Review
-          </ToggleButton>
-        </ToggleButtonGroup>
-        <Typography sx={{ fontSize: '0.8rem', color: '#64748B', ml: 'auto' }}>
-          {filtered.length} tasks ({tasksWithData.length} with data)
-        </Typography>
-      </Box>
-
       {/* Batch Pass Yield Summary */}
       {batchYieldStats.length > 0 && (
       <Box sx={{ mx: 1.5, mb: 1, borderRadius: 1, border: '1px solid #E2E8F0', position: 'sticky', left: 0, overflow: 'hidden' }}>
@@ -891,7 +842,61 @@ export function TaskRubricsView({ data, categories, batchYieldStats: serverYield
       </Box>
       )}
 
-      {/* Table — header sticks at top of page scroll container */}
+      {/* Filter & review toggle bar — sticky above task metrics */}
+      <Box sx={{
+        display: 'flex', gap: 1.5, alignItems: 'center', p: 1, px: 1.5, flexWrap: 'wrap',
+        position: 'sticky', top: 0, left: 0, zIndex: 10,
+        bgcolor: '#FFF', borderBottom: '1px solid #E2E8F0',
+      }}>
+        <FormControl size="small" sx={{ minWidth: 130 }}>
+          <InputLabel sx={{ fontSize: '0.8rem' }}>Batch</InputLabel>
+          <Select value={batchFilter} label="Batch" onChange={(e) => setBatchFilter(e.target.value)} sx={{ fontSize: '0.8rem', height: 32 }}>
+            <MenuItem value="all" sx={{ fontSize: '0.8rem' }}>All Batches</MenuItem>
+            {batches.map((b) => (
+              <MenuItem key={b} value={b} sx={{ fontSize: '0.8rem' }}>{b}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.3 }}>
+            <PassIcon sx={{ fontSize: 16, color: '#16A34A' }} />
+            <Typography sx={{ fontSize: '0.8rem', color: '#334155' }}>= Pass</Typography>
+          </Box>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.3 }}>
+            <FailIcon sx={{ fontSize: 16, color: '#DC2626' }} />
+            <Typography sx={{ fontSize: '0.8rem', color: '#334155' }}>= Fail</Typography>
+          </Box>
+          <Typography sx={{ fontSize: '0.75rem', color: '#94A3B8' }}>
+            <ExpandIcon sx={{ fontSize: 14, verticalAlign: 'middle', mr: 0.3 }} />
+            = Click row for reasons
+          </Typography>
+        </Box>
+        <ToggleButtonGroup
+          size="small"
+          exclusive
+          value={reviewView}
+          onChange={(_, v) => { if (v) setReviewView(v) }}
+          sx={{ height: 28, ml: 1 }}
+        >
+          <ToggleButton value="first" sx={{ fontSize: '0.72rem', px: 1.25, textTransform: 'none', fontWeight: 600 }}>
+            1st Review
+          </ToggleButton>
+          <ToggleButton value="second" sx={{ fontSize: '0.72rem', px: 1.25, textTransform: 'none', fontWeight: 600 }}>
+            2nd Review
+          </ToggleButton>
+          <ToggleButton value="third" sx={{ fontSize: '0.72rem', px: 1.25, textTransform: 'none', fontWeight: 600 }}>
+            3rd Review
+          </ToggleButton>
+          <ToggleButton value="latest" sx={{ fontSize: '0.72rem', px: 1.25, textTransform: 'none', fontWeight: 600 }}>
+            Last Review
+          </ToggleButton>
+        </ToggleButtonGroup>
+        <Typography sx={{ fontSize: '0.8rem', color: '#64748B', ml: 'auto' }}>
+          {filtered.length} tasks ({tasksWithData.length} with data)
+        </Typography>
+      </Box>
+
+      {/* Table — header sticks below the filter bar */}
           <Table size="small">
             <TableHead>
               {/* Row 1: Task | Reviewer → Trainer | Auditor → Reviewer / Trainer */}
@@ -899,7 +904,7 @@ export function TaskRubricsView({ data, categories, batchYieldStats: serverYield
                 <TableCell rowSpan={3} sx={{
                   fontWeight: 700, fontSize: '0.8rem', bgcolor: '#FFF', color: '#1E293B',
                   borderBottom: HEADER_BORDER, borderRight: HEADER_BORDER,
-                  width: 60, position: 'sticky', top: 0, zIndex: 5,
+                  width: 60, position: 'sticky', top: CONTROLS_BAR_H, zIndex: 5,
                   verticalAlign: 'bottom', py: 0.5, px: 0.75,
                 }}>
                   Batch
@@ -907,7 +912,7 @@ export function TaskRubricsView({ data, categories, batchYieldStats: serverYield
                 <TableCell rowSpan={3} sx={{
                   fontWeight: 700, fontSize: '0.8rem', bgcolor: '#FFF', color: '#1E293B',
                   borderBottom: HEADER_BORDER, borderRight: HEADER_BORDER,
-                  width: 70, position: 'sticky', top: 0, zIndex: 5,
+                  width: 70, position: 'sticky', top: CONTROLS_BAR_H, zIndex: 5,
                   verticalAlign: 'bottom', py: 0.5, px: 0.75,
                 }}>
                   Task
@@ -916,7 +921,7 @@ export function TaskRubricsView({ data, categories, batchYieldStats: serverYield
                   <TableCell rowSpan={3} align="center" sx={{
                     fontWeight: 700, fontSize: '0.75rem', bgcolor: '#FFF', color: '#1E293B',
                     borderBottom: HEADER_BORDER, borderRight: CAT_BORDER,
-                    width: 36, position: 'sticky', top: 0, zIndex: 5,
+                    width: 36, position: 'sticky', top: CONTROLS_BAR_H, zIndex: 5,
                     verticalAlign: 'bottom', py: 0.5, px: 0.25,
                   }}>
                     Rwk
@@ -925,7 +930,7 @@ export function TaskRubricsView({ data, categories, batchYieldStats: serverYield
                 <TableCell colSpan={allRubricItems.length} align="center" sx={{
                   fontWeight: 700, fontSize: '0.85rem', bgcolor: '#FFF', color: '#1E293B',
                   borderBottom: HEADER_BORDER, borderRight: CAT_BORDER,
-                  position: 'sticky', top: 0, zIndex: 4,
+                  position: 'sticky', top: CONTROLS_BAR_H, zIndex: 4,
                   height: ROW1_H, py: 0.4,
                 }}>
                   Reviewer &rarr; Trainer
@@ -933,7 +938,7 @@ export function TaskRubricsView({ data, categories, batchYieldStats: serverYield
                 <TableCell colSpan={allRubricItems.length} align="center" sx={{
                   fontWeight: 700, fontSize: '0.85rem', bgcolor: '#FFF', color: '#1E293B',
                   borderBottom: HEADER_BORDER,
-                  position: 'sticky', top: 0, zIndex: 4,
+                  position: 'sticky', top: CONTROLS_BAR_H, zIndex: 4,
                   height: ROW1_H, py: 0.4,
                 }}>
                   Auditor &rarr; Reviewer / Trainer
@@ -950,7 +955,7 @@ export function TaskRubricsView({ data, categories, batchYieldStats: serverYield
                       bgcolor: '#FFF', color: '#334155',
                       borderBottom: HEADER_BORDER,
                       borderRight: isLastCat ? CAT_BORDER : HEADER_BORDER,
-                      position: 'sticky', top: ROW1_H, zIndex: 3,
+                      position: 'sticky', top: CONTROLS_BAR_H + ROW1_H, zIndex: 3,
                       height: ROW2_H, py: 0.3, whiteSpace: 'nowrap',
                     }}>
                       {cat.name}
@@ -965,7 +970,7 @@ export function TaskRubricsView({ data, categories, batchYieldStats: serverYield
                       bgcolor: '#FFF', color: '#334155',
                       borderBottom: HEADER_BORDER,
                       borderRight: !isLastCat ? HEADER_BORDER : undefined,
-                      position: 'sticky', top: ROW1_H, zIndex: 3,
+                      position: 'sticky', top: CONTROLS_BAR_H + ROW1_H, zIndex: 3,
                       height: ROW2_H, py: 0.3, whiteSpace: 'nowrap',
                     }}>
                       {cat.name}
@@ -988,7 +993,7 @@ export function TaskRubricsView({ data, categories, batchYieldStats: serverYield
                           borderBottom: CAT_BORDER,
                           borderRight: (isLastInCat && isLastCat) ? CAT_BORDER
                             : isLastInCat ? HEADER_BORDER : undefined,
-                          position: 'sticky', top: ROW1_H + ROW2_H, zIndex: 2,
+                          position: 'sticky', top: CONTROLS_BAR_H + ROW1_H + ROW2_H, zIndex: 2,
                           lineHeight: 1.15, py: 0.3, px: 0.25,
                           wordBreak: 'break-word', whiteSpace: 'normal',
                           maxWidth: 55, minWidth: 30,
@@ -1010,7 +1015,7 @@ export function TaskRubricsView({ data, categories, batchYieldStats: serverYield
                           bgcolor: '#FFF', color: '#475569',
                           borderBottom: CAT_BORDER,
                           borderRight: (isLastInCat && !isLastCat) ? HEADER_BORDER : undefined,
-                          position: 'sticky', top: ROW1_H + ROW2_H, zIndex: 2,
+                          position: 'sticky', top: CONTROLS_BAR_H + ROW1_H + ROW2_H, zIndex: 2,
                           lineHeight: 1.15, py: 0.3, px: 0.25,
                           wordBreak: 'break-word', whiteSpace: 'normal',
                           maxWidth: 55, minWidth: 30,
