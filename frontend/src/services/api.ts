@@ -1257,8 +1257,11 @@ export interface QualityRubricsData {
     role: 'Reviewer' | 'Auditor'
     rework_total: number
     fpy: number | null
+    fpy_rework: number | null
     spy: number | null
+    spy_rework: number | null
     tpy: number | null
+    tpy_rework: number | null
     lpy: number | null
   }[]
 }

@@ -1395,6 +1395,18 @@ class QualityRubricsService:
             )
             return round(passed / len(eligible) * 100, 2)
 
+        def _stage_rework_count(
+            entries: list[dict[str, Any]], stage_num: int,
+        ) -> int | None:
+            """Count tasks whose Nth review was a rework."""
+            eligible = [e for e in entries if e["total"] >= stage_num]
+            if not eligible:
+                return None
+            return sum(
+                1 for e in eligible
+                if e["actions_by_num"].get(stage_num, "") == "rework"
+            )
+
         stats: list[dict[str, Any]] = []
         for batch_name in sorted(batch_groups):
             role_data = batch_groups[batch_name]
@@ -1406,8 +1418,11 @@ class QualityRubricsService:
                     "role": "Reviewer" if role == "reviewer" else "Auditor",
                     "rework_total": rework_total,
                     "fpy": _yield_pct(entries, "first"),
+                    "fpy_rework": _stage_rework_count(entries, 1),
                     "spy": _yield_pct(entries, "second"),
+                    "spy_rework": _stage_rework_count(entries, 2),
                     "tpy": _yield_pct(entries, "third"),
+                    "tpy_rework": _stage_rework_count(entries, 3),
                     "lpy": _yield_pct(entries, "latest"),
                 })
 
