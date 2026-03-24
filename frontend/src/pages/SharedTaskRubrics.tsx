@@ -94,8 +94,8 @@ export default function SharedTaskRubrics() {
         </Box>
       </Box>
 
-      {/* Controls + Content */}
-      <Box sx={{ px: 3, py: 2, maxWidth: '100%', overflow: 'auto' }}>
+      {/* Controls + Content — fixed height so sticky headers work inside */}
+      <Box sx={{ px: 3, py: 1, maxWidth: '100%', overflow: 'auto', height: 'calc(100vh - 60px)' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1.5, position: 'sticky', left: 0 }}>
           <TimeframeSelector
             timeframe={timeframe}

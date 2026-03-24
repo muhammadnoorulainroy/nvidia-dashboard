@@ -1320,12 +1320,12 @@ class QualityRubricsService:
           AND r.review_type = 'manual'
           AND r.status = 'published'
           {date_filter}
-        ORDER BY r.conversation_id, r.id DESC
+        ORDER BY r.conversation_id, r.id ASC
         """
 
         rows = [dict(r) for r in client.query(query).result()]
 
-        # Group reviews by (cid, resolved_role), ordered by review_id DESC
+        # Group reviews by (cid, resolved_role), chronological (ASC)
         groups: dict[tuple[int, str], list[dict[str, Any]]] = defaultdict(list)
         for row in rows:
             cid = row["conversation_id"]
@@ -1337,19 +1337,24 @@ class QualityRubricsService:
             role = "auditor" if bucket == "calibrator" else "reviewer"
             groups[(cid, role)].append(row)
 
-        # Derive per-conversation per-role summary
+        # Derive per-conversation per-role summary with per-review actions
         conv_role: dict[int, dict[str, dict[str, Any]]] = {}
         for (cid, role), reviews in groups.items():
             total = len(reviews)
-            latest_action = (reviews[0].get("action_type") or "").lower()
+            latest_action = (reviews[-1].get("action_type") or "").lower()
             rework_count = sum(
                 1 for r in reviews
                 if (r.get("action_type") or "").lower() == "rework"
             )
+            actions_by_num = {
+                i + 1: (r.get("action_type") or "none").lower()
+                for i, r in enumerate(reviews)
+            }
             conv_role.setdefault(cid, {})[role] = {
                 "total": total,
                 "latest_action": latest_action,
                 "rework_count": rework_count,
+                "actions_by_num": actions_by_num,
             }
 
         # Group by batch
@@ -1363,34 +1368,32 @@ class QualityRubricsService:
         def _yield_pct(
             entries: list[dict[str, Any]], stage: str,
         ) -> float | None:
-            """Cumulative yield — all stages share the same denominator.
+            """Per-stage non-cumulative yield.
 
-            FPY = approved by review 1 / all tasks
-            SPY = approved by review 1 or 2 / all tasks
-            TPY = approved by review 1, 2, or 3 / all tasks
+            FPY = tasks whose 1st review passed / all tasks
+            SPY = tasks whose 2nd review passed / tasks that reached 2nd review
+            TPY = tasks whose 3rd review passed / tasks that reached 3rd review
             LPY = all currently approved / all tasks
-
-            A task is "approved by review K" when total_reviews == K
-            and the latest action is not 'rework'.
-            Guarantees FPY <= SPY <= TPY <= LPY.
             """
             if not entries:
                 return None
 
-            total = len(entries)
-
             if stage == "latest":
+                total = len(entries)
                 approved = sum(
                     1 for e in entries if e["latest_action"] != "rework"
                 )
                 return round(approved / total * 100, 2)
 
-            max_k = {"first": 1, "second": 2, "third": 3}[stage]
-            approved = sum(
-                1 for e in entries
-                if e["total"] <= max_k and e["latest_action"] != "rework"
+            stage_num = {"first": 1, "second": 2, "third": 3}[stage]
+            eligible = [e for e in entries if e["total"] >= stage_num]
+            if not eligible:
+                return None
+            passed = sum(
+                1 for e in eligible
+                if e["actions_by_num"].get(stage_num, "rework") != "rework"
             )
-            return round(approved / total * 100, 2)
+            return round(passed / len(eligible) * 100, 2)
 
         stats: list[dict[str, Any]] = []
         for batch_name in sorted(batch_groups):
